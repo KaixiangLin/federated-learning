@@ -1,0 +1,70 @@
+% !TEX ROOT=./main.tex
+
+
+\section{Problem Setting}
+
+\begin{align}
+	\min _{\mathbf{w}}\left\{F(\mathbf{w}) \triangleq \sum_{k=1}^{N} p_{k} F_{k}(\mathbf{w})\right\}
+	\label{eq:problem}
+\end{align}
+where $N$ is the number of devices, and $p_k$ is the weight of the k-th device
+such that $p_k \geq 0$ and $\sum_{k=1}^N p_k = 1$. Suppose the k-th device
+holds the nk training data: $x_{k,1}, x_{k,2}, \dots, x_{k,n_k}$ . The local
+$k \in S_t^K$ objective $F_k(\cdot)$ is defined by
+
+\begin{align}
+F_{k}(\mathbf{w}) \triangleq \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} \ell\left(\mathbf{w} ; x_{k, j}\right)	
+\label{eq:localloss}
+\end{align}
+
+% The summary of all assumptions:
+
+% \begin{assumption}
+% $F_{1}, \cdots, F_{N}$ are all $L$-smooth: for all  $\mathbf{v}$  and $\mathbf{w}$, $F_{k}(\mathbf{v}) \leq F_{k}(\mathbf{w})+(\mathbf{v}- \\ \mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{L}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$.
+% \end{assumption}
+
+% \begin{assumption}
+% $F_1,\dots, F_N$ are all convex: for all $\vv$ and $\vw$, 
+% $F_k(\vv) \geq F_k(\vw)+(\vv -\vw)^T \grad F_k(\vw)$. \label{ass:cvx}
+% \end{assumption}
+% \begin{assumption}
+% $	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v and } \mathbf{w}, F_{k}(\mathbf{v}) \geq F_{k}(\mathbf{w})+(\mathbf{v}- \\ \mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{\mu}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$
+% \end{assumption}
+
+% \begin{assumption}
+% Let $\xi_{t}^{k}$ be sampled from the k-th device's local data uniformly at random. The variance of stochastic gradients in each device is bounded:
+% $\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)-\nabla F_{k}\left(\mathbf{w}_{t}^{k}\right)\right\|^{2} \leq \sigma_{k}^{2}$, for $k = 1,..., N$.
+% \end{assumption}
+
+% \begin{assumption}
+% The expected squared norm of stochastic gradients is uniformly bounded. i.e.,
+% $\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)\right\|^{2} \leq G^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.
+% \end{assumption}
+
+\section{Notations}
+
+\begin{itemize}
+	\item $\vw_t^k$: be the model parameter maintained in the k-th device at the t-th step. or the parameter obtained after communication steps. 
+	\item $\cI_E$: the set of global synchronization steps, $\cI_E = \{n E|n = 1, 2, 3,\dots \}$. If $t+1 \in \cI_E$, we send $w_{t+1}$ to all devices.
+	\item $\vv^k_{t+1}$: the immediate result of one step SGD update from $\vw^k_{t}$.
+	\item $\xi_{t}^{k}$: the data sampled from k-th device’s local data 
+	uniformly at random.
+	\item $\overline{\mathbf{v}}_{t}=\sum_{k=1}^{N} p_{k} \mathbf{v}_{t}^{k}$.
+	\item $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N} p_{k} \mathbf{w}_{t}^{k}$.
+	\item $\overline{\mathbf{v}}_{t+1}$ is one-step SGD from $\overline{\mathbf{w}}_{t}$. $t+1 \in \cI_E$, we can fetch $\overline{\vw}_{t+1}$, we can communicate $\overline{\vw}_{t+1}$ to all devices.
+	\item The expected one-step graident, $\overline{\mathbf{g}}_{t}=\sum_{k=1}^{N} p_{k} \nabla F_{k}\left(\mathbf{w}_{t}^{k}\right)$,  
+	\item One-step stochastic gradient $\mathbf{g}_{t}=\sum_{k=1}^{N} p_{k} \nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)$. $\EE[\vg_t] = \overline{g}_t$
+	\item 
+
+	\begin{align}
+	\overline{\mathbf{v}}_{t+1}=\overline{\mathbf{w}}_{t}-\eta_{t} \mathbf{g}_{t}	\label{eq:vbar}
+	\end{align}
+
+\end{itemize}
+
+\begin{align} 
+\mathbf{v}_{t+1}^{k} &=\mathbf{w}_{t}^{k}-\eta_{t} \nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right) \\ \mathbf{w}_{t+1}^{k} &=\left\{\begin{array}{ll}\mathbf{v}_{t+1}^{k} & (9) \\ \sum_{k=1}^{N} p_{k} \mathbf{v}_{t+1}^{k} & \text { if } t+1 \notin \mathcal{I}_{E}\end{array}\right.
+\end{align}
+
+
+

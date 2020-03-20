@@ -1,0 +1,162 @@
+% !TEX ROOT=./main.tex
+
+
+\textbf{Full Device Participation}
+
+\begin{itemize}
+	\item Stochastic Subgradient of device $k$ at time step $t$, at point $w_{t,k}$: 
+	$$\vg_{t,k} \coloneqq \vg_{t,k}(w_t^k)$$
+	$$ \vg_{t, k} \in \partial F_{k}\left(w_{t}^{k}, \xi_{t}^{k}\right) $$
+	$$\EE \vg_{t, k} \in \partial F_{k}\left(w_{t}^{k}\right)$$
+\item  One-step stochastic subgradient of all devices.
+$$\vg_{t}=\sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) $$
+\begin{align}
+	\EE \vg_{t}= \EE \sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) \coloneqq \sum_{k=1}^{N} p_{k} \EE \vg_{t, k}
+	\label{eq:egt}
+\end{align}
+\end{itemize}
+
+\begin{assumption}
+The expected squared norm of stochastic subgradients is uniformly bounded. i.e.,
+$\mathbb{E}\|\vg_{t,k}\|^2  \leq G_k^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.  This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$.
+\label{ass:subgrad2}
+\end{assumption}
+
+\begin{theorem}
+	Let Assumption~\ref{ass:subgrad2} hold, 
+	then the FedAve with full device participation satisfies
+	\begin{align}
+		 F^*_t - F^* &\leq \frac{RL}{\sqrt{T}}
+	\end{align}
+	where $$\eta_t = \frac{R}{\sqrt{T}},$$ 
+	$$F^*_t \coloneqq \min_{t \in [0, T-1]} F(\overline{\vw}_t),$$
+	$$R = \sqrt{ \frac{\Delta_0}{L}},$$ 
+	$$L=\sum_{k=1}^N \left( p_k G_k^2 \left(3 + 4(E-1)^2\right)\right).$$ 
+	\label{th:cvxnonsmoth}
+\end{theorem}
+{\color{red}{This bound didn't consider heterogeneous of devices $\Gamma$ in~\cite{li2019convergence}}} 
+
+
+In full device active setting, we have $\overline{\vw}_{t+1}=\overline{\vv}_{t+1}$,
+$$\Delta_{t+1} = \EE \|\overline{\vw}_{t+1} - \vw^*\|^2 = \EE \|\overline{\vv}_{t+1} - \vw^*\|^2,$$
+According to the definition of $\overline{\vv}_{t+1}$ in \eq{\ref{eq:vbar}}, we can expand $\Delta_{t+1}$
+$$\begin{aligned}\left\|\bar{\vv}_{t+1}-\vw^{*}\right\|^2 &=\left\|\bar{\vw}_{t}-\eta_{t} \vg_{t}-\vw^{*}\right\|^2 \\ &=\left\|\bar{\vw}_{t}-\vw^{*}\right\|^{2}-2 \eta_{t} \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)+\eta_{t}^{2}\left\|\vg_{t}\right\|^{2} \end{aligned}$$
+
+Take the expectation condition on $\vw_t$ over random samples at all devices:
+\begin{align}
+\Delta_{t+1} = \EE\left[\left\|\bar{\vv}_{t+1}-\vw^{*}\right\|^2| \vw_{t}\right]=\|\bar{\vw}_{t}-\vw^{*}\|^{2}-2 \eta_{t} \EE \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)+\eta_{t}^{2} \EE\| \vg_{t} \|^{2}	
+\label{eq:expand}
+\end{align}
+Note that since $\EE \vg_t = \EE \sum_{k=1}^{N} p_{k} \vg_{t, k}\left(\vw_{t}^{k}\right) \neq \EE \sum_{k=1}^Np_k \vg_{t,k}(\overline{\vw}_t)$, therefore $\EE \vg_t \notin \partial F(\overline(\vw_t))$, we cannot directly use the convex definition to
+upper bound $- \EE \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)$ in \eq{\ref{eq:expand}}, as classic SGD proof did. 
+
+Now we focus on bounding $-2 \eta_{t} \EE \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)$ in \eq{\ref{eq:expand}}: 
+\begin{align}
+	& -2 \eta_{t} \left<\EE \vg_{t}, \bar{\vw}_{t}-\vw^{*} \right>\\
+  = & 2 \eta_{t} \sum_{k=1}^N p_k \left(-\left<\EE \vg_{t,k}, \bar{\vw}_{t}-\vw^{*} \right> \right) \\
+  \leq& 2 \eta_{t} \sum_{k=1}^N p_k  \left(\frac{1}{2\eta_t} \|\overline{\vw}_t - \vw_{t,k}\|^2 + \frac{\eta_t}{2} \|\EE \vg_{t,k}\|^2 - (F_k(\vw_t^k) - F_k(\vw^*) \right) \\
+  =& \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 
+  - 2\eta_t\sum_{k=1}^N p_k (F_k(\vw_t^k) - F_k(\vw^*)) \\
+  =& \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 
+  - 2\eta_t\sum_{k=1}^N p_k (F_k(\vw_t^k) - F^*) \label{eq:exp4}
+\end{align}
+where in the third line we use the following derivation:
+\begin{align}
+	& -\left<\EE \vg_{t,k}, \bar{\vw}_{t} - \vw^{*} \right>\\
+=& - \left<\EE \vg_{t,k}, \bar{\vw}_{t} - \vw_t^k +  \vw_t^k - \vw^{*} \right>\\
+=& - \left<\EE \vg_{t,k}, \bar{\vw}_{t} - \vw_t^k\right> - \left<\EE \vg_{t,k}, \vw_t^k - \vw^{*} \right>\\
+\leq & - \left<\EE \vg_{t,k}, \bar{\vw}_{t} - \vw_t^k\right> - (F_k(\vw_t^k) - F_k(\vw^*)) \label{eq:3}\\
+\leq & \frac{1}{2\eta_t} \|\vw_t - \vw_{t,k}\|^2 + \frac{\eta_t}{2} \|\EE \vg_{t,k}\|^2
+- (F_k(\vw_t^k) - F_k(\vw^*)) \label{eq:4}
+\end{align}
+where in \eq{\ref{eq:3}} we use the definition of convexity and in \eq{\ref{eq:4}} we use Cauchy-Schwarz inequality and AM-GM inequality $-\langle\va, \vb\rangle=\langle\va,-\vb\rangle \leqslant|\va||\vb| \leqslant \frac{1}{2}\left(|\va|^{2}+|\vb|^{2}\right)$.
+
+
+Now we plug in \eq{\ref{eq:exp4}} into \eq{\ref{eq:expand}}:
+\begin{align}
+	\Delta_{t+1} \leq& \|\bar{\vw}_{t}-\vw^{*}\|^{2} + \eta_{t}^{2} \EE\| \vg_{t} \|^{2} \\
+	& + \underbrace{\sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2}_{A_1} +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2
+  - 2\eta_t\underbrace{\sum_{k=1}^N p_k (F_k(\vw_t^k) - F^*)}_{A_2} \label{eq:main2}
+\end{align}
+
+$A_1$ can be bounded by Lemma 3 in~\cite{li2019convergence}, 
+
+
+Now we bound $A_2$:
+\begin{align}
+	& \sum_{k=1}^N p_k (F_k(\vw_t^k) - F^*) \\
+ = & \sum_{k=1}^N p_k (F_k(\vw_t^k) - F_k(\overline{w}_t) + F_k(\overline{w}_t) - F^*) \\
+ = & \sum_{k=1}^N p_k (F_k(\vw_t^k) - F_k(\overline{w}_t) ) + (F(\overline{w}_t) - F^*)\\ 
+ \geq & \sum_{k=1}^{N} P_{k}\left<\EE g_{t k}\left(\overline{\vw}_{t}\right), \vw_{t}^k-\overline{\vw}_{t}\right> + (F(\overline{w}_t) - F^*)\\
+ \geq& -\frac{1}{2} \sum_{k=1}^{N} P_{k} (\eta_t \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \frac{1}{\eta_t} \|\vw_{t,k} - \overline{\vw}_t\|^2) + (F(\overline{w}_t) - F^*) \label{eq:a24}
+\end{align}
+where in fourth line we use Cauchy-Schwarz inequality and AM-GM inequality. 
+
+
+Now we plug in \eq{\ref{eq:a24}} into \eq{\ref{eq:main2}}:
+\begin{align}
+	\Delta_{t+1} & \leq \Delta_t + 
+	\eta_{t}^{2} \EE\| \vg_{t} \|^{2} + \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 \\
+	 &- 2 \eta_t \left(-\frac{1}{2} \sum_{k=1}^{N} P_{k} (\eta_t \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \frac{1}{\eta_t} \|\vw_{t,k} - \overline{\vw}_t\|^2) + (F(\overline{w}_t) - F^*) \right)\\
+	& \leq \Delta_t + 
+	\eta_{t}^{2} \EE\| \vg_{t} \|^{2} + \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 \\
+	& +\sum_{k=1}^{N} P_{k} (\eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \|\vw_{t,k} - \overline{\vw}_t\|^2) - 2\eta_t (F(\overline{w}_t) - F^*)\\
+	& = \Delta_t + \underbrace{\eta_{t}^{2} \EE\| \vg_{t} \|^{2} +\sum_{k=1}^N p_k  ( 2\|\overline{\vw}_t - \vw_{t,k}\|^2  +  \eta_t^2 \|\EE \vg_{t,k}\|^2 + \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 )}_{C_1 = \eta_t^2L}  - 2\eta_t (F(\overline{w}_t) - F^*) \label{eq:main3}
+\end{align}
+Rearrange the last inequality:
+\begin{align}
+	2\eta_t (F(\overline{w}_t) - F^*) \leq \Delta_t - \Delta_{t+1} + \eta_t^2 L
+\end{align}
+Sum over two sides from $t=0$ to $t = T- 1$ and define $F^*_t \coloneqq \min_{t \in [0, T-1]} F(\overline{\vw}_t)$
+\begin{align}
+	\sum_{t=0}^{T-1} 2\eta_t(F(\overline{w}_t) - F^*) & \leq \Delta_0 - \Delta_T + \sum_{t=0}^{T-1} \eta_t^2 L\\
+	\sum_{t=0}^{T-1} 2\eta_t(F(\overline{w}_t) - F^*) & \leq \Delta_0 + \sum_{t=0}^{T-1} \eta_t^2 L\\
+    F^*_t - F^* &\leq \frac{\Delta_0 + \sum_{t=0}^{T-1} \eta_t^2L}{ \sum_{t=0}^{T-1}  2 \eta_t}\\
+    F^*_t - F^* &\leq \frac{RL}{\sqrt{T}}\\
+\end{align}
+where in last line we let $R = \sqrt{ \frac{\Delta_0}{L}}, \eta_t = \frac{R}{\sqrt{T}}$
+
+Now we discuss how to bound the term $C_1$ in \eq{\ref{eq:main3}}
+
+Assume Assumption~\ref{ass:subgrad2}, $\eta_t$ is non-increasing, and $\eta_t \leq 2\eta_t+E$ for all $t\geq 0$, according to Lemma 3 in~\cite{li2019convergence}, we have
+
+
+\begin{equation}
+\mathbb{E}\left[\sum_{k=1}^{N} p_{k}\left\|\overline{\mathbf{w}}_{t}-\mathbf{w}_{k}^{t}\right\|^{2}\right] \leq \sum_{k=1}^N p_k4 \eta_{t}^{2}(E-1)^{2} G_k^{2}
+	\label{eq:g4}
+\end{equation}
+
+
+Assume Assumption~\ref{ass:subgrad2}, we have 
+\begin{equation}
+	\eta_t^2 \|\EE \vg_{t,k}\|^2 \leq  \eta_t^2 G_k^2
+	\label{eq:g3}
+\end{equation}
+and
+\begin{equation}
+	\eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t)\|^2 \leq  \eta_t^2 G_k^2
+	\label{eq:g2}
+\end{equation}
+
+
+Now the only term left in $C_1$ is $\eta_{t}^{2} \EE\| \vg_{t} \|^{2} $, follow the proof in Lemma 2~\cite{li2019convergence}: 
+\begin{align}
+	  \eta_{t}^{2} \EE\| \vg_{t} \|^{2} 
+	\leq   \eta_{t}^{2} \EE\| \sum_{k=1}^N p_k g_{t,k} \|^{2} 
+	\leq   \eta_{t}^{2} \sum_{k=1}^N p_k \EE\| g_{t,k} \|^{2} 
+	\leq   \eta_{t}^{2} \sum_{k=1}^N p_k G_k^2  \label{eq:g1}
+\end{align}
+where in the third inequality we use the convexity of the l2 norm.
+
+Combine \eq{\ref{eq:g4}},\eq{\ref{eq:g3}},\eq{\ref{eq:g2}}, \eq{\ref{eq:g1}},
+we have 
+\begin{align}
+C_1 = \eta_t^2 L  = \eta_t^2 \sum_{k=1}^N p_k G_k^2 \left(3 + 4(E-1)^2\right)	
+\end{align}
+
+
+\textbf{Problems}
+\begin{itemize}
+	\item The bound in Theorem~\ref{th:cvxnonsmoth} didn't incoporate heterogeneous of data.
+	\item \cite{huo2020faster} this paper has no assumption on the heterogeneous, the bounded gradient variance can cover this assumption. 
+\end{itemize}

@@ -1,0 +1,46 @@
+% !TEX ROOT=./main.tex
+
+
+\begin{table}[h!]
+\centering
+\small
+	\begin{tabular}{|c|c|c|c|c|}\hline
+		paper         &  Cvx Non-smth & Cvx L-smth & Strongly Cvx Non-smth& Strongly Cvx L-smth \\ \hline
+	Accelerated	SGD   &        &    &       &      \\\hline
+	SGD    &    $\cO(\frac{1}{\sqrt{T}})$  &   $\cO(\frac{1}{\sqrt{T}})$  &  $\cO(\frac{1}{T})$  & $\cO(\frac{1}{T})$\cite{li2019convergence,haddadpour2019convergence}      \\\hline
+	\end{tabular}
+	\caption{Summarize of relatedwork on federated learning, heterogeneous data.}
+\end{table}
+
+
+\section{Convex}
+
+\subsection{Smooth}
+\subsubsection{Stochastic Gradient decent}
+% \input{sec_convexsmoothsgd}
+\subsubsection{Accelerated Stochastic Gradient decent}
+
+\subsection{Non-Smooth}
+\subsubsection{Stochastic Gradient decent}
+\input{sec_cvxnonsm}
+
+\subsubsection{Accelerated Stochastic Gradient decent}
+
+
+
+\section{Strongly Convex}
+
+\subsection{Smooth}
+\cite{li2019convergence}
+
+
+\subsection{Non-smooth}
+\subsection{Stochastic Gradient decent}
+
+Use the weighted average trick in \cite{lacoste2012simpler}
+to get $\cO(\frac{1}{T})$ convergence rate. 
+
+
+
+
+

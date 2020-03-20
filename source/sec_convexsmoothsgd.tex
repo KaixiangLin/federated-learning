@@ -1,0 +1,31 @@
+% !TEX ROOT=./main.tex
+
+
+\textbf{Full Device Participation}
+
+\begin{itemize}
+	\item Stochastic gradient of device $k$ at time step $t$, at point $w_{t,k}$: 
+	$$\vg_{t,k} \coloneqq \vg_{t,k}(w_t^k)$$
+	$$ \vg_{t, k} = \grad F_{k}\left(w_{t}^{k}, \xi_{t}^{k}\right) $$
+	$$\EE \vg_{t, k} = \grad F_{k}\left(w_{t}^{k}\right)$$
+\item  One-step stochastic subgradient of all devices.
+$$\vg_{t}=\sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) $$
+\begin{align}
+	\EE \vg_{t}= \EE \sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) \coloneqq \sum_{k=1}^{N} p_{k} \EE \vg_{t, k}
+	\label{eq:egtsgd}
+\end{align}
+\end{itemize}
+
+
+
+$$\Delta_{t+1} = \EE \|\overline{\vw}_{t+1} - \vw^*\|^2 = \EE \|\overline{\vv}_{t+1} - \vw^*\|^2,$$
+According to the definition of $\overline{\vv}_{t+1}$ in \eq{\ref{eq:vbar}}, we can expand $\Delta_{t+1}$
+$$\begin{aligned}\left\|\bar{\vv}_{t+1}-\vw^{*}\right\|^2 &=\left\|\bar{\vw}_{t}-\eta_{t} \vg_{t}-\vw^{*}\right\|^2 \\ &=\left\|\bar{\vw}_{t}-\vw^{*}\right\|^{2}-2 \eta_{t} \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)+\eta_{t}^{2}\left\|\vg_{t}\right\|^{2} \end{aligned}$$
+
+Take the expectation condition on $\vw_t$ over random samples at all devices:
+\begin{align}
+\Delta_{t+1} = \EE\left[\left\|\bar{\vv}_{t+1}-\vw^{*}\right\|^2| \vw_{t}\right]=\|\bar{\vw}_{t}-\vw^{*}\|^{2}-2 \eta_{t} \EE \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)+\eta_{t}^{2} \EE\| \vg_{t} \|^{2}	
+\label{eq:expandsgd}
+\end{align}
+
+Now we focus on bounding $-2 \eta_{t} \EE \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)$ in \eq{\ref{eq:expandsgd}}: 
