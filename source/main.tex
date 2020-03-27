@@ -40,6 +40,8 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{remark}{Remark}
 \newcommand{\lkxcom}[1]{{\color{red}{#1}}}
+
+\newcommand{\ov}[1]{{\overline{\mathbf{#1}}}}
 \input{bmacros}
 \newtheorem*{assumption*}{Assumption}
 
@@ -55,22 +57,22 @@
 % \begin{abstract}
 % \end{abstract}
 
-%% Note for ICLR'20 paper
-% \input{note_sec_problem}
-% \input{note_sec_algorithm}
-% \input{note_sec_part}
-% \input{note_sec_q}
 
 % converge proof
 \input{sec_problem}
 \input{sec_overview}
-\newpage
-% \input{sec_acceleratedFL}
-% \input{sec_cvxnonsm}
+
+\input{sec_acceleratedFL}
 
 % accelerated FL survey
 
+% paper
 
+\begin{itemize}
+	\item On Federated Learning of Deep Networks from Non-IID Data: Parameter Divergence and the Effects of Hyperparametric Methods: empirical evaluation 
+	paper, the loss surface could be helpful.
+	\item On the Linear Speedup Analysis of Communication Efficient Momentum SGD for Distributed Non-Convex Optimization: Non-convex, smooth, accelerated SGD, Full device particaption.
+\end{itemize}
 
 % \newpage
 \small

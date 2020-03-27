@@ -54,10 +54,10 @@ Now we focus on bounding $-2 \eta_{t} \EE \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^
 \begin{align}
 	& -2 \eta_{t} \left<\EE \vg_{t}, \bar{\vw}_{t}-\vw^{*} \right>\\
   = & 2 \eta_{t} \sum_{k=1}^N p_k \left(-\left<\EE \vg_{t,k}, \bar{\vw}_{t}-\vw^{*} \right> \right) \\
-  \leq& 2 \eta_{t} \sum_{k=1}^N p_k  \left(\frac{1}{2\eta_t} \|\overline{\vw}_t - \vw_{t,k}\|^2 + \frac{\eta_t}{2} \|\EE \vg_{t,k}\|^2 - (F_k(\vw_t^k) - F_k(\vw^*) \right) \\
-  =& \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 
+  \leq& 2 \eta_{t} \sum_{k=1}^N p_k  \left(\frac{1}{2\eta_t} \|\overline{\vw}_t - \vw_t^k\|^2 + \frac{\eta_t}{2} \|\EE \vg_{t,k}\|^2 - (F_k(\vw_t^k) - F_k(\vw^*) \right) \\
+  =& \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_t^k\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 
   - 2\eta_t\sum_{k=1}^N p_k (F_k(\vw_t^k) - F_k(\vw^*)) \\
-  =& \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 
+  =& \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_t^k\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 
   - 2\eta_t\sum_{k=1}^N p_k (F_k(\vw_t^k) - F^*) \label{eq:exp4}
 \end{align}
 where in the third line we use the following derivation:
@@ -66,7 +66,7 @@ where in the third line we use the following derivation:
 =& - \left<\EE \vg_{t,k}, \bar{\vw}_{t} - \vw_t^k +  \vw_t^k - \vw^{*} \right>\\
 =& - \left<\EE \vg_{t,k}, \bar{\vw}_{t} - \vw_t^k\right> - \left<\EE \vg_{t,k}, \vw_t^k - \vw^{*} \right>\\
 \leq & - \left<\EE \vg_{t,k}, \bar{\vw}_{t} - \vw_t^k\right> - (F_k(\vw_t^k) - F_k(\vw^*)) \label{eq:3}\\
-\leq & \frac{1}{2\eta_t} \|\vw_t - \vw_{t,k}\|^2 + \frac{\eta_t}{2} \|\EE \vg_{t,k}\|^2
+\leq & \frac{1}{2\eta_t} \|\bar{\vw}_t - \vw_t^k\|^2 + \frac{\eta_t}{2} \|\EE \vg_{t,k}\|^2
 - (F_k(\vw_t^k) - F_k(\vw^*)) \label{eq:4}
 \end{align}
 where in \eq{\ref{eq:3}} we use the definition of convexity and in \eq{\ref{eq:4}} we use Cauchy-Schwarz inequality and AM-GM inequality $-\langle\va, \vb\rangle=\langle\va,-\vb\rangle \leqslant|\va||\vb| \leqslant \frac{1}{2}\left(|\va|^{2}+|\vb|^{2}\right)$.
@@ -75,7 +75,7 @@ where in \eq{\ref{eq:3}} we use the definition of convexity and in \eq{\ref{eq:4
 Now we plug in \eq{\ref{eq:exp4}} into \eq{\ref{eq:expand}}:
 \begin{align}
 	\Delta_{t+1} \leq& \|\bar{\vw}_{t}-\vw^{*}\|^{2} + \eta_{t}^{2} \EE\| \vg_{t} \|^{2} \\
-	& + \underbrace{\sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2}_{A_1} +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2
+	& + \underbrace{\sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_t^k\|^2}_{A_1} +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2
   - 2\eta_t\underbrace{\sum_{k=1}^N p_k (F_k(\vw_t^k) - F^*)}_{A_2} \label{eq:main2}
 \end{align}
 
@@ -88,7 +88,7 @@ Now we bound $A_2$:
  = & \sum_{k=1}^N p_k (F_k(\vw_t^k) - F_k(\overline{w}_t) + F_k(\overline{w}_t) - F^*) \\
  = & \sum_{k=1}^N p_k (F_k(\vw_t^k) - F_k(\overline{w}_t) ) + (F(\overline{w}_t) - F^*)\\ 
  \geq & \sum_{k=1}^{N} P_{k}\left<\EE g_{t k}\left(\overline{\vw}_{t}\right), \vw_{t}^k-\overline{\vw}_{t}\right> + (F(\overline{w}_t) - F^*)\\
- \geq& -\frac{1}{2} \sum_{k=1}^{N} P_{k} (\eta_t \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \frac{1}{\eta_t} \|\vw_{t,k} - \overline{\vw}_t\|^2) + (F(\overline{w}_t) - F^*) \label{eq:a24}
+ \geq& -\frac{1}{2} \sum_{k=1}^{N} P_{k} (\eta_t \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \frac{1}{\eta_t} \|\vw_t^k - \overline{\vw}_t\|^2) + (F(\overline{w}_t) - F^*) \label{eq:a24}
 \end{align}
 where in fourth line we use Cauchy-Schwarz inequality and AM-GM inequality. 
 
@@ -96,12 +96,12 @@ where in fourth line we use Cauchy-Schwarz inequality and AM-GM inequality.
 Now we plug in \eq{\ref{eq:a24}} into \eq{\ref{eq:main2}}:
 \begin{align}
 	\Delta_{t+1} & \leq \Delta_t + 
-	\eta_{t}^{2} \EE\| \vg_{t} \|^{2} + \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 \\
-	 &- 2 \eta_t \left(-\frac{1}{2} \sum_{k=1}^{N} P_{k} (\eta_t \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \frac{1}{\eta_t} \|\vw_{t,k} - \overline{\vw}_t\|^2) + (F(\overline{w}_t) - F^*) \right)\\
+	\eta_{t}^{2} \EE\| \vg_{t} \|^{2} + \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_t^k\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 \\
+	 &- 2 \eta_t \left(-\frac{1}{2} \sum_{k=1}^{N} P_{k} (\eta_t \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \frac{1}{\eta_t} \|\vw_t^k - \overline{\vw}_t\|^2) + (F(\overline{w}_t) - F^*) \right)\\
 	& \leq \Delta_t + 
-	\eta_{t}^{2} \EE\| \vg_{t} \|^{2} + \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_{t,k}\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 \\
-	& +\sum_{k=1}^{N} P_{k} (\eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \|\vw_{t,k} - \overline{\vw}_t\|^2) - 2\eta_t (F(\overline{w}_t) - F^*)\\
-	& = \Delta_t + \underbrace{\eta_{t}^{2} \EE\| \vg_{t} \|^{2} +\sum_{k=1}^N p_k  ( 2\|\overline{\vw}_t - \vw_{t,k}\|^2  +  \eta_t^2 \|\EE \vg_{t,k}\|^2 + \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 )}_{C_1 = \eta_t^2L}  - 2\eta_t (F(\overline{w}_t) - F^*) \label{eq:main3}
+	\eta_{t}^{2} \EE\| \vg_{t} \|^{2} + \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_t^k\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 \\
+	& +\sum_{k=1}^{N} P_{k} (\eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \|\vw_t^k - \overline{\vw}_t\|^2) - 2\eta_t (F(\overline{w}_t) - F^*)\\
+	& = \Delta_t + \underbrace{\eta_{t}^{2} \EE\| \vg_{t} \|^{2} +\sum_{k=1}^N p_k  ( 2\|\overline{\vw}_t - \vw_t^k\|^2  +  \eta_t^2 \|\EE \vg_{t,k}\|^2 + \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 )}_{C_1 = \eta_t^2L}  - 2\eta_t (F(\overline{w}_t) - F^*) \label{eq:main3}
 \end{align}
 Rearrange the last inequality:
 \begin{align}
