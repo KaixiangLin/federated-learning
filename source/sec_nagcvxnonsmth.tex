@@ -3,25 +3,12 @@
 In this section, we study the convergence of accelerated FedAve 
 algorithm for convex, non-smooth function.
 
-\begin{itemize}
-	\item MGD vs NASGD
-	\begin{align}
-	\vy^k_{t+1} &= \gamma \vy^k_t + \grad F_k(\vw^k_{t})	\\
-	\vw^k_{t+1} & = \vw^k_{t} - \eta \vy^k_{t+1}
-	\end{align}
-	\begin{align}
-	\vy^k_{t+1} &= \vw^k_{t} - \alpha \grad F_k(\vw^k_{t})	\\
-	\vw^k_{t+1} & = \vy^k_{t+1} + \beta(\vy^k_{t+1} - \vy^k_{t})
-	\end{align}
-	
-\end{itemize}
-
 \textbf{NASGD updates}
 \begin{align}
 	\vy^k_{t+1} &= \vw^k_{t} - \alpha  \vg_{t,k}	\\
 	\vw^k_{t+1} & = \vy^k_{t+1} + \beta(\vy^k_{t+1} - \vy^k_{t})
 \end{align}
-$\vp_t$ satisfies the recursive equation:
+We define $\vp_t$ and it satisfies the recursive equation:
 \begin{align}
 	\ov{p}_{t}=\left\{\begin{array}{l}\frac{\beta}{1-\beta}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha \vg_{t-1}\right], t \geqslant 1 \\ 0, t=0\end{array}\right.
 \end{align}
@@ -34,6 +21,17 @@ and
 	\underbrace{\overline{\vw}_{t+1} + \overline{\vp}_{t+1}}_{\overline{\vz}_{t+1}} &= \underbrace{\overline{\vw}_{t} + \overline{\vp}_{t}}_{\overline{\vz}_{t}} - \frac{\alpha}{1- \beta} \vg_t
 	\label{eq:nasgdzt}
 \end{align}
+
+
+\begin{theorem}
+	Let Assumption~\ref{ass:subgrad2} hold, 
+	then the FedNestrovAve with full device participation satisfies
+	\begin{align}
+		 F(\hat{w}_T)) - F^* &\leq \cO(\frac{1}{T})
+	\end{align}
+	where $\hat{w}_T = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$.
+	\label{th:nasgcvxnonsmoth}
+\end{theorem}
 
 With the recursive equation \eq{\ref{eq:nasgdzt}}, we have the following 
 inequality.
@@ -108,7 +106,7 @@ Plug in \eq{\ref{eq:nagcvx5}} and \eq{\ref{eq:nagcvx6}} into
 	& + 2\sum_{k=1}^K p_k \left(\EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \frac{(\beta^{t-t_0}-1)^2\beta^4}{(1-\beta)^2}\EE\|\underline{\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j}\|^2 + \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2 \right) \\
 	& \leq \| \overline{\vz}_{t} - \vw^*\|^2  - 2\eta_t(F(\overline{w}_t) - F^*)  \nonumber\\
 	& +  \eta_t^2\EE\|\vg_t\|^2 +\eta^2_t \sum_{k=1}^K p_k\|\EE \vg_{t,k}\|^2 + \sum_{k=1}^K p_k \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t)\|^2  \nonumber \\
-	& + \sum_{k=1}^K p_k \left(\frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 \right) \nonumber\\
+	& + \frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 \nonumber\\
 	& + 2\sum_{k=1}^K p_k \left(\EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2  + \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2 \right) \label{eq:nagcvx7}
 \end{align}
 
@@ -116,7 +114,7 @@ Denote the last three lines in \eq{\ref{eq:nagcvx7}} as $C$:
 \begin{align}
 C &= \eta_t^2\EE\|\vg_t\|^2 +\eta^2_t \sum_{k=1}^K p_k\|\EE \vg_{t,k}\|^2+ \sum_{k=1}^K p_k \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t)\|^2  \nonumber \\
 % 2\sum_{k=1}^K p_k \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 
-	& + \sum_{k=1}^K p_k \left(\underbrace{\frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2}_{C_1} \right) \nonumber\\
+	& +  \left(\underbrace{\frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2}_{C_1} \right) \nonumber\\
 	& + 2\sum_{k=1}^K p_k \left(\underbrace{\EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 }_{C_2} + \underbrace{\frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2}_{C_3} \right)  \label{eq:nagcvxc}
 \end{align}
 
@@ -154,30 +152,49 @@ To bound $C_3$, similar to $C_1$, we set $\Lambda_{t_0}^{t} = \sum_{j=t_0}^{t - 
         & \leq 2 \eta_t^4 \sum_{k=1}^K p_k G_k^2  \label{eq:nagcvxc3}
 \end{align}
 
-Based on \eq{\ref{eq:nagcvxc}}, \eq{\ref{eq:nagcvxc1}}, \eq{\ref{eq:nagcvxc2}}, and \eq{\ref{eq:nagcvxc3}}, we can denote $C = \eta_t^2 D$, 
-plug in $C$ back to \eq{\ref{eq:nagcvx7}}, we have 
+Based on \eq{\ref{eq:nagcvxc}}, \eq{\ref{eq:nagcvxc1}}, \eq{\ref{eq:nagcvxc2}}, and \eq{\ref{eq:nagcvxc3}}, we can denote $C \leq \eta_t^2 D$.
+\begin{align}
+	C \leq& \eta_t^2\EE\|\vg_t\|^2 +\eta^2_t \sum_{k=1}^K p_k\|\EE \vg_{t,k}\|^2+ \sum_{k=1}^K p_k \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t)\|^2  \nonumber \\
+	& + \underbrace{3 \eta_t^4\sum_{k=1}^N p_k G_k^2}_{C_1\text{'s upper bound}} + \underbrace{8(E-1)^2\eta_{t}^2 \sum_{k=1}^K p_k G_k^2}_{C_2\text{'s upper bound}} + \underbrace{2 \eta_t^4 \sum_{k=1}^K p_k G_k^2 }_{C_1\text{'s upper bound}} \\
+	  \leq & \eta_t^2 \underbrace{\left(3 + 8(E-1)^2\right)\sum_{k=1}^N p_k G_k^2}_{D_1}   + \eta_t^4 \times \underbrace{5 \sum_{k=1}^N p_k G_k^2}_{D_2} \\
+	  = &  \eta_t^2 D_1 + \eta_t^4 D_2 
+\end{align}
+
+
+We plug in $C$ back to \eq{\ref{eq:nagcvx7}} and set $D=D_1 + D_2$, we have 
 \begin{align}
 \EE\|\overline{\vz}_{t+1} - \vw^* \|^2 & \leq \EE \| \overline{\vz}_{t} - \vw^*\|^2  +  \eta_t^2 D   - 2\eta_t(F(\overline{w}_t) - F^*) \nonumber\\	
  2\eta_t(F(\overline{w}_t) - F^*) & \leq  \Delta_{t}  - \Delta_{t+1}  +  \eta_t^2 D    \nonumber
 \end{align}
 
-Sum two sides over time step $t$:
+Sum two sides over time step $t$ and use constant rate $\eta_t = \eta$:
 \begin{align}
-\frac{1}{T}\sum_{t=0}^{T-1} 2 \eta (F(\overline{w}_t) - F^*) & \leq \Delta_0 - \Delta_{T} + \sum_{t=0}^{T-1} \eta^2 D \nonumber\\
-\frac{1}{T}\sum_{t=0}^{T-1} 2 \eta (F(\overline{w}_t) - F^*) & \leq \Delta_0/T  + \sum_{t=0}^{T-1} \eta^2 D/T\nonumber\\
- F(\hat{w}_t) - F^* & \leq \frac{\Delta_0}{2T\eta}   + \frac{\eta D}{2}\nonumber\\
- F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{T}} \nonumber\\
+\frac{1}{T}\sum_{t=0}^{T-1} 2 \eta (F(\overline{w}_t) - F^*) & \leq \Delta_0 - \Delta_{T} + \sum_{t=0}^{T-1} (\eta^2 D_1 + \eta^4 D_2) \nonumber\\
+\frac{1}{T}\sum_{t=0}^{T-1} 2 \eta (F(\overline{w}_t) - F^*) & \leq \Delta_0/T  + \sum_{t=0}^{T-1} (\eta^2 D_1 + \eta^4 D_2)\nonumber\\
+ F(\hat{w}_t) - F^* & \leq \frac{\Delta_0}{2T\eta}   + \frac{\eta D_1}{2} + \frac{\eta^3 D_1}{2}\nonumber\\
+ F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{4T}} + \sqrt{\frac{\Delta_0}{DT}}\frac{ D_1}{2} + (\frac{\Delta_0}{DT})^{3/2}\frac{ D_2}{2} \nonumber\\
+ F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{4T}} + \sqrt{\frac{\Delta_0}{DT}}\frac{ D}{2} + (\frac{\Delta_0}{DT})^{3/2}\frac{ D}{2} \nonumber\\
+ F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D}}\frac{1}{T^{3/2}} \nonumber\\
 \end{align}
 where $\hat{w}_t = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$, $\eta = \sqrt{\frac{\Delta_0}{DT}}$.
 
 
 
-\begin{itemize}
-	\item Update NASG or MSG.
-	\item Store the momentum every $E$~\cite{huo2020faster} , every step~\cite{liu2019accelerating}, rely on L-smoothness.
-\end{itemize}
-
-
+% \begin{itemize}
+% 	\item Update NASG or MSG.
+% 	\item Store the momentum every $E$~\cite{huo2020faster} , every step~\cite{liu2019accelerating}, rely on L-smoothness.
+% \end{itemize}
+% \begin{itemize}
+% 	\item MGD vs NASGD: currently we use NASGD. 
+% 	\begin{align}
+% 	\vy^k_{t+1} &= \gamma \vy^k_t + \grad F_k(\vw^k_{t})	\\
+% 	\vw^k_{t+1} & = \vw^k_{t} - \eta \vy^k_{t+1}
+% 	\end{align}
+% 	\begin{align}
+% 	\vy^k_{t+1} &= \vw^k_{t} - \alpha \grad F_k(\vw^k_{t})	\\
+% 	\vw^k_{t+1} & = \vy^k_{t+1} + \beta(\vy^k_{t+1} - \vy^k_{t})
+% 	\end{align}
+% \end{itemize}
 
 
 
