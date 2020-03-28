@@ -71,13 +71,13 @@ Bound $\EE\|\overline{\vz}_t - \vw_t^k\|^2$ and $\EE \|\overline{\vw}_t- \vw_t^k
 \begin{align}
 	\EE \|\ov{\vw}_t -\vw_t^k \|^2 & = \EE \|\ov{w}_t - \ov{w}_{t_0} + \ov{w}_{t_0}- \vw_t^k \|^2\\
 % & \leq \EE\|\ov{w}_{t_0}- \vw_t^k \|^2 + \EE \|\ov{w}_t - \ov{w}_{t_0}\|^2\\
-& \lkxcom{\leq \EE\|\vw_t^k  - \ov{w}_{t_0}\|^2 } \\
+& \leq \EE\|\vw_t^k  - \ov{w}_{t_0}\|^2  \\
 & \leq \EE \|\vz_t^k - \vp_t^k  - \vz^k_{t_0} + \vp^k_{t_0}\|^2  \\
 & \leq \EE \|\vz_t^k - \vz^k_{t_0}\|^2 + \EE\|\vp_t^k - \vp^k_{t_0}\|^2  \\
 & = \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \EE\|\vp_t^k - \vp^k_{t_0}\|^2  \\
 & = \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \frac{(\beta^{t-t_0}-1)^2\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 + \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2  
 \end{align}
-where the second line is same from Lemma 3~\cite{li2019convergence} \lkxcom{needs to be verified.} $\ov{w}_{t_0} = \vw^k_{t_0}$ and $t_0$ is the step we communicate. In the third line, we use the \eq{\ref{eq:nasgdzt}}. In fourth line, we use \eq{\ref{eq:recursivep}}. 
+where the second line is same from Lemma 3~\cite{li2019convergence}. $\ov{w}_{t_0} = \vw^k_{t_0}$ and $t_0$ is the step we communicate. In the third line, we use the \eq{\ref{eq:nasgdzt}}. In fourth line, we use \eq{\ref{eq:recursivep}}. 
 The upper bound of $\EE\|\vp_t^k - \vp^k_{t_0}\|^2$ is given as follows:
 \begin{align}
 	\EE\|\vp_t^k - \vp^k_{t_0}\|^2 & = \EE\|\beta \vp^k_{t-1} - \frac{\beta^2}{1 - \beta} \vg_{t-1,k} - \vp^k_{t_0}\|^2\\
@@ -108,7 +108,7 @@ Plug in \eq{\ref{eq:nagcvx5}} and \eq{\ref{eq:nagcvx6}} into
 	& + 2\sum_{k=1}^K p_k \left(\EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \frac{(\beta^{t-t_0}-1)^2\beta^4}{(1-\beta)^2}\EE\|\underline{\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j}\|^2 + \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2 \right) \\
 	& \leq \| \overline{\vz}_{t} - \vw^*\|^2  - 2\eta_t(F(\overline{w}_t) - F^*)  \nonumber\\
 	& +  \eta_t^2\EE\|\vg_t\|^2 +\eta^2_t \sum_{k=1}^K p_k\|\EE \vg_{t,k}\|^2 + \sum_{k=1}^K p_k \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t)\|^2  \nonumber \\
-	& + \sum_{k=1}^K p_k \left(\frac{\beta^4(2\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 \right) \nonumber\\
+	& + \sum_{k=1}^K p_k \left(\frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 \right) \nonumber\\
 	& + 2\sum_{k=1}^K p_k \left(\EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2  + \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2 \right) \label{eq:nagcvx7}
 \end{align}
 
@@ -116,21 +116,25 @@ Denote the last three lines in \eq{\ref{eq:nagcvx7}} as $C$:
 \begin{align}
 C &= \eta_t^2\EE\|\vg_t\|^2 +\eta^2_t \sum_{k=1}^K p_k\|\EE \vg_{t,k}\|^2+ \sum_{k=1}^K p_k \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t)\|^2  \nonumber \\
 % 2\sum_{k=1}^K p_k \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 
-	& + \sum_{k=1}^K p_k \left(\underbrace{\frac{\beta^4(2\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2}_{C_1} \right) \nonumber\\
+	& + \sum_{k=1}^K p_k \left(\underbrace{\frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2}_{C_1} \right) \nonumber\\
 	& + 2\sum_{k=1}^K p_k \left(\underbrace{\EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 }_{C_2} + \underbrace{\frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2}_{C_3} \right)  \label{eq:nagcvxc}
 \end{align}
 
 
 
-We now bound $C_1$, we set $\Lambda_{t_0} = \sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j} $
+We now bound $C_1$, we set $\Lambda_{t_0} = \sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j} = \frac{1 - \beta^{t_0}}{1- \beta} \leq \frac{1}{1 - \beta}$, \lkxcom{assume $\beta \in (0, 1)$ and set $\alpha = \beta$}.
 \begin{align}
-	C_1 &=  \frac{\beta^4(2\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2\\
-        &= \eta_t^2 \frac{\beta^4(2\beta^{t-t_0}-1)^2 + 1)}{\alpha^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2\\
-        &= \eta_t^2  \frac{\beta^4(2\beta^{t-t_0}-1)^2 + 1)}{\alpha^2}\Lambda_t^2 \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}/\Lambda_t \vg_j\|^2\\
-        & \leq \eta_t^2  \frac{\beta^4(2\beta^{t-t_0}-1)^2 + 1)}{\alpha^2}\Lambda_t^2 \sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}/\Lambda_t\EE\| \vg_j\|^2\\ 
-        & = \eta_t^2 \Lambda_t \frac{\beta^4(2\beta^{t-t_0}-1)^2 + 1)}{\alpha^2} \sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j} \EE\| \vg_j\|^2\label{eq:nagcvxc1}
+	C_1 &=  \frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{(1-\beta)^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2\\
+        &= \eta_t^2 \frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{\alpha^2} \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2\\
+        &= \eta_t^2  \frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{\alpha^2}\Lambda_{t_0}^2 \EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}/\Lambda_{t_0} \vg_j\|^2\\
+        & \leq \eta_t^2  \frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{\alpha^2}\Lambda_{t_0}^2 \sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}/\Lambda_{t_0}\EE\| \vg_j\|^2\\ 
+        & = \eta_t^2 \Lambda_{t_0} \frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{\alpha^2} \sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j} \EE\| \vg_j\|^2\\
+		& \leq  \eta_t^2 \Lambda_{t_0} \frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{\alpha^2} \sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j} \sum_{k=1}^N p_k G_k^2   \\
+		& =  \eta_t^2 \Lambda_{t_0} \frac{\beta^4(2(\beta^{t-t_0}-1)^2 + 1)}{\beta^2} \Lambda_{t_0}  \sum_{k=1}^N p_k G_k^2  \\
+		& \leq  \eta_t^2 \frac{1}{(1-\beta)^2} \frac{\beta^2(2 \times 1 + 1)}{1} \sum_{k=1}^N p_k G_k^2   \\
+		& \leq  3 \eta_t^4\sum_{k=1}^N p_k G_k^2   \label{eq:nagcvxc1}
 \end{align}
-In the fourth line we use the Jensen's inequality. 
+In the fourth line we use the Jensen's inequality. In the fifth line, we use the assumption~\ref{ass:subgrad2}. 
 
 
 To bound $C_2$, we assume $\eta_t$ is non-increasing and $\eta_t  \leq \eta_{t_0}  \leq 2 \eta_t$
@@ -139,20 +143,41 @@ To bound $C_2$, we assume $\eta_t$ is non-increasing and $\eta_t  \leq \eta_{t_0
  \leq& 2\sum_{k=1}^K p_k \eta_{t_0}^2 \EE \|\sum_{j=t_0}^{t-1} \vg_{j,k}\|^2
  \leq 2\sum_{k=1}^K p_k  (E-1)\sum_{j=t_0}^{t-1}\eta_{j}^2 \EE \| \vg_{j,k}\|^2\\
  \leq & 2\sum_{k=1}^K p_k  (E-1)\eta_{t_0}^2 \sum_{j=t_0}^{t-1} \EE \| \vg_{j,k}\|^2\\
- \leq & 2\sum_{k=1}^K p_k  (E-1)4\eta_{t}^2 \sum_{j=t_0}^{t-1} \EE \| \vg_{j,k}\|^2 \leq 8(E-1)\eta_{t}^2 \sum_{k=1}^K p_k \sum_{j=t_0}^{t-1} \EE \| \vg_{j,k}\|^2\label{eq:nagcvxc2}
+ \leq & 2\sum_{k=1}^K p_k  (E-1)4\eta_{t}^2 \sum_{j=t_0}^{t-1} \EE \| \vg_{j,k}\|^2 \leq 8(E-1)\eta_{t}^2 \sum_{k=1}^K p_k \sum_{j=t_0}^{t-1} \EE \| \vg_{j,k}\|^2 \\
+ \leq & 8(E-1)\eta_{t}^2 \sum_{k=1}^K p_k (E-1)G_k^2 \\
+ =  & 8(E-1)^2\eta_{t}^2 \sum_{k=1}^K p_k G_k^2   \label{eq:nagcvxc2}
 \end{align}
-To bound $C_3$, similar to $C_1$, we set $\Lambda_{t_0}^{t} = \sum_{j=t_0}^{t - 1}\beta^{t_0-1-j} $
+To bound $C_3$, similar to $C_1$, we set $\Lambda_{t_0}^{t} = \sum_{j=t_0}^{t - 1}\beta^{t_0-1-j} =  \frac{1 - \beta^{t-t_0}}{1- \beta} \leq \frac{1}{1 - \beta} $
 \begin{align}
 	C_3 & = 2\sum_{k=1}^K p_k \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2\\
-        & = 2\eta_t^2 \Lambda_{t_0}^{t}\sum_{k=1}^K p_k \frac{\beta^4}{\alpha^2} \sum_{j=t_0}^{t-1}\beta^{t-j-1} \EE\|\vg_{j,k}\|^2\label{eq:nagcvxc3}
+        & = 2\eta_t^2 \Lambda_{t_0}^{t}\sum_{k=1}^K p_k \frac{\beta^4}{\alpha^2} \sum_{j=t_0}^{t-1}\beta^{t-j-1} \EE\|\vg_{j,k}\|^2 \\
+        & \leq 2 \eta_t^4 \sum_{k=1}^K p_k G_k^2  \label{eq:nagcvxc3}
 \end{align}
 
 Based on \eq{\ref{eq:nagcvxc}}, \eq{\ref{eq:nagcvxc1}}, \eq{\ref{eq:nagcvxc2}}, and \eq{\ref{eq:nagcvxc3}}, we can denote $C = \eta_t^2 D$, 
-plug in $C$ back to \eq{\ref{eq:nagcvx7}}, we have
-
+plug in $C$ back to \eq{\ref{eq:nagcvx7}}, we have 
 \begin{align}
 \EE\|\overline{\vz}_{t+1} - \vw^* \|^2 & \leq \EE \| \overline{\vz}_{t} - \vw^*\|^2  +  \eta_t^2 D   - 2\eta_t(F(\overline{w}_t) - F^*) \nonumber\\	
+ 2\eta_t(F(\overline{w}_t) - F^*) & \leq  \Delta_{t}  - \Delta_{t+1}  +  \eta_t^2 D    \nonumber
 \end{align}
+
+Sum two sides over time step $t$:
+\begin{align}
+\frac{1}{T}\sum_{t=0}^{T-1} 2 \eta (F(\overline{w}_t) - F^*) & \leq \Delta_0 - \Delta_{T} + \sum_{t=0}^{T-1} \eta^2 D \nonumber\\
+\frac{1}{T}\sum_{t=0}^{T-1} 2 \eta (F(\overline{w}_t) - F^*) & \leq \Delta_0/T  + \sum_{t=0}^{T-1} \eta^2 D/T\nonumber\\
+ F(\hat{w}_t) - F^* & \leq \frac{\Delta_0}{2T\eta}   + \frac{\eta D}{2}\nonumber\\
+ F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{T}} \nonumber\\
+\end{align}
+where $\hat{w}_t = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$, $\eta = \sqrt{\frac{\Delta_0}{DT}}$.
+
+
+
+\begin{itemize}
+	\item Update NASG or MSG.
+	\item Store the momentum every $E$~\cite{huo2020faster} , every step~\cite{liu2019accelerating}, rely on L-smoothness.
+\end{itemize}
+
+
 
 
 
