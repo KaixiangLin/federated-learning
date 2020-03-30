@@ -9,41 +9,43 @@
 	Accelerated	SGD   &        &    &       &      \\\hline
 	SGD    &    $\cO(\frac{1}{\sqrt{T}})$  &   $\cO(\frac{1}{\sqrt{T}})$  &  $\cO(\frac{1}{T})$  & $\cO(\frac{1}{T})$\cite{li2019convergence,haddadpour2019convergence}      \\\hline
 	\end{tabular}
-	\caption{Summarize of relatedwork on federated learning, heterogeneous data.}
+	\caption{Summarize of related work on federated learning, heterogeneous data.}
 \end{table}
 
 
-\section{Convex}
+\section{Stochastic Gradient decent}
 
-\subsection{Smooth}
-\subsubsection{Stochastic Gradient decent}
-% \input{sec_convexsmoothsgd}
-\subsubsection{Accelerated Stochastic Gradient decent}
+\subsection{Stochastic gradient descent}
+\subsubsection{Convex}
+\input{sec_convexsmoothsgd}
 
-\subsection{Non-Smooth}
-\subsubsection{Stochastic Gradient decent}
+\subsubsection{Strongly Convex}
+\cite{li2019convergence}
+
+\subsection{Stochastic Subgradient methods}
+
+\subsubsection{Convex}
 \input{sec_cvxnonsm}
+\subsubsection{Strongly Convex}
+\input{sec_sgdscvxnonsmth}
 
-\subsubsection{Accelerated Stochastic Gradient decent}
+
+
+\section{Accelerated methods}
+\subsection{stochastic gradient descent}
+\subsubsection{Convex}
+\subsubsection{Strongly Convex}
+\input{sec_nasgd_scvx_smooth}
+
+\subsection{Stochastic Subgradient methods}
+
+\subsubsection{Convex}
+
+\subsubsection{Strongly Convex}
+
 \input{sec_nagcvxnonsmth}
 
 
-\section{Strongly Convex}
-
-\subsection{Smooth}
-
-\subsubsection{Stochastic Gradient Descent}
-\cite{li2019convergence}
-
-\subsubsection{Accelerated Stochastic Gradient Descent}
-\input{sec_nasgd_scvx_smooth}
-
-
-\subsection{Non-smooth}
-\subsection{Stochastic Gradient decent}
-
-Use the weighted average trick in \cite{lacoste2012simpler}
-to get $\cO(\frac{1}{T})$ convergence rate. 
 
 
 
