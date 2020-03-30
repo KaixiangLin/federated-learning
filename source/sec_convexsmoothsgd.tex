@@ -46,11 +46,12 @@ Plug in this upper bound into \eq{\ref{eq:expandsgd}}, we have
 &\leq \|\ov{w}_{t}-\vw^{*}\|^{2}+\eta_{t}^{2} G^2 +  4L\eta_t^3(E-1)^2 G^2 + 2 \eta_{t} (F^* - F(\ov{w}_t)) \label{eq:cvxsgd1}
 \end{align}
 
-Sum two sides of \eq{\ref{eq:cvxsgd1}}, we assume \lkxcom{$\eta_t < 1$}, set $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$, 
+Sum two sides of \eq{\ref{eq:cvxsgd1}}, we require $\eta_t < 1$ and set $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$, 
 \begin{align*}
 	\sum_{t=0}^{T-1} 2\eta_t (F(\ov{w}_t) - F^* ) & \leq \EE \|\ov{w}_{0}-\vw^{*}\|^{2} - \EE\left\|\ov{w}_{T}-\vw^{*}\right\|^2 + \sum_{t=0}^{T-1} (\eta_t^3 4LG^2(E-1)^2 + \eta_t^2 G^2)\\ 
     & \leq \EE \|\ov{w}_{0}-\vw^{*}\|^{2} - \EE\left\|\ov{w}_{T}-\vw^{*}\right\|^2 + \sum_{t=0}^{T-1} (\eta_t^3 4LG^2(E-1)^2 + \eta_t^2 G^2)\\ 
     & \leq \EE \|\ov{w}_{0}-\vw^{*}\|^{2} + \sum_{t=0}^{T-1}\eta_t^2G^2 ( 4L(E-1)^2 + 1)\\
+    \sum_{t=0}^{T-1} 2\eta_t (F^*_t - F^* ) & \leq \EE \|\ov{w}_{0}-\vw^{*}\|^{2} + \sum_{t=0}^{T-1}\eta_t^2G^2 ( 4L(E-1)^2 + 1)\\
  F_t^* - F^*  & \leq \frac{\EE \|\ov{w}_{0}-\vw^{*}\|^{2}}{2 \sum_{t=0}^{T-1} \eta_t } + ( 4L(E-1)^2 + 1)G^2 \sum_{t=0}^{T-1} \eta_t^2
 \end{align*}
 It will converge under three conditions $ \lim_{T \rightarrow \infty }\sum_{t=0}^{T-1} \eta_t = \infty$

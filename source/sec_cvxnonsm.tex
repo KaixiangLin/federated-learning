@@ -18,7 +18,7 @@ $$\vg_{t}=\sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) $$
 
 \begin{assumption}
 The expected squared norm of stochastic subgradients is uniformly bounded. i.e.,
-$\mathbb{E}\|\vg_{t,k}\|^2  \leq G_k^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.  This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$.
+$\mathbb{E}\|\vg_{t,k}\|^2  \leq G_k^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.  This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$. Denote $G^2 = \sum_{k=1}^N p_k G_k^2$
 \label{ass:subgrad2}
 \end{assumption}
 
@@ -47,7 +47,7 @@ Take the expectation condition on $\vw_t$ over random samples at all devices:
 \Delta_{t+1} = \EE\left[\left\|\bar{\vv}_{t+1}-\vw^{*}\right\|^2| \vw_{t}\right]=\|\bar{\vw}_{t}-\vw^{*}\|^{2}-2 \eta_{t} \EE \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)+\eta_{t}^{2} \EE\| \vg_{t} \|^{2}	
 \label{eq:expand}
 \end{align}
-Note that since $\EE \vg_t = \EE \sum_{k=1}^{N} p_{k} \vg_{t, k}\left(\vw_{t}^{k}\right) \neq \EE \sum_{k=1}^Np_k \vg_{t,k}(\overline{\vw}_t)$, therefore $\EE \vg_t \notin \partial F(\overline(\vw_t))$, we cannot directly use the convex definition to
+Note that since $\EE \vg_t = \EE \sum_{k=1}^{N} p_{k} \vg_{t, k}\left(\vw_{t}^{k}\right) \neq \EE \sum_{k=1}^Np_k \vg_{t,k}(\overline{\vw}_t)$, therefore $\EE \vg_t \notin \partial F(\overline{\vw}_t)$, we cannot directly use the convex definition to
 upper bound $- \EE \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)$ in \eq{\ref{eq:expand}}, as classic SGD proof did. 
 
 Now we focus on bounding $-2 \eta_{t} \EE \vg_{t}^{\top}\left(\bar{\vw}_{t}-\vw^{*}\right)$ in \eq{\ref{eq:expand}}: 
