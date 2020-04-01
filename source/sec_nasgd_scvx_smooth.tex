@@ -1,6 +1,3 @@
-
-
-
 We show that FedAv with Accelerated SGD has $O(1/T)$ rate under $\mu$-strong
 convexity and $L$-smoothness. The proof follows the framework of
 the ICLR paper. The FedAv algorithm with Nesterov Accelerated SGD
@@ -18,10 +15,11 @@ $\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\overline{g}_{t}=\sum_{k=1
 We have $\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{y}_{t+1}=\overline{w}_{t}-\alpha_{t}g_{t}$,
 and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})$. 
 \begin{theorem}
-	Let the parameters satisfy the assumptions in the ICLR paper, $\kappa=\frac{L}{\mu}$,
-	$\gamma=\max\{8\kappa,E\}$ and learning rate $\alpha_{t}=\frac{c}{\mu(\gamma+t)}$,
-	$\beta_{t}\leq\alpha_{t}$ where $c$ is small enough such that $\alpha_{t}^{2}+\beta_{t-1}^{2}\leq\frac{1}{2}$
-	and $\alpha_{t-1}^{2}\leq2\alpha_{t}$ for all $t$. Then with full
+	(Full device participation) Let the parameters satisfy the assumptions
+	in the ICLR paper, $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa,E\}$
+	and learning rate $\alpha_{t}=\frac{c}{\mu(\gamma+t)}$, $\beta_{t}\leq\alpha_{t}$
+	where $c$ is small enough such that $\alpha_{t}^{2}+\beta_{t-1}^{2}\leq\frac{1}{2}$
+	and $2\alpha_{t-1}^{2}\leq\alpha_{t}$ for all $t$. Then with full
 	device participation, 
 	\begin{align*}
 	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{2\kappa}{\gamma+T}(\frac{B'}{\mu}+2L(\|w_{0}-w^{\ast}\|^{2})\\
@@ -55,9 +53,9 @@ and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overlin
 	\begin{align*}
 	\mathbb{E}\|y_{t+1}^{k}-y_{t}^{k}\|^{2} & \leq2\beta_{t-1}^{2}\mathbb{E}\|y_{t}^{k}-y_{t-1}^{k}\|^{2}+2\alpha_{t}^{2}G^{2}
 	\end{align*}
-	\textbf{as long as $\alpha_{t},\beta_{t}$ satisfy $2\beta_{t-1}^{2}+2\alpha_{t}^{2}\leq1$,
-		and $\mathbb{E}\|w_{0}-\alpha_{t}g_{t,k}\|^{2}\leq G^{2}$,} we can
-	guarantee that $\mathbb{E}\|y_{t}^{k}-y_{t-1}^{k}\|^{2}\leq G^{2}$.
+	as long as $\alpha_{t},\beta_{t}$ satisfy $2\beta_{t-1}^{2}+2\alpha_{t}^{2}\leq1$,
+	and\textbf{ $\mathbb{E}\|w_{0}-\alpha_{t}g_{t,k}\|^{2}\leq G^{2}$,}
+	we can guarantee that $\mathbb{E}\|y_{t}^{k}-y_{t-1}^{k}\|^{2}\leq G^{2}$.
 	This together with Jensen implies $\mathbb{E}\|\overline{y}_{t}-\overline{y}_{t-1}\|^{2}\leq G^{2}$. 
 	
 	Now we turn to $\|\overline{w}_{t+1}-w^{\ast}\|^{2}$. We have 
@@ -81,7 +79,7 @@ and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overlin
 	\begin{align*}
 	\alpha_{t}^{2}\|\overline{g}_{t}\|^{2} & \leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(w_{t}^{k})\|^{2}\leq2L\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast})
 	\end{align*}
-	and if $\beta_{t}=\alpha_{t}$,
+	and if $\beta_{t}\leq\alpha_{t}$,
 	\begin{align*}
 	2\|\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})\|^{2} & =2\beta_{t}^{2}\|\sum_{k=1}^{N}p_{k}(y_{t+1}^{k}-y_{t}^{k})\|^{2}\\
 	& \leq2\beta_{t}^{2}\sum_{k=1}^{N}p_{k}\|y_{t+1}^{k}-y_{t}^{k}\|^{2}\\
@@ -231,4 +229,129 @@ and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overlin
 	\end{align*}
 	and the rest of the proof follows as ICLR paper. 
 \end{proof}
+%
+We now move on to prove the result in the case of partial participation.
+Now the FedAv algorithm with Nesterov Accelerated SGD (NASGD) follows
+the updates
+\begin{align*}
+y_{t+1}^{k} & =w_{t}^{k}-\alpha_{t}g_{t,k}\\
+w_{t+1}^{k} & =\begin{cases}
+y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E}\\
+\sum_{k\in\mathcal{S}_{t+1}}\left(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})\right) & \text{if }t+1\in\mathcal{I}_{E}
+\end{cases}
+\end{align*}
+where $\mathcal{S}_{t+1}$ is the multiset obtained by sampling from
+$[N]$ according to $p_{k}$, \emph{with replacement, }a total of
+$S=|\mathcal{S}_{t+1}|$ times. 
 
+As before we define the virtual sequences $\overline{y}_{t}=\sum_{k=1}^{N}p_{k}y_{t}^{k}$,
+$\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$.
+We have $\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{y}_{t+1}=\overline{w}_{t}-\alpha_{t}g_{t}$,
+and as in the full participation case, $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})$
+for $t+1\notin\mathcal{I}_{E}$. When $t+1$ is a communication round,
+because of the sampling step, this identity is no longer true, but
+is true when we take expectation with respect to the sampling distribution
+$\mathbb{P}_{\mathcal{S}_{t+1}}$. 
+\begin{theorem}
+	(Partial device participation) Let the parameters satisfy the assumptions
+	in the ICLR paper, $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa,E\}$
+	and learning rate $\alpha_{t}=\frac{c}{\mu(\gamma+t)}$, $\beta_{t}\leq\alpha_{t}$
+	where $c$ is small enough such that $\alpha_{t}^{2}+\beta_{t-1}^{2}\leq\frac{1}{2}$
+	and $2\alpha_{t-1}^{2}\leq\alpha_{t}$ for all $t$. Then with the
+	partial device participation scheme described above,
+	\begin{align*}
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{2\kappa}{\gamma+T}(\frac{B'+C}{\mu}+2L(\|w_{0}-w^{\ast}\|^{2})\\
+	B' & =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}+2+2G^{2}+2GK\\
+	C & =\frac{16}{S}\alpha_{t}^{2}E^{2}G^{2}
+	\end{align*}
+	and $K$ is such that 
+	\begin{align*}
+	\alpha_{0}B+2\sqrt{K}\cdot G & \leq\mu K\\
+	B & =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}
+	\end{align*}
+	and
+	\begin{align*}
+	\|w_{0}-w^{\ast}\|^{2} & \leq K
+	\end{align*}
+\end{theorem}
+%
+\begin{proof}
+	We have
+	\begin{align*}
+	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))+(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\|^{2}\\
+	& =\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}+\|(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\|^{2}\\
+	& +2\langle\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})),(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\rangle
+	\end{align*}
+	Note that 
+	\begin{align*}
+	\mathbb{E}_{\mathcal{S}_{t+1}}\langle\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})),(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\rangle & =0
+	\end{align*}
+	since 
+	\begin{align*}
+	\mathbb{E}_{\mathcal{S}_{t+1}}\overline{w}_{t+1} & =\mathbb{E}_{\mathcal{S}_{t+1}}\frac{1}{S}\sum_{k\in\mathcal{S}_{t+1}}(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}))\\
+	& =\frac{1}{S}\sum_{k\in\mathcal{S}_{t+1}}\mathbb{E}_{\mathcal{S}_{t+1}}(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}))\\
+	& =\frac{1}{S}\cdot S\cdot\sum_{k=1}^{N}p_{k}(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}))\\
+	& =\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})
+	\end{align*}
+	Moreover, if $t+1\notin\mathcal{I}_{E}$, $\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}=0$
+	as well, while if $t+1\notin\mathcal{I}_{E}$, we show that 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2} & =O(\alpha_{t}^{2})
+	\end{align*}
+	assuming $\eta_{t}$ is non-increasing and $\eta_{t}\leq2\eta_{t+E}$
+	for all $t\geq0$. We have 
+	\begin{align*}
+	\mathbb{E}_{\mathcal{S}_{t+1}}\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2} & =\mathbb{E}_{\mathcal{S}_{t+1}}\|\frac{1}{S}\sum_{k\in\mathcal{S}_{t+1}}(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}))-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}\\
+	& =\frac{1}{S^{2}}\sum_{k\in\mathcal{S}_{t+1}}\mathbb{E}_{\mathcal{S}_{t+1}}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}\\
+	& =\frac{1}{S}\sum_{k=1}^{N}p_{k}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}
+	\end{align*}
+	where we have used the general fact that $\mathbb{E}\|\frac{1}{S}\sum_{k\in\mathcal{S}_{t+1}}x_{k}-\mathbb{E}x_{k}\|^{2}=\frac{1}{S^{2}}\sum_{k\in\mathcal{S}_{t+1}}\mathbb{E}\|x_{k}-\mathbb{E}x_{k}\|^{2}$
+	for $x_{k}$ iid. Since $t+1\in\mathcal{I}_{E}$, we know that $t_{0}=t-E+1\in\mathcal{I}_{E}$
+	is also a communication round, so that $w_{t_{0}}^{k}\equiv\overline{w}_{t_{0}}$
+	does not depend on $k$. Then 
+	\begin{align*}
+	\sum_{k=1}^{N}p_{k}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2} & =\sum_{k=1}^{N}p_{k}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-\overline{w}_{t_{0}}+\overline{w}_{t_{0}}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}\\
+	& \leq\sum_{k=1}^{N}p_{k}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-\overline{w}_{t_{0}}\|^{2}
+	\end{align*}
+	so that 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2} & \leq\frac{1}{S}\sum_{k=1}^{N}p_{k}\mathbb{E}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-\overline{w}_{t_{0}}\|^{2}\\
+	& =\frac{1}{S}\sum_{k=1}^{N}p_{k}\mathbb{E}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-w_{t_{0}}^{k}\|^{2}\\
+	& =\frac{1}{S}\sum_{k=1}^{N}p_{k}\mathbb{E}\|\sum_{i=t_{0}}^{t}\beta_{i}(y_{i+1}^{k}-y_{i}^{k})-\sum_{i=t_{0}}^{t}\alpha_{i}g_{i,k}\|^{2}\\
+	& \leq\frac{2}{S}\left[\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t}E\alpha_{i}^{2}\|g_{i,k}\|^{2}+\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t}E\beta_{i}^{2}\|(y_{i+1}^{k}-y_{i}^{k})\|^{2}\right]\\
+	& \leq\frac{16}{S}\alpha_{t}^{2}E^{2}G^{2}
+	\end{align*}
+	Now we turn to $\mathbb{E}\|(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\|^{2}$.
+	This term is bounded in the proof of the full participation case,
+	with 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B'
+	\end{align*}
+	where 
+	\begin{align*}
+	B' & =B+2G^{2}+2GK\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}+2+2G^{2}+2GK
+	\end{align*}
+	and $K$ is chosen so that 
+	\begin{align*}
+	\alpha_{0}B+2\sqrt{K}\cdot G & \leq\mu K
+	\end{align*}
+	and
+	\begin{align*}
+	\|w_{0}-w^{\ast}\|^{2} & \leq K
+	\end{align*}
+	
+	Now we can conclude that 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}(B'+C)
+	\end{align*}
+	where 
+	\begin{align*}
+	C & =\frac{16}{S}E^{2}G^{2}
+	\end{align*}
+	
+	The exact argument then yields 
+	\begin{align*}
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{2\kappa}{\gamma+T}(\frac{B'+C}{\mu}+2L(\|w_{0}-w^{\ast}\|^{2})
+	\end{align*}
+\end{proof}
