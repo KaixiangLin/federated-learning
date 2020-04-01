@@ -40,10 +40,10 @@ $\boldsymbol{w}^{*}$ being the optimal solution of global objective.
 \label{ass:pl}
 \end{assumption}
 
-% \begin{assumption}[Strongly-convex]
-% $	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v and } \mathbf{w}, F_{k}(\mathbf{v}) \geq F_{k}(\mathbf{w})+(\mathbf{v}- \\ \mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{\mu}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$
-% \label{ass:stroncvx}
-% \end{assumption}
+\begin{assumption}[Strongly-convex]
+$	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v and } \mathbf{w}, F_{k}(\mathbf{v}) \geq F_{k}(\mathbf{w})+(\mathbf{v}-\mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{\mu}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$
+\label{ass:stroncvx}
+\end{assumption}
 
 \begin{assumption}[Bounded Variance]
 Let $\xi_{t}^{k}$ be sampled from the k-th device's local data uniformly at random. The variance of stochastic gradients in each device is bounded:

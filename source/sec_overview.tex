@@ -15,6 +15,18 @@
 
 \section{Stochastic Gradient decent}
 
+% 	Stochastic gradient of device $k$ at time step $t$, at point $\vw_t^k$: $$\vg_{t,k} \coloneqq \vg_{t,k}(w_t^k)$$
+% 	$$ \vg_{t, k} = \grad F_{k}\left(w_{t}^{k}, \xi_{t}^{k}\right) $$
+% 	$$\EE \vg_{t, k} = \grad F_{k}\left(w_{t}^{k}\right)$$
+%   One-step stochastic subgradient of all devices.
+% $$\vg_{t}=\sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) $$
+% \begin{align}
+% 	\EE \vg_{t}= \EE \sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) \coloneqq \sum_{k=1}^{N} p_{k} \EE \vg_{t, k}
+% 	\label{eq:egtsgd}
+% \end{align}
+
+
+
 \subsection{Stochastic gradient descent}
 \subsubsection{Convex}
 \input{sec_convexsmoothsgd}
