@@ -6,11 +6,21 @@
 \small
 	\begin{tabular}{|c|c|c|c|c|}\hline
 		paper         &  Cvx Non-smth & Cvx L-smth & Strongly Cvx Non-smth& Strongly Cvx L-smth \\ \hline
-	Accelerated	SGD   &        &    &       &      \\\hline
+	Accelerated	SGD   &   $\cO(\frac{1}{\sqrt{T}})$     &    &       &      \\\hline
 	SGD    &    $\cO(\frac{1}{\sqrt{T}})$  &   $\cO(\frac{1}{\sqrt{T}})$  &  $\cO(\frac{1}{T})$  & $\cO(\frac{1}{T})$\cite{li2019convergence,haddadpour2019convergence}      \\\hline
 	\end{tabular}
 	\caption{Summarize of related work on federated learning, heterogeneous data.}
 \end{table}
+
+
+
+\lkxcom{Problems}
+\begin{itemize}
+	\item The bound in SGD didn't interpret heterogeneous of data.
+	\item \cite{huo2020faster} this paper has no assumption on the heterogeneous, the bounded gradient variance can cover this assumption. 
+	\item quantify biased sampling scheme?
+\end{itemize}
+
 
 
 \section{Stochastic Gradient decent}
@@ -24,7 +34,6 @@
 % 	\EE \vg_{t}= \EE \sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) \coloneqq \sum_{k=1}^{N} p_{k} \EE \vg_{t, k}
 % 	\label{eq:egtsgd}
 % \end{align}
-
 
 
 \subsection{Stochastic gradient descent}
@@ -52,10 +61,10 @@
 \subsection{Stochastic Subgradient methods}
 
 \subsubsection{Convex}
+\input{sec_nagcvxnonsmth}
 
 \subsubsection{Strongly Convex}
 
-\input{sec_nagcvxnonsmth}
 
 
 

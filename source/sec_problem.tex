@@ -73,7 +73,7 @@ and we use $\xi_t = \{\xi_t^k\}_{k=1}^N$ denotes samples at all devices at time 
 The updates of FedAve with partial device activation is given by: 
 \begin{align} 
 \mathbf{v}_{t+1}^{k} &=\mathbf{w}_{t}^{k}-\eta_{t} \nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right) \\ \mathbf{w}_{t+1}^{k} &=\left\{\begin{array}{ll}\mathbf{v}_{t+1}^{k} & \text { if } t+1 \notin \mathcal{I}_{E}, \\ 
-\sum_{k \in \cS_{t+1}} p_{k} \mathbf{v}_{t+1}^{k} & \text { if } t+1 \in \mathcal{I}_{E}\end{array}\right.
+\sum_{k \in \cS_{t+1}} \mathbf{v}_{t+1}^{k} & \text { if } t+1 \in \mathcal{I}_{E}\end{array}\right.
 \end{align}
 
 In~\cite{li2019convergence}, two types of unbiased sampling strategies are considered in Lemma 5. 
@@ -93,7 +93,6 @@ We denote this upper bound as follows for concise presentation.
 	\label{eq:partialsample}
 \end{align}
 
-\lkxcom{quantify biased sampling scheme ?}
 
 
 

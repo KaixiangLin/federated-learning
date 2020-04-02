@@ -11,7 +11,8 @@ $\vg_{t}=\sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) $, $\EE \vg_{t}= 
 Let Assumption~\ref{ass:subgrad2} and Assumption~\ref{ass:lsmooth} hold, suppose we have a bound 
 on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t = \sqrt{ \frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C] }}$, we have,
 $$\EE[ F_t^*] - F^*  \leq \frac{R [G^2( 4L(E-1)^2 + 1) + C] }{\sqrt{T}}$$
-where we denote $R = \sqrt{ \frac{\Delta_0}{ G^2( 4L(E-1)^2 + 1) + C }}$.
+where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$ and $R = \sqrt{ \frac{\Delta_0}{ G^2( 4L(E-1)^2 + 1) + C }}$.
+\label{th:sgdcvxsmth}
 \end{theorem}
 
 \begin{proof}

@@ -8,6 +8,12 @@ algorithm for convex, non-smooth function.
 	\vy^k_{t+1} &= \vw^k_{t} - \alpha  \vg_{t,k}	\\
 	\vw^k_{t+1} & = \vy^k_{t+1} + \beta(\vy^k_{t+1} - \vy^k_{t})
 \end{align}
+$$ \vv_{t+1}^{k} =  \vy^k_{t+1} + \beta(\vy^k_{t+1} - \vy^k_{t}) $$
+\begin{align} 
+\mathbf{w}_{t+1}^{k} &=\left\{\begin{array}{ll}\mathbf{v}_{t+1}^{k} & \text { if } t+1 \notin \mathcal{I}_{E}, \\ 
+\sum_{k \in \cS_{t+1}} \mathbf{v}_{t+1}^{k} & \text { if } t+1 \in \mathcal{I}_{E}\end{array}\right.
+\end{align}
+
 We define $\vp_t$ and it satisfies the recursive equation:
 \begin{align}
 	\ov{p}_{t}=\left\{\begin{array}{l}\frac{\beta}{1-\beta}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha \vg_{t-1}\right], t \geqslant 1 \\ 0, t=0\end{array}\right.
