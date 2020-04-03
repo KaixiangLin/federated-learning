@@ -17,17 +17,17 @@ This section summarizes the current results and assumptions.
 
 
 
-\begin{assumption}
-The expected squared norm of stochastic subgradients is uniformly bounded. i.e.,
-$\mathbb{E}\|\vg_{t,k}\|^2  \leq G_k^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.  This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$. Denote $G^2 = \sum_{k=1}^N p_k G_k^2$
-\label{ass:subgrad2}
-\end{assumption}
+% \begin{assumption}
+% The expected squared norm of stochastic subgradients is uniformly bounded. i.e.,
+% $\mathbb{E}\|\vg_{t,k}\|^2  \leq G_k^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.  This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$. Denote $G^2 = \sum_{k=1}^N p_k G_k^2$
+% \label{ass:subgrad2}
+% \end{assumption}
 
 
 \begin{assumption}[Expected square norm of gradient]
 The expected squared norm of stochastic gradients is uniformly bounded. i.e.,
 $\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)\right\|^{2} \leq G^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.
-\label{ass:squaregrad}
+\label{ass:subgrad2}
 \end{assumption}
 
 \begin{assumption}[L-smooth]
@@ -44,9 +44,9 @@ $	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v
 \subsubsection{Convex}
 \begin{theorem}
 Let Assumption~\ref{ass:subgrad2} and Assumption~\ref{ass:lsmooth} hold, suppose we have a bound 
-on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t = \sqrt{ \frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C] }}$, we have,
+on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t = \left(\frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C] }\right)^{1/2}$, we have,
 $$\EE[ F_t^*] - F^*  \leq \frac{R [G^2( 4L(E-1)^2 + 1) + C] }{\sqrt{T}}$$
-where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$ and $R = \sqrt{ \frac{\Delta_0}{ G^2( 4L(E-1)^2 + 1) + C }}$.
+where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$ and $R = \left(\frac{\Delta_0}{ G^2( 4L(E-1)^2 + 1) + C }\right)$.
 \label{th:sgdcvxsmth}
 \end{theorem}
 
@@ -86,7 +86,7 @@ sampling scheme II $C = \frac{4}{K} \eta_t^2 E^2G^2$, for full device participat
 \subsection{stochastic gradient descent}
 \subsubsection{Convex}
 \begin{theorem}
-	Let Assumption~\ref{ass:lsmooth} and Assumption~\ref{ass:squaregrad} hold,  choose the learning rate $\eta = \frac{\alpha}{1 - \beta} = \sqrt{\frac{\Delta_0}{(D+C)T}}$, $\beta \in (0, 1)$ and $\beta \leq \min\{1, \frac{1}{1 + \sqrt{\frac{\Delta_0}{(D+C)T}}}\}$, then the FedNestrovAve with partial device participation satisfies
+	Let Assumption~\ref{ass:lsmooth} and Assumption~\ref{ass:subgrad2} hold,  choose the learning rate $\eta = \frac{\alpha}{1 - \beta} = \sqrt{\frac{\Delta_0}{(D+C)T}}$, $\beta \in (0, 1)$ and $\beta \leq \min\{1, \frac{1}{1 + \sqrt{\frac{\Delta_0}{(D+C)T}}}\}$, then the FedNestrovAve with partial device participation satisfies
 	\begin{align}
 		 \EE F(\hat{\vw}_T) - F^* &\leq \sqrt{\frac{\Delta_0(D + C)}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D+C}}\frac{1}{T^{3/2}} 
 	\end{align}
