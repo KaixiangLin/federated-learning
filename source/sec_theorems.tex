@@ -147,25 +147,41 @@ $D$ is given by $D = (8 + 8(E-1)^2)G^2$.
 
 \subsubsection{Strongly Convex}
 % \input{sec_nasgd_scvx_nonsmooth}
-\begin{thm}
-	(Partial device participation) Let the parameters satisfy the assumptions
-	in the ICLR paper, $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa,E\}$
-	and learning rate $\alpha_{t}=\frac{c}{\mu(\gamma+t)}$, $\beta_{t}\leq\alpha_{t}$
-	where $c$ is small enough such that $\alpha_{t}^{2}+\beta_{t-1}^{2}\leq\frac{1}{2}$
-	and $2\alpha_{t-1}^{2}\leq\alpha_{t}$ for all $t$. Then with the
-	partial device participation scheme described above,
+\begin{theorem}
+	(Partial device participation) Suppose $F_{k}$ is $\mu$-strongly
+	convex for all $k$. Let $E$ be the communication interval, and learning
+	rates 
 	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{2\kappa}{\gamma+T}(\frac{B'+C}{\mu}+2L(\|w_{0}-w^{\ast}\|^{2})\\
-	B' & =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}+2+2G^{2}+2GK\\
+	\alpha_{t} & =\frac{c}{\mu(E+t)}\\
+	\beta_{t} & \leq\alpha_{t}
+	\end{align*}
+	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $c$ is small enough
+	such that the following hold: 
+	\begin{align*}
+	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
+	4\alpha_{t-1}^{2} & \leq\alpha_{t}
+	\end{align*}
+	for all $t\geq0$. Suppose also that $G$ is a constant satisfying
+	$\mathbb{E}\|w_{0}-\alpha_{0}g_{0,k}\|^{2}=\mathbb{E}\|w_{0}-\alpha_{0}\nabla F_{k}(w_{0},\xi_{0}^{k})\|^{2}\leq G^{2}$
+	for all $k$, and $\mathbb{E}\|\nabla F_{k}(w,\xi_{t}^{k})\|^{2}\leq G^{2}$
+	for $w=\overline{w}_{t}$ or $w=w_{t}^{k}$ and all $t,k$.
+	
+	Then with partial device participation, \textbf{
+		\begin{align*}
+		F(\sum_{t=1}^{T}\frac{2t}{T(T+1)}\overline{w}_{t})-F^{\ast} & \leq\frac{2(B'+C)}{\mu(T+1)}
+		\end{align*}
+	} where
+	\begin{align*}
+	B' & =6G^{2}+32(E-1)^{2}G^{2}+2K^{2}\\
 	C & =\frac{16}{S}E^{2}G^{2}
 	\end{align*}
 	and $K$ is such that 
 	\begin{align*}
-	\alpha_{0}B+2\sqrt{K}\cdot G & \leq\mu K\\
-	B & =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}
+	\alpha_{0}B+2K\cdot G & \leq\mu K^{2}\\
+	B & =6G^{2}+32(E-1)^{2}G^{2}
 	\end{align*}
 	and
 	\begin{align*}
-	\|w_{0}-w^{\ast}\|^{2} & \leq K
+	K & \geq\max\{\|w_{0}-w^{\ast}\|^{2},\frac{G}{2\alpha_{0}}\}
 	\end{align*}
-\end{thm}
+\end{theorem}
