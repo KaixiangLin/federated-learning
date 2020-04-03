@@ -1,4 +1,4 @@
-We show that FedAve with Accelerated SGD has $O(1/T)$ rate under
+We show that FedAvg with Accelerated SGD has $O(1/T)$ rate under
 $\mu$-strong convexity and $L$-smoothness. The proof follows the
 framework of the ICLR paper. The FedAv algorithm with Nesterov Accelerated
 SGD (NASGD) follows the updates
@@ -19,16 +19,40 @@ Define the virtual sequences $\overline{y}_{t}=\sum_{k=1}^{N}p_{k}y_{t}^{k}$,
 $\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$.
 We have $\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{y}_{t+1}=\overline{w}_{t}-\alpha_{t}g_{t}$,
 and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})$. 
+
+We first summarize some properties of $L$-smooth and $\mu$-strongly
+convex functions. 
+\begin{lemma}
+	Let $F$ be a convex $L$-smooth function. Then we have the following
+	inequalities:
+	
+	1. Quadratic upper bound: $0\leq F(w)-F(w')-\langle\nabla F(w'),w-w'\rangle\leq\frac{L}{2}\|w-w'\|^{2}$. 
+	
+	2. Coercivity: $\frac{1}{L}\|\nabla F(w)-\nabla F(w')\|^{2}\leq\langle\nabla F(w)-\nabla F(w'),w-w'\rangle$.
+	
+	3. Lower bound: $F(w)\geq F(w')+\langle\nabla F(w'),w-w'\rangle+\frac{1}{2L}\|\nabla F(w)-\nabla F(w')\|^{2}$.
+	In particular, $\|\nabla F(w)\|^{2}\leq2L(F(w)-F(w^{\ast}))$.
+	
+	4. Optimality gap: $F(w)-F(w^{\ast})\leq$$\langle\nabla F(w),w-w^{\ast}\rangle$.
+\end{lemma}
+%
+\begin{lemma}
+	Let $F$ be a $\mu$-strongly convex function. Then 
+	\begin{align*}
+	F(w) & \leq F(w')+\langle\nabla F(w'),w-w'\rangle+\frac{1}{2\mu}\|\nabla F(w)-\nabla F(w')\|^{2}\\
+	F(w)-F(w^{\ast}) & \leq\frac{1}{2\mu}\|\nabla F(w)\|^{2}
+	\end{align*}
+\end{lemma}
 \begin{theorem}
 	(Full device participation) Suppose $F_{k}$ is $L$-smooth and $\mu$-strongly
-	convex for all $k$. Let $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa,E\}$
+	convex for all $k$. Let $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa-1,E\}$
 	where $E$ is the communication interval, and learning rates 
 	\begin{align*}
 	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}\\
 	\beta_{t} & \leq\alpha_{t}
 	\end{align*}
-	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $c$ is small enough
-	such that the following hold: 
+	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
+	is small enough such that the following hold: 
 	\begin{align*}
 	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
 	\alpha_{t} & \leq\frac{1}{4L}\\
@@ -40,7 +64,7 @@ and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overlin
 	
 	Then with full device participation, 
 	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{2\kappa}{\gamma+T}(\frac{B'}{\mu}+2L(\|w_{0}-w^{\ast}\|^{2})\\
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{\kappa}{\gamma+t}(\frac{B'}{\mu}+4L\|w_{0}-w^{\ast}\|^{2})\\
 	B' & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}+2K^{2}
 	\end{align*}
 	and $K$ is such that 
@@ -75,6 +99,14 @@ and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overlin
 	we can guarantee that $\mathbb{E}\|y_{t}^{k}-y_{t-1}^{k}\|^{2}\leq G^{2}$.
 	This together with Jensen's inequality gives $\mathbb{E}\|\overline{y}_{t}-\overline{y}_{t-1}\|^{2}\leq G^{2}$
 	for all $t$. 
+	
+	The idea of the proof is to observe that the $L$-smoothness of $F$
+	provides the upper bound
+	\begin{align*}
+	\mathbb{E}(F(\overline{w}_{t}))-F^{\ast} & =\mathbb{E}(F(\overline{w}_{t})-F(w^{\ast}))\\
+	& \leq\frac{L}{2}\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}
+	\end{align*}
+	and to show that $\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}=O(\frac{1}{t})$. 
 	
 	Our main step is to prove the bound 
 	\begin{align*}
@@ -158,14 +190,35 @@ and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overlin
 	Plugging in the bound for $B_{2}$, we have so far proved 
 	\begin{align*}
 	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\overline{w}_{t}-w^{\ast}\|^{2}+\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+3\alpha_{t}^{2}G^{2}+2\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle\\
-	& +\underset{C}{\underbrace{6L\alpha_{t}^{2}\mathbb{E}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast})-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle F_{k}(w_{t}^{k})-F_{k}(w^{\ast}))}}
+	& +\underset{C}{\underbrace{6L\alpha_{t}^{2}\mathbb{E}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast})-2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast}))}}
 	\end{align*}
-	The exact same argument as in the proof of Theorem 1 in \textbf{CITE
-		ICLR} implies that 
+	To bound $C$, note that 
 	\begin{align*}
-	C & \leq8L\alpha_{t}^{2}\Gamma+\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}
+	\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast}) & =\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast})+F_{k}(w^{\ast})-F_{k}^{\ast})\\
+	& =\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast}))+\Gamma
 	\end{align*}
-	so that
+	and 
+	\begin{align*}
+	C & =-2\alpha_{t}(1-3\alpha_{t}L)\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast}))+6L\alpha_{t}^{2}\Gamma
+	\end{align*}
+	Furthermore, by convexity and $L$-smoothness,
+	\begin{align*}
+	\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast})) & =\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))\\
+	& \geq\sum_{k=1}^{N}p_{k}\langle\nabla F_{k}(\overline{w}_{t}),w_{t}^{k}-\overline{w}_{t}\rangle+F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))\\
+	& \geq-\frac{1}{2}\sum_{k=1}^{N}p_{k}\left[\alpha_{t}\|\nabla F_{k}(\overline{w}_{t})\|^{2}+\frac{1}{\alpha_{t}}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\right]+F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))\\
+	& \geq-\sum_{k=1}^{N}p_{k}\left[\alpha_{t}L(F_{k}(\overline{w}_{k})-F_{k}^{\ast})+\frac{1}{2\alpha_{t}}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\right]+F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))
+	\end{align*}
+	and so 
+	\begin{align*}
+	C & \leq2\alpha_{t}(1-3\alpha_{t}L)\sum_{k=1}^{N}p_{k}\left[\alpha_{t}L(F_{k}(\overline{w}_{k})-F_{k}^{\ast})+\frac{1}{2\alpha_{t}}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\right]-2\alpha_{t}(1-3\alpha_{t}L)(F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))+6L\alpha_{t}^{2}\Gamma\\
+	& =2\alpha_{t}(1-3\alpha_{t}L)(\alpha_{t}L-1)\sum_{k=1}^{N}p_{k}\alpha_{t}L(F_{k}(\overline{w}_{k})-F^{\ast})+(6L\alpha_{t}^{2}+2\alpha_{t}(1-3\alpha_{t}L)\alpha_{t}L)\Gamma+(1-3\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\\
+	& \leq(6L\alpha_{t}^{2}+2\alpha_{t}(1-3\alpha_{t}L)\alpha_{t}L)\Gamma+(1-3\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\\
+	& \leq8\alpha_{t}^{2}\Gamma+\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}
+	\end{align*}
+	using $\alpha_{t}\leq\frac{1}{4L}$, $F_{k}(\overline{w}_{k})-F^{\ast}\geq0$,
+	and 
+	
+	Plugging this back in, we get 
 	\begin{align*}
 	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+2\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+3\alpha_{t}^{2}G^{2}+8L\alpha_{t}^{2}\Gamma+2\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle
 	\end{align*}
@@ -211,7 +264,7 @@ and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overlin
 	for all $t$, i.e. the updates always stay in a large ball around
 	the optimum during the Nesterov accelerated gradient descent. In general
 	this can be shown for coercive functions using Lyapunov function arguments.
-	We prove it here using simple algebra. Note that
+	We prove it here using elementary arguments. Note that
 	\begin{align*}
 	\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle & \leq\beta_{t}\sqrt{\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}}\cdot\sqrt{\mathbb{E}\|\overline{y}_{t+1}-\overline{y}_{t}\|^{2}}
 	\end{align*}
@@ -288,17 +341,49 @@ and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overlin
 	\end{align*}
 	
 	To complete the proof of convergence, for $\alpha_{t}=\frac{\delta}{t+\gamma}$
-	for $\delta>\frac{1}{\mu}$ and $\gamma>0$ such that $\eta_{1}\leq\min\{\frac{1}{\mu},\frac{1}{4L}\}$and
-	$\eta_{t}\leq2\eta_{t+E}$, we can show that 
+	for $\delta>\frac{1}{\mu}$ and $\gamma>0$ such that $\alpha_{1}\leq\min\{\frac{1}{\mu},\frac{1}{4L}\}$and
+	$\alpha_{t}\leq2\alpha_{t+E}$, we can show that 
 	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\frac{v}{\gamma+t}
+	\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq\frac{v}{\gamma+t}
 	\end{align*}
-	where $v=\max\{\frac{\beta^{2}B}{\beta\mu-1},(\gamma+1)\|w_{0}-w^{\ast}\|^{2}\}$
-	by induction, using the same argument as the ICLR paper. 
+	where $v=\max\{\frac{\delta^{2}B'}{\delta\mu-c+1},(\gamma+1)\|w_{0}-w^{\ast}\|^{2}\}$
+	by induction. The definition of $v$ ensures that 
+	\begin{align*}
+	\|w_{0}-w^{\ast}\|^{2} & \leq\frac{v}{\gamma}
+	\end{align*}
+	and suppose $\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}\leq\frac{v}{\gamma+t}$
+	holds for some $t\geq0$. Then 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2}\leq & (1-\alpha_{t}\mu)\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B'\\
+	& \leq(1-\frac{\delta\mu}{t+\gamma})\frac{v}{t+\gamma}+\frac{\delta^{2}B'}{(t+\gamma)^{2}}\\
+	& =\frac{t+\gamma-1}{(t+\gamma)^{2}}v+\left[\frac{\delta^{2}B'}{(t+\gamma)^{2}}-\frac{\delta\mu-1}{(t+\gamma)^{2}}v\right]\\
+	& \leq\frac{v}{t+\gamma+1}
+	\end{align*}
+	by definition of $v$.
+	
+	Finally, the $L$-smoothness of $F$ implies 
+	\begin{align*}
+	\mathbb{E}(F(\overline{w}_{t}))-F^{\ast} & =\mathbb{E}(F(\overline{w}_{t})-F(w^{\ast}))\\
+	& \leq\frac{L}{2}\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}\leq\frac{L}{2}\frac{v}{\gamma+t}
+	\end{align*}
+	Now if we choose $\delta=\frac{c}{\mu}$ where $c\leq1$ is small
+	enough such that the required conditions 
+	\begin{align*}
+	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
+	\alpha_{t} & \leq\frac{1}{4L}\\
+	4\alpha_{t-1}^{2} & \leq\alpha_{t}
+	\end{align*}
+	hold for all $t\geq0$, $\gamma=\max\{8\kappa-1,E\}$, then $\alpha_{t}=\frac{c}{\mu}\frac{1}{\gamma+t}$
+	and recalling $v=\max\{\frac{\delta^{2}B'}{\delta\mu-c+1},(\gamma+1)\|w_{0}-w^{\ast}\|^{2}\}$,
+	we finally have 
+	\begin{align*}
+	\mathbb{E}(F(\overline{w}_{t}))-F^{\ast} & \leq\frac{L}{2}\frac{v}{\gamma+t}\leq\frac{L/2}{\gamma+t}(\frac{\delta^{2}B'}{\delta\mu-c+1}+(\gamma+1)\|w_{0}-w^{\ast}\|^{2})\\
+	& \leq\frac{\kappa}{\gamma+t}(\frac{B'}{\mu}+4L\|w_{0}-w^{\ast}\|^{2})
+	\end{align*}
 \end{proof}
 %
 We now move on to prove the result in the case of partial participation.
-Now the FedAve algorithm with Nesterov Accelerated SGD (NASGD) follows
+Now the FedAvg algorithm with Nesterov Accelerated SGD (NASGD) follows
 the updates
 \begin{align*}
 y_{t+1}^{k} & =w_{t}^{k}-\alpha_{t}g_{t,k}\\
@@ -320,25 +405,39 @@ because of the sampling step, this identity is no longer true, but
 is true when we take expectation with respect to the sampling distribution
 $\mathbb{P}_{\mathcal{S}_{t+1}}$. 
 \begin{theorem}
-	(Partial device participation) Let the parameters satisfy the assumptions
-	in the ICLR paper, $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa,E\}$
-	and learning rate $\alpha_{t}=\frac{c}{\mu(\gamma+t)}$, $\beta_{t}\leq\alpha_{t}$
-	where $c$ is small enough such that $\alpha_{t}^{2}+\beta_{t-1}^{2}\leq\frac{1}{2}$
-	and $2\alpha_{t-1}^{2}\leq\alpha_{t}$ for all $t$. Then with the
-	partial device participation scheme described above,
+	(Partial device participation) Suppose $F_{k}$ is $L$-smooth and
+	$\mu$-strongly convex for all $k$. Let $\kappa=\frac{L}{\mu}$,
+	$\gamma=\max\{8\kappa-1,E\}$ where $E$ is the communication interval,
+	and learning rates 
 	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{2\kappa}{\gamma+T}(\frac{B'+C}{\mu}+2L(\|w_{0}-w^{\ast}\|^{2})\\
-	B' & =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}+2+2G^{2}+2GK\\
+	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}\\
+	\beta_{t} & \leq\alpha_{t}
+	\end{align*}
+	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
+	is small enough such that the following hold: 
+	\begin{align*}
+	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
+	\alpha_{t} & \leq\frac{1}{4L}\\
+	4\alpha_{t-1}^{2} & \leq\alpha_{t}
+	\end{align*}
+	for all $t\geq0$. Suppose also that $G$ is a constant satisfying
+	$\mathbb{E}\|w_{0}-\alpha_{0}g_{0,k}\|^{2}=\mathbb{E}\|w_{0}-\alpha_{0}\nabla F_{k}(w_{0},\xi_{0}^{k})\|^{2}\leq G^{2}$
+	for all $k$, and $\mathbb{E}\|g_{t,k}\|^{2}\leq G^{2}$ for all $t,k$. 
+	
+	Then with the partial device participation scheme described above,
+	\begin{align*}
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{\kappa}{\gamma+T}(\frac{B'+C}{\mu}+4L(\|w_{0}-w^{\ast}\|^{2})\\
+	B' & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}+2K^{2}\\
 	C & =\frac{16}{S}E^{2}G^{2}
 	\end{align*}
 	and $K$ is such that 
 	\begin{align*}
-	\alpha_{0}B+2\sqrt{K}\cdot G & \leq\mu K\\
-	B & =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}
+	\alpha_{0}B+2K\cdot G & \leq\mu K^{2}\\
+	B & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}
 	\end{align*}
 	and
 	\begin{align*}
-	\|w_{0}-w^{\ast}\|^{2} & \leq K
+	K & \geq\max\{\|w_{0}-w^{\ast}\|^{2},\frac{G}{2\alpha_{0}}\}
 	\end{align*}
 \end{theorem}
 %
@@ -394,19 +493,7 @@ $\mathbb{P}_{\mathcal{S}_{t+1}}$.
 	\begin{align*}
 	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B'
 	\end{align*}
-	where 
-	\begin{align*}
-	B' & =B+2G^{2}+2GK\\
-	& =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}+2+2G^{2}+2GK
-	\end{align*}
-	and $K$ is chosen so that 
-	\begin{align*}
-	\alpha_{0}B+2\sqrt{K}\cdot G & \leq\mu K
-	\end{align*}
-	and
-	\begin{align*}
-	\|w_{0}-w^{\ast}\|^{2} & \leq K
-	\end{align*}
+	
 	
 	Now we can conclude that 
 	\begin{align*}
@@ -419,6 +506,6 @@ $\mathbb{P}_{\mathcal{S}_{t+1}}$.
 	
 	The exact argument then yields 
 	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{2\kappa}{\gamma+T}(\frac{B'+C}{\mu}+2L(\|w_{0}-w^{\ast}\|^{2})
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{\kappa}{\gamma+T}(\frac{B'+C}{\mu}+4L(\|w_{0}-w^{\ast}\|^{2})
 	\end{align*}
 \end{proof}
