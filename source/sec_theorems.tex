@@ -3,8 +3,7 @@
 
 
 \section{Convergence Results}
-
-
+This section summarizes the current results and assumptions.
 \begin{table}[h!]
 \centering
 \small
@@ -18,13 +17,155 @@
 
 
 
-\lkxcom{Problems}
-\begin{itemize}
-	\item The bound in SGD didn't interpret heterogeneous of data.
-	\item \cite{huo2020faster} this paper has no assumption on the heterogeneous, the bounded gradient variance can cover this assumption. 
-	\item quantify biased sampling scheme?
-\end{itemize}
+\begin{assumption}
+The expected squared norm of stochastic subgradients is uniformly bounded. i.e.,
+$\mathbb{E}\|\vg_{t,k}\|^2  \leq G_k^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.  This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$.
+\label{ass:subgrad2}
+\end{assumption}
 
 
+\begin{assumption}[Expected square norm of gradient]
+The expected squared norm of stochastic gradients is uniformly bounded. i.e.,
+$\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)\right\|^{2} \leq G^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.
+\label{ass:squaregrad}
+\end{assumption}
+
+\begin{assumption}[L-smooth]
+$F_{1}, \cdots, F_{N}$ are all $L$-smooth: for all  $\mathbf{v}$  and $\mathbf{w}$, $F_{k}(\mathbf{v}) \leq F_{k}(\mathbf{w})+(\mathbf{v}- \\ \mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{L}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$.
+\label{ass:lsmooth}
+\end{assumption}
+\begin{assumption}[Strongly-convex]
+$	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v and } \mathbf{w}, F_{k}(\mathbf{v}) \geq F_{k}(\mathbf{w})+(\mathbf{v}-\mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{\mu}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$
+\label{ass:stroncvx}
+\end{assumption}
 
 
+\subsection{Stochastic gradient descent}
+\subsubsection{Convex}
+\begin{theorem}
+Let Assumption~\ref{ass:subgrad2} and Assumption~\ref{ass:lsmooth} hold, suppose we have a bound 
+on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t = \sqrt{ \frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C] }}$, we have,
+$$\EE[ F_t^*] - F^*  \leq \frac{R [G^2( 4L(E-1)^2 + 1) + C] }{\sqrt{T}}$$
+where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$ and $R = \sqrt{ \frac{\Delta_0}{ G^2( 4L(E-1)^2 + 1) + C }}$.
+\label{th:sgdcvxsmth}
+\end{theorem}
+
+
+\subsubsection{Strongly Convex}
+\cite{li2019convergence}
+
+\subsection{Stochastic Subgradient methods}
+
+\subsubsection{Convex}
+\begin{theorem}
+	Let Assumption~\ref{ass:subgrad2} hold, 
+	then the FedAve with full device participation satisfies
+	\begin{align}
+		 \EE[F^*_t] - F^* &\leq \frac{RL}{\sqrt{T}}
+	\end{align}
+	where $\eta_t = \frac{R}{\sqrt{T}},$
+	$F^*_t \coloneqq \min_{t \in [0, T-1]} F(\overline{\vw}_t),$
+	$R = \sqrt{ \frac{\Delta_0}{L}},$
+	$L=\sum_{k=1}^N \left( G^2 \left(3 + 4(E-1)^2\right)\right).$
+	\label{th:cvxnonsmoth}
+\end{theorem}
+
+
+\subsubsection{Strongly Convex}
+\begin{theorem}
+	Let assumption~\ref{ass:stroncvx} and assumption~\ref{ass:subgrad2} hold. Then,
+	\begin{align}
+		\EE[F(\hat{\vw}_T)] - F^* \leq \frac{2(B + C)}{\mu(T+1)}.
+	\end{align}
+	where $B =  G^2 (3  + 8 (E-1)^2)$, for sampling scheme I $C =\frac{4(N - K)}{K(N-1)} \eta_t^2 E^2G^2 $ or
+sampling scheme II $C = \frac{4}{K} \eta_t^2 E^2G^2$, for full device participation $C= 0$.
+\end{theorem}
+
+
+\section{Accelerated methods}
+\subsection{stochastic gradient descent}
+\subsubsection{Convex}
+\begin{theorem}
+	Let Assumption~\ref{ass:lsmooth} and Assumption~\ref{ass:squaregrad} hold,  choose the learning rate $\eta = \frac{\alpha}{1 - \beta} = \sqrt{\frac{\Delta_0}{(D+C)T}}$, $\beta \in (0, 1)$ and $\beta \leq \min\{1, \frac{1}{1 + \sqrt{\frac{\Delta_0}{(D+C)T}}}\}$, then the FedNestrovAve with partial device participation satisfies
+	\begin{align}
+		 \EE F(\hat{\vw}_T) - F^* &\leq \sqrt{\frac{\Delta_0(D + C)}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D+C}}\frac{1}{T^{3/2}} 
+	\end{align}
+	where $\hat{\vw}_T = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$, $C$ is defined in \eq{\ref{eq:partialsample}},
+$D$ is given by $D =  G^2[6 + (4(E-1)^2+1)L]$.
+\end{theorem}
+
+\subsubsection{Strongly Convex}
+\begin{theorem}
+	(Partial device participation) Suppose $F_{k}$ is $L$-smooth and
+	$\mu$-strongly convex for all $k$. Let $\kappa=\frac{L}{\mu}$,
+	$\gamma=\max\{8\kappa-1,E\}$ where $E$ is the communication interval,
+	and learning rates 
+	\begin{align*}
+	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}\\
+	\beta_{t} & \leq\alpha_{t}
+	\end{align*}
+	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
+	is small enough such that the following hold: 
+	\begin{align*}
+	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
+	\alpha_{t} & \leq\frac{1}{4L}\\
+	4\alpha_{t-1}^{2} & \leq\alpha_{t}
+	\end{align*}
+	for all $t\geq0$. Suppose also that $G$ is a constant satisfying
+	$\mathbb{E}\|w_{0}-\alpha_{0}g_{0,k}\|^{2}=\mathbb{E}\|w_{0}-\alpha_{0}\nabla F_{k}(w_{0},\xi_{0}^{k})\|^{2}\leq G^{2}$
+	for all $k$, and $\mathbb{E}\|g_{t,k}\|^{2}\leq G^{2}$ for all $t,k$. 
+	
+	Then with the partial device participation scheme described above,
+	\begin{align*}
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{\kappa}{\gamma+T}(\frac{B'+C}{\mu}+4L(\|w_{0}-w^{\ast}\|^{2})\\
+	B' & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}+2K^{2}\\
+	C & =\frac{16}{S}E^{2}G^{2}
+	\end{align*}
+	and $K$ is such that 
+	\begin{align*}
+	\alpha_{0}B+2K\cdot G & \leq\mu K^{2}\\
+	B & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}
+	\end{align*}
+	and
+	\begin{align*}
+	K & \geq\max\{\|w_{0}-w^{\ast}\|^{2},\frac{G}{2\alpha_{0}}\}
+	\end{align*}
+\end{theorem}
+
+\subsection{Stochastic Subgradient methods}
+
+\subsubsection{Convex}
+\begin{theorem}
+	Let Assumption~\ref{ass:subgrad2} hold, choose the learning rate $\eta = \frac{\alpha}{1 - \beta} = \sqrt{\frac{\Delta_0}{(D+C)T}}$, $\beta \in (0, 1)$ and $\beta \leq \min\{1, \frac{1}{1 + \sqrt{\frac{\Delta_0}{(D+C)T}}}\}$, then the FedNestrovAve with partial device participation satisfies
+	\begin{align}
+		 \EE F(\hat{\vw}_T) - F^* &\leq \sqrt{\frac{\Delta_0(D + C)}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D+C}}\frac{1}{T^{3/2}} 
+	\end{align}
+	where $\hat{\vw}_T = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$, $C$ is defined in \eq{\ref{eq:partialsample}},
+$D$ is given by $D = (8 + 8(E-1)^2)G^2$.
+	\label{th:nasgcvxnonsmoth}
+\end{theorem}
+
+\subsubsection{Strongly Convex}
+% \input{sec_nasgd_scvx_nonsmooth}
+\begin{thm}
+	(Partial device participation) Let the parameters satisfy the assumptions
+	in the ICLR paper, $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa,E\}$
+	and learning rate $\alpha_{t}=\frac{c}{\mu(\gamma+t)}$, $\beta_{t}\leq\alpha_{t}$
+	where $c$ is small enough such that $\alpha_{t}^{2}+\beta_{t-1}^{2}\leq\frac{1}{2}$
+	and $2\alpha_{t-1}^{2}\leq\alpha_{t}$ for all $t$. Then with the
+	partial device participation scheme described above,
+	\begin{align*}
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{2\kappa}{\gamma+T}(\frac{B'+C}{\mu}+2L(\|w_{0}-w^{\ast}\|^{2})\\
+	B' & =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}+2+2G^{2}+2GK\\
+	C & =\frac{16}{S}E^{2}G^{2}
+	\end{align*}
+	and $K$ is such that 
+	\begin{align*}
+	\alpha_{0}B+2\sqrt{K}\cdot G & \leq\mu K\\
+	B & =\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+9L\Gamma+32(E-1)^{2}G^{2}
+	\end{align*}
+	and
+	\begin{align*}
+	\|w_{0}-w^{\ast}\|^{2} & \leq K
+	\end{align*}
+\end{thm}
