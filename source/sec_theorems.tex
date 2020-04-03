@@ -19,7 +19,7 @@ This section summarizes the current results and assumptions.
 
 \begin{assumption}
 The expected squared norm of stochastic subgradients is uniformly bounded. i.e.,
-$\mathbb{E}\|\vg_{t,k}\|^2  \leq G_k^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.  This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$.
+$\mathbb{E}\|\vg_{t,k}\|^2  \leq G_k^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.  This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$. Denote $G^2 = \sum_{k=1}^N p_k G_k^2$
 \label{ass:subgrad2}
 \end{assumption}
 
@@ -73,7 +73,7 @@ where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$ and $R = \sqrt{ \fra
 
 \subsubsection{Strongly Convex}
 \begin{theorem}
-	Let assumption~\ref{ass:stroncvx} and assumption~\ref{ass:subgrad2} hold. Then,
+	Let assumption~\ref{ass:stroncvx} and assumption~\ref{ass:subgrad2} hold, choose learning rate $\eta_t = \frac{2}{\mu(t+1)} $.Then,
 	\begin{align}
 		\EE[F(\hat{\vw}_T)] - F^* \leq \frac{2(B + C)}{\mu(T+1)}.
 	\end{align}

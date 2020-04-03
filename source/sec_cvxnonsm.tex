@@ -16,12 +16,6 @@
 % \end{align}
 % \end{itemize}
 
-\begin{assumption}
-The expected squared norm of stochastic subgradients is uniformly bounded. i.e.,
-$\mathbb{E}\|\vg_{t,k}\|^2  \leq G_k^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.  This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$. Denote $G^2 = \sum_{k=1}^N p_k G_k^2$
-\label{ass:subgrad2}
-\end{assumption}
-
 \begin{theorem}
 	Let Assumption~\ref{ass:subgrad2} hold, 
 	then the FedAve with full device participation satisfies
