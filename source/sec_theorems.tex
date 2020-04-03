@@ -1,0 +1,30 @@
+% !TEX ROOT=./main.tex
+
+
+
+\section{Convergence Results}
+
+
+\begin{table}[h!]
+\centering
+\small
+	\begin{tabular}{|c|c|c|c|c|}\hline
+		paper         &  Cvx Non-smth & Cvx L-smth & Strongly Cvx Non-smth& Strongly Cvx L-smth \\ \hline
+	Accelerated	SGD   &   $\cO(\frac{1}{\sqrt{T}})$     & $\cO(\frac{1}{\sqrt{T}})$   &    $\cO(\frac{1}{T})$   &  $\cO(\frac{1}{T})$    \\\hline
+	SGD    &    $\cO(\frac{1}{\sqrt{T}})$  &   $\cO(\frac{1}{\sqrt{T}})$  &  $\cO(\frac{1}{T})$  & $\cO(\frac{1}{T})$\cite{li2019convergence,haddadpour2019convergence}      \\\hline
+	\end{tabular}
+	\caption{Summarize of related work on federated learning, heterogeneous data.}
+\end{table}
+
+
+
+\lkxcom{Problems}
+\begin{itemize}
+	\item The bound in SGD didn't interpret heterogeneous of data.
+	\item \cite{huo2020faster} this paper has no assumption on the heterogeneous, the bounded gradient variance can cover this assumption. 
+	\item quantify biased sampling scheme?
+\end{itemize}
+
+
+
+

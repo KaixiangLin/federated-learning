@@ -79,7 +79,7 @@ Bound $\EE\|\overline{\vz}_t - \vw_t^k\|^2$ and $\EE \|\overline{\vw}_t- \vw_t^k
 & \leq \EE \|\vz_t^k - \vp_t^k  - \vz^k_{t_0} + \vp^k_{t_0}\|^2  \\
 & \leq \EE \|\vz_t^k - \vz^k_{t_0}\|^2 + \EE\|\vp_t^k - \vp^k_{t_0}\|^2  \\
 & = \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \EE\|\vp_t^k - \vp^k_{t_0}\|^2  \\
-& = \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \frac{(\beta^{t-t_0}-1)^2\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 + \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2  
+& = \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \frac{(\beta^{t-t_0}-1)^2\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 + \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2  \label{eq:nagcvx4-1}
 \end{align}
 where the second line is same from Lemma 3~\cite{li2019convergence}. $\ov{w}_{t_0} = \vw^k_{t_0}$ and $t_0$ is the step we communicate. In the third line, we use the \eq{\ref{eq:nasgdzt}}. In fourth line, we use \eq{\ref{eq:recursivep}}. 
 The upper bound of $\EE\|\vp_t^k - \vp^k_{t_0}\|^2$ is given as follows:
@@ -180,7 +180,7 @@ Sum two sides over time step $t$, take totoal expectation and use constant rate 
  \EE F(\hat{w}_t) - F^* & \leq \frac{\Delta_0}{2T\eta}   + \frac{\eta D_1}{2} + \frac{\eta^3 D_1}{2}\nonumber\\
  \EE F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{4T}} + \sqrt{\frac{\Delta_0}{DT}}\frac{ D_1}{2} + (\frac{\Delta_0}{DT})^{3/2}\frac{ D_2}{2} \nonumber\\
  \EE F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{4T}} + \sqrt{\frac{\Delta_0}{DT}}\frac{ D}{2} + (\frac{\Delta_0}{DT})^{3/2}\frac{ D}{2} \nonumber\\
- \EE F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D}}\frac{1}{T^{3/2}} \nonumber\\
+ \EE F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D}}\frac{1}{T^{3/2}} \label{eq:nagcvxc4}\\
 \end{align}
 where $\hat{w}_t = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$, $\eta = \sqrt{\frac{\Delta_0}{DT}}$.
 
