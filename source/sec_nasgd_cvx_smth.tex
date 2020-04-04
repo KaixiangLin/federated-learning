@@ -2,7 +2,7 @@
 
 
 \begin{theorem}
-	Let Assumption~\ref{ass:lsmooth} and Assumption~\ref{ass:squaregrad} hold,  choose the learning rate $\eta = \frac{\alpha}{1 - \beta} = \sqrt{\frac{\Delta_0}{(D+C)T}}$, $\beta \in (0, 1)$ and $\beta \leq \min\{1, \frac{1}{1 + \sqrt{\frac{\Delta_0}{(D+C)T}}}\}$, then the FedNestrovAve with partial device participation satisfies
+	Let Assumption~\ref{ass:lsmooth} and Assumption~\ref{ass:subgrad2} hold,  choose the learning rate $\eta = \frac{\alpha}{1 - \beta} = \sqrt{\frac{\Delta_0}{(D+C)T}}$, $\beta \in (0, 1)$ and $\beta \leq \min\{1, \frac{1}{1 + \sqrt{\frac{\Delta_0}{(D+C)T}}}\}$, then the FedNestrovAve with partial device participation satisfies
 	\begin{align}
 		 \EE F(\hat{\vw}_T) - F^* &\leq \sqrt{\frac{\Delta_0(D + C)}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D+C}}\frac{1}{T^{3/2}} 
 	\end{align}

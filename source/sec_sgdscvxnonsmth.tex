@@ -5,12 +5,11 @@ non-smooth problem.
 
 
 \begin{theorem}
-	Let assumption~\ref{ass:stroncvx} and assumption~\ref{ass:subgrad2} hold, choose learning rate $\eta_t = \frac{2}{\mu(t+1)} $.Then,
+	Let Assumption~\ref{ass:subgrad2} and Assumption~\ref{ass:stroncvx} hold, choose learning rate $\eta_t = \frac{2}{\mu(t+1)} $.Then,
 	\begin{align}
 		\EE[F(\hat{\vw}_T)] - F^* \leq \frac{2(B + C)}{\mu(T+1)}.
 	\end{align}
-	where $B =  G^2 (3  + 8 (E-1)^2)$, for sampling scheme I $C =\frac{4(N - K)}{K(N-1)} \eta_t^2 E^2G^2 $ or
-sampling scheme II $C = \frac{4}{K} \eta_t^2 E^2G^2$, for full device participation $C= 0$.
+	where $B =  G^2 (3  + 8 (E-1)^2)$, $C$ is defined in \eq{\ref{eq:partialsample}}.
 \end{theorem}
 
 

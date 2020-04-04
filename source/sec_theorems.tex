@@ -44,12 +44,12 @@ $	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v
 \subsubsection{Convex}
 \begin{theorem}
 Let Assumption~\ref{ass:subgrad2} and Assumption~\ref{ass:lsmooth} hold, suppose we have a bound 
-on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t = \left(\frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C] }\right)^{1/2}$, we have,
-$$\EE[ F_t^*] - F^*  \leq \frac{R [G^2( 4L(E-1)^2 + 1) + C] }{\sqrt{T}}$$
-where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$ and $R = \left(\frac{\Delta_0}{ G^2( 4L(E-1)^2 + 1) + C }\right)$.
+on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t =  \left(\frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C]}\right)^{1/2}$, we have,
+$$\EE[ F_t^*] - F^*  \leq \left(\frac{ \Delta_0 [G^2( 4L(E-1)^2 + 1) + C] }{T}\right)^{1/2}$$
+where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$.
 \label{th:sgdcvxsmth}
 \end{theorem}
-
+The proof is deferred to Section~\ref{sec:convexsmoothsgd} in the Appendix. 
 
 \subsubsection{Strongly Convex}
 \cite{li2019convergence}
@@ -57,18 +57,19 @@ where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$ and $R = \left(\frac
 \subsection{Stochastic Subgradient methods}
 
 \subsubsection{Convex}
+
 \begin{theorem}
-	Let Assumption~\ref{ass:subgrad2} hold, 
-	then the FedAve with full device participation satisfies
+	Let Assumption~\ref{ass:subgrad2} hold, choose learning rate $\eta_t  = (\frac{\Delta_0}{T[C+ G^2 \left(3 + 4(E-1)^2\right)]})^{1/2}$,
+	then the FedAve with partial device participation satisfies
 	\begin{align}
-		 \EE[F^*_t] - F^* &\leq \frac{RL}{\sqrt{T}}
+		 \EE[F^*_t] - F^* &\leq  \left(\frac{\Delta_0[C+ G^2 \left(3 + 4(E-1)^2\right)]}{T}\right)^{1/2}
 	\end{align}
-	where $\eta_t = \frac{R}{\sqrt{T}},$
-	$F^*_t \coloneqq \min_{t \in [0, T-1]} F(\overline{\vw}_t),$
-	$R = \sqrt{ \frac{\Delta_0}{L}},$
-	$L=\sum_{k=1}^N \left( G^2 \left(3 + 4(E-1)^2\right)\right).$
-	\label{th:cvxnonsmoth}
+	where $F^*_t \coloneqq \min_{t \in [0, T-1]} F(\overline{\vw}_t)$.
+	% $R = \sqrt{ \frac{\Delta_0}{L}},$
+	% $L=\sum_{k=1}^N \left( G^2 \left(3 + 4(E-1)^2\right)\right).$
+	% \label{th:cvxnonsmoth}
 \end{theorem}
+The proof is deferred to Section~\ref{sec:sgdcvxnonsmth} in the Appendix. 
 
 
 \subsubsection{Strongly Convex}

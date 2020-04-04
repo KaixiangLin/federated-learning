@@ -9,10 +9,10 @@ $\vg_{t}=\sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) $, $\EE \vg_{t}= 
 
 \begin{theorem}
 Let Assumption~\ref{ass:subgrad2} and Assumption~\ref{ass:lsmooth} hold, suppose we have a bound 
-on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t = \sqrt{ \frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C] }}$, we have,
-$$\EE[ F_t^*] - F^*  \leq \frac{R [G^2( 4L(E-1)^2 + 1) + C] }{\sqrt{T}}$$
-where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$ and $R = \sqrt{ \frac{\Delta_0}{ G^2( 4L(E-1)^2 + 1) + C }}$.
-\label{th:sgdcvxsmth}
+on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t =  \left(\frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C]}\right)^{1/2}$, we have,
+$$\EE[ F_t^*] - F^*  \leq \left(\frac{ \Delta_0 [G^2( 4L(E-1)^2 + 1) + C] }{T}\right)^{1/2}$$
+where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$.
+% \label{th:sgdcvxsmth}
 \end{theorem}
 
 \begin{proof}
@@ -66,8 +66,7 @@ $ \lim_{T \rightarrow \infty }\sum_{t=0}^{T-1} \eta_t^2 < \infty$.
 \begin{align*}
 	\EE[ F_t^*] - F^*  & \leq \frac{\|\ov{w}_{0}-\vw^{*}\|^{2}}{2 \sum_{t=0}^{T-1} \eta_t } + \frac{\left[G^2( 4L(E-1)^2 + 1) + C\right] \sum_{t=0}^{T-1} \eta_t^2}{2 \sum_{t=0}^{T-1} \eta_t } \\
 	\EE[ F_t^*] - F^*  & \leq \frac{\Delta_0 + \left[G^2( 4L(E-1)^2 + 1) + C\right] \sum_{t=0}^{T-1} \eta_t^2 }{2 \sum_{t=0}^{T-1} \eta_t }\\
-	& \leq \frac{R [G^2( 4L(E-1)^2 + 1) + C] }{\sqrt{T}}
+	& \leq \left(\frac{ \Delta_0 [G^2( 4L(E-1)^2 + 1) + C] }{T}\right)^{1/2}
 \end{align*}
-where in the last line we set the learning rate satisfying $\eta_t = \sqrt{ \frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C] }}$, 
-and denote $R = \sqrt{ \frac{\Delta_0}{ G^2( 4L(E-1)^2 + 1) + C }}$ .
+where in the last line we set the learning rate satisfying $\eta_t =  \left(\frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C]}\right)^{1/2}$.
 \end{proof}

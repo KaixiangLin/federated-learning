@@ -18,15 +18,15 @@
 
 \begin{theorem}
 	Let Assumption~\ref{ass:subgrad2} hold, 
-	then the FedAve with full device participation satisfies
+	then the FedAve with partial device participation satisfies
 	\begin{align}
-		 F^*_t - F^* &\leq \frac{RL}{\sqrt{T}}
+		 \EE[F^*_t] - F^* &\leq  \left(\frac{\Delta_0[C+ G^2 \left(3 + 4(E-1)^2\right)]}{T}\right)^{1/2}
 	\end{align}
-	where $\eta_t = \frac{R}{\sqrt{T}},$
-	$F^*_t \coloneqq \min_{t \in [0, T-1]} F(\overline{\vw}_t),$
-	$R = \sqrt{ \frac{\Delta_0}{L}},$
-	$L=\sum_{k=1}^N \left( G^2 \left(3 + 4(E-1)^2\right)\right).$
-	\label{th:cvxnonsmoth}
+	where $\eta_t = \eta_t  = \sqrt{ \frac{\Delta_0}{T[C+ G^2 \left(3 + 4(E-1)^2\right)]}}$,
+	$F^*_t \coloneqq \min_{t \in [0, T-1]} F(\overline{\vw}_t)$.
+	% $R = \sqrt{ \frac{\Delta_0}{L}},$
+	% $L=\sum_{k=1}^N \left( G^2 \left(3 + 4(E-1)^2\right)\right).$
+	% \label{th:cvxnonsmoth}
 \end{theorem}
 \begin{proof}
 % In full device active setting, we have $\overline{\vw}_{t+1}=\overline{\vv}_{t+1}$,
@@ -95,20 +95,20 @@ Now we plug in \eq{\ref{eq:a24}} into \eq{\ref{eq:main2}}:
 	& \leq \Delta_t + 
 	\eta_{t}^{2} \EE\| \vg_{t} \|^{2} + \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_t^k\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2  + \eta_t^2 C  \\
 	& +\sum_{k=1}^{N} P_{k} (\eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \|\vw_t^k - \overline{\vw}_t\|^2) - 2\eta_t (F(\overline{w}_t) - F^*) \\
-	& = \Delta_t + \underbrace{\eta_{t}^{2} \EE\| \vg_{t} \|^{2} +\sum_{k=1}^N p_k  ( 2\|\overline{\vw}_t - \vw_t^k\|^2  +  \eta_t^2 \|\EE \vg_{t,k}\|^2 + \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 ) + \eta_t^2 C }_{C_1 = \eta_t^2L}  - 2\eta_t (F(\overline{w}_t) - F^*) \label{eq:main3}
+	& = \Delta_t + \underbrace{\eta_{t}^{2} \EE\| \vg_{t} \|^{2} +\sum_{k=1}^N p_k  ( 2\|\overline{\vw}_t - \vw_t^k\|^2  +  \eta_t^2 \|\EE \vg_{t,k}\|^2 + \eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 ) + \eta_t^2 C }_{\eta_t^2C_1}  - 2\eta_t (F(\overline{w}_t) - F^*) \label{eq:main3}
 \end{align}
 Rearrange the last inequality:
 \begin{align}
-	2\eta_t (F(\overline{w}_t) - F^*) \leq \Delta_t - \Delta_{t+1} + \eta_t^2 L
+	2\eta_t (\EE[F(\overline{w}_t)] - F^*) \leq \Delta_t - \Delta_{t+1} + \eta_t^2 C_1 
 \end{align}
 Sum over two sides from $t=0$ to $t = T- 1$ and define $F^*_t \coloneqq \min_{t \in [0, T-1]} F(\overline{\vw}_t)$
 \begin{align}
-	\sum_{t=0}^{T-1} 2\eta_t(F(\overline{w}_t) - F^*) & \leq \Delta_0 - \Delta_T + \sum_{t=0}^{T-1} \eta_t^2 L\\
-	\sum_{t=0}^{T-1} 2\eta_t(F(\overline{w}_t) - F^*) & \leq \Delta_0 + \sum_{t=0}^{T-1} \eta_t^2 L\\
-    F^*_t - F^* &\leq \frac{\Delta_0 + \sum_{t=0}^{T-1} \eta_t^2L}{ \sum_{t=0}^{T-1}  2 \eta_t}\\
-    F^*_t - F^* &\leq \frac{RL}{\sqrt{T}}
+	\sum_{t=0}^{T-1} 2\eta_t(\EE[F(\overline{w}_t)] - F^*) & \leq \Delta_0 - \Delta_T + \sum_{t=0}^{T-1} \eta_t^2 C_1 \\
+	\sum_{t=0}^{T-1} 2\eta_t(\EE[F(\overline{w}_t)]- F^*) & \leq \Delta_0 + \sum_{t=0}^{T-1} \eta_t^2 C_1 \\
+    \EE[F^*_t] - F^* &\leq \frac{\Delta_0 + \sum_{t=0}^{T-1} \eta_t^2C_1 }{ \sum_{t=0}^{T-1}  2 \eta_t}\\
+    \EE[F^*_t] - F^* &\leq  \left(\frac{\Delta_0[C+ G^2 \left(3 + 4(E-1)^2\right)]}{T}\right)^{1/2}
 \end{align}
-where in last line we let $R = \sqrt{ \frac{\Delta_0}{L}}, \eta_t = \frac{R}{\sqrt{T}}$
+where in last line we let $\eta_t  = \sqrt{ \frac{\Delta_0}{T[C+ G^2 \left(3 + 4(E-1)^2\right)]}}$.
 
 Now we discuss how to bound the term $C_1$ in \eq{\ref{eq:main3}}
 
@@ -145,7 +145,7 @@ where in the third inequality we use the convexity of the l2 norm.
 Combine \eq{\ref{eq:g4}},\eq{\ref{eq:g3}},\eq{\ref{eq:g2}}, \eq{\ref{eq:g1}},
 we have 
 \begin{align}
-C_1 = \eta_t^2 L  = \eta_t^2 [\sum_{k=1}^N p_k G_k^2 \left(3 + 4(E-1)^2\right) + C]  = \eta_t^2 [C+ G^2 \left(3 + 4(E-1)^2\right)]
+\eta_t^2 C_1  = \eta_t^2 [\sum_{k=1}^N p_k G_k^2 \left(3 + 4(E-1)^2\right) + C]  = \eta_t^2 [C+ G^2 \left(3 + 4(E-1)^2\right)]
 \end{align}
 
 \end{proof}
