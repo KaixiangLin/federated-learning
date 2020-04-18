@@ -93,7 +93,30 @@ The proof is deferred to Section~\ref{sec:convexsmoothsgd} in the Appendix.
 \subsection{The Convergence of FedAve for Strongly Convex Functions}
 
 \subsection{Smooth}
-\cite{li2019convergence}
+We improve on the result of \cite{li2019convergence} and show the linear speedup of FedAvg with the number of devices. 
+
+\begin{theorem}
+	(Full device participation) Suppose $F_{k}$ is $L$-smooth and $\mu$-strongly
+	convex for all $k$. Let $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa-1,E\}$
+	where $E$ is the communication interval, and learning rates 
+	\begin{align*}
+	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}
+	\end{align*}
+	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
+	is small enough such that the following hold: 
+	\begin{align*}
+	\alpha_{t} & \leq\frac{1}{4L}\\
+	\alpha_{t} & \leq\frac{1}{N}
+	\end{align*}
+	for all $t\geq0$. 
+	
+	Then with full device participation,
+	\begin{align*}
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq C\frac{\kappa}{N(\gamma+t)}\\
+	C & =4E^{2}LG^{2}+\nu_{max}^{2}\sigma^{2}+LG^{2}
+	\end{align*}
+	
+\end{theorem}
 
 \subsection{Non-smooth}
 \begin{theorem}
