@@ -54,12 +54,13 @@ $	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v
 \end{definition}
 This definition is similar to the weighted gradient diversity defined in~\cite{haddadpour2019convergence}.
 
-\begin{definition}[Gradient Dissimilarity]
-	We indicate the following quantity as weighted gradient diversity among the local 
+\begin{definition}[Gradient Dissimilarity~\cite{li2018federated}]
+	We indicate the following quantity as gradient diversity among the local 
 	objectives:
 	\begin{align*}
 		\frac{\sum_{k=1}^K p_k \left\|\nabla F_{k}\left(\mathbf{w}\right)\right\|^{2} }{\left\|   \nabla F\left(\mathbf{w}\right)\right\|^{2} } \leq \lambda 
 	\end{align*}
+	For some $\epsilon>0$, for all the points $\vw \in \mathcal{S}_{\epsilon}^{c}=\left\{\vw |\|\nabla F(\vw)\|^{2}>\epsilon\right\}$
 \end{definition}
 
 \section{The Convergence of FedAve for General Convex Functions}
