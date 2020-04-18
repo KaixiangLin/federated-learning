@@ -16,6 +16,12 @@ This section summarizes the current results and assumptions.
 \end{table}
 
 
+\begin{assumption}[Bounded local variance]
+Let $\xi_{t}^{k}$ be sampled from the $k$ -th device's local data uniformly at random. The variance of stochastic gradients in each device is bounded: $\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)-\nabla F_{k}\left(\mathbf{w}_{t}^{k}\right)\right\|^{2} \leq \sigma_{k}^{2}$,
+for $k=1, \cdots, N$.	
+\end{assumption}
+
+
 
 % \begin{assumption}
 % The expected squared norm of stochastic subgradients is uniformly bounded. i.e.,
@@ -26,7 +32,7 @@ This section summarizes the current results and assumptions.
 
 \begin{assumption}[Expected square norm of gradient]
 The expected squared norm of stochastic gradients is uniformly bounded. i.e.,
-$\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)\right\|^{2} \leq G^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.
+$\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)\right\|^{2} \leq G^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$. This also implies $\left\| \mathbb{E}\vg_{t,k}\right\|^2  \leq \mathbb{E}\|\vg_{t,k}\|^2 \leq G_k^2$.
 \label{ass:subgrad2}
 \end{assumption}
 
@@ -39,40 +45,57 @@ $	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v
 \label{ass:stroncvx}
 \end{assumption}
 
+\begin{definition}[Squared Weighted Gradient Diversity]
+	We indicate the following quantity as weighted gradient diversity among the local 
+	objectives:
+	\begin{align*}
+		\frac{\sum_{k=1}^K p_k  \mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}, \xi^{k}\right)\right\|^{2} }{\mathbb{E}\left\| \sum_{k=1}^K p_k   \nabla F_{k}\left(\mathbf{w}, \xi^{k}\right)\right\|^{2} } \leq \lambda 
+	\end{align*}
+\end{definition}
+This definition is similar to the weighted gradient diversity defined in~\cite{haddadpour2019convergence}.
 
-\subsection{Stochastic gradient descent}
-\subsubsection{Convex}
+\begin{definition}[Gradient Dissimilarity]
+	We indicate the following quantity as weighted gradient diversity among the local 
+	objectives:
+	\begin{align*}
+		\frac{\sum_{k=1}^K p_k \left\|\nabla F_{k}\left(\mathbf{w}\right)\right\|^{2} }{\left\|   \nabla F\left(\mathbf{w}\right)\right\|^{2} } \leq \lambda 
+	\end{align*}
+\end{definition}
+
+\section{The Convergence of FedAve for General Convex Functions}
+This section summarizes the convergence of FedAve.
+The updates of FedAve with partial device activation is given by: 
+\begin{align} 
+\mathbf{v}_{t+1}^{k} &=\mathbf{w}_{t}^{k}-\eta_{t} \nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right) \\ \mathbf{w}_{t+1}^{k} &=\left\{\begin{array}{ll}\mathbf{v}_{t+1}^{k} & \text { if } t+1 \notin \mathcal{I}_{E}, \\ 
+\sum_{k \in \cS_{t+1}} \mathbf{v}_{t+1}^{k} & \text { if } t+1 \in \mathcal{I}_{E}\end{array}\right.
+\end{align}
+
+\subsection{The Convergence of FedAve for Convex Functions}
+In this subsection, we discuss the convergence of FedAve for convex functions,
+we consider both smooth (Theorem~\ref{th:sgdcvxsmth}) and non-smooth (Theorem~\ref{th:sgdcvxnonsmoth})
+functions. 
+
 \begin{theorem}
 Let Assumption~\ref{ass:subgrad2} and Assumption~\ref{ass:lsmooth} hold, suppose we have a bound 
-on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t =  \left(\frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C]}\right)^{1/2}$, we have,
-$$\EE[ F_t^*] - F^*  \leq \left(\frac{ \Delta_0 [G^2( 4L(E-1)^2 + 1) + C] }{T}\right)^{1/2}$$
-where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$.
+on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t =  \left(\frac{\Delta_0}{ T A}\right)^{1/2}$, we have,
+$$\EE[ F_T^*] - F^*  \leq \left(\frac{ \Delta_0 A }{T}\right)^{1/2},$$
+where we denote $F^*_T = \min_{t \in [0, T-1]} F(\ov{w}_t)$, $A = G^2( 4L(E-1)^2 + 1)) + C$.
 \label{th:sgdcvxsmth}
+\end{theorem}
+
+\begin{theorem}
+If we remove the smoothness assumption in Theorem~\ref{th:sgdcvxsmth}, i.e., 
+	Let Assumption~\ref{ass:subgrad2} hold, replacing the constant $A$ with $A=G^2 \left(4(E-1)^2 + 3\right) + C$, then the same convergence rate in Theorem~\ref{th:sgdcvxsmth}.
+	\label{th:sgdcvxnonsmoth}
 \end{theorem}
 The proof is deferred to Section~\ref{sec:convexsmoothsgd} in the Appendix. 
 
-\subsubsection{Strongly Convex}
+\subsection{The Convergence of FedAve for Strongly Convex Functions}
+
+\subsection{Smooth}
 \cite{li2019convergence}
 
-\subsection{Stochastic Subgradient methods}
-
-\subsubsection{Convex}
-
-\begin{theorem}
-	Let Assumption~\ref{ass:subgrad2} hold, choose learning rate $\eta_t  = (\frac{\Delta_0}{T[C+ G^2 \left(3 + 4(E-1)^2\right)]})^{1/2}$,
-	then the FedAve with partial device participation satisfies
-	\begin{align}
-		 \EE[F^*_t] - F^* &\leq  \left(\frac{\Delta_0[C+ G^2 \left(3 + 4(E-1)^2\right)]}{T}\right)^{1/2}
-	\end{align}
-	where $F^*_t \coloneqq \min_{t \in [0, T-1]} F(\overline{\vw}_t)$.
-	% $R = \sqrt{ \frac{\Delta_0}{L}},$
-	% $L=\sum_{k=1}^N \left( G^2 \left(3 + 4(E-1)^2\right)\right).$
-	% \label{th:cvxnonsmoth}
-\end{theorem}
-The proof is deferred to Section~\ref{sec:sgdcvxnonsmth} in the Appendix. 
-
-
-\subsubsection{Strongly Convex}
+\subsection{Non-smooth}
 \begin{theorem}
 	Let assumption~\ref{ass:stroncvx} and assumption~\ref{ass:subgrad2} hold, choose learning rate $\eta_t = \frac{2}{\mu(t+1)} $.Then,
 	\begin{align}
