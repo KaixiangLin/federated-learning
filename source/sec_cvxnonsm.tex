@@ -64,7 +64,7 @@ Now we plug in \eq{\ref{eq:exp4}} into \eq{\ref{eq:expand}}:
 \begin{align}
 	\Delta_{t+1} \leq& \|\bar{\vw}_{t}-\vw^{*}\|^{2} + \eta_{t}^{2} \EE\| \vg_{t} \|^{2}  + \eta_t^2 C \\
 	& + \underbrace{\sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_t^k\|^2}_{A_1} +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2
-  - 2\eta_t\underbrace{\sum_{k=1}^N p_k (F_k(\vw_t^k) - F^*)}_{A_2} \label{eq:main2}
+  - 2\eta_t\underbrace{\sum_{k=1}^N p_k (F_k(\vw_t^k) - F^*)}_{A_2} \label{eq:cvxmain2}
 \end{align}
 
 $A_1$ can be bounded by Lemma 3 in~\cite{li2019convergence}, 
@@ -76,12 +76,12 @@ Now we bound $A_2$:
  = & \sum_{k=1}^N p_k (F_k(\vw_t^k) - F_k(\overline{w}_t) + F_k(\overline{w}_t) - F^*) \\
  = & \sum_{k=1}^N p_k (F_k(\vw_t^k) - F_k(\overline{w}_t) ) + (F(\overline{w}_t) - F^*)\\ 
  \geq & \sum_{k=1}^{N} P_{k}\left<\EE g_{t k}\left(\overline{\vw}_{t}\right), \vw_{t}^k-\overline{\vw}_{t}\right> + (F(\overline{w}_t) - F^*)\\
- \geq& -\frac{1}{2} \sum_{k=1}^{N} P_{k} (\eta_t \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \frac{1}{\eta_t} \|\vw_t^k - \overline{\vw}_t\|^2) + (F(\overline{w}_t) - F^*) \label{eq:a24}
+ \geq& -\frac{1}{2} \sum_{k=1}^{N} P_{k} (\eta_t \|\EE \vg_{t,k}(\overline{\vw}_t) \|^2 + \frac{1}{\eta_t} \|\vw_t^k - \overline{\vw}_t\|^2) + (F(\overline{w}_t) - F^*) \label{eq:cvxa24}
 \end{align}
 where in fourth line we use Cauchy-Schwarz inequality and AM-GM inequality. 
 
 
-Now we plug in \eq{\ref{eq:a24}} into \eq{\ref{eq:main2}}:
+Now we plug in \eq{\ref{eq:cvxa24}} into \eq{\ref{eq:cvxmain2}}:
 \begin{align}
 	\Delta_{t+1} & \leq \Delta_t + 
 	\eta_{t}^{2} \EE\| \vg_{t} \|^{2} + \sum_{k=1}^N p_k \|\overline{\vw}_t - \vw_t^k\|^2 +  \sum_{k=1}^N p_k \eta_t^2 \|\EE \vg_{t,k}\|^2 + \eta_t^2 C \\
