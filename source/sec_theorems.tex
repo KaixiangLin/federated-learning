@@ -9,14 +9,13 @@ This section summarizes the current results and assumptions.
 \small
 	\begin{tabular}{|c|c|c|c|c|}\hline
 		paper         &  Cvx Non-smth & Cvx L-smth & Strongly Cvx Non-smth& Strongly Cvx L-smth \\ \hline
-	Accelerated	SGD   &   $\cO(\frac{1}{\sqrt{T}})$     & $\cO(\frac{1}{\sqrt{T}})$   &    $\cO(\frac{1}{T})$   &  $\cO(\frac{1}{T})$    \\\hline
-	SGD    &    $\cO(\frac{1}{\sqrt{T}})$  &   $\cO(\frac{1}{\sqrt{NT}})$  &  $\cO(\frac{1}{T})$  & $\cO(\frac{1}{T})$\cite{li2019convergence,haddadpour2019convergence}, $\cO(\frac{1}{NT})$ ours    \\\hline
+	Accelerated	SGD   &   $\cO(\frac{1}{\sqrt{T}})$     & $\cO(\frac{1}{\sqrt{T}})$   &    $\cO(\frac{1}{T})$   &  $\cO(\frac{1}{KT})$    \\\hline
+	SGD    &    $\cO(\frac{1}{\sqrt{T}})$  &   $\cO(\frac{1}{\sqrt{T}})$  &  $\cO(\frac{1}{T})$  & $\cO(\frac{1}{T})$\cite{li2019convergence,haddadpour2019convergence}, $\cO(\frac{1}{KT})$ ours    \\\hline
 	\end{tabular}
 	\caption{Summarize of related work on federated learning, heterogeneous data.}
 \end{table}
 
-Acceleration of MaSS for linear regression, partial participation
-also $O((1+\frac{4}{K}\cdot(\frac{t}{E}-1))\exp(-\frac{t}{\sqrt{\kappa_{m}\tilde{\kappa}_{m}}}))$
+Acceleration of MaSS for linear regression, partial participation $O((1+\frac{4}{K}\cdot(\frac{t}{E}-1))\exp(-\frac{t}{\sqrt{\kappa_{m}\tilde{\kappa}_{m}}}))$
 over $O((1+\frac{4}{K}\cdot(\frac{t}{E}-1))\exp(-\frac{t}{\kappa_{m}}))$. 
 
 Linear speedup of SGD and Nesterov SGD for strongly convex and smooth
@@ -27,6 +26,7 @@ to achieve $O(1/NT)$, whereas partial participation only allows $E=O(1)$
 to achieve $O(1/KT)$. 
 
 Other accelerations likely not possible. 
+
 
 
 \begin{assumption}[Bounded local variance]
