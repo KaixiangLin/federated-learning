@@ -132,9 +132,9 @@ Plug in this upper bound into \eq{\ref{eq:expandsgd}}, \eq{\ref{eq:sgdcvxsmth1}}
 &\leq \EE\|\ov{w}_{t}-\vw^{*}\|^{2} + 2 \eta_{t} (F^* - \EE F(\ov{w}_t)) + \underbrace{\eta_{t}^{2} G^2 +4 L \eta_{t}^{2}E^{2} G^{2} + \eta_{t}^{2}\sum_{k=1}^{N} p_{k}^{2}\sigma_k^2 + \eta_t^2 C}_{\eta_t^2 A}
 \label{eq:cvxsgd1}
 \end{align}
-where we use Lemma~\ref{lma:l3iclr}, Lemma~\ref{lma:iclrvar} and $\eta_t < 1$.
+where we use Lemma~\ref{lma:l3iclr}, Lemma~\ref{lma:iclrvar} and $\eta_t < 1$
 
-Sum two sides of \eq{\ref{eq:cvxsgd1}}, and set constant learning rate $\eta_t = \eta$, 
+Sum two sides of \eq{\ref{eq:cvxsgd1}}, and set constant learning rate $\eta_t = \eta$ and $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$.
 \begin{align*}
     \sum_{t=0}^{T-1} 2\eta_t (\EE[F^*_t] - F^* ) & \leq \EE \|\ov{w}_{0}-\vw^{*}\|^{2} + \sum_{t=0}^{T-1}\eta_t^2 A\\
 \EE[ F_t^*] - F^*  & \leq \frac{\|\ov{w}_{0}-\vw^{*}\|^{2}}{2 \sum_{t=0}^{T-1} \eta_t } + \frac{A \sum_{t=0}^{T-1} \eta_t^2}{2 \sum_{t=0}^{T-1} \eta_t }
