@@ -15,6 +15,10 @@ This section summarizes the current results and assumptions.
 	\caption{Summarize of related work on federated learning, heterogeneous data.}
 \end{table}
 
+Acceleration of MaSS for linear regression, partial participation
+also $O((1+\frac{4}{K}\cdot(\frac{t}{E}-1))\exp(-\frac{t}{\sqrt{\kappa_{m}\tilde{\kappa}_{m}}}))$
+over $O((1+\frac{4}{K}\cdot(\frac{t}{E}-1))\exp(-\frac{t}{\kappa_{m}}))$. 
+
 Linear speedup of SGD and Nesterov SGD for strongly convex and smooth
 objectives: full participation $O(\frac{\nu_{max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{2}})$
 with $\nu_{max}=N\cdot\max_{k}p_{k}$; partial participation $O(\frac{\nu_{max}^{2}\sigma^{2}+4E^{2}G^{2}L}{KT})$.
