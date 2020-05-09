@@ -15,6 +15,20 @@ This section summarizes the current results and assumptions.
 	\caption{Summarize of related work on federated learning, heterogeneous data.}
 \end{table}
 
+Linear speedup of SGD and MaSS for linear regression, full participation: 
+\begin{align*}
+\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq C\cdot\exp(-\frac{t}{\sqrt{(\kappa_{N}+(E-1)^{2})(\tilde{\kappa}_{N}+(E-1)^{2})}})
+\end{align*}
+
+ which implies that for $E=1$, there is linear speedup, i.e. 
+\begin{align*}
+\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq C\cdot\exp(-\frac{t}{\sqrt{(\kappa_{N})(\tilde{\kappa}_{N})}})\leq C\cdot\exp(-\frac{Nt}{\sqrt{(\kappa_{1})(\tilde{\kappa})}})
+\end{align*}
+when $N$ satifies $N=O(\min(L_{1}/L,\tilde{\kappa}))$, and for $(E-1)^{2}\leq\min(\kappa_{N},\tilde{\kappa}_{N})$,
+\begin{align*}
+\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq C\cdot\exp(-\frac{Nt}{4\sqrt{\kappa_{1}\tilde{\kappa}}})
+\end{align*}
+
 Acceleration of MaSS for linear regression, partial participation $O((1+\frac{4}{K}\cdot(\frac{t}{E}-1))\exp(-\frac{t}{\sqrt{\kappa_{m}\tilde{\kappa}_{m}}}))$
 over $O((1+\frac{4}{K}\cdot(\frac{t}{E}-1))\exp(-\frac{t}{\kappa_{m}}))$. 
 
