@@ -1,0 +1,165 @@
+\section{The Convergence of FedAve for General Convex Functions}
+
+
+\subsection{The Convergence of FedAve for Convex Functions}
+In this subsection, we discuss the convergence of FedAve for convex functions,
+we consider both smooth (Theorem~\ref{th:sgdcvxsmth}) and non-smooth (Theorem~\ref{th:sgdcvxnonsmoth})
+functions. 
+
+\begin{theorem}
+Let Assumption~\ref{ass:subgrad2} and Assumption~\ref{ass:lsmooth} hold, suppose we have a bound 
+on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t =  \left(\frac{\Delta_0}{ T A}\right)^{1/2}$, we have,
+$$\EE[ F_T^*] - F^*  \leq \left(\frac{ \Delta_0 A }{T}\right)^{1/2},$$
+where we denote $F^*_T = \min_{t \in [0, T-1]} F(\ov{w}_t)$, $A = G^2( 4L(E-1)^2 + 1)) + C$.
+\label{th:sgdcvxsmth}
+\end{theorem}
+
+\begin{theorem}
+If we remove the smoothness assumption in Theorem~\ref{th:sgdcvxsmth}, i.e., 
+	Let Assumption~\ref{ass:subgrad2} hold, replacing the constant $A$ with $A=G^2 \left(4(E-1)^2 + 3\right) + C$, then the same convergence rate in Theorem~\ref{th:sgdcvxsmth}.
+	\label{th:sgdcvxnonsmoth}
+\end{theorem}
+The proof is deferred to Section~\ref{sec:convexsmoothsgd} in the Appendix. 
+
+\subsection{The Convergence of FedAve for Strongly Convex Functions}
+
+\subsection{Smooth}
+We improve on the result of \cite{li2019convergence} and show the linear speedup of FedAvg with the number of devices. 
+
+\begin{theorem}
+	(Full device participation) Suppose $F_{k}$ is $L$-smooth and $\mu$-strongly
+	convex for all $k$. Let $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa-1,E\}$
+	where $E$ is the communication interval, and learning rates 
+	\begin{align*}
+	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}
+	\end{align*}
+	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
+	is small enough such that the following hold: 
+	\begin{align*}
+	\alpha_{t} & \leq\frac{1}{4L}\\
+	\alpha_{t} & \leq\frac{1}{N}
+	\end{align*}
+	for all $t\geq0$. 
+	
+	Then with full device participation,
+	\begin{align*}
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq C\frac{\kappa}{N(\gamma+t)}\\
+	C & =4E^{2}LG^{2}+\nu_{max}^{2}\sigma^{2}+LG^{2}
+	\end{align*}
+	
+\end{theorem}
+
+\subsection{Non-smooth}
+\begin{theorem}
+	Let assumption~\ref{ass:stroncvx} and assumption~\ref{ass:subgrad2} hold, choose learning rate $\eta_t = \frac{2}{\mu(t+1)} $.Then,
+	\begin{align}
+		\EE[F(\hat{\vw}_T)] - F^* \leq \frac{2(B + C)}{\mu(T+1)}.
+	\end{align}
+	where $B =  G^2 (3  + 8 (E-1)^2)$, for sampling scheme I $C =\frac{4(N - K)}{K(N-1)} \eta_t^2 E^2G^2 $ or
+sampling scheme II $C = \frac{4}{K} \eta_t^2 E^2G^2$, for full device participation $C= 0$.
+\end{theorem}
+
+
+\section{Accelerated methods}
+\subsection{stochastic gradient descent}
+\subsubsection{Convex}
+\begin{theorem}
+	Let Assumption~\ref{ass:lsmooth} and Assumption~\ref{ass:subgrad2} hold,  choose the learning rate $\eta = \frac{\alpha}{1 - \beta} = \sqrt{\frac{\Delta_0}{(D+C)T}}$, $\beta \in (0, 1)$ and $\beta \leq \min\{1, \frac{1}{1 + \sqrt{\frac{\Delta_0}{(D+C)T}}}\}$, then the FedNestrovAve with partial device participation satisfies
+	\begin{align}
+		 \EE F(\hat{\vw}_T) - F^* &\leq \sqrt{\frac{\Delta_0(D + C)}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D+C}}\frac{1}{T^{3/2}} 
+	\end{align}
+	where $\hat{\vw}_T = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$, $C$ is defined in \eq{\ref{eq:partialsample}},
+$D$ is given by $D =  G^2[6 + (4(E-1)^2+1)L]$.
+\end{theorem}
+
+\subsubsection{Strongly Convex}
+\begin{theorem}
+	(Partial device participation) Suppose $F_{k}$ is $L$-smooth and
+	$\mu$-strongly convex for all $k$. Let $\kappa=\frac{L}{\mu}$,
+	$\gamma=\max\{8\kappa-1,E\}$ where $E$ is the communication interval,
+	and learning rates 
+	\begin{align*}
+	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}\\
+	\beta_{t} & \leq\alpha_{t}
+	\end{align*}
+	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
+	is small enough such that the following hold: 
+	\begin{align*}
+	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
+	\alpha_{t} & \leq\frac{1}{4L}\\
+	4\alpha_{t-1}^{2} & \leq\alpha_{t}
+	\end{align*}
+	for all $t\geq0$. Suppose also that $G$ is a constant satisfying
+	$\mathbb{E}\|w_{0}-\alpha_{0}g_{0,k}\|^{2}=\mathbb{E}\|w_{0}-\alpha_{0}\nabla F_{k}(w_{0},\xi_{0}^{k})\|^{2}\leq G^{2}$
+	for all $k$, and $\mathbb{E}\|g_{t,k}\|^{2}\leq G^{2}$ for all $t,k$. 
+	
+	Then with the partial device participation scheme described above,
+	\begin{align*}
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{\kappa}{\gamma+T}(\frac{B'+C}{\mu}+4L(\|w_{0}-w^{\ast}\|^{2})\\
+	B' & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}+2K^{2}\\
+	C & =\frac{16}{S}E^{2}G^{2}
+	\end{align*}
+	and $K$ is such that 
+	\begin{align*}
+	\alpha_{0}B+2K\cdot G & \leq\mu K^{2}\\
+	B & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}
+	\end{align*}
+	and
+	\begin{align*}
+	K & \geq\max\{\|w_{0}-w^{\ast}\|^{2},\frac{G}{2\alpha_{0}}\}
+	\end{align*}
+\end{theorem}
+
+\subsection{Stochastic Subgradient methods}
+
+\subsubsection{Convex}
+\begin{theorem}
+	Let Assumption~\ref{ass:subgrad2} hold, choose the learning rate $\eta = \frac{\alpha}{1 - \beta} = \sqrt{\frac{\Delta_0}{(D+C)T}}$, $\beta \in (0, 1)$ and $\beta \leq \min\{1, \frac{1}{1 + \sqrt{\frac{\Delta_0}{(D+C)T}}}\}$, then the FedNestrovAve with partial device participation satisfies
+	\begin{align}
+		 \EE F(\hat{\vw}_T) - F^* &\leq \sqrt{\frac{\Delta_0(D + C)}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D+C}}\frac{1}{T^{3/2}} 
+	\end{align}
+	where $\hat{\vw}_T = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$, $C$ is defined in \eq{\ref{eq:partialsample}},
+$D$ is given by $D = (8 + 8(E-1)^2)G^2$.
+	\label{th:nasgcvxnonsmoth}
+\end{theorem}
+
+\subsubsection{Strongly Convex}
+% \input{sec_nasgd_scvx_nonsmooth}
+\begin{theorem}
+	(Partial device participation) Suppose $F_{k}$ is $\mu$-strongly
+	convex for all $k$. Let $E$ be the communication interval, and learning
+	rates 
+	\begin{align*}
+	\alpha_{t} & =\frac{c}{\mu(E+t)}\\
+	\beta_{t} & \leq\alpha_{t}
+	\end{align*}
+	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $c$ is small enough
+	such that the following hold: 
+	\begin{align*}
+	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
+	4\alpha_{t-1}^{2} & \leq\alpha_{t}
+	\end{align*}
+	for all $t\geq0$. Suppose also that $G$ is a constant satisfying
+	$\mathbb{E}\|w_{0}-\alpha_{0}g_{0,k}\|^{2}=\mathbb{E}\|w_{0}-\alpha_{0}\nabla F_{k}(w_{0},\xi_{0}^{k})\|^{2}\leq G^{2}$
+	for all $k$, and $\mathbb{E}\|\nabla F_{k}(w,\xi_{t}^{k})\|^{2}\leq G^{2}$
+	for $w=\overline{w}_{t}$ or $w=w_{t}^{k}$ and all $t,k$.
+	
+	Then with partial device participation, \textbf{
+		\begin{align*}
+		F(\sum_{t=1}^{T}\frac{2t}{T(T+1)}\overline{w}_{t})-F^{\ast} & \leq\frac{2(B'+C)}{\mu(T+1)}
+		\end{align*}
+	} where
+	\begin{align*}
+	B' & =6G^{2}+32(E-1)^{2}G^{2}+2K^{2}\\
+	C & =\frac{16}{S}E^{2}G^{2}
+	\end{align*}
+	and $K$ is such that 
+	\begin{align*}
+	\alpha_{0}B+2K\cdot G & \leq\mu K^{2}\\
+	B & =6G^{2}+32(E-1)^{2}G^{2}
+	\end{align*}
+	and
+	\begin{align*}
+	K & \geq\max\{\|w_{0}-w^{\ast}\|^{2},\frac{G}{2\alpha_{0}}\}
+	\end{align*}
+\end{theorem}

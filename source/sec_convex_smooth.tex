@@ -1,0 +1,20 @@
+% !TEX ROOT=./main.tex
+
+
+
+\section{Convex Smooth Objectives}
+
+In this section, we present convergence results for convex and smooth objectives. 
+
+\begin{theorem}
+	With $\eta_{t}\leq\frac{1}{4L}$ and full participation, FedAvg with SGD updates satisfies
+	\begin{align*}
+	\mathbb{E}F_{t}^{\ast}-F^{\ast} & \leq\frac{\|w_{0}-w^{\ast}\|^{2}}{\sum_{t}\eta_{t}}+\frac{4LE^{2}G^{2}\sum_{t}\eta_{t}^{3}}{\sum_{t}\eta_{t}}+\frac{(\frac{1}{N}\nu_{\max}^{2}\sigma^{2})\sum_{t}\eta_{t}^{2}}{\sum_{t}\eta_{t}}\\
+	& =\|w_{0}-w^{\ast}\|^{2}O((\sqrt{\frac{(\frac{1}{N}\nu_{\max}^{2}\sigma^{2})}{T}}+\frac{1}{T}\frac{4LE^{2}G^{2}}{(\frac{1}{N}\nu_{\max}^{2}\sigma^{2})}))
+	\end{align*}
+	so that if $E=O(\frac{\nu_{\max}^{2}\sigma^{2}}{N})$, 
+	\begin{align*}
+	\mathbb{E}F_{t}^{\ast}-F^{\ast} & =\|w_{0}-w^{\ast}\|^{2}O(\sqrt{\frac{\sigma^{2}}{NT}}+\frac{L}{T}EG^{2})
+	\end{align*}
+\end{theorem}
+

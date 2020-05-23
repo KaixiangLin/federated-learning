@@ -1,29 +1,27 @@
-We show that FedAvg with SGD has $O(1/NT)$ rate under $\mu$-strong
-convexity and $L$-smoothness. The result improves on the ICLR paper's
-$O(1/T)$ with a linear speedup in the number of devices $N$. {[}TODO:
-Add more comment here.{]} The FedAv algorithm with SGD follows the
-updates
-\begin{align*}
-y_{t+1}^{k} & =w_{t}^{k}-\alpha_{t}g_{t,k}\\
-w_{t+1}^{k} & =\begin{cases}
-y_{t+1}^{k} & \text{if }t+1\notin\mathcal{I}_{E}\\
-\sum_{k=1}^{N}p_{k}y_{t+1}^{k} & \text{if }t+1\in\mathcal{I}_{E}
-\end{cases}
-\end{align*}
-where 
-\begin{align*}
-g_{t,k} & :=\nabla F_{k}(w_{t}^{k},\xi_{t}^{k})
-\end{align*}
-is the stochastic gradient. 
-
-Define the virtual sequences $\overline{y}_{t}=\sum_{k=1}^{N}p_{k}y_{t}^{k}$,
-$\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$.
-We have $\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{y}_{t+1}=\overline{w}_{t}-\alpha_{t}g_{t}$,
-and $\overline{w}_{t+1}=\overline{y}_{t+1}$ for all $t$. 
-
 We first summarize some properties of $L$-smooth and $\mu$-strongly
 convex functions. 
-
+\begin{lemma}
+	Let $F$ be a convex $L$-smooth function. Then we have the following
+	inequalities:
+	
+	1. Quadratic upper bound: $0\leq F(w)-F(w')-\langle\nabla F(w'),w-w'\rangle\leq\frac{L}{2}\|w-w'\|^{2}$. 
+	
+	2. Coercivity: $\frac{1}{L}\|\nabla F(w)-\nabla F(w')\|^{2}\leq\langle\nabla F(w)-\nabla F(w'),w-w'\rangle$.
+	
+	3. Lower bound: $F(w)\geq F(w')+\langle\nabla F(w'),w-w'\rangle+\frac{1}{2L}\|\nabla F(w)-\nabla F(w')\|^{2}$.
+	In particular, $\|\nabla F(w)\|^{2}\leq2L(F(w)-F(w^{\ast}))$.
+	
+	4. Optimality gap: $F(w)-F(w^{\ast})\leq$$\langle\nabla F(w),w-w^{\ast}\rangle$.
+\end{lemma}
+%
+\begin{lemma}
+	Let $F$ be a $\mu$-strongly convex function. Then 
+	\begin{align*}
+	F(w) & \leq F(w')+\langle\nabla F(w'),w-w'\rangle+\frac{1}{2\mu}\|\nabla F(w)-\nabla F(w')\|^{2}\\
+	F(w)-F(w^{\ast}) & \leq\frac{1}{2\mu}\|\nabla F(w)\|^{2}
+	\end{align*}
+\end{lemma}
+%
 \begin{assumption}
 	The stochastic gradients have bounded variance 
 	\begin{align*}
@@ -43,24 +41,30 @@ convex functions.
 	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}
 	\end{align*}
 	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
-	is small enough such that the following hold: 
-	\begin{align*}
-	\alpha_{t} & \leq\frac{1}{4L}\\
-	\alpha_{t} & \leq\frac{1}{N}
-	\end{align*}
-	for all $t\geq0$. 
+	is small enough such that
+	$\alpha_{t} \leq\frac{1}{4L}$ and 
+	$\alpha_{t} \leq\frac{1}{N}$ for all $t\geq0$. 
 	
-	Then with full device participation, as long as $E\leq O(\sqrt{\frac{N}{T}})$,
+	Then with full device participation, if $\nu_{max}=\max_{k}\frac{1}{N}p_{k}$,
+	we have 
 	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq C\frac{\kappa}{N(\gamma+t)}\\
-	C & =5LG^{2}+\nu_{max}^{2}\sigma^{2}
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C\frac{\kappa}{\gamma+T}\cdot(8E^{2}LG^{2}/T+\frac{1}{N}\nu_{max}^{2}\sigma^{2})
 	\end{align*}
-	and with partial participation, with $E=O(1)$ and $K$ sampled devices
-	at each communication round, 
+	so that as long as $E=O(\sqrt{\frac{N}{T}})$, 
 	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq(4E^{2}G^{2}+\nu_{max}^{2}\sigma^{2})\frac{\kappa}{K(\gamma+t)}+\frac{4E^{2}LG^{2}}{t^{2}}
+	\mathbb{E}F(w_{T})-F^{\ast} & \leq C(8LG^{2}+\nu_{max}^{2}\sigma^{2})\frac{\kappa}{N(\gamma+T)}
+	\end{align*}
+	and with partial participation with $K$ sampled devices at each
+	communication round, $\frac{4}{K}\alpha_{t}^{2}E^{2}G^{2}$
+	\begin{align*}
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C\frac{\kappa}{\gamma+T}\cdot(8E^{2}LG^{2}/T+\frac{1}{N}\nu_{max}^{2}\sigma^{2}+\frac{4}{K}E^{2}G^{2})
+	\end{align*}
+	so that if $E=O(1)$, 
+	\begin{align*}
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast} & \leq C(4E^{2}G^{2}+\nu_{max}^{2}\sigma^{2})\frac{\kappa}{K(\gamma+T)}+\frac{8E^{2}LG^{2}}{T^{2}}
 	\end{align*}
 \end{theorem}
+
 \begin{proof}
 	The idea of the proof is to observe that the $L$-smoothness of $F$
 	provides the upper bound
@@ -101,15 +105,25 @@ convex functions.
 	\end{align*}
 	and we will show that the third term $\|\alpha_{t}\overline{g}_{t}\|^{2}$
 	can be canceled by an upper bound of the second term. %
-
+	\begin{comment}
+	The last term is straightforward to bound by the convexity of $\|\cdot\|^{2}$
+	and $L$-smoothness of $F_{k}$,
+	\begin{align*}
+	\alpha_{t}^{2}\|\overline{g}_{t}\|^{2} & \leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(w_{t}^{k})\|^{2}\leq2L\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast})
+	\end{align*}
+	or 
+	\begin{align*}
+	\alpha_{t}^{2}\|\overline{g}_{t}\|^{2} & \leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(w_{t}^{k})\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\mathbb{E}\|\nabla F_{k}(w_{t}^{k},\xi_{t}^{k})\|^{2}\leq\alpha_{t}^{2}G^{2}
+	\end{align*}
+	\end{comment}
 	
 	Now 
 	\begin{align*}
 	-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle & =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
 	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
-	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w^{\ast})-F_{k}(w_{t}^{k}))\\
-	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+F_{k}(w^{\ast})-F_{k}(w_{t}^{k})\right]\\
-	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]
+	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w^{\ast})-F_{k}(w_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-w^{\ast}\|^{2}\\
+	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+F_{k}(w^{\ast})-F_{k}(w_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}w_{t}^{k}-w^{\ast}\|^{2}\\
+	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]-\alpha_{t}\mu\|\overline{w}_{t}-w^{\ast}\|^{2}
 	\end{align*}
 	For the second term, which is negative, we can ignore it, but this
 	yields a suboptimal bound that fails to provide the desired linear
@@ -162,25 +176,44 @@ convex functions.
 	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\overline{w}_{t}-w^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\nu_{max}^{2}\sum_{k=1}^{N}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
 	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\overline{w}_{t}-w^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+\alpha_{t}^{3}LG^{2}
 	\end{align*}
-	where $\sigma^{2}=\max_{k}\sigma_{k}^{2}$. The leading term in the
-	bound is $\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}$, which
-	one summed using the recursive relations gives $O(\alpha_{t})$, but
-	the constant now is scaled down by $1/N$. To achieve this linear
-	speedup, we need $\sum_{t=0}^{T}(1-\mu\alpha_{t})\|w_{0}-w^{\ast}\|^{2}$
-	to be small enough. \textbf{Note also that the above bound implies
-		that $E$ can be chosen to be as large as $O(\sqrt{\frac{T}{N}})$
-		without degrading the performance, since $E^{2}\alpha_{t}^{3}=O(\alpha_{t}^{2}/N)$
-		which is the order of the leading term. As we will see, in the partial
-		participation case, this is no longer true, and $E$ cannot be chosen
-		$O(T^{\beta})$ for any $\beta>0$. }
+	where $\sigma^{2}=\max_{k}\sigma_{k}^{2}$. We show next that $\|\overline{w}_{t}-w^{\ast}\|^{2}=O(\frac{\alpha_{t}}{N})=O(\frac{1}{Nt})$.
+	Before we do, we remark briefly on the choice of $E$. The leading
+	term among terms other than $\mathbb{E}(1-\mu\alpha_{t})\|\overline{w}_{t}-w^{\ast}\|^{2}$
+	is $\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}$. This means
+	we can take $E=O(\sqrt{\frac{1}{N\alpha_{t}}})=O(\sqrt{\frac{t}{N}})$
+	which means $4E^{2}L\alpha_{t}^{3}G^{2}=O(\frac{\alpha_{t}}{N})$
+	will be on the same order as the leading term. This is in contrast
+	with previous results where $E$ cannot scale with $t$. Thus our
+	bound yields a more efficient communication complexity than current
+	analyses. We note however that this is only possible when there is
+	full participation, and when $\nu_{max}$ is close to 1. When there
+	is partial participation, however, $E$ has to stay $O(1)$, as we
+	will soon see. Thus our result hightlights the difference between
+	the communication efficiency of full and partial participation when
+	an $O(1/T)$ bound on the optimality gap is desired. 
 	
-	To complete the proof of convergence, for $\alpha_{t}=\frac{\delta}{t+\gamma}$
-	for $\delta>\frac{1}{\mu}$ and $\gamma>0$ such that $\alpha_{1}\leq\min\{\frac{1}{\mu},\frac{1}{4L}\}$and
+	\textbf{}%
+	\begin{comment}
+	The leading term on the right hand side the bound is $\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}$,
+	which when summed using the recursive relations gives $O(\alpha_{t})=O(1/t)$,
+	but the constant now is scaled down by $1/N$. \textbf{To achieve
+	this linear speedup, we need $\sum_{t=0}^{T}(1-\mu\alpha_{t})\|w_{0}-w^{\ast}\|^{2}$
+	to be small enough. Note also that the above bound implies that $E$
+	can be chosen to be as large as $O(\sqrt{\frac{T}{N}})$ without degrading
+	the performance, since $E^{2}\alpha_{t}^{3}=O(\alpha_{t}^{2}/N)$
+	which is the order of the leading term. As we will see, in the partial
+	participation case, this is no longer true, and $E$ cannot be chosen
+	$O(T^{\beta})$ for any $\beta>0$. }
+	\end{comment}
+	
+	To complete the proof of convergence, let $B=$ $B_{t}=4E^{2}L\alpha_{t}G^{2}+4E^{2}L^{2}\alpha_{t}^{2}G^{2}+\frac{1}{N}\nu_{max}^{2}\sigma^{2}+\alpha_{t}LG^{2}$.
+	Set the learning rate $\alpha_{t}=\frac{\delta}{t+\gamma}$ for $\delta>\frac{1}{\mu}$
+	and $\gamma=\max\{8\kappa-1,E\}$ such that $\alpha_{1}\leq\min\{\frac{1}{\mu},\frac{1}{4L}\}$and
 	$\alpha_{t}\leq2\alpha_{t+E}$, we can show that 
 	\begin{align*}
 	\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq\frac{v}{N(\gamma+t)}
 	\end{align*}
-	where $v=\max\{\frac{\delta^{2}B'}{\delta\mu-c+1},(\gamma+1)\|w_{0}-w^{\ast}\|^{2}\}$
+	where $v=\max\{\frac{\delta^{2}B}{\delta\mu-1},(\gamma+1)\|w_{0}-w^{\ast}\|^{2}\}$,
 	by induction. The definition of $v$ ensures that 
 	\begin{align*}
 	\|w_{0}-w^{\ast}\|^{2} & \leq\frac{v}{\gamma}
@@ -189,9 +222,10 @@ convex functions.
 	holds for some $t\geq0$. Then 
 	\begin{align*}
 	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2}\leq & (1-\alpha_{t}\mu)\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B'\\
-	& \leq(1-\frac{\delta\mu}{t+\gamma})\frac{v}{t+\gamma}+\frac{\delta^{2}B'}{(t+\gamma)^{2}}\\
-	& =\frac{t+\gamma-1}{(t+\gamma)^{2}}v+\left[\frac{\delta^{2}B'}{(t+\gamma)^{2}}-\frac{\delta\mu-1}{(t+\gamma)^{2}}v\right]\\
-	& \leq\frac{v}{t+\gamma+1}
+	& \leq(1-\frac{\delta\mu}{t+\gamma})\frac{v}{N(t+\gamma)}+\frac{\delta^{2}B'}{N^{2}(t+\gamma)^{2}}\\
+	& =\frac{t+\gamma-1}{N(t+\gamma)^{2}}v+\left[\frac{\delta^{2}B'}{N^{2}(t+\gamma)^{2}}-\frac{\delta\mu-1}{N(t+\gamma)^{2}}v\right]\\
+	& \leq\frac{t+\gamma-1}{N(t+\gamma)^{2}}v+\left[\frac{\delta^{2}B'}{N(t+\gamma)^{2}}-\frac{\delta\mu-1}{N(t+\gamma)^{2}}v\right]\\
+	& \leq\frac{1}{N}\frac{v}{t+\gamma+1}
 	\end{align*}
 	by definition of $v$.
 	
@@ -214,6 +248,7 @@ convex functions.
 	\mathbb{E}(F(\overline{w}_{t}))-F^{\ast} & \leq\frac{L}{2}\frac{v}{\gamma+t}\leq\frac{L/2}{\gamma+t}(\frac{\delta^{2}B'}{\delta\mu-c+1}+(\gamma+1)\|w_{0}-w^{\ast}\|^{2})\\
 	& \leq\frac{\kappa}{\gamma+t}(\frac{B'}{\mu}+4L\|w_{0}-w^{\ast}\|^{2})
 	\end{align*}
+	where $B'=8E^{2}L^{2}G^{2}/t+\frac{1}{N}\nu_{max}^{2}\sigma^{2}$. 
 	
 	With partial participation, the update at each communication round
 	is now given by averages over a subset of sampled devices. The key
