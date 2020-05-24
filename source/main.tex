@@ -55,8 +55,21 @@
 \maketitle
 
 % \tableofcontents
-% \begin{abstract}
-% \end{abstract}
+\begin{abstract}
+Federated learning is a distributed learning paradigm that enables learning a
+model jointly over a large number of workers without sharing the private data
+on local workers. The characteristics of non-identically distributed data
+across the network and low device participation bring significant challenges
+in analyzing the convergence of federated learning algorithms. Prior works
+mainly analyze its convergence rate in limited scenarios.
+In this work, we provide a comprehensive analysis of the convergence rate of SGD and Nesterov SGD for general convex problems.
+Theoretically, we firstly show 
+that the convergence rates enjoy a linear speedup for
+all convex smooth problems for both algorithms.
+Furthermore, we propose a new accelerated SGD algorithm improving the convergence rate over SGD in the overparameterized setting. 
+Empirical evaluation of the algorithms in various settings match our theoretical
+results.
+\end{abstract}
 
 
 % converge proof
