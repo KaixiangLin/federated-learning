@@ -4,33 +4,71 @@
 
 \section{Numerical Experiments}
 
+In this section, we empirically examine the theoretical convergence rate of FedAve on various scenarios, including strongly convex function, convex smooth function, and overparameterized setting, as presented in previous sections.
+
+\textbf{Setup.} Follow the experimental setting in~\cite{stich2018local}, We
+conduct experiments on both synthetic datasets and real-world dataset
+w8a~\cite{platt1998fast} $(d=300, n=49749)$. We consider the distributed
+objectives $F(\vw) = \sum_{k=1}^N p_kF_k(\vw)$, and the objective function on
+each local device $k$ includes three cases: 1) \textbf{Strongly convex
+objective}: the regularized binary logistic regression problem, $F_k(\vw) =
+\frac{1}{N_k} \sum_{i=1}^{N_k} \log( 1+ \exp(-y_i^k \vw^T\vx_i^k) + \lambda
+\|\vw\|^2$. The regularization parameter is set to $\lambda = 1/n \approx
+1e-5$. 2) \textbf{Convex smooth objective}: the binary logistic regression
+problem without regularization. $F_k(\vw) = \frac{1}{N_k} \sum_{i=1}^{N_k}
+\log( 1+ \exp(-y_i^k \vw^T\vx_i^k)$. 3) \textbf{Overparameterized setting}:
+the linear regression problem without adding noise to the label, $F_k(\vw) =
+\frac{1}{N_k} \sum_{i=1}^{N_k} (\vw^T\vx_i^k + b  - y_i^k)^2$.  In the first
+two cases, we use the w8a dataset to conduct empirical evaluation. 
+In the linear regression problem, we use features from w8a dataset and 
+generate a ground truth $w$ to label each instance, which satisfies the
+overparameterized setting.
 
 
-\subsection{Strongly Convex}
+% where we generated i.i.d. data $\vx_i^k$ for all devices. At each communication round, all devices participated
+% in synchronization. 
+\textbf{Linear speedup.} To verify the linear speedup results in theorems {\color{red}add theorem id}, we evaluate the number of iterations needed to reach
+$\epsilon$-accuracy in three objectives. We initialize all runs with $w_0 = \textbf{0}_d$ and measure. For each configuration, we run three random seeds and report
+the best seed results for each configuration $(E, K)$. In each configure, we
+extensive search the stepsize from $\min(\eta_0, \frac{nc}{1 + t})$, where
+$\eta_0 \in \{0.1, 0.12, 1, 32 \}$ according to different problems and $c$ can
+take the values $c = 2^u \forall i \in \ZZ$. For the detailed experimental setup,
+please refer to the appendix. As the results shown in Figure~\ref{fig:speedup},
+the number of iterations to reach the target accuracy $\epsilon$ decreasing 
+as the number of workers increase. 
 
-\begin{figure}[h!]
+\textbf{The impact of $E$.} We further examine how does the number of epochs 
+affect the convergence. As shown in Figure~\ref{fig:e}, the number of iterations
+increases as the number of epochs increase, which slow the convergence in
+terms of gradient computation. However, it can save communication cost as
+the number of rounds decreased when the number of epochs increases.
+
+
+\begin{figure}
 \centering
-\begin{tabular}{cc}
-	\includegraphics[width=0.5\textwidth]{fig/E1-4-16speedupNodesT-min-w8a-epsilon013-b4-reg1e-05-adapt0.pdf} & 
-\includegraphics[width=0.5\textwidth]{fig/E1-4-16speedupEpochsT-min-w8a-epsilon013-b4-reg1e-05-adapt0.pdf} \\
-	\includegraphics[width=0.5\textwidth]{fig/E1-4-16speedupNodesRounds-w8a-epsilon013-b4-reg1e-05-adapt0.pdf} & 
-\includegraphics[width=0.5\textwidth]{fig/E1-4-16speedupEpochsRounds-w8a-epsilon013-b4-reg1e-05-adapt0.pdf} \\
-\end{tabular}
-	\caption{Logistic regression with regularization $1e-5$. The linear speed up w.r.t the number of nodes and number of epochs. The synthetic dataset has $N=49749$ samples, evenly distributed on $1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024$ devices. The figure shows the number of iterations/rounds needed to converge to $\epsilon-$accuracy. The learning rate is decayed as the $\eta_t = \min(32, \frac{Nc}{1 + t})$, where we extensively search the best learning rate $c \in \{2^{-1}c, 2^{-2}c, c, 2c, 2^{2}c\}$ and for each configuration. Batch size is 4 in this case.}
+	\begin{tabular}{ccc}
+	\hspace{-2em}\includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupNodesT-min-w8a-epsilon0131-reg1e-05.pdf} &
+\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupNodesT-min-w8a-epsilon0134-reg0.pdf} &
+\includegraphics[width=0.33\textwidth]{fig/paper-linregressionspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
+(a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
+	\end{tabular}
+\caption{The linear speedup convergence of FedAve w.r.t the number of nodes. }
+\label{fig:speedup}
 \end{figure}
 
-
-
-\subsection{Convex smooth objective}
-
-
-
-
-
-
-\subsection{Linear regression}
-
-
-
+\begin{figure}
+\centering
+	\begin{tabular}{ccc}
+	\hspace{-2em} \includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupEpochsT-min-w8a-epsilon0131-reg1e-05.pdf} &
+	\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupEpochsT-min-w8a-epsilon0134-reg0.pdf} & 
+	\includegraphics[width=0.33\textwidth]{fig/paper-linregressionspeedupEpochsT-min-linearregressionw8a-epsilon002-reg0.pdf} \\
+	\hspace{-2em} \includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupEpochsRounds-min-w8a-epsilon0131-reg1e-05.pdf} &
+	\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupEpochsRounds-min-w8a-epsilon0134-reg0.pdf} & 
+	\includegraphics[width=0.33\textwidth]{fig/paper-linregression-newspeedupEpochsRounds-min-linearregressionw8a-epsilon002-reg0.pdf} \\
+(a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
+	\end{tabular}
+\caption{The convergence of FedAve w.r.t the number of epochs. }
+\label{fig:e}
+\end{figure}
 
 
