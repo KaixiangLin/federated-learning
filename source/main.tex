@@ -55,8 +55,23 @@
 \maketitle
 
 % \tableofcontents
-% \begin{abstract}
-% \end{abstract}
+\begin{abstract}
+Federated learning is a distributed learning paradigm that enables learning a
+model jointly over a large number of workers without sharing the private data
+on local workers. The characteristics of non-identically distributed data
+across the network and low device participation bring significant challenges
+in analyzing the convergence of federated learning algorithms. Prior works
+have either analyzed the convergence with i.i.d. data, or with full device
+participation, and often with suboptimal rates. In this work, we provide a
+comprehensive analysis of the convergence rate of Federated Averaging (FedAvg)
+with SGD and Nesterov SGD updates for general convex problems with arbitrarily
+heterogeneous data. Firstly we show that the convergence rates enjoy a linear
+speedup in the number of participating workers for all convex smooth problems
+for both algorithms. Furthermore, we propose a new accelerated federated
+learning algorithm improving the convergence rate over FedAvg with SGD in the
+overparameterized setting. Empirical evaluation of the algorithms in various
+settings match our theoretical results.
+\end{abstract}
 
 
 % converge proof
