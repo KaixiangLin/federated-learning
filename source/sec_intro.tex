@@ -1,24 +1,40 @@
 % !TEX ROOT=./main.tex
 
 
-\section{Introduction and Related Works}
+\section{Introduction}
+% Motivate FL from the security and privacy perspective. FedAvg
+Federated learning (FL) is a distributed learning paradigm that can collaboratively solve a machine learning problem by leveraging the data
+from a large amount of workers without compromising the users' (aka workers/local devices) privacy~\cite{kairouz2019advances}. 
+Among all the leading algorithms in FL, Federated Averaging~\cite{mcmahan2016communication} (FedAvg)
+is perhaps the most widely adopted optimization algorithm, which runs local
+Stochastic Gradient Descent (SGD) updates on a subset of devices
+and synchronize the local models once in a while. 
+The empirical success of FedAvg and its variants have
+attracted lots of efforts~\cite{li2018federated,stich2018local,khaled2019first,yu2019parallel,haddadpour2019convergence,li2019convergence,huo2020faster} on analyzing its convergence properties. 
+There are few key challenges that differentiates the theoretical analysis
+of FL from the tradition distribution optimization: 
+1) The data is non-identically distributed across the workers, which means the
+data in each local device cannot be regarded as samples drawn from
+a same distribution. 
+2) The workers are not active at every communication
+round. In FL, the central server has no control over the local devices. 
+It is more practical to assume only a subset of workers is active during
+each communication round. 
 
+% The current gaps in FL.
+However, most of prior works~\cite{li2018federated,stich2018local,khaled2019first,yu2019parallel,haddadpour2019convergence} either assume
+the data is identically distributed or the all devices are active, which
+violates the practical characteristic in FL. The most recent work~\cite{li2019convergence} firstly presents $O(1/T)$ convergence guarantee without 
+making those unrealistic assumptions while their analysis focused 
+on strongly convex case only and the relation between the number of active
+workers and the convergence rate is not clearly discussed. 
 
-\begin{table}[h!]
-	\centering
-	\small
-	\begin{tabular}{|c|c|c|c|c|}\hline
-		paper         &  Cvx Non-smth & Cvx L-smth & Strongly Cvx Non-smth& Strongly Cvx L-smth \\ \hline
-		Accelerated	SGD   &   $\cO(\frac{1}{\sqrt{T}})$     & $\cO(\frac{1}{\sqrt{KT}})$   &    $\cO(\frac{1}{T})$   &  $\cO(\frac{1}{KT}+\frac{E^2}{T^2})$    \\\hline
-		SGD    &    $\cO(\frac{1}{\sqrt{T}})$  &   $\cO(\frac{1}{\sqrt{KT}})$  &  $\cO(\frac{1}{T})$  & $\cO(\frac{1}{T})$\cite{li2019convergence,haddadpour2019convergence}, $\cO(\frac{1}{KT}+\frac{E^2}{T^2})$ ours    \\\hline
-	\end{tabular}
-	\caption{Summary of related work on federated learning, heterogeneous data.}
-\end{table}
+% Our contributions
+Our work aims to systematically fill the gap in the convergence analysis
+of FedAvg and its accelerated variants. 
+Our theoretical results not only cover all general convex objectives, including strongly convex cases, convex smooth cases and convex non-smooth cases, but also provide tighter convergence guarantee all convex smooth objectives, which shows the convergence rate enjoys a linear speedup 
+Furthermore, we studied a popular over-parameterized setting~\cite{liu2018accelerating} where the optimal solution can obtain zero training loss. In this scenario, we provide a novel accelerated FL algorithm improving
+the convergence rate of FedAvg. Last but not least, we conduct extensive
+evaluation on both synthetic and real-world dataset, which demonstrates that our theoretical indications is well-aligned with the empirical observations.
 
-+ exponential acceleration of MaSS for linear regression: for $E=1$, 
-\begin{align*}
-\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq C\cdot\exp(-\frac{t}{\sqrt{(\kappa_{N})(\tilde{\kappa}_{N})}})\leq C\cdot\exp(-\frac{Nt}{\sqrt{(\kappa_{1})(\tilde{\kappa})}})
-\end{align*}
-
-Most recent result by Koloskova et. al gives same bounds for convex and strongly convex.   
 
