@@ -1,149 +1,207 @@
-In contrast to the gradient descent setting, in the stochastic gradient
-setting, Nesterov update is known to fail to accelerate over stochastic
-gradient. Thus in general we cannot hope to obtain acceleration results
-for the FedAvg algorithm with Nesterov updates. However, in special
-problem settings, there have been a number of works showing that accelerated
-stochastic gradient descent methods achieves better rates than stochastic
-gradient descent. One such case is the so-called interpolation setting,
-where the objective has an optimal value of 0, e.g. due to overparameterization.
-The works of Belkin et.al have shown that under interpolation, SGD
-achieves exponential convergence under constant step-size, thanks
-to the automatic variance reduction property that is not available
-in generic optimization problems. In this section, we extend their
-result to the federated learning problem and prove the exponential
-convergence of SGD for a class of convex objectives in the interpolation
-setting.
 
-In the non-federated learning setting, {[}TODO: CITE{]} have provided
-negative results on the acceleration of Nesterov and Heavy Ball updates
-over plain SGD for certain problems. In {[}Liu\&Belkin{]}, the authors
-show that in the interpolation setting, stochastic Nesterov update
-is not able to achieve accleration over vanilla SGD. They introduce
-the MaSS algorithm, which is a variant of the Nesterov acceleration,
-where in the update a non-negative multiple of the gradient is added
-to the Nesterov parameter update to correct for the ``over-descent''
-of the Nesterov update. They show that the MaSS algorithm is able
-to achieve acceleration over the exponential convergence of SGD both
-theoretically and empirically.
+\subsection{FedAvg with SGD}
 
-The next natural question is then whether similar conclusions can
-be drawn in the federated learning setting. We demonstrate that this
-is possible by extending the results of Belkin et al. to show that
-for the federated learning problem in the interpolation setting, Nesterov
-SGD cannot in general achieve acceleration over plain SGD. We then
-adapt the MaSS algorithm to the federated learning setting, and prove
-that for certain class of convex objectives with 0 global objective
-value, the FedAvg algorithm with MaSS updates achieves exponential
-convergence and acceleration of convergence rate over SGD. 
+\begin{thm}
+	For the overparameterized setting with general strongly convex and
+	smooth objectives, FedAvg with local SGD updates and communication
+	every $E$ iterations with constant step size $\overline{\alpha}=\frac{1}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
+	gives the exponential convergence guarantee 
+	\begin{align*}
+	\mathbb{E}F(\overline{w}_{t}) & \leq\frac{L}{2}(1-\mu\overline{\alpha})^{t}\|w_{0}-w^{\ast}\|^{2}=O(\exp(-\frac{\mu}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t)\cdot\|w_{0}-w^{\ast}\|^{2})
+	\end{align*}
+\end{thm}
+%
+We see that when $l>L$, the speedup factor is on the order of $\frac{N}{E(l\nu_{\max}+L(N-\nu_{\min}))}/\frac{1}{l\nu_{\max}+L(1-\nu_{\min})}\approx\frac{Nl}{E(l+L(N-1))}=O(N/E)$
+for $N\leq\frac{l}{L}+1$, i.e. FedAvg with $N$ workers and communication
+every $E$ iterations provide an exponential convergence speedup factor
+of $O(N/E)$, for $N\leq\frac{l}{L}+1$. 
+\begin{proof}
+	To illustrate the main ideas of the proof, we first present the proof
+	for $E=2$. Let $t-1$ be a communication round, so that $w_{t-1}^{k}=\overline{w}_{t-1}$.
+	We show that 
+	
+	\begin{align*}
+	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)(1-\alpha_{t-1}\mu)\|\overline{w}_{t-1}-w^{\ast}\|^{2}
+	\end{align*}
+	for appropriately chosen constant step sizes $\alpha_{t},\alpha_{t-1}$.
+	We have 
+	
+	\begin{align*}
+	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t}-\alpha_{t}g_{t})-w^{\ast}\|^{2}\\
+	& =\|\overline{w}_{t}-w^{\ast}\|^{2}-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle+\alpha_{t}^{2}\|g_{t}\|^{2}
+	\end{align*}
+	and the cross term can be bounded as usual using $\mu$-convexity
+	and $L$-smoothness of $F_{k}$:
+	\begin{align*}
+	-2\alpha_{t}\mathbb{E}_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle & =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w^{\ast})-F_{k}(w_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-w^{\ast}\|^{2}\\
+	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+F_{k}(w^{\ast})-F_{k}(w_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}w_{t}^{k}-w^{\ast}\|^{2}\\
+	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]-\alpha_{t}\mu\|\overline{w}_{t}-w^{\ast}\|^{2}\\
+	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t})-\alpha_{t}\mu\|\overline{w}_{t}-w^{\ast}\|^{2}
+	\end{align*}
+	and so 
+	\begin{align*}
+	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)\|\overline{w}_{t}-w^{\ast}\|^{2}-2\alpha_{t}F(\overline{w}_{t})+\alpha_{t}^{2}\|g_{t}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}
+	\end{align*}
+	
+	Applying this recursive relation to $\|\overline{w}_{t}-w^{\ast}\|^{2}$
+	and using $\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}\equiv0$, we further
+	obtain 
+	\begin{align*}
+	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)\left((1-\alpha_{t-1}\mu)\|\overline{w}_{t-1}-w^{\ast}\|^{2}-2\alpha_{t-1}F(\overline{w}_{t-1})+\alpha_{t-1}^{2}\|g_{t-1}\|^{2}\right)\\
+	& -2\alpha_{t}F(\overline{w}_{t})+\alpha_{t}^{2}\|g_{t}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}
+	\end{align*}
+	Now instead of bounding $\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}$
+	using the arguments in the general convex case, we use $\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}\leq2l(F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})-F_{k}(w^{\ast},\xi_{t-1}^{k}))$
+	to obtain 
+	\begin{align*}
+	\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\alpha_{t-1}^{2}\|g_{t-1}-g_{t-1,k}\|^{2}\\
+	& =\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}(\|g_{t-1,k}\|^{2}-\|g_{t-1}\|^{2})\\
+	& =\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}-\alpha_{t-1}^{2}\|g_{t-1}\|^{2}\\
+	& \le\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}2l(F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})-F_{k}(w^{\ast},\xi_{t-1}^{k}))-\alpha_{t-1}^{2}\|g_{t-1}\|^{2}
+	\end{align*}
+	again using $\overline{w}_{t-1}=w_{t-1}^{k}$. Taking expectation
+	with respect to $\xi_{t-1}^{k}$'s, we have 
+	\begin{align*}
+	\mathbb{E}_{\xi_{t-1}^{k}}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2} & \leq2l\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t-1})-\alpha_{t-1}^{2}\|g_{t-1}\|^{2}\\
+	& =2l\alpha_{t-1}^{2}F(\overline{w}_{t-1})-\alpha_{t-1}^{2}\|g_{t-1}\|^{2}
+	\end{align*}
+	
+	Note also that 
+	\begin{align*}
+	\|g_{t-1}\|^{2} & =\|\alpha_{t-1}\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}
+	\end{align*}
+	while
+	\begin{align*}
+	\|g_{t}\|^{2}=\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(w_{t}^{k},\xi_{t}^{k})\|^{2} & \leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+2\|\sum_{k=1}^{N}p_{k}(\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})-\nabla F_{k}(w_{t}^{k},\xi_{t}^{k}))\|^{2}\\
+	& \leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+2\sum_{k=1}^{N}p_{k}l^{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2}
+	\end{align*}
+	Substituting these into the bound for $\|\overline{w}_{t+1}-w^{\ast}\|^{2}$,
+	we have 
+	
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)((1-\alpha_{t-1}\mu)\|\overline{w}_{t-1}-w^{\ast}\|^{2}-2\alpha_{t-1}F(\overline{w}_{t-1})+\alpha_{t-1}^{2}\|g_{t-1}\|^{2})\\
+	& -2\alpha_{t}F(\overline{w}_{t})+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\left(2l^{2}\alpha_{t-1}^{2}\alpha_{t}^{2}+\alpha_{t}\alpha_{t-1}^{2}L\right)\left(2lF(\overline{w}_{t-1})-\|g_{t-1}\|^{2}\right)
+	\end{align*}
+	from which we can conclude that 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)(1-\alpha_{t-1}\mu)\mathbb{E}\|\overline{w}_{t-1}-w^{\ast}\|^{2}
+	\end{align*}
+	if we can choose $\alpha_{t},\alpha_{t-1}$ to guarantee
+	\begin{align*}
+	2\alpha_{t}(F(\overline{w}_{t})-\alpha_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}) & \geq0\\
+	2\alpha_{t-1}\left((1-\frac{l\alpha_{t-1}(2l^{2}\alpha_{t}^{2}+\alpha_{t}L)}{1-\alpha_{t}\mu})F(\overline{w}_{t-1})-\frac{\alpha_{t-1}}{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}\right) & \geq0
+	\end{align*}
+	
+	Note that 
+	
+	\begin{align*}
+	\mathbb{E}_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2} & =\mathbb{E}_{t}\langle\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k}),\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k}),\nabla F_{j}(\overline{w}_{t},\xi_{t}^{j})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\langle\nabla F_{k}(\overline{w}_{t}),\nabla F_{j}(\overline{w}_{t})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\langle\nabla F_{k}(\overline{w}_{t}),\nabla F_{j}(\overline{w}_{t})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j=1}^{N}p_{j}p_{k}\langle\nabla F_{k}(\overline{w}_{t}),\nabla F_{j}(\overline{w}_{t})\rangle-\sum_{k=1}^{N}p_{k}^{2}\|\nabla F_{k}(\overline{w}_{t})\|^{2}\\
+	& \leq\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\|\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}-\frac{1}{N}\nu_{\min}\|\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\nabla F(\overline{w}_{t})\|^{2}
+	\end{align*}
+	and so if we let $\alpha_{t}=\min\{\frac{qN}{2l\nu_{\max}},\frac{1-q}{2L(1-\frac{1}{N}\nu_{\min})}\}$
+	for a $q\in[0,1]$ to be optimized later, we have 
+	
+	\begin{align*}
+	\mathbb{E}_{t}(F(\overline{w}_{t})-\alpha_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}) & =\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t})-\alpha_{t}\left[\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\nabla F(\overline{w}_{t})\|^{2}\right]\\
+	& \geq\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}(qF_{k}(\overline{w}_{t},\xi_{t}^{k})-\alpha_{t}\frac{1}{N}\nu_{\max}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2})+((1-q)F(\overline{w}_{t})-\alpha_{t}(1-\frac{1}{N}\nu_{\min})\|\nabla F(\overline{w}_{t})\|^{2})\\
+	& \geq q\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\overline{w}_{t},\xi_{t}^{k})-\frac{1}{2l}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2})+(1-q)(F(\overline{w}_{t})-\frac{1}{2L}\|\nabla F(\overline{w}_{t})\|^{2})\\
+	& \geq0
+	\end{align*}
+	
+	Maximizing $\min\{\frac{qN}{2l\nu_{\max}},\frac{1-q}{2L(1-\frac{1}{N}\nu_{\min})}\}$
+	over $q\in[0,1]$, we see that $q=\frac{l\nu_{\max}}{l\nu_{\max}+L(N-\nu_{\min})}$
+	results in the fastest convergence, and this translates to $\alpha_{t}=\frac{1}{2}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$. 
+	
+	Next we note that $\alpha_{t-1}=\frac{1}{2}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
+	also guarantees
+	\begin{align*}
+	(1-\frac{l\alpha_{t-1}(2l^{2}\alpha_{t}^{2}+\alpha_{t}L)}{1-\alpha_{t}\mu})F(\overline{w}_{t-1})-\frac{\alpha_{t-1}}{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2} & \geq0
+	\end{align*}
+	Note that $\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}\leq\frac{N}{LN}\leq\frac{1}{L}$,
+	so that if $\mu\ll L$, $\frac{l\alpha_{t-1}(2l^{2}\alpha_{t}^{2}+\alpha_{t}L)}{1-\alpha_{t}\mu}\leq\frac{1}{2}$,
+	and so the condition is equivalent to 
+	\begin{align*}
+	F(\overline{w}_{t-1})-\alpha_{t-1}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2} & \geq0
+	\end{align*}
+	which was shown to hold with $\frac{1}{2}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$. 
+	
+	For the proof of the general case, we continuously roll out
+	\begin{align*}
+	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)\left((1-\alpha_{t-1}\mu)\|\overline{w}_{t-1}-w^{\ast}\|^{2}-2\alpha_{t-1}F(\overline{w}_{t-1})+\alpha_{t-1}^{2}\|g_{t-1}\|^{2}+\alpha_{t-1}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}\right)\\
+	& -2\alpha_{t}F(\overline{w}_{t})+\alpha_{t}^{2}\|g_{t}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}\\
+	& \leq(1-\alpha_{t}\mu)\left((1-\alpha_{t-1}\mu)\|\overline{w}_{t-1}-w^{\ast}\|^{2}-2\alpha_{t-1}F(\overline{w}_{t-1})+\alpha_{t-1}^{2}\|g_{t-1}\|^{2}+\alpha_{t-1}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}\right)\\
+	& -2\alpha_{t}F(\overline{w}_{t})+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+(2\alpha_{t}^{2}l^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}\\
+	& \leq(1-\alpha_{t}\mu)\left((1-\alpha_{t-1}\mu)\|\overline{w}_{t-1}-w^{\ast}\|^{2}-2\alpha_{t-1}F(\overline{w}_{t-1})+\alpha_{t-1}^{2}\|g_{t-1}\|^{2}+\alpha_{t-1}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}\right)\\
+	& +(2\alpha_{t}^{2}l^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}
+	\end{align*}
+	using $-2\alpha_{t}F(\overline{w}_{t})+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}\leq0$
+	with $\alpha_{t}$ chosen as before. Now since $t-1$ is not a communication
+	round, we need to further decompose $\|g_{t-1}\|^{2}$ using
+	\begin{align*}
+	\|g_{t-1}\|^{2} & \leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}+2\sum_{k=1}^{N}p_{k}l^{2}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}
+	\end{align*}
+	which gives 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)(1-\alpha_{t-1}\mu)\|\overline{w}_{t-1}-w^{\ast}\|^{2}\\
+	& +(1-\alpha_{t}\mu)\left(-2\alpha_{t-1}F(\overline{w}_{t-1})+2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}+(2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}\right)\\
+	& +(2\alpha_{t}^{2}l^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}
+	\end{align*}
+	and we use 
+	\begin{align*}
+	\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-\alpha_{t-1}g_{t-1}-w_{t-1}^{k}+\alpha_{t-1}g_{t-1,k}\|^{2}\\
+	& \leq2\sum_{k=1}^{N}p_{k}\left(\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}+\|\alpha_{t-1}g_{t-1}-\alpha_{t-1}g_{t-1,k}\|^{2}\right)
+	\end{align*}
+	and similar to before 
+	\begin{align*}
+	\sum_{k}p_{k}\|g_{t-1,k}-g_{t-1}\|^{2}\leq\sum_{k}p_{k}\|g_{t-1,k}\|^{2} & =\sum_{k}p_{k}\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})+\nabla F_{k}(w_{t-1}^{k},\xi_{t-1}^{k})-\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}\\
+	& \leq2\sum_{k}p_{k}\left(\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}+l^{2}\|w_{t-1}^{k}-\overline{w}_{t-1}\|^{2}\right)
+	\end{align*}
+	so that 
+	\begin{align*}
+	\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2} & \leq2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}\sum_{k}p_{k}\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}
+	\end{align*}
+	a better bound is 
+	\begin{align*}
+	\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2} & \leq2\sum_{\tau=1}^{E-1}\sum_{k=1}^{N}p_{k}\|\alpha_{t-\tau}g_{t-\tau}-\alpha_{t-\tau}g_{t-\tau,k}\|^{2}\\
+	& \leq4\sum_{\tau=1}^{E-1}\alpha_{t-\tau}^{2}\sum_{k=1}^{N}p_{k}\left(\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}+l^{2}\|w_{t-1}^{k}-\overline{w}_{t-1}\|^{2}\right)
+	\end{align*}
+	
+	Now we choose $\alpha_{t-1}=\frac{1}{4}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
+	to guarantee that 
+	\begin{align*}
+	2F\alpha_{t-1}(\overline{w}_{t-1})-2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}-\frac{1}{(1-\alpha_{t}\mu)}4\alpha_{t-1}^{2}(2\alpha_{t}^{2}l^{2}+\alpha_{t}L)\sum_{k}p_{k}\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2} & \geq0
+	\end{align*}
+	which leaves 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)\left((1-\alpha_{t-1}\mu)\|\overline{w}_{t-1}-w^{\ast}\|^{2}+\left((2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)+\frac{2(1+2l^{2}\alpha_{t-1}^{2})(2\alpha_{t}^{2}l^{2}+\alpha_{t}L)}{(1-\alpha_{t}\mu)}\right)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}\right)
+	\end{align*}
+	to be shown. The relation 
+	\begin{align*}
+	\|\overline{w}_{t-1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t-2}\mu)\|\overline{w}_{t-2}-w^{\ast}\|^{2}-2\alpha_{t-2}F(\overline{w}_{t-2})+\alpha_{t-2}^{2}\|g_{t-2}\|^{2}+\alpha_{t-2}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-2}-w_{t-2}^{k}\|^{2}
+	\end{align*}
+	pops out $\|g_{t-2}\|^{2}\leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-2},\xi_{t-2}^{k})\|^{2}+2\sum_{k=1}^{N}p_{k}l^{2}\|\overline{w}_{t-2}-w_{t-2}^{k}\|^{2}$,
+	so that we next need to show 
+	\begin{align*}
+	2\alpha_{t-2}F(\overline{w}_{t-1})-2\alpha_{t-2}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-2},\xi_{t-2}^{k})\|^{2}-\frac{1}{(1-\alpha_{t-1}\mu)}\left((2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)+\frac{2(1+2l^{2}\alpha_{t-1}^{2})(2\alpha_{t}^{2}l^{2}+\alpha_{t}L)}{(1-\alpha_{t}\mu)}\right)4\alpha_{t-2}^{2}\sum_{k}p_{k}\|\nabla F_{k}(\overline{w}_{t-2},\xi_{t-2}^{k})\|^{2} & \geq0
+	\end{align*}
+	
+	If we choose $\alpha_{t-\tau}=\frac{1}{2(\tau+1)}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$,
+	we can guarantee that 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(\prod_{\tau=0}^{E-1}(1-\mu\alpha_{t-\tau}))^{t/E}\|w_{0}-w^{\ast}\|^{2}\\
+	& \leq(1-\mu\overline{\alpha})^{t}\|w_{0}-w^{\ast}\|^{2}\\
+	& =O(\exp(\frac{\mu}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t))\|w_{0}-w^{\ast}\|^{2}
+	\end{align*}
+	where $\overline{\alpha}=\frac{1}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$.
+\end{proof}
 
-We first show that FedAvg with MaSS has exponential convergence for
-linear regression when the global objective has 0 as its global minimum.
-Since the global loss is given by 
-\begin{align*}
-F(w) & =\sum_{k=1}^{N}p_{k}F_{k}(w)\\
-F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j})^{2}
-\end{align*}
-and there exists $w^{\ast}$ such that $F(w^{\ast})=0$, in particular
-this implies that $F_{k}^{\ast}=F_{k}(w^{\ast})=F^{\ast}=0$ for all
-$k$.
-
-\subsection{Notation and Definitions}
-
-Following Liu\&Belkin and Jain et al., we define some condition number
-related quantities. Let $H^{k}=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}x_{k,j}x_{k,j}$
-be the Hessian matrix of $F_{k}$. Let $L^{k}$ and $\mu^{k}$ be
-any upper bound and lower bound of the non-zero eigenvalues of the
-Hessians $H^{k}$. For a mini-batch $\{\tilde{x}_{j}\}_{j=1}^{m}$
-of $m$ samples from device $k$, let $\tilde{H}_{m}^{k}=\frac{1}{m}\sum_{j=1}^{m}\tilde{x}_{j}\tilde{x}_{j}^{T}$
-be the unbiased mini-batch estimate of $H^{k}$. Let $L_{1}^{k}$
-be the smallest positive number such that 
-\begin{align*}
-\mathbb{E}\left[\|\tilde{x}\|^{2}\tilde{x}\tilde{x}^{T}\right] & \preceq L_{1}^{k}H^{k}
-\end{align*}
-and define 
-\begin{align*}
-L_{m}^{k} & =L_{1}^{k}/m+(m-1)L^{k}/m
-\end{align*}
-
-Define the $m$-stochastic condition number as $\kappa_{m}^{k}:=L_{m}^{k}/\mu$.
-Define $L_{m}=\max_{k}L_{m}^{k}$ and $\kappa_{m}=\max_{k}\kappa_{m}^{k}$.
-Define the statistical condition number $\tilde{\kappa}^{k}$ as the
-smallest positive real number such that 
-\begin{align*}
-\mathbb{E}\left[\langle\tilde{x}(H^{k})^{-1},\tilde{x}\rangle\tilde{x}\tilde{x}^{T}\right] & \preceq\tilde{\kappa}^{k}H^{k}
-\end{align*}
-
-In order to use hyperparameters that are universal across devices,
-we further define $L=\max_{k}L^{k}$, $\mu=\min_{k}\mu^{k}$, $L_{m}=\max_{k}L_{m}^{k}$
-and $\kappa_{m}=\max_{k}\kappa_{m}^{k}$. 
-
-\subsection{FedAvg with Nesterov and MaSS}
-
-The FedAvg algorithm with MaSS follows the updates
-\begin{align*}
-w_{t+1}^{k} & =\begin{cases}
-u_{t}^{k}-\eta_{1}^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
-\sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta_{1}^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
-\end{cases}\\
-u_{t+1}^{k} & =w_{t+1}^{k}+\gamma^{k}(w_{t+1}^{k}-w_{t}^{k})+\eta_{2}^{k}g_{t,k}
-\end{align*}
-where we note that the natural parameter is $w_{t}$, while $u_{t}$
-is an auxiliary parameter, which we initialize to be $u_{0}^{k}$,
-and 
-\begin{align*}
-g_{t,k} & :=\nabla F_{k}(u_{t}^{k},\xi_{t}^{k})
-\end{align*}
-is the stochastic gradient and 
-\begin{align*}
-g_{t} & =\sum_{k=1}^{N}p_{k}g_{t,k}
-\end{align*}
-is the averaged stochastic gradient. When $\eta_{2}^{k}\equiv0$,
-this reduces to the FedAvg algorithm with Nesterov updates.
-
-We note that the update can equivalently be written as 
-\begin{align*}
-v_{t+1}^{k} & =(1-\alpha^{k})v_{t}^{k}+\alpha^{k}u_{t}^{k}-\delta^{k}g_{t,k}\\
-w_{t+1}^{k} & =\begin{cases}
-u_{t}^{k}-\eta^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
-\sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
-\end{cases}\\
-u_{t+1}^{k} & =\frac{\alpha^{k}}{1+\alpha^{k}}v_{t+1}^{k}+\frac{1}{1+\alpha^{k}}w_{t+1}^{k}
-\end{align*}
-where there is a bijection between the parameters 
-\begin{align*}
-\frac{1-\alpha^{k}}{1+\alpha^{k}} & =\gamma^{k}\\
-\eta^{k} & =\eta_{1}^{k}\\
-\frac{\eta^{k}-\alpha^{k}\delta^{k}}{1+\alpha^{k}} & =\eta_{2}^{k}
-\end{align*}
-and we further introduce an auxiliary parameter $v_{t}^{k}$, which
-is initialized at $v_{0}^{k}$. We also note that when $\delta^{k}=\frac{\eta^{k}}{\alpha^{k}}$,
-the update reduces to the Nesterov accelerated SGD. This version of
-the FedAvg with MaSS algorithm is used for analyzing the exponential
-convergence. 
-
-As before, define the virtual sequences $\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$,
-$\overline{v}_{t}=\sum_{k=1}^{N}p_{k}v_{t}^{k}$, $\overline{u}_{t}=\sum_{k=1}^{N}p_{k}u_{t}^{k}$,
-and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$. We have
-$\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{w}_{t+1}=\overline{u}_{t}-\eta_{t}g_{t}$,
-$\overline{v}_{t+1}=(1-\alpha^{k})\overline{v}_{t}+\alpha^{k}\overline{w}_{t}-\delta^{k}g_{t}$,
-and $\overline{u}_{t+1}=\frac{\alpha^{k}}{1+\alpha^{k}}\overline{v}_{t+1}+\frac{1}{1+\alpha^{k}}\overline{w}_{t+1}$. 
-
-For the linear regression problem in the interpolation setting, we
-can write 
-\begin{align*}
-F(w) & =\frac{1}{2}(w-w^{\ast})^{T}H(w-w^{\ast})\\
-& =\frac{1}{2}\|w-w^{\ast}\|_{H}^{2}
-\end{align*}
-and similarly $F^{k}(w)=\frac{1}{2}\|w-w^{\ast}\|_{H^{k}}^{2}$,
-so that with $g_{t,k}=\nabla F_{k}(u_{t}^{k},\xi_{t}^{k})$,
-\begin{align*}
-g_{t,k} & =\tilde{H}_{t}^{k}(u_{t}^{k}-w^{\ast})\\
-g_{t} & =\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(u_{t}^{k}-w^{\ast})
-\end{align*}
-
-\#\#\#\#\#\#\#\#\#\#\#\#
-
-\subsection{Exponential Convergence of FedAvg with SGD and Nesterov}
 
 \subsection{Exponential Convergence of FedAvg with MaSS}
 
@@ -391,32 +449,3 @@ the convergence rate is given by
 \begin{align*}
 \|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq C\cdot\exp(-\frac{Nt}{4\sqrt{\kappa_{1}\tilde{\kappa}}})
 \end{align*}
-
-A similar result can be extended to a class of strongly convex objectives.
-For a general convex function $F_{k}$, define $L_{1}^{k}=\inf\{c\mid\mathbb{E}\|\nabla F_{k}(w,\xi)\|^{2}\leq2c(F_{k}(w)-F_{k}^{\ast}),\forall w\}$.
-All other quantities are defined in the same way as before. 
-\begin{thm}
-	(FedAvg with MaSS, Strongly convex objective) Suppose there exists
-	a $\frac{1}{L}$-strongly convex and $\frac{1}{\mu}$-smooth non-negative
-	function $g$ such that $g(w^{\ast})=0$ and $\langle g(x),\nabla f(z)\rangle\geq(1-\epsilon)\langle x-w^{\ast},z-w^{\ast}\rangle$,
-	$\forall x,z\in\mathbb{R}^{d}$, for some $\epsilon>0$. Let the hyperparameters
-	satisfy 
-	\begin{align*}
-	\eta^{k}(m)=\frac{1}{2L_{m}}, & \alpha^{k}(m)=\frac{1-\epsilon}{2\kappa_{m}},\delta^{k}(m)=\frac{1}{2L_{m}}
-	\end{align*}
-	for all $k$. Then the FedAvg algorithm with MaSS and full participation
-	solves the problem 
-	\begin{align*}
-	F(w) & =\sum_{k=1}^{N}p_{k}F_{k}(w)
-	\end{align*}
-	with exponential convergence
-	\begin{align*}
-	\mathbb{E}F(\overline{w}_{t})\leq\frac{L}{2}\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq C\cdot(1-\frac{1-\epsilon}{2\kappa_{m}})^{t}=O(\exp(-\frac{1-\epsilon}{2\kappa_{m}}t))
-	\end{align*}
-	where $w^{\ast}$ is such that $F(w^{\ast})=0$ and $C=\frac{L}{2}\cdot\frac{1}{\frac{\delta}{2\alpha}(1-\epsilon)}\sum_{k=1}^{N}p_{k}(\|v_{0}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{2\alpha}(1-\epsilon)\|w_{0}^{k}-w^{\ast}\|^{2})$.
-	With partial participation of $K$ devices each communication round,
-	the convergence rate is also 
-	\begin{align*}
-	\mathbb{E}F(\overline{w}_{t})\leq\frac{L}{2}\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq C\cdot(1+\frac{4}{K}\cdot(\frac{t}{E}-1))\cdot(1-\frac{1-\epsilon}{2\kappa_{m}})^{t}=O(\exp(-\frac{1-\epsilon}{2\kappa_{m}}t))
-	\end{align*}
-\end{thm}

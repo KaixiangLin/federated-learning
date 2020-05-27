@@ -2,7 +2,7 @@
 
 
 
-\section{Linear Regression}
+\section{Exponential Convergence of FedAvg in the Overparameterized Setting}
 
 In contrast to the gradient descent setting, in the stochastic gradient
 setting, Nesterov update is known to fail to accelerate over stochastic
@@ -42,8 +42,66 @@ that for certain class of convex objectives with 0 global objective
 value, the FedAvg algorithm with MaSS updates achieves exponential
 convergence and acceleration of convergence rate over SGD. 
 
-We first show that FedAvg with MaSS has exponential convergence for
+We first show that FedAvg with SGD has exponential convergence for
 linear regression when the global objective has 0 as its global minimum.
+
+\subsection{Exponential Convergence of FedAvg with SGD}
+
+In Belkin et al., the authors show that in the interpolation setting,
+SGD achieves exponential convergence with linear speedup batch size
+that is below some critical threshold. In this section, we extend
+their result to the federated learning setting and show that similar
+exponential convergence with linear speedup in the number of workers
+hold using FedAvg with SGD updates holds. 
+
+We consider the standard setting of empirical risk minimization where
+$\ell(w;\xi_{k,j})$ is non-negative, $l$-smooth, and convex, and
+as before, each $F_{k}(w)=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\ell(w;\xi_{k,j})$
+is $L$-smooth and $\mu$-strongly convex. Note that $l\geq L$. This
+setting includes many important problems in practice, such as linear
+regression with a full rank sample covariance matrix. In the interpolation
+or overparameterized setting, we assume that there exists $w^{\ast}\in\arg\min_{w}\sum_{k=1}^{N}p_{k}F_{k}(w)$
+such that $\ell(w^{\ast};\xi_{k,j})=0$ for all $\xi_{k,j}$. We first
+present a general result on the exponential convergence with linear
+speedup in the number of workers, before giving a sharper analysis
+for linear regression problems. 
+\begin{theorem}
+	For the overparameterized setting with general strongly convex and
+	smooth objectives, FedAvg with local SGD updates and communication
+	every $E$ iterations with constant step size $\overline{\alpha}=\frac{1}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
+	gives the exponential convergence guarantee 
+	\begin{align*}
+	\mathbb{E}F(\overline{w}_{t}) & \leq\frac{L}{2}(1-\mu\overline{\alpha})^{t}\|w_{0}-w^{\ast}\|^{2}=O(\exp(-\frac{\mu}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t)\cdot\|w_{0}-w^{\ast}\|^{2})
+	\end{align*}
+\end{theorem}
+%
+We see that when $l>L$, the speedup factor is on the order of $\frac{N}{E(l\nu_{\max}+L(N-\nu_{\min}))}/\frac{1}{l\nu_{\max}+L(1-\nu_{\min})}\approx\frac{Nl}{E(l+L(N-1))}=O(N/E)$
+for $N\leq\frac{l}{L}+1$, i.e. FedAvg with $N$ workers and communication
+every $E$ iterations provide an exponential convergence speedup factor
+of $O(N/E)$, for $N\leq\frac{l}{L}+1$.
+
+Next we show that specialized to the overparameterized linear regression
+setting, the exponential convergence bound can be further sharpened,
+with a similar linear speedup in the number of workers. In this setting,
+we have 
+\begin{align*}
+F(w) & =\sum_{k=1}^{N}p_{k}F_{k}(w)\\
+F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j})^{2}
+\end{align*}
+and there exists $w^{\ast}$ such that $F_{k}(w^{\ast})\equiv0$
+for all $k$. 
+\begin{theorem}
+	(FedAvg with SGD, Linear Regression) For the overparamterized linear
+	regression problem, FedAvg with local SGD updates and communication
+	every $E$ iterations with constant step size $\overline{\alpha}=\frac{1}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
+	gives the exponential convergence guarantee 
+	\begin{align*}
+	\mathbb{E}F(\overline{w}_{t}) & \leq L(1-c\frac{N}{E\kappa})^{t}\|w_{0}-w^{\ast}\|^{2}
+	\end{align*}
+	where $\kappa=L/\mu$ and $c$ is some universal constant. 
+\end{theorem}
+
+Next we show FedAvg with MaSS has exponential convergence but with an improved rate. 
 
 \subsection{Notation and Definitions}
 
@@ -126,34 +184,16 @@ using FedAvg with MaSS updates. On each device, local data is stored
 and mini-batch gradient descent with batch size $m$ is performed.
 We assume that the batch size is the same across devices. 
 \begin{theorem}
-	(FedAvg with MaSS, Linear Regression) Let $\tilde{\kappa}_{m}:=\tilde{\kappa}/m+(m-1)/m$,
-	and let the hyperparameters satisfy 
+	(FedAvg with MaSS, Linear Regression) For the overparamterized linear
+	regression problem, FedAvg with local MaSS updates and communication
+	every $E$ iterations with constant step size $\overline{\alpha}=\frac{1}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
+	gives the exponential convergence guarantee 
 	\begin{align*}
-	\eta^{k}(m)=\frac{1}{L_{m}}, & \alpha^{k}(m)=\frac{1}{\sqrt{\kappa_{m}\tilde{\kappa}_{m}}},\delta^{k}(m)=\frac{\eta^{k}}{\alpha^{k}\tilde{\kappa}_{m}}
+	\mathbb{E}F(\overline{w}_{t}) & \leq L(1-c\frac{N}{E\sqrt{\kappa\tilde{\kappa}}})^{t}\|w_{0}-w^{\ast}\|^{2}
 	\end{align*}
-	for all $k$. Let $\mathcal{I}_{E}=\{\ell E\mid\ell\in\mathbb{N}\}$
-	be the set of communication rounds, then the FedAvg algorithm with
-	MaSS and full participation solves the problem 
-	\begin{align*}
-	F(w) & =\sum_{k=1}^{N}p_{k}F_{k}(w)\\
-	F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j})^{2}
-	\end{align*}
-	with exponential convergence
-	\begin{align*}
-	\mathbb{E}F(\overline{w}_{t})\leq\frac{L}{2}\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq C\cdot\exp(-\frac{t}{\sqrt{(\kappa_{N}+(E-1)^{2})(\tilde{\kappa}_{N}+(E-1)^{2})}})
-	\end{align*}
-	where $w^{\ast}$ is such that $F(w^{\ast})=0$ and $C=\frac{L}{2}\cdot\frac{\alpha}{\delta}\sum_{k=1}^{N}p_{k}(\|v_{0}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|w_{0}^{k}-w^{\ast}\|^{2})$. 
-	
-In particular, this implies that for $E=1$, there is linear speedup, i.e. 
-	\begin{align*}
-	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq C\cdot\exp(-\frac{t}{\sqrt{(\kappa_{N})(\tilde{\kappa}_{N})}})\leq C\cdot\exp(-\frac{Nt}{\sqrt{(\kappa_{1})(\tilde{\kappa})}})
-	\end{align*}
-
-	
-	With partial participation of $K$ devices each communication round,
-	the convergence rate is also 
-	\begin{align*}
-	\mathbb{E}F(\overline{w}_{t})\leq\frac{L}{2}\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq C\cdot(1+\frac{4}{K}\cdot(\frac{t}{E}-1))\cdot(1-\frac{1}{\sqrt{\kappa_{K}\tilde{\kappa}_{K}}})^{t}=O(\exp(-\frac{t}{\sqrt{(\kappa_{N}+(E-1)^{2})(\tilde{\kappa}_{N}+(E-1)^{2})}}))
-	\end{align*}
+	where $\kappa=L/\mu$, $c$ is some universal constant, and $\tilde{\kappa}$
+	is the smallest positive number such that $\mathbb{E}\|\tilde{x}\|_{H^{-1}}^{2}\tilde{x}\tilde{x}^{T}\preceq\tilde{\kappa}H$. 
 	\label{th:fedmasslr}
 \end{theorem}
+
+We immediately see that since $\tilde{\kappa}\leq\kappa$, FedAvg with MaSS provides an improvement over FedAvg with SGD in the the interpolation setting, while enjoying the same speedup factor in the number of workers. 
