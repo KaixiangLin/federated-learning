@@ -44,6 +44,12 @@ terms of gradient computation. However, it can save communication cost as
 the number of rounds decreased when the number of epochs increases.
 
 
+\textbf{Partial participations.} We verify the linear speedup in the
+partial participation settings, where we set only $50\%$ of devices
+are active. As the results shown in Figure~\ref{fig:partial}, the 
+FedAve enjoys linear speedup in various settings even with partial
+device participation.
+
 \begin{figure}
 \centering
 	\begin{tabular}{ccc}
@@ -52,7 +58,7 @@ the number of rounds decreased when the number of epochs increases.
 \includegraphics[width=0.33\textwidth]{fig/paper-linregressionspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
 (a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
 	\end{tabular}
-\caption{The linear speedup convergence of FedAvg w.r.t the number of nodes. }
+\caption{The linear speedup convergence of FedAvg w.r.t the number of workers. }
 \label{fig:speedup}
 \end{figure}
 
@@ -71,4 +77,15 @@ the number of rounds decreased when the number of epochs increases.
 \label{fig:e}
 \end{figure}
 
+\begin{figure}
+\centering
+	\begin{tabular}{ccc}
+	\hspace{-2em}\includegraphics[width=0.33\textwidth]{fig/paper-partialstronglycvxsmthspeedupNodesT-min-w8a-epsilon0131-reg1e-05.pdf} &
+\includegraphics[width=0.33\textwidth]{fig/paper-partialcvxsmoothspeedupNodesT-min-w8a-epsilon0134-reg0.pdf} &
+\includegraphics[width=0.33\textwidth]{fig/paper-partiallinregressionspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
+(a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
+	\end{tabular}
+\caption{The linear speedup convergence of FedAvg w.r.t the number of active workers. }
+\label{fig:partial}
+\end{figure}
 
