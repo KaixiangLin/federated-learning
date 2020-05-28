@@ -45,10 +45,12 @@ the number of rounds decreased when the number of epochs increases.
 
 
 \textbf{Partial participations.} We verify the linear speedup in the
-partial participation settings, where we set only $50\%$ of devices
+partial participation settings, where we set $50\%$ of devices
 are active. As the results shown in Figure~\ref{fig:partial}, the 
 FedAve enjoys linear speedup in various settings even with partial
 device participation.
+
+
 
 \begin{figure}
 \centering
@@ -87,5 +89,17 @@ device participation.
 	\end{tabular}
 \caption{The linear speedup convergence of FedAvg w.r.t the number of active workers. }
 \label{fig:partial}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\begin{tabular}{ccc}
+ &  & 
+\includegraphics[width=0.33\textwidth]{fig/paper-lrnesterovspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
+(a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
+	\end{tabular}
+\caption{The linear speedup convergence of Accelerated FedAvg w.r.t the number of workers. }
+\label{fig:nesterov}
 \end{figure}
 
