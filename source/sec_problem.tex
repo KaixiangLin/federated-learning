@@ -1,35 +1,40 @@
 % !TEX ROOT=./main.tex
 
 
-\section{Problem Setup}
+\section{Setup}
 
-\subsection{The Federated Learning Problem}
+% \subsection{The Federated Learning Problem}
 
-The federated learning problem, given local objectives $F_k$ and device weights $p_k$, is to minimize
-
+We study the federated learning problem
 \begin{align}
-	\min _{\mathbf{w}}\left\{F(\mathbf{w}) \triangleq \sum_{k=1}^{N} p_{k} F_{k}(\mathbf{w})\right\}
+	\min _{\mathbf{w}}\left\{F(\mathbf{w}) \triangleq \sum_{k=1}^{N} p_{k} F_{k}(\mathbf{w})\right\},
 	\label{eq:problem}
 \end{align}
+where $N$ is the number of local devices (users/nodes/workers) and $p_k$ is the $k$-th device's weight satisfying $p_k \geq 0$ and $\sum_{k=1}^N p_k = 1$. 
+In $k$-th local device, there are a finite number of $n_k$ data points:
+$\vx_k^1, \vx_k^2, \dots, \vx_k^{n_k}$.  
+The local objective $F_k(\cdot)$ is defined as:
+% \begin{align}
+$F_{k}(\mathbf{w}) \triangleq \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} \ell\left(\mathbf{w} ; \vx_{k, j}\right)$,
+% \label{eq:localloss}
+% \end{align}
+where $\ell$ denotes a user-specified loss function. In federated learning, each device stores its local data, which gives rise to its own local objective $F_k$. Note that we do not make any assumption on the
+data distributions of each local device. The local minimum
+$\vw^{*}_k= \argmin_{\vw \in R^d} F_k(\vw)$ can be drifted far from
+the global minimum of \eq{\ref{eq:problem}}, which quantifies the 
+heterogeneity of the problem.
+In this paper, we systematically investigate the convergence results, 
+when the local objectives are convex smooth, strongly convex and convex but
+non-smooth.
 
-where $N$ is the number of devices, and device weights $p_k$ satisfy $p_k \geq 0$ and $\sum_{k=1}^N p_k = 1$. Suppose the $k$-th device
-holds the $n_k$ data points: $\xi_{k,1}, \xi_{k,2}, \dots, \xi_{k,n_k}$ . We assume that the local objective $F_k(\cdot)$ is defined by
-
-\begin{align}
-F_{k}(\mathbf{w}) \triangleq \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} \ell\left(\mathbf{w} ; \xi_{k, j}\right)	
-\label{eq:localloss}
-\end{align}
-
-where $\ell$ is some loss function. Thus, in the federated learning setting, each device stores its local data, which gives rise to its own local objective $F_k$. A key difference with many problems in the distributed optimization setting is that data on local devices is heterogeneous, i.e. $F_k(w)$ may have different minimizers $w^{\ast}_k$. Moreover, each local device only has access to stochastic gradients based on data stored on the local device. In this paper, we investigate local objectives that are convex or strongly convex and smooth, although convergence results for non-smooth objectives are also given in the appendix. 
+% A key difference with many problems in the distributed optimization setting is that data on local devices is heterogeneous, i.e. $F_k(w)$ may have different minimizers $w^{\ast}_k$. Moreover, each local device only has access to stochastic gradients based on data stored on the local device. In this paper, we investigate local objectives that are convex or strongly convex and smooth, although convergence results for non-smooth objectives are also given in the appendix. 
 
 
-\subsection{The FedAvg Algorithm}
-
-Despite the heterogeneity in local objectives, the federated learning
-problem can still be solved efficiently in a distributed manner with
-the simple Federated Average (FedAvg) algorithm, which consists of
-the iterations 
-
+\subsection{The Federated Averaging (FedAvg) Algorithm}
+Although the local objectives are heterogeneous, federated learning
+problem can be solved efficiently in a distributed manner with
+the Federated Average (FedAvg) algorithm, which consists of
+the following procedures at $t$-th round: 
 \begin{align}
 \vv_{t+1}^{k} & =\vw_{t}^{k}-\alpha_{t}g_{t,k}\\
 \vw_{t+1}^{k} & =\begin{cases}

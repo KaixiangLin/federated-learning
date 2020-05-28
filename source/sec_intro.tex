@@ -32,7 +32,8 @@ workers and the convergence rate is not clearly discussed.
 % Our contributions
 Our work aims to systematically fill the gap in the convergence analysis
 of FedAvg and its accelerated variants. 
-Our theoretical results not only cover all general convex objectives, including strongly convex cases, convex smooth cases and convex non-smooth cases, but also provide tighter convergence guarantee all convex smooth objectives, which shows the convergence rate enjoys a linear speedup 
+Our theoretical results not only cover all general convex objectives, including strongly convex cases, convex smooth cases and convex non-smooth cases, but also provide tighter convergence guarantee for all convex smooth objectives, which shows the convergence rate enjoys a linear speedup w.r.t.
+the number of workers.
 Furthermore, we studied a popular over-parameterized setting~\cite{liu2018accelerating} where the optimal solution can obtain zero training loss. In this scenario, we provide a novel accelerated FL algorithm improving
 the convergence rate of FedAvg. Last but not least, we conduct extensive
 evaluation on both synthetic and real-world dataset, which demonstrates that our theoretical indications is well-aligned with the empirical observations.
