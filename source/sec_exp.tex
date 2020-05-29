@@ -3,10 +3,11 @@
 
 
 \section{Numerical Experiments}
+\label{sec:exp}
 
 In this section, we empirically examine the theoretical convergence rate of FedAvg on various scenarios, including strongly convex function, convex smooth function, and overparameterized setting, as presented in previous sections.
 
-\textbf{Setup.} Follow the experimental setting in~\cite{stich2018local}, We
+\textbf{Setup.} Follow the experimental setting in~\cite{stich2018local}, we
 conduct experiments on both synthetic datasets and real-world dataset
 w8a~\cite{platt1998fast} $(d=300, n=49749)$. We consider the distributed
 objectives $F(\vw) = \sum_{k=1}^N p_kF_k(\vw)$, and the objective function on
@@ -23,7 +24,6 @@ two cases, we use the w8a dataset to conduct empirical evaluation.
 In the linear regression problem, we use features from w8a dataset and 
 generate a ground truth $w$ to label each instance, which satisfies the
 overparameterized setting.
-
 
 % where we generated i.i.d. data $\vx_i^k$ for all devices. At each communication round, all devices participated
 % in synchronization. 
