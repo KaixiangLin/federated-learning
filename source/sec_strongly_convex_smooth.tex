@@ -4,50 +4,67 @@
 
 \section{Strongly Convex Smooth Objectives}
 
-In this section, we show that FedAvg with SGD and Nesterov Accelerated SGD has $O(1/NT)$ rate under $\mu$-strong
-convexity and $L$-smoothness. The result improves on previous results of
-$O(1/T)$ with a linear speedup in the number of devices $N$.
-
-\subsection{SGD}
-
+In this section, we show that FedAvg with local SGD has $O(1/NT)$ convergence
+rate for $\mu$-strongly convex and $L$-smooth objectives. The result
+improves on the $O(1/T)$ result of {[}ICLR{]} with a linear speedup
+in the number of devices $N$. Moreover, it makes a distinction on
+the choice of $E$ with partial and full participation. With full
+participation, $E$ can be chosen as large as $O(\sqrt{\frac{T}{N}})$
+without degrading the linear speedup in the number of workers. On
+the other hand, with partial participation, $E$ must be $O(1)$. 
 \begin{theorem}
 	Suppose $F_{k}$ is $L$-smooth and $\mu$-strongly convex for all
 	$k$. Let $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa-1,E\}$ where
-	$E$ is the communication interval, and learning rates 
+	$E$ is the communication delay, and learning rates 
 	\begin{align*}
 	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}
 	\end{align*}
 	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
-	is small enough such that
-	$\alpha_{t} \leq\frac{1}{4L}$ and 
-	$\alpha_{t} \leq\frac{1}{N}$ for all $t\geq0$. 
+	is such that $\alpha_{t}\leq\frac{1}{8L}$ for all $t\geq0$. 
 	
 	Then with full device participation, if $\nu_{max}=\max_{k}\frac{1}{N}p_{k}$,
 	we have 
 	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C\frac{\kappa}{\gamma+T}\cdot(8E^{2}LG^{2}/T+\frac{1}{N}\nu_{max}^{2}\sigma^{2})
-	\end{align*}
-	so that as long as $E=O(\sqrt{\frac{N}{T}})$, 
-	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq C(8LG^{2}+\nu_{max}^{2}\sigma^{2})\frac{\kappa}{N(\gamma+T)}
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C\cdot(\frac{\kappa\nu_{max}^{2}\sigma^{2}}{NT}+\frac{5\kappa E^{2}LG^{2}}{T^{2}})
 	\end{align*}
 	and with partial participation with $K$ sampled devices at each
 	communication round, 
 	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C\frac{\kappa}{\gamma+T}\cdot(8E^{2}LG^{2}/T+\frac{1}{N}\nu_{max}^{2}\sigma^{2}+\frac{4}{K}E^{2}G^{2})
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C(\frac{\kappa\nu_{max}^{2}\sigma^{2}}{NT}+\frac{4\kappa E^{2}G^{2}}{KT}+\frac{5\kappa E^{2}LG^{2}}{T^{2}})
 	\end{align*}
-	so that if $E=O(1)$, 
-	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast} & \leq C(4E^{2}G^{2}+\nu_{max}^{2}\sigma^{2})\frac{\kappa}{K(\gamma+T)}+\frac{8E^{2}LG^{2}}{T^{2}}
-	\end{align*}
-	\label{th:strongcvxsmth}
 \end{theorem}
-\begin{proof}
-	See the appendix.
-\end{proof}
-
-
-The convergence result implies that with fixed $E$, as long as $N$ satisfies $E=O(\sqrt{T/N})$, there is linear speedup. When $N$ exceeds an upper bound, however, linear speedup may fail to happen, and $T/N$ may remain constant, i.e. the number of iterations required for convergence may increase with $N$. 
+%
+\begin{remark}
+	We remark on the linear speedup and the choice of $E$. In full participation,
+	the leading term is $\frac{1}{NT}\nu_{max}^{2}\sigma^{2}$ whereas
+	$\frac{5\kappa E^{2}LG^{2}}{T^{2}}$ is a lower order term if $E$
+	is chosen constant. This implies that $E$ can be chosen to be as
+	large as $E=O(\sqrt{\frac{T}{N}})$ which results in $\frac{5\kappa E^{2}LG^{2}}{T^{2}}=O(\frac{1}{NT})$,
+	which will be on the same order as the leading term. This is in contrast
+	with the convergence rate in {[}ICLR{]} where $E$ cannot scale with
+	$T$ and must be $O(1)$, even with full participation. Thus our bound
+	yields a more efficient communication complexity than previous analyses.
+	We note however that this is only possible when there is full participation,
+	and when $\nu_{max}$ is close to 1. When there is partial participation,
+	however, $E$ has to stay $O(1)$, as the term leading term in the
+	bound for partial participation contains $\frac{4\kappa E^{2}G^{2}}{KT}$.
+	Thus our result hightlights the difference between the communication
+	efficiency of full and partial participation when an $O(1/NT)$ bound
+	on the optimality gap is desired. 
+	
+	\textbf{}%
+	\begin{comment}
+	This implies that $E$ canot be chosen $O(T^{\beta})$ for any $\beta>0$
+	without degrading the performance. This should be checked in experiments,
+	whether with partial participation if the communication round is set
+	to scale with $T$, the convergence deteriorates. This is in constrast
+	with the full participation case, where $E=O(\sqrt{\frac{T}{N}})$
+	is allowed. \textbf{If we can confirm that full participation allows
+	linear speedup with $\nu=N\cdot\max_{k}p_{k}\approx1$ and $E=O(\sqrt{\frac{T}{N}})$,
+	whereas partial participation only allows $E=O(1)$, then this would
+	an interesting phenomenon that is not reported by previous studies!}
+	\end{comment}
+\end{remark}
 
 \subsection{Accelerated SGD}
 In this section, we show that FedAvg with Nesterov accelerated SGD updates enjoys similar convergence rates with linear speedup. 
