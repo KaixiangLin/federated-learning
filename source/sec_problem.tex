@@ -37,7 +37,7 @@ steps. The central server conducts a weighted average over the models
 received from active devices and broadcasts the latest averaged model to all devices.
 Formally, the updates of FedAvg at round $t$ is described as follows:
 \begin{align}
-\vv_{t+1}^{k} & =\vw_{t}^{k}-\alpha_{t}g_{t,k}\\
+\vv_{t+1}^{k} & =\vw_{t}^{k}-\alpha_{t}\vg_{t,k}\\
 \mathbf{w}_{t+1}^{k} &=\left\{
 \begin{array}{ll}
 \mathbf{v}_{t+1}^{k} & \text { if } t+1 \notin \mathcal{I}_{E}, \\ 
