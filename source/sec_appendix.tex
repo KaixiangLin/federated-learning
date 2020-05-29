@@ -3,31 +3,35 @@
 
 \input{sec_appendix_notations}
 
+% older proofs are in files titled sec_
+% newer proofs are in files titled app_
+\section{Proof of Convergence Results for FedAvg}
 
-\section{Proof for Convergence Results on Strongly Convex and Smooth Objectives}
+\subsection{Strongly Convex Smooth Objectives}
+\input{app_sgd_scvx_smooth}
 
-\subsection{SGD}
-\input{sec_sgd_scvx_smooth}
-
-\subsection{Accelerated SGD}
+\subsection{Convex Smooth Objectives}
 \label{sec:nasgdscvxsmth}
-\input{sec_nasgd_scvx_smooth}
+%\input{sec_convexsmoothsgdwthvariance}
+\input{app_sgd_cvx_smooth}
 
-\section{Proof for Convergence Results on Convex and Smooth Objectives}
+\section{Proof of Convergence Results for Nesterov Accelerated FedAvg}
 
-\subsection{SGD}
+\subsection{Strongly Convex Smooth Objectives}
 \label{sec:convexsmoothsgd}
-% \input{sec_convexsmoothsgd}
-\input{sec_convexsmoothsgdwthvariance}
+%\input{sec_nasgd_scvx_smooth}
+\input{app_nasgd_scvx_smooth}
 
-\subsection{Accelerated SGD}
+\subsection{Convex Smooth Objectives}
 \label{sec:nasgdcvxsmth}
-\input{sec_nasgd_cvx_smth}
+%\input{sec_nasgd_cvx_smth}
+\input{app_nasgd_cvx_smth}
 
-\section{Proof for Exponential Convergence Results on Overparameterized Linear Regression}
+\section{Proof of Exponential Convergence Results on Overparameterized Quadratic Problems}
 \label{sec:interpolation}
 \input{app_overparameterized}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Convergence Results for Non-smooth Objectives}
 
 \subsection{SGD}
