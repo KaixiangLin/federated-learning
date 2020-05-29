@@ -70,25 +70,6 @@ partial participation, $E$ must be $O(1)$.
 	our bound still yields a linear speedup in $K$, which is not the
 	case for previous analyses. 
 \end{remark}
-%
-\textbf{}%
-\begin{comment}
-This implies that $E$ canot be chosen $O(T^{\beta})$ for any $\beta>0$
-without degrading the performance. This should be checked in experiments,
-whether with partial participation if the communication round is set
-to scale with $T$, the convergence deteriorates. This is in constrast
-with the full participation case, where $E=O(\sqrt{\frac{T}{N}})$
-is allowed. \textbf{If we can confirm that full participation allows
-linear speedup with $\nu=N\cdot\max_{k}p_{k}\approx1$ and $E=O(\sqrt{\frac{T}{N}})$,
-whereas partial participation only allows $E=O(1)$, then this would
-an interesting phenomenon that is not reported by previous studies!}
-
-The convergence result implies that with fixed $E$, as long as \$N\$
-satisfies \$E=O(\textbackslash sqrt\{T/N\})\$, there is linear speedup.
-When \$N\$ exceeds an upper bound, however, linear speedup may fail
-to happen, and \$T/N\$ may remain constant, i.e. the number of iterations
-required for convergence may increase with \$N\$. 
-\end{comment}
 
 \subsection{Convex Smooth Objectives}
 
