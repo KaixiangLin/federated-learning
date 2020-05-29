@@ -23,17 +23,19 @@ the linear regression problem without adding noise to the label, $F_k(\vw) =
 two cases, we use the w8a dataset to conduct empirical evaluation. 
 In the linear regression problem, we use features from w8a dataset and 
 generate a ground truth $w$ to label each instance, which satisfies the
-overparameterized setting.
+overparameterized setting. For the detailed experimental setup and
+hyperparameter setting, please refer to the section~\ref{sec:expsupp} in the
+appendix.
 
-% where we generated i.i.d. data $\vx_i^k$ for all devices. At each communication round, all devices participated
-% in synchronization. 
-\textbf{Linear speedup.} To verify the linear speedup results in Theorem~\ref{th:strongcvxsmth}~\ref{th:cvxsmoth}~\ref{th:fedmasslr}, we evaluate the number of iterations needed to reach
-$\epsilon$-accuracy in three objectives. We initialize all runs with $w_0 = \textbf{0}_d$ and measure. For each configuration, we run three random seeds and report
+
+% ~\ref{th:strongcvxsmth}~\ref{th:cvxsmoth}~\ref{th:fedmasslr}
+\textbf{Linear speedup.} To verify the linear speedup results in Theorems
+\lkxcom{cite sgd theorems}, we evaluate the number of iterations needed to reach
+$\epsilon$-accuracy in three objectives. We initialize all runs with $\vw_0 = \textbf{0}_d$ and measure. For each configuration, we run three random seeds and report
 the best seed results for each configuration $(E, K)$. In each configure, we
 extensive search the stepsize from $\min(\eta_0, \frac{nc}{1 + t})$, where
 $\eta_0 \in \{0.1, 0.12, 1, 32 \}$ according to different problems and $c$ can
-take the values $c = 2^u \forall i \in \ZZ$. For the detailed experimental setup,
-please refer to the appendix. As the results shown in Figure~\ref{fig:speedup},
+take the values $c = 2^i \ \forall i \in \ZZ$. As the results shown in Figure~\ref{fig:speedup},
 the number of iterations to reach the target accuracy $\epsilon$ decreasing 
 as the number of workers increase. 
 
@@ -50,7 +52,10 @@ are active. As the results shown in Figure~\ref{fig:partial}, the
 FedAve enjoys linear speedup in various settings even with partial
 device participation.
 
-
+\textbf{Nesterov accelerated FedAvg.} In Figure~\ref{fig:nesterov}, 
+report the convergence of Nesterov accelerated FedAvg. The empirical 
+observation is aligned with our theorems \lkxcom{cite accelerated theorems} that the acclerated version of FedAvg can also achieve the lienar speedup
+w.r.t the number of nodes.
 
 \begin{figure}
 \centering
@@ -101,7 +106,7 @@ device participation.
 \includegraphics[width=0.33\textwidth]{fig/paper-lrnesterovspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
 (a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
 	\end{tabular}
-\caption{The linear speedup convergence of Accelerated FedAvg w.r.t the number of workers. }
+\caption{The linear speedup convergence of Nesterov accelerated FedAvg w.r.t the number of workers. }
 \label{fig:nesterov}
 \end{figure}
 
