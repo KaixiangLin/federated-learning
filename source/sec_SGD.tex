@@ -2,123 +2,118 @@
 
 
 
-\section{Strongly Convex Smooth Objectives}
+\section{Linear Speedup Analysis of FedAvg}
 
-In this section, we show that FedAvg with local SGD has $O(1/NT)$ convergence
+In this section, we provide convergence analysis of FedAvg with local
+SGD updates. We show that for strongly convex and smooth objectives,
+the convergence of the optimality gap of averaged parameters across
+devices is $O(1/NT)$ where $N$ is the number of active devices during
+each communication round, while for convex and smooth objectives,
+the rate is $O(1/\sqrt{NT})$. 
+
+\subsection{Strongly Convex and Smooth Objectives}
+
+We first show that FedAvg with local SGD updates has $O(1/NT)$ convergence
 rate for $\mu$-strongly convex and $L$-smooth objectives. The result
 improves on the $O(1/T)$ result of {[}ICLR{]} with a linear speedup
-in the number of devices $N$. Moreover, it makes a distinction on
-the choice of $E$ with partial and full participation. With full
-participation, $E$ can be chosen as large as $O(\sqrt{\frac{T}{N}})$
-without degrading the linear speedup in the number of workers. On
-the other hand, with partial participation, $E$ must be $O(1)$. 
+in the number of devices $N$. Moreover, it implies a distinction
+in the choice of $E$ that guarantees this linear speedup for FedAvg
+with full and partial device participation. With full participation,
+$E$ can be chosen as large as $O(\sqrt{\frac{T}{N}})$ without degrading
+the linear speedup in the number of workers. On the other hand, with
+partial participation, $E$ must be $O(1)$. 
 \begin{theorem}
 	Suppose $F_{k}$ is $L$-smooth and $\mu$-strongly convex for all
-	$k$. Let $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa-1,E\}$ where
-	$E$ is the communication delay, and learning rates 
-	\begin{align*}
-	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}
-	\end{align*}
-	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
-	is such that $\alpha_{t}\leq\frac{1}{8L}$ for all $t\geq0$. 
+	$k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$. Let $\kappa=\frac{L}{\mu}$,
+	$\gamma=\max\{32\kappa,E\}$ where $E$ is the communication delay,
+	and diminishing learning rates $\alpha_{t}=\frac{1}{4\mu(\gamma+t)}$.
+	Let $\overline{w}_{T}=\sum_{k=1}^{N}p_{k}w_{T}^{k}$ be the average
+	of local parameters at an arbitrary time $T$.
 	
-	Then with full device participation, if $\nu_{max}=\max_{k}\frac{1}{N}p_{k}$,
-	we have 
+	With full device participation, 
 	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C\cdot(\frac{\kappa\nu_{max}^{2}\sigma^{2}}{NT}+\frac{5\kappa E^{2}LG^{2}}{T^{2}})
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast}=O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
-	and with partial participation with $K$ sampled devices at each
-	communication round, 
+	and with partial device participation with $K$ sampled devices at
+	each communication round, 
 	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C(\frac{\kappa\nu_{max}^{2}\sigma^{2}}{NT}+\frac{4\kappa E^{2}G^{2}}{KT}+\frac{5\kappa E^{2}LG^{2}}{T^{2}})
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
 \end{theorem}
 %
 \begin{remark}
-	We remark on the linear speedup and the choice of $E$. In full participation,
-	the leading term is $\frac{1}{NT}\nu_{max}^{2}\sigma^{2}$ whereas
-	$\frac{5\kappa E^{2}LG^{2}}{T^{2}}$ is a lower order term if $E$
-	is chosen constant. This implies that $E$ can be chosen to be as
-	large as $E=O(\sqrt{\frac{T}{N}})$ which results in $\frac{5\kappa E^{2}LG^{2}}{T^{2}}=O(\frac{1}{NT})$,
-	which will be on the same order as the leading term. This is in contrast
-	with the convergence rate in {[}ICLR{]} where $E$ cannot scale with
-	$T$ and must be $O(1)$, even with full participation. Thus our bound
-	yields a more efficient communication complexity than previous analyses.
-	We note however that this is only possible when there is full participation,
-	and when $\nu_{max}$ is close to 1. When there is partial participation,
-	however, $E$ has to stay $O(1)$, as the term leading term in the
-	bound for partial participation contains $\frac{4\kappa E^{2}G^{2}}{KT}$.
-	Thus our result hightlights the difference between the communication
-	efficiency of full and partial participation when an $O(1/NT)$ bound
-	on the optimality gap is desired. 
-	
-	\textbf{}%
-	\begin{comment}
-	This implies that $E$ canot be chosen $O(T^{\beta})$ for any $\beta>0$
-	without degrading the performance. This should be checked in experiments,
-	whether with partial participation if the communication round is set
-	to scale with $T$, the convergence deteriorates. This is in constrast
-	with the full participation case, where $E=O(\sqrt{\frac{T}{N}})$
-	is allowed. \textbf{If we can confirm that full participation allows
-	linear speedup with $\nu=N\cdot\max_{k}p_{k}\approx1$ and $E=O(\sqrt{\frac{T}{N}})$,
-	whereas partial participation only allows $E=O(1)$, then this would
-	an interesting phenomenon that is not reported by previous studies!}
-	\end{comment}
+	\textbf{Linear speedup. }We first compare our bound with that in {[}ICLR{]},
+	which is $O(\frac{1}{NT}\nu_{\max}^{2}\sigma^{2}\kappa/\mu+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{E^{2}G^{2}}{T}\kappa/\mu)$.
+	Because the third term $\frac{E^{2}G^{2}}{T}\kappa/\mu$ is also $O(1/T)$
+	without a dependence on $N$, for any choice of $E$ their bound cannot
+	achieve linear speedup. The improvement of our bound comes from the
+	term $\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}$, which now is $O(1/T^{2})$.
+	As a result, all leading terms scale with $1/N$ in the full device
+	particiaption setting, and with $1/K$ in the partial participation
+	setting. This implies that in both settings, there is a linear speedup
+	in the number of active workers during the communication round.
+\end{remark}
+%
+\begin{remark}
+	\textbf{Choice of $E$.} Our bound implies a distinction in the choice
+	of $E$ between the full and partial participation settings. In full
+	participation, as long as $E=O(\sqrt{\frac{T}{N}})$, the term $\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}=O(\frac{1}{NT})$,
+	which is on the same order as the leading term $\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}$.
+	Thus to achieve a linear speedup in the number of workers $N$, it
+	suffices to communicate every $O(\sqrt{\frac{T}{N}})$ iterations.
+	In contrast, the bound in {[}ICLR{]} does not allow $E$ to scale
+	with $\sqrt{T}$, even for full participation. Thus our bound yields
+	a more efficient communication complexity, while at the same time
+	providing a linear speedup in the convergence. On the other hand,
+	with partial participation, the term $\frac{\kappa E^{2}G^{2}/\mu}{KT}$
+	is also a leading term, and so $E$ must be $O(1)$. In this setting,
+	our bound still yields a linear speedup in $K$, which is not the
+	case for previous analyses. 
 \end{remark}
 
-\subsection{Accelerated SGD}
-In this section, we show that FedAvg with Nesterov accelerated SGD updates enjoys similar convergence rates with linear speedup. 
+\subsection{Convex Smooth Objectives}
 
-The FedAv algorithm with Nesterov Accelerated
-SGD follows the updates
-\begin{align*}
-y_{t+1}^{k} & =w_{t}^{k}-\alpha_{t}g_{t,k}\\
-w_{t+1}^{k} & =\begin{cases}
-y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E}\\
-\sum_{k=1}^{N}p_{k}\left[y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E}
-\end{cases}
-\end{align*}
-where 
-\begin{align*}
-g_{t,k} & :=\nabla F_{k}(w_{t}^{k},\xi_{t}^{k})
-\end{align*}
-is the stochastic gradient.
-
+In this section, we provide linear speedup analyses of FedAvg with
+convex and smooth objectives and show that the optimality gap is $O(1/\sqrt{NT})$
+where $N$ is the number of participating devices. This result complements
+the strongly convex case in the previous part, as well as the non-convex
+smooth setting in {[}CITE Yu and others{]}, where a similar $O(1/\sqrt{NT})$
+rate is given in terms of averaged gradient norm. 
 \begin{theorem}
-	Suppose $F_{k}$ is $L$-smooth and $\mu$-strongly convex for all
-	$k$. Let $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa-1,E\}$ where
-	$E$ is the communication interval, and learning rates 
+	Suppose $F_{k}$ is $L$-smooth and convex for all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$.
+	Set learning rate $\alpha_{t}=O(\sqrt{\frac{N}{T}})$. With full device participation, 
 	\begin{align*}
-	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}\\
-	\beta_{t} & \leq\alpha_{t}
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
 	\end{align*}
-	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
-	is small enough such that the following hold: 
+	and with partial device participation with $K$ sampled devices at
+	each communication round, 
 	\begin{align*}
-	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
-	\alpha_{t} & \leq\frac{1}{4L}\\
-	4\alpha_{t-1}^{2} & \leq\alpha_{t}
-	\end{align*}
-	for all $t\geq0$. Suppose also that $G$ is a constant satisfying
-	$\mathbb{E}\|w_{0}-\alpha_{0}g_{0,k}\|^{2}=\mathbb{E}\|w_{0}-\alpha_{0}\nabla F_{k}(w_{0},\xi_{0}^{k})\|^{2}\leq G^{2}$
-	for all $k$, and $\mathbb{E}\|g_{t,k}\|^{2}\leq G^{2}$ for all $t,k$. 
-	
-	Then with full device participation, if $\nu_{max}=\max_{k}\frac{1}{N}p_{k}$,
-	we have 
-	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C\frac{\kappa}{\gamma+T}\cdot(32E^{2}LG^{2}/T+\frac{1}{N}\nu_{max}^{2}\sigma^{2})
-	\end{align*}
-	so that as long as $E=O(\sqrt{\frac{N}{T}})$, 
-	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq C(32LG^{2}+\nu_{max}^{2}\sigma^{2})\frac{\kappa}{N(\gamma+T)}
-	\end{align*}
-	and with partial participation with $K$ sampled devices at each
-	communication round, 
-	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq C\frac{\kappa}{\gamma+T}\cdot(32E^{2}LG^{2}/T+\frac{1}{N}\nu_{max}^{2}\sigma^{2}+\frac{16}{K}E^{2}G^{2})
-	\end{align*}
-	so that if $E=O(1)$, 
-	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast} & \leq C(16E^{2}G^{2}+\nu_{max}^{2}\sigma^{2})\frac{\kappa}{K(\gamma+T)}+\frac{32E^{2}LG^{2}}{T^{2}}
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
 	\end{align*}
 \end{theorem}
+
+\begin{remark}
+	\textbf{Choice of $E$ and linear speedup. }Similar in the strongly
+	convex case, we see that in the full participation setting, as long
+	as $E=O(\sqrt{\frac{T^{1/3}}{N}})$, the convergence benefits from
+	a linear speedup in the number of active workers. In the partial participation
+	setting, $E$ must be $O(1)$ in order to allow for linear speedup.
+\end{remark}
+%
+\begin{remark}
+	\textbf{Learning rate. }The learning rate now depends on the final
+	horizon $T$ of the convergence statement, whereas before the learning
+	rate was set to $O(1/t)$ for the $t$-th iteration. We also note
+	that the requirement on $\alpha_{t}=O(\sqrt{\frac{N}{T}})$ is also
+	present in the work of {[}Yu{]} where they derive similar $O(1/\sqrt{NT})$
+	linear speedup convergence results for nonconvex smooth federated
+	learning problems.
+\end{remark}
+For non-smooth objectives, we also have convergence results with rates
+$O(1/T)$ and $O(1/\sqrt{T})$ for strongly convex and convex cases,
+which can be found in the appendix. Without smoothness, however, the
+linear speedup is no longer guaranteed. Together these results complete
+the picture of convergence analyses for FedAvg with local SGD updates
+for general convex heterogeneous objectives. We next investigate the
+convergence of FedAvg with Nesterov updates, and provide similar linear
+speedup analyses for convex smooth objectives. 

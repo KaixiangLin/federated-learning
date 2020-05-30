@@ -10,43 +10,46 @@ and strongly convex settings, respectively. In this section, we turn
 to the special setting of overparameterized problems, where a non-negative
 loss function admits a zero-loss global minimizer. Such problems are
 very common in machine learning systems where the number of parameters
-far exceeds the number of data points, and perfect fitting is possible.
+far exceeds the number of data points, and perfect fitting is possible. 
+
 There have been a line of recent works {[}CITE{]} showing that SGD
 and accelerated methods achieve exponential convergence in this case,
-thanks to the property of ``automatic variance reduction'' property
-{[}CITE{]}. The natural question is whether such a result also holds
-in the federated learning setting. We first show that this is indeed
-the case and establish the exponential (linear) convergence of FedAvg
-with local SGD updates with constant step size for general strongly
-convex and smooth overparameterized problems. In addition, we show
-that the convergence rate speeds up linearly in the number of workers
-$N$ when $N$ is below some problem-dependent threhold, while decreases
-with $E$ through $1/E$. To our knowledge, this is the first result
-on the exponential convergence of FedAvg algorithms in the interpolation
-setting with linear speedup in the number of workers and explicit
-dependence on the communication interval $E$. We next sharpen this
-exponential convergence rate in the special case of linear regression,
-and show that it is $O(\exp(-\frac{NT}{E\kappa_{1}}))$, for $\kappa_{1}$
-an appropriately defined condition number of the system. Lastly, we
-turn to the question of whether FedAvg with momentum-based local updates
-can outperform FedAvg with SGD updates. In contrast to the gradient
-descent setting, in the single-agent stochastic gradient setting,
-Nesterov and Heavy Ball updates are known to fail to accelerate over
-SGD, both in the overparameterized setting and standard convex setting{[}CITE{]}.
-Thus in general we cannot hope to obtain acceleration results for
-the FedAvg algorithm with Nesterov and Heavy Ball updates. On the
-other hand, in the overparameterized setting, {[}CITE Belkin{]} introduced
-the MaSS algorithm, which is a modification of the Nesterov update,
-where in the update a non-negative multiple of the gradient is added
-to the Nesterov parameter update to correct for the ``over-descent''
+thanks to the property of ``automatic variance reduction'' {[}CITE{]}.
+The natural question is whether such a result also holds in the federated
+learning setting. We first show that this is indeed the case and establish
+the exponential (linear) convergence of FedAvg with local SGD updates
+with constant step size for general strongly convex and smooth overparameterized
+problems. In addition, we show that the convergence rate speeds up
+linearly in the number of workers $N$ when $N$ is below some problem-dependent
+threhold, while decreases with $E$ through $1/E$. 
+
+To our knowledge, this is the first result on the exponential convergence
+of FedAvg algorithms in the interpolation setting with linear speedup
+in the number of workers and explicit dependence on the communication
+interval $E$. We next sharpen this exponential convergence rate in
+the special case of linear regression, and show that it is $O(\exp(-\frac{NT}{E\kappa_{1}}))$,
+for $\kappa_{1}$ an appropriately defined condition number of the
+system. 
+
+Lastly, we turn to the question of whether FedAvg with momentum-based
+local updates can outperform FedAvg with SGD updates. In contrast
+to the gradient descent setting, in the single-agent stochastic gradient
+setting, Nesterov and Heavy Ball updates are known to fail to accelerate
+over SGD, both in the overparameterized setting and standard convex
+setting{[}CITE{]}. Thus in general we cannot hope to obtain acceleration
+results for the FedAvg algorithm with Nesterov and Heavy Ball updates.
+On the other hand, in the overparameterized setting, {[}CITE Belkin{]}
+introduced the MaSS algorithm, which is a modification of the Nesterov
+update, where in the update a non-negative multiple of the gradient
+is added to the Nesterov parameter update to correct for the ``over-descent''
 of the Nesterov update. For quadratic objectives, the authors show
 that the MaSS algorithm is able to achieve acceleration over the exponential
 convergence of SGD both theoretically and empirically. In the last
-part of this section, we introduce a new FedAvg algorithm with momentum
-updates by adapting the MaSS algorithm to the federated learning setting.
-For this new FedAvg algorithm with local MaSS updates, we show that
-it achieves exponential convergence for overparameterized quadratic
-problems with rate $O(\exp(-\frac{NT}{E\sqrt{\kappa_{1}\tilde{\kappa}}}))$,
+part of this section, we introduce a new accelerated FedAvg algorithm
+by adapting the MaSS algorithm to the federated learning setting.
+For this new accelerated FedAvg algorithm with local MaSS updates,
+we show that it achieves exponential convergence for overparameterized
+quadratic problems with rate $O(\exp(-\frac{NT}{E\sqrt{\kappa_{1}\tilde{\kappa}}}))$,
 where $\tilde{\kappa}$ is the ``statistical condition number''
 introduced in {[}CITE{]} that satisfies $\tilde{\kappa}\leq\kappa_{1}$.
 Thus the FedAvg algorithm with local MaSS updates preserves the linear
@@ -54,8 +57,7 @@ speedup property in the number of workers and the $1/E$ dependence
 on $E$, while achieving a speedup of factor $\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$
 over FedAvg with local SGD updates. 
 
-\subsection{Exponential Convergence of FedAvg with local SGD: Overparameterized
-	Strongly Convex Smooth Objective}
+\subsection{Exponential Convergence and Linear Speedup of FedAvg with local SGD }
 
 In {[}CITE Belkin{]}, the authors show that in the overparameterized
 setting, SGD achieves exponential convergence with linear speedup
@@ -64,14 +66,11 @@ we extend their result to the federated learning setting and show
 that a similar exponential convergence with linear speedup in the
 number of workers using FedAvg with local SGD updates holds. 
 
-Recall the federated learning problem 
-\begin{align*}
-\min_{w}\sum_{k=1}^{N}p_{k}F_{k}(w)\\
-F_{k}(w)=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\ell(w;\xi_{k,j})
-\end{align*}
-In this section, we consider the standard ERM setting where each
-$\ell(w;\xi_{k,j})$ is non-negative, $l$-smooth, and convex, and
-as before, we assume that each $F_{k}(w)=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\ell(w;\xi_{k,j})$
+Recall the federated learning problem $\min_{w}\sum_{k=1}^{N}p_{k}F_{k}(w)$
+with $F_{k}(w)=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\ell(w;\xi_{k,j})$.
+In this section, we consider the standard ERM setting where each $\ell(w;\xi_{k,j})$
+is non-negative, $l$-smooth, and convex, and as before, we assume
+that each $F_{k}(w)=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\ell(w;\xi_{k,j})$
 is $L$-smooth and $\mu$-strongly convex. Note that $l\geq L$. This
 setting includes many important problems in practice, such as linear
 regression with a full rank sample covariance matrix. In the overparameterized
@@ -81,8 +80,8 @@ these assumptions, we first show that FedAvg with local SGD updates
 and communication every $E$ iterations achieves exponential convergence
 with linear speedup in the number of workers.
 \begin{theorem}
-	For the overparameterized setting with general strongly convex and
-	smooth objectives, FedAvg with local SGD updates and communication
+	For the overparameterized setting with general $\mu$-strongly convex
+	and $L$-smooth objectives, FedAvg with local SGD updates and communication
 	every $E$ iterations with constant step size $\overline{\alpha}=\frac{1}{4E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
 	gives the exponential convergence guarantee 
 	\begin{align*}
@@ -91,7 +90,7 @@ with linear speedup in the number of workers.
 \end{theorem}
 %
 \begin{remark}
-	We see that when $l>L$, the speedup factor is on the order of $\frac{N}{E(l\nu_{\max}+L(N-\nu_{\min}))}/\frac{1}{l\nu_{\max}+L(1-\nu_{\min})}\approx\frac{Nl}{E(l+L(N-1))}=O(N/E)$
+	When $l>L$, the speedup factor is on the order of $\frac{N}{E(l\nu_{\max}+L(N-\nu_{\min}))}/\frac{1}{l\nu_{\max}+L(1-\nu_{\min})}\approx\frac{Nl}{E(l+L(N-1))}=O(N/E)$
 	for $N\leq\frac{l}{L}+1$, i.e. FedAvg with $N$ workers and communication
 	every $E$ iterations provides an exponential convergence speedup
 	factor of $O(N/E)$, for $N\leq\frac{l}{L}+1$. When $N$ is above
@@ -118,18 +117,16 @@ are given by the sum of squares.
 F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j})^{2}
 \end{align*}
 and there exists $w^{\ast}$ such that $F(w^{\ast})=\sum_{k}p_{k}F_{k}(w^{\ast})\equiv0$.
-In this section, we gather some necessary definitions and observations
-useful in the analysis of exponential convergence of FedAvg algorithms. 
+For such quadratic problems, we will present a sharper bound for FedAvg
+with explicit dependence on the condition number, and demonstrate
+how the convergence rate can be further improved using a momentum-based
+accelerated FedAvg algorithm based on the MaSS algorithm of {[}CITE
+Belkin{]}. 
 
-Define the local Hessian matrix as 
-\begin{align*}
-H^{k} & :=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}x_{k,j}(x_{k,j})^{T}
-\end{align*}
-and the averaged Hessian matrix as 
-\begin{align*}
-H & :=\sum_{k=1}^{N}p_{k}H^{k}
-\end{align*}
-
+In this section, we first gather some necessary definitions and observations
+useful in the analysis of exponential convergence of FedAvg algorithms.
+Define the local Hessian matrix as $H^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}x_{k,j}(x_{k,j})^{T}$
+and the averaged Hessian matrix as $H:=\sum_{k=1}^{N}p_{k}H^{k}$.
 In general $H$ has zero eigevalues. However, because the null space
 of $H$ and range of $H$ are orthogonal, in our subsequence analysis
 it suffices to project $\overline{w}_{t}-w^{\ast}$ onto the range
@@ -138,13 +135,10 @@ of $H$, thus we may restrict to the non-zero eigenvalue of $H$.
 We can use $w^{\ast T}x_{k,j}-z_{k,j}\equiv0$ to rewrite the local
 objectives 
 \begin{align*}
-F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j}-(w^{\ast T}x_{k,j}-z_{k,j}))^{2}\\
-& =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((w-w^{\ast})^{T}x_{k,j})^{2}=\frac{1}{2}\langle w-w^{\ast},H^{k}(w-w^{\ast})\rangle=\frac{1}{2}\|w-w^{\ast}\|_{H^{k}}^{2}
+F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j}-(w^{\ast T}x_{k,j}-z_{k,j}))^{2}=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((w-w^{\ast})^{T}x_{k,j})^{2}\\
+& =\frac{1}{2}\langle w-w^{\ast},H^{k}(w-w^{\ast})\rangle=\frac{1}{2}\|w-w^{\ast}\|_{H^{k}}^{2}
 \end{align*}
-so that 
-\begin{align*}
-F(w) & =\sum_{k=1}^{N}p_{k}F_{k}(w)=\sum_{k=1}^{N}p_{k}\frac{1}{2}(w-w^{\ast})^{T}H^{k}(w-w^{\ast})=\frac{1}{2}(w-w^{\ast})^{T}H(w-w^{\ast})=\frac{1}{2}\|w-w^{\ast}\|_{H}^{2}
-\end{align*}
+so that $F(w)=\frac{1}{2}\|w-w^{\ast}\|_{H}^{2}$. 
 
 Let $x_{t}^{k}$ be the stochastic sample on the $k$th device during
 iteration $t$, and define $\tilde{H}_{t}^{k}:=x_{t}^{k}(x_{t}^{k})^{T}$
@@ -174,107 +168,99 @@ number such that
 \end{align*}
 and define $\tilde{\kappa}:=\max_{k}\tilde{\kappa}^{k}$. The condition
 numbers $\kappa_{1}$ and $\tilde{\kappa}$ are important in the characterization
-of convergence rates for FedAvg algorithms. 
+of convergence rates for FedAvg algorithms. Note that $\kappa_{1}>\kappa$ and $\kappa_{1}>\tilde{\kappa}$. 
 
-Note that $\kappa_{1}>\kappa$ and $\kappa_{1}>\tilde{\kappa}$. 
+\subsection{Acceleration of FedAvg with Momentum-based Updates}
 
-\subsection{Exponential Convergence of FedAvg with local SGD: Over-parameterized
-	Quadratic Objective}
-
-Next we show that specialized to overparameterized quadratic objectives,
-the exponential convergence bound can be further sharpened, with a
-similar linear speedup in the number of workers. Recall that in this
-setting, we have 
-\begin{align*}
-F(w) & =\sum_{k=1}^{N}p_{k}F_{k}(w)\\
-F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j})^{2}
-\end{align*}
-and there exists $w^{\ast}$ such that $F_{k}(w^{\ast})\equiv0$
-for all $k$. 
+In the single-agent stochastic optimization setting, Nesterov updates
+are known to fail to accelerate over SGD updates, so that in the federated
+learning setting, we cannot hope for acceleration results of FedAvg
+with Nesterov updates in general. The natural question is then whether
+there are accelerated versions of the FedAvg algorithm that have provable
+improvements over the FedAvg algorithm based on local SGD updates.
+We answer this question in the affirmative in the overparameterized
+quadratic problem setting, extending recent results {[}CITE: Sidford,
+Belkin{]} in the single agent setting. In particular, we show that
+specialized to overparameterized quadratic objectives, the exponential
+convergence bound can be further sharpened, with a similar linear
+speedup in the number of workers. This rate will then be further improved
+using a new accelerated FedAvg algorithm with momentum-based updates. 
 \begin{theorem}
-	For the overparamterized linear regression problem, FedAvg with local
-	SGD updates and communication every $E$ iterations with constant
-	step size $\alpha_{t}=\frac{1}{4E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}$
+	For the overparamterized quadratic problem, FedAvg with local SGD
+	updates and communication every $E$ iterations with constant step
+	size $\alpha_{t}=\frac{1}{4E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}$
 	gives the exponential convergence guarantee 
 	\begin{align*}
 	\mathbb{E}F(\overline{w}_{t}) & \leq L(1-\frac{N}{4E(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})^{t}\|w_{0}-w^{\ast}\|^{2}
 	\end{align*}
-	where $\kappa_{1}=l/\mu$. 
 \end{theorem}
 %
+
 We see that when $N=O(\kappa_{1})$, the convergence rate is $O((1-\frac{N}{E\kappa_{1}})^{t})=O(\exp(-\frac{N}{E\kappa_{1}}t))$,
 which exhibits linear speedup in the number of workers, as well as
 a $1/\kappa_{1}$ dependence on the condition number $\kappa_{1}$.
 In the last part of this section, we will demonstrate that a new FedAvg
 algorithm based on a local momentum update {[}CITE Belkin{]} improves
-upon this dependence to $1/\sqrt{\kappa_{1}\tilde{\kappa}}$.
+upon this dependence to $1/\sqrt{\kappa_{1}\tilde{\kappa}}$. 
 
- \subsection{Exponential Convergence of FedAvg with local MaSS: Over-parameterized
- 	Quadratic Objective}
- 
- Following {[}CITE{]}, we propose the FedAvg algorithm with local MaSS
- updates: 
- \begin{align*}
- w_{t+1}^{k} & =\begin{cases}
- u_{t}^{k}-\eta_{1}^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
- \sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta_{1}^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
- \end{cases}\\
- u_{t+1}^{k} & =w_{t+1}^{k}+\gamma^{k}(w_{t+1}^{k}-w_{t}^{k})+\eta_{2}^{k}g_{t,k}
- \end{align*}
- where we note that the natural parameter is $w_{t}$, while $u_{t}$
- is an auxiliary parameter, which we initialize to be $u_{0}^{k}$,
- $g_{t,k}=\nabla F_{k}(u_{t}^{k},x_{t}^{k})$ is the stochastic gradient
- and $g_{t}=\sum_{k=1}^{N}p_{k}g_{t,k}$ is the averaged stochastic
- gradient. When $\eta_{2}^{k}\equiv0$, this reduces to the FedAvg
- algorithm with Nesterov updates.
- 
- Also note that the update can equivalently be written as 
- \begin{align*}
- v_{t+1}^{k} & =(1-\alpha^{k})v_{t}^{k}+\alpha^{k}u_{t}^{k}-\delta^{k}g_{t,k}\\
- w_{t+1}^{k} & =\begin{cases}
- u_{t}^{k}-\eta^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
- \sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
- \end{cases}\\
- u_{t+1}^{k} & =\frac{\alpha^{k}}{1+\alpha^{k}}v_{t+1}^{k}+\frac{1}{1+\alpha^{k}}w_{t+1}^{k}
- \end{align*}
- where there is a bijection between the parameters 
- \begin{align*}
- \frac{1-\alpha^{k}}{1+\alpha^{k}} & =\gamma^{k}\\
- \eta^{k} & =\eta_{1}^{k}\\
- \frac{\eta^{k}-\alpha^{k}\delta^{k}}{1+\alpha^{k}} & =\eta_{2}^{k}
- \end{align*}
- and we further introduce an auxiliary parameter $v_{t}^{k}$, which
- is initialized at $v_{0}^{k}$. We also note that when $\delta^{k}=\frac{\eta^{k}}{\alpha^{k}}$,
- the update reduces to the Nesterov accelerated SGD. This version of
- the FedAvg algorithm with local MaSS updates is used for analyzing
- the exponential convergence. 
- 
- As before, define the virtual sequences $\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$,
- $\overline{v}_{t}=\sum_{k=1}^{N}p_{k}v_{t}^{k}$, $\overline{u}_{t}=\sum_{k=1}^{N}p_{k}u_{t}^{k}$,
- and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$. We have
- $\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{w}_{t+1}=\overline{u}_{t}-\eta_{t}g_{t}$,
- $\overline{v}_{t+1}=(1-\alpha^{k})\overline{v}_{t}+\alpha^{k}\overline{w}_{t}-\delta^{k}g_{t}$,
- and $\overline{u}_{t+1}=\frac{\alpha^{k}}{1+\alpha^{k}}\overline{v}_{t+1}+\frac{1}{1+\alpha^{k}}\overline{w}_{t+1}$. 
- 
- We now present the exponential convergence result in overparameterized
- quadratic problems using FedAvg with local MaSS updates. 
- \begin{theorem}
- 	(FedAvg with MaSS, Linear Regression) For the overparamterized quadratic
- 	problem, FedAvg with local MaSS updates and communication every $E$
- 	iterations with constant step sizes 
- 	\begin{align*}
- 	\eta_{t}=\frac{1}{4E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}, & \alpha_{t}=\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}},\delta_{t}=\frac{\eta_{t}}{\alpha_{t}\tilde{\kappa}}
- 	\end{align*}
- 	gives the exponential convergence guarantee 
- 	\begin{align*}
- 	\mathbb{E}F(\overline{w}_{t}) & \leq C(1-\frac{1}{4E}\frac{N}{l\nu_{\max}\sqrt{\kappa_{1}\tilde{\kappa}}+(N-\nu_{\min})})^{t}\|w_{0}-w^{\ast}\|^{2}
- 	\end{align*}
- \end{theorem}
- Compared to the convergence rate of FedAvg with local SGD updates,
- we see that when $N=O(\sqrt{\kappa_{1}\tilde{\kappa}})$, the convergence
- rate is $O((1-\frac{N}{E\sqrt{\kappa_{1}\tilde{\kappa}}})^{t})=O(\exp(-\frac{N}{E\sqrt{\kappa_{1}\tilde{\kappa}}}t))$
- as opposd to $O(\exp(-\frac{N}{E\kappa_{1}}t))$. Since $\kappa_{1}\geq\tilde{\kappa}$,
- this implies a speedup factor of $\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$
- for the FedAvg with local MaSS updates. On the other hand, the same
- linear speedup in the number of workers holds for $N$ in a smaller
- range of values. 
+Following {[}CITE{]}, we propose the accelerated FedAvg algorithm
+with local MaSS updates: 
+\begin{align*}
+w_{t+1}^{k} & =\begin{cases}
+u_{t}^{k}-\eta_{1}^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
+\sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta_{1}^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
+\end{cases}\\
+u_{t+1}^{k} & =w_{t+1}^{k}+\gamma^{k}(w_{t+1}^{k}-w_{t}^{k})+\eta_{2}^{k}g_{t,k}
+\end{align*}
+where we note that the natural parameter is $w_{t}$, while $u_{t}$
+is an auxiliary parameter, which we initialize to be $u_{0}^{k}$,
+$g_{t,k}=\nabla F_{k}(u_{t}^{k},x_{t}^{k})$ is the stochastic gradient
+and $g_{t}=\sum_{k=1}^{N}p_{k}g_{t,k}$ is the averaged stochastic
+gradient. When $\eta_{2}^{k}\equiv0$, this reduces to the accelerated
+FedAvg algorithm with Nesterov updates.
+
+Also note that the update can equivalently be written as 
+\begin{align*}
+v_{t+1}^{k} & =(1-\alpha^{k})v_{t}^{k}+\alpha^{k}u_{t}^{k}-\delta^{k}g_{t,k}\\
+w_{t+1}^{k} & =\begin{cases}
+u_{t}^{k}-\eta^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
+\sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
+\end{cases}\\
+u_{t+1}^{k} & =\frac{\alpha^{k}}{1+\alpha^{k}}v_{t+1}^{k}+\frac{1}{1+\alpha^{k}}w_{t+1}^{k}
+\end{align*}
+where there is a bijection between the parameters $\frac{1-\alpha^{k}}{1+\alpha^{k}}=\gamma^{k},\eta^{k}=\eta_{1}^{k},\frac{\eta^{k}-\alpha^{k}\delta^{k}}{1+\alpha^{k}}=\eta_{2}^{k}$,
+and we further introduce an auxiliary parameter $v_{t}^{k}$, which
+is initialized at $v_{0}^{k}$. We also note that when $\delta^{k}=\frac{\eta^{k}}{\alpha^{k}}$,
+the update reduces to the Nesterov accelerated SGD. This version of
+the FedAvg algorithm with local MaSS updates is used for analyzing
+the exponential convergence. 
+
+As before, define the virtual sequences $\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$,
+$\overline{v}_{t}=\sum_{k=1}^{N}p_{k}v_{t}^{k}$, $\overline{u}_{t}=\sum_{k=1}^{N}p_{k}u_{t}^{k}$,
+and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$. We have
+$\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{w}_{t+1}=\overline{u}_{t}-\eta_{t}g_{t}$,
+$\overline{v}_{t+1}=(1-\alpha^{k})\overline{v}_{t}+\alpha^{k}\overline{w}_{t}-\delta^{k}g_{t}$,
+and $\overline{u}_{t+1}=\frac{\alpha^{k}}{1+\alpha^{k}}\overline{v}_{t+1}+\frac{1}{1+\alpha^{k}}\overline{w}_{t+1}$. 
+
+We now present the exponential convergence result in overparameterized
+quadratic problems using FedAvg with local MaSS updates. 
+\begin{theorem}
+For the overparamterized quadratic problem, FedAvg with local MaSS
+updates and communication every $E$ iterations with constant step
+sizes 
+\begin{align*}
+\eta_{t}=\frac{1}{4E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}, & \alpha_{t}=\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}},\delta_{t}=\frac{\eta_{t}}{\alpha_{t}\tilde{\kappa}}
+\end{align*}
+gives the exponential convergence guarantee 
+\begin{align*}
+\mathbb{E}F(\overline{w}_{t}) & \leq C(1-\frac{1}{4E}\frac{N}{l\nu_{\max}\sqrt{\kappa_{1}\tilde{\kappa}}+(N-\nu_{\min})})^{t}\|w_{0}-w^{\ast}\|^{2}
+\end{align*}
+\end{theorem}
+Compared to the convergence rate of FedAvg with local SGD updates,
+we see that when $N=O(\sqrt{\kappa_{1}\tilde{\kappa}})$, the convergence
+rate is $O((1-\frac{N}{E\sqrt{\kappa_{1}\tilde{\kappa}}})^{t})=O(\exp(-\frac{N}{E\sqrt{\kappa_{1}\tilde{\kappa}}}t))$
+as opposed to $O(\exp(-\frac{N}{E\kappa_{1}}t))$. Since $\kappa_{1}\geq\tilde{\kappa}$,
+this implies a speedup factor of $\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$
+for the FedAvg with local MaSS updates. On the other hand, the same
+linear speedup in the number of workers holds for $N$ in a smaller
+range of values. 
