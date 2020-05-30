@@ -10,8 +10,10 @@ empirical success of FL~\cite{chen2018federated,47586} has attracted much attent
 
 % Non-convex linear speedup
 In particular, we focus on the convergence analysis of FedAvg, which
-has been discussed in various settings. 
-In~\cite{yu2019parallel,wang2019adaptive}, the authors provide the convergence rate of FedAvg for the non-convex problem, given all the devices are active at each communication round. Recently, \citep{huo2020faster} provide 
+has been studied in various scenarios. 
+In~\cite{yu2019parallel,wang2019adaptive}, the authors provide the convergence rate of FedAvg for the non-convex problem, given all the devices are active at each communication round. \cite{haddadpour2019convergence}
+improves the convergence analysis for non-convex problem under the setting of partial participation. 
+Recently, \citep{huo2020faster} provide
 convergence guarantee for Nesterov accelerated FedAvg for non-convex 
 setting in a partial participation setting. Although the empirical
 results are improved over FedAvg, the accelerated version admitting a similar convergence rate as FedAvg. In this work, we provide a novel accelerated
