@@ -1,0 +1,11 @@
+% !TEX ROOT=./main.tex
+
+\section{Conclusions}
+This paper provides a comprehensive analysis of the convergence rate of FedAvg
+and its accelerated variants in a general federated learning problem with heterogeneous local data and partial participation. We show that both accelerated FedAvg with Nesterov updates and FedAvg
+can achieve linear speedup when the number of nodes increases, i.e., $O(1/\sqrt{NT})$
+convergence for convex smooth problems and $O(1/NT)$ convergence for strongly 
+convex smooth problems. [TODO:Add discussion about communication efficiency.]Furthermore, we show that FedAvg can in fact achieve exponential 
+convergence for overparameterized strongly convex smooth problems, and we propose the MaSS accelerated Fedavg algorithm, which has provable speedup in convergence rate over
+FedAvg on quadratic problems. Last but not least, we empirically
+verify the linear speedup of FedAvg and Nesterov accelerated FedAvg for strongly convex, convex smooth, and linear regression problems. The empirical results are well-aligned with our theories. 

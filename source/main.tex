@@ -2,20 +2,21 @@
 
 % if you need to pass options to natbib, use, e.g.:
 %     \PassOptionsToPackage{numbers, compress}{natbib}
-% before loading neurips_2019
+% before loading neurips_2020
 
 % ready for submission
-\usepackage{neurips_2019}
+% \usepackage{neurips_2020}
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
 % [preprint] option:
-%     \usepackage[preprint]{neurips_2019}
+%     \usepackage[preprint]{neurips_2020}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
-     % \usepackage[final]{neurips_2019}
+%     \usepackage[final]{neurips_2020}
 
 % to avoid loading the natbib package, add option nonatbib:
-%     \usepackage[nonatbib]{neurips_2019}
+     \usepackage[nonatbib]{neurips_2020}
+
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -46,7 +47,7 @@
 \input{bmacros}
 \newtheorem*{assumption*}{Assumption}
 
-\title{Unified Convergence Analysis of FedAve on Non-IID Data}
+\title{The Blessing of FedAvg's Linear Speedup in Federated Learning}
 
 \author{}
 
@@ -54,12 +55,11 @@
 
 \maketitle
 
-% \tableofcontents
 \begin{abstract}
-Federated learning is a distributed learning paradigm that enables learning a
-model jointly over a large number of workers without sharing the private data
-on local workers. The characteristics of non-identically distributed data
-across the network and low device participation bring significant challenges
+Federated learning is a distributed learning paradigm that enables learning
+a model jointly over a large number of workers without sharing the private
+data on local workers. The characteristics of non-identically distributed data
+across the network and low device participation brings significant challenges
 in analyzing the convergence of federated learning algorithms. Prior works
 have either analyzed the convergence with i.i.d. data, or with full device
 participation, and often with suboptimal rates. In this work, we provide a
@@ -67,43 +67,24 @@ comprehensive analysis of the convergence rate of Federated Averaging (FedAvg)
 with SGD and Nesterov SGD updates for general convex problems with arbitrarily
 heterogeneous data. Firstly we show that the convergence rates enjoy a linear
 speedup in the number of participating workers for all convex smooth problems
-for both algorithms. Furthermore, we propose a new accelerated federated
-learning algorithm improving the convergence rate over FedAvg with SGD in the
-overparameterized setting. Empirical evaluation of the algorithms in various
-settings match our theoretical results.
+for both algorithms.  Furthermore, in the overparamterized setting, we prove that the convergence under FedAvg is in fact exponential, also with a speedup factor linear in the number of workers. We also propose a new accelerated federated learning algorithm that further improves this convergence rate with provable guarantees in the linear regression setting. Empirical evaluation of the algorithms in various settings match our theoretical results.
 \end{abstract}
 
-
-% converge proof
-% Introduction.
-
-% accelerated 
-% convex strongly 
-% smooth non-smooth. 
+\input{sec_intro}
+\input{sec_relatedwork}
 \input{sec_problem}
-\input{sec_theorems}
-\newpage
+\input{sec_SGD}
+\input{sec_Nesterov}
+\input{sec_overparameterized}
 \input{sec_exp}
-% \input{sec_exp_note}
 
+\input{sec_conclude}
+
+\input{sec_impact}
 \newpage
-\appendix
-% \input{sec_overview}
-% \input{sec_acceleratedFL}
-
-% accelerated FL survey
-
-% paper
-
-% \begin{itemize}
-% 	\item On Federated Learning of Deep Networks from Non-IID Data: Parameter Divergence and the Effects of Hyperparametric Methods: empirical evaluation 
-% 	paper, the loss surface could be helpful.
-% 	\item On the Linear Speedup Analysis of Communication Efficient Momentum SGD for Distributed Non-Convex Optimization: Non-convex, smooth, accelerated SGD, Full device particaption.
-% \end{itemize}
-
-% \newpage
-\small
 \bibliographystyle{plain}
 \bibliography{ref.bib}
 
+\appendix
+\input{sec_appendix}
 \end{document}

@@ -1,0 +1,34 @@
+% !TEX ROOT=./main.tex
+
+\section{Related Works}
+
+% related work on convergence rate
+Federated learning (FL) was originally proposed
+in~\cite{mcmahan2016communication} for learning a single, global statistical
+model from the isolated data stored in a massive number of devices.  The
+empirical success of FL~\cite{chen2018federated,47586} has attracted much attention to the rigorous theoretical understanding of the leading algorithm in the field: Federated Averaging (FedAvg) and its accelerated variants~\cite{liu2019accelerating,haddadpour2019convergence,khaled2019first,li2019convergence,huo2020faster,yu2019linear,yu2019parallel}.
+
+% Non-convex linear speedup
+In particular, we focus on the convergence analysis of FedAvg, which
+has been discussed in various settings. 
+In~\cite{yu2019parallel,wang2019adaptive}, the authors provide the convergence rate of FedAvg for the non-convex problem, given all the devices are active at each communication round. Recently, \citep{huo2020faster} provide 
+convergence guarantee for Nesterov accelerated FedAvg for non-convex 
+setting in a partial participation setting. Although the empirical
+results are improved over FedAvg, the accelerated version admitting a similar convergence rate as FedAvg. In this work, we provide a novel accelerated
+FedAvg with improved convergence rates under a popular overparameterized setting. In addition, \cite{yu2019linear} provides $O(1/\sqrt{NT})$ 
+convergence (i.e., linear speedup) of FedAvg for the non-convex problem in the full participation setting. 
+For convex smooth problems, \cite{khaled2019first} prove the 
+convergence rate of local GD (a full batch version of FedAvg with full participation) on heterogeneous data. 
+Concurrently, \cite{li2019convergence} firstly provides exponential convergence of FedAvg for the strongly convex problem,
+under the more practical setting of partial participation and Non-IID data while their results did not achieve linear speedup. 
+\cite{stich2018local} prove linear speedup convergence of FedAvg for the strongly convex problem, while they assume full participation and identically distributed data. Comparing to previous works, our results provide the linear speedup on strongly convex problems in the practical partial participation setting and heterogeneous data. In \cite{liu2019accelerating}, the authors provide a convergence rate of accelerated FedAvg for strongly convex problems, while it is considered in full participation setting. To the best of our knowledge,
+we provide the first linear speedup convergence results for accelerated FedAvg in the practical setting.
+
+
+
+
+
+
+
+
+

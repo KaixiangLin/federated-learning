@@ -1,0 +1,55 @@
+% !TEX ROOT=./main.tex
+
+
+\input{sec_appendix_notations}
+
+% older proofs are in files titled sec_
+% newer proofs are in files titled app_
+\section{Proof of Convergence Results for FedAvg}
+
+\subsection{Strongly Convex Smooth Objectives}
+\input{app_sgd_scvx_smooth}
+
+\subsection{Convex Smooth Objectives}
+\label{sec:nasgdscvxsmth}
+%\input{sec_convexsmoothsgdwthvariance}
+\input{app_sgd_cvx_smooth}
+
+\section{Proof of Convergence Results for Nesterov Accelerated FedAvg}
+
+\subsection{Strongly Convex Smooth Objectives}
+\label{sec:convexsmoothsgd}
+%\input{sec_nasgd_scvx_smooth}
+\input{app_nasgd_scvx_smooth}
+
+\subsection{Convex Smooth Objectives}
+\label{sec:nasgdcvxsmth}
+%\input{sec_nasgd_cvx_smth}
+\input{app_nasgd_cvx_smth}
+
+\section{Proof of Exponential Convergence Results on Overparameterized Quadratic Problems}
+\label{sec:interpolation}
+\input{app_overparameterized}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Convergence Results for Non-smooth Objectives}
+
+\subsection{SGD}
+\subsubsection{Strongly Convex Non-smooth}
+\label{sec:sgdscvxnonsmth}
+\input{sec_sgdscvxnonsmth}
+\subsubsection{Convex Non-smooth}
+\label{sec:sgdcvxnonsmth}
+\input{sec_cvxnonsm}
+
+\subsection{Accelerated SGD}
+\subsubsection{Strongly Convex Non-smooth}
+\label{sec:nasgdscvxnonsmth}
+\input{sec_nasgd_scvx_nonsmooth}
+\subsubsection{Convex Non-smooth}
+\label{sec:nasgdcvxnonsmth}
+\input{sec_nagcvxnonsmth}
+
+
+\input{sec_exp_details}
+
