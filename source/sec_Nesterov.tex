@@ -6,92 +6,88 @@
 
 A natural extension of the FedAvg algorithm is to use momentum-based
 local updates instead of local SGD updates. To our knowledge, the
-only formal analyses of accelerated FedAvg with momentum-based stochastic
-updates {[}CITE kdd papaer{]} focus on the non-convex smooth case.
-In this section, we complete the picture by providing convergence
-results of Nesterov-accelerated FedAvg for convex objectives. We show
-that for strongly convex and smooth objectives, the convergence of
-the optimality gap of averaged parameters across devices is $O(1/NT)$
-where $N$ is the number of active devices during each communication
-round, while for convex and smooth objectives, the rate is $O(1/\sqrt{NT})$.
-Thus Nesterov accelerated FedAvg algorithms enjoy the same convergence
-rates as the original FedAvg algorithm. As we know from stochastic
-optimization that Nesterov updates may fail to accelerate over SGD,
-in general we cannot hope to obtain acceleration results in the federated
-learning setting. However, in the following section we specialize
-to the overparameterized setting where we demonstrate that a particular
-accelerated FedAvg algorithm with momentum-based updates is able to
-improve on the original FedAvg algorithm. 
+only convergence analyses of FedAvg with momentum-based stochastic
+updates focus on the non-convex smooth case \cite{yu2019linear,huo2020faster,li2018federated}.
+In this section, we complete the picture with $\mathcal{O}(1/NT)$
+and $\mathcal{O}(1/\sqrt{NT})$ convergence results for Nesterov-accelerated
+FedAvg for convex objectives. As we know from stochastic optimization,
+Nesterov updates may fail to accelerate over SGD, so in general we
+cannot hope to obtain acceleration results over FedAvg. However, in
+the following section we specialize to overparameterized problems
+where we demonstrate that a particular FedAvg variant with momentum
+updates is able to accelerate over the original FedAvg algorithm. 
 
 \subsection{Strongly Convex and Smooth Objectives}
 
-We first show that the Nesterov accelerated FedAvg has $O(1/NT)$
+We first show that the Nesterov accelerated FedAvg has $\mathcal{O}(1/NT)$
 convergence rate for $\mu$-strongly convex and $L$-smooth objectives.
 The Nesterov Accelerated FedAvg algorithm follows the updates
 \begin{align*}
-y_{t+1}^{k} & =w_{t}^{k}-\alpha_{t}g_{t,k}\\
-w_{t+1}^{k} & =\begin{cases}
-y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E}\\
-\sum_{k=1}^{N}p_{k}\left[y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E}
+\mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}g_{t,k}\\
+\mathbf{w}_{t+1}^{k} & =\begin{cases}
+\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E}\\
+\sum_{k=1}^{N}p_{k}\left[\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E}
 \end{cases}
 \end{align*}
-where $g_{t,k}:=\nabla F_{k}(w_{t}^{k},\xi_{t}^{k})$ is the stochastic
-gradient. 
+where $g_{t,k}:=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})$ is
+the stochastic gradient sampled on the $k$-th device at time $t$.  
 \begin{theorem}
-	Assume that $F_{k}$ is $L$-smooth and $\mu$-strongly convex for
-	all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$. Let $\kappa=\frac{L}{\mu}$,
-	$\gamma=\max\{32\kappa,E\}$ where $E$ is the communication delay,
-	and diminishing learning rates $\alpha_{t}=\frac{9}{\mu}\frac{1}{t+\gamma}$
-	and $\beta_{t-1}=\frac{9}{14\max\{\mu,1\}}\frac{1}{t+\gamma}$. Let
-	$\overline{y}_{T}=\sum_{k=1}^{N}p_{k}y_{T}^{k}$ be the average of
-	local parameters at an arbitrary time $T$. 
-	
-	With full device participation, 
+	Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$
+	be the average of local parameters of Nesterov accelerated FedAvg
+	with learning rates $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$
+	and $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$,
+	$\gamma=\max\{32\kappa,E\}$ and $\kappa=\frac{L}{\mu}$. Then with
+	full device participation, 
 	\begin{align*}
-	\mathbb{E}F(\overline{y}_{T})-F^{\ast}=O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\mathbb{E}F(\overline{y}_{T})-F^{\ast}\leq O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}\leq O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
 \end{theorem}
 %
 \begin{remark}
-To our knowledge, this is the first convergence result for Nesterov accelerated FedAvg in the convex and smooth setting. The same discussion about linear speedup and choice of $E$ from the
-	previous section applies to the Nesterov accelerated FedAvg algorithm. 
+To our knowledge, this is the first convergence result for Nesterov
+accelerated FedAvg in the strongly convex and smooth setting. The
+same discussion about linear speedup of FedAvg applies to the Nesterov
+accelerated variant. In particular, to achieve $\mathcal{O}(1/NT)$
+linear speedup, $T$ iterations of the algorithm requires only $\mathcal{O}(\sqrt{NT})$
+communication rounds with full participation. 
 \end{remark}
 
 \subsection{Convex Smooth Objectives}
 
-In this section, we provide linear speedup analyses of Nesterov Accelerated
-FedAvg with convex and smooth objectives and show that the optimality
-gap is $O(1/\sqrt{NT})$ where $N$ is the number of participating
+We now provide linear speedup analysis of Nesterov Accelerated FedAvg
+with convex and smooth objectives and show that the optimality gap
+is $\mathcal{O}(1/\sqrt{NT})$ where $N$ is the number of participating
 devices. This result complements the strongly convex case in the previous
-part, as well as the non-convex smooth setting in {[}CITE kdd and
-others{]}, where a similar $O(1/\sqrt{NT})$ rate is given in terms
+part, as well as the non-convex smooth setting in \cite{huo2020faster,yu2019linear,li2018federated},
+where a similar $\mathcal{O}(1/\sqrt{NT})$ rate is given in terms
 of averaged gradient norm. 
 \begin{theorem}
-	Suppose $F_{k}$ is $L$-smooth and convex for all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$.
-	Set learning rate $\alpha_{t},\beta_{t}=O(\sqrt{\frac{N}{T}})$.
-	
-	With full device participation, 
+	Set learning rates $\alpha_{t}=\beta_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$
+	for Accelerated FedAvg with convex and $L$-smooth objectives. With
+	full device participation, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{y}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{y}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
 	\end{align*}
 \end{theorem}
 %
 \begin{remark}
-	It is possible to extend the analysis to accelerated FedAvg algorithms
-	with other momentum-based updates. However, in line with the stochastic
-	optimization setting, none of these methods will be able to achieve
-	a better rate than the original FedAvg algorithm in general. For this
-	reason, we will instead turn to the overparameterized setting {[}CITE
-	Belkin{]} where we show that it is possible to improve the convergence
-	rate of FedAvg with momentum based local updates. 
+	It is possible to extend the analyses in this section to accelerated
+	FedAvg algorithms with other momentum-based updates. However, in the
+	stochastic optimization setting, none of these methods will be able
+	to achieve a better rate than the original FedAvg with SGD in general.
+	For this reason, we will instead turn to the overparameterized setting
+	\cite{ma2017power,liu2018accelerating,canziani2016analysis} in the
+	next section where we show that FedAvg enjoys exponential convergence
+	and it is possible to improve its convergence rate with momentum based
+	local updates. 
 \end{remark}
