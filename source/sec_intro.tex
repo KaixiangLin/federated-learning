@@ -34,7 +34,7 @@ FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerati
 \textbf{Notations}
 Throughout the paper, we adopt the following notations. Let $N$ be the total
 number of local devices, and $K \leq N$ is the maximal number of devices
-that are accessible to the central server.  Let $T$ be the total number of  Stochastic Gradient Descent (SGD) performed on each local device, $E$ be the local steps between two communication steps. Thus, $\frac{T}{E}$ is
+that are accessible to the central server.  Let $T$ be the total number of  Stochastic Gradient Descent (SGD) performed on each local device, $E$ be the local steps between two communication steps. Thus, $T/E$ is
 the number of communications.
 
 % Our contributions
@@ -43,7 +43,7 @@ This work focus on providing comprehensive convergence analysis
 of FedAvg and accelerated variants under the realistic setting, showing
 the less number of communication round is needed to converge to the
 target accuracy and preserving the linear speedup at the same time.
-More specifically, for strongly convex and smooth problems, we provide the {\small{$\cO(\frac{1}{NT})$}} convergence  for FedAvg and the local steps can be as large as {\small{$\cO(\sqrt{\frac{T}{N}})$}}. For convex and smooth objectives, we prove the {\small{$\cO(\frac{1}{\sqrt{NT}})$}} and the local steps can be as large as {\small{$\cO(\sqrt{\frac{T}{N}})$}}. The same conclusions can be equally applied for Nesterov accelerated FedAvg. To the best of our knowledge, this is the first linear speedup results for FedAvg with Nesterov accelerated SGD. Furthermore, 
+More specifically, for strongly convex and smooth problems, we provide the {\small{$\cO(1/NT)$}} convergence  for FedAvg and the local steps can be as large as {\small{$\cO(\sqrt{T/N})$}}. For convex and smooth objectives, we prove the {\small{$\cO(1/\sqrt{NT})$}} and the local steps can be as large as {\small{$\cO(\sqrt{T/N})$}}. The same conclusions can be equally applied for Nesterov accelerated FedAvg. To the best of our knowledge, this is the first linear speedup results for FedAvg with Nesterov accelerated SGD. Furthermore, 
 we also provide the first improved convergence rate for Nesterov accelerated FedAvg comparing to FedAvg under a popular overparamterized setting. 
 Last but not least, we systematically examine the convergence rate of
 FedAvg and it accelerated variants on both a real-world dataset and a synthetic dataset. The empirical observations are well-aligned with theoretical indications.
