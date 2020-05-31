@@ -2,41 +2,97 @@
 
 
 \section{Introduction}
-% Motivate FL from the security and privacy perspective. FedAvg
-Federated learning (FL) is a distributed learning paradigm that can collaboratively solve a machine learning problem by leveraging the data
-from a large amount of workers without compromising the users' (aka workers/local devices) privacy~\cite{kairouz2019advances}. 
-Among all the leading algorithms in FL, Federated Averaging~\cite{mcmahan2016communication} (FedAvg)
-is perhaps the most widely adopted optimization algorithm, which runs local
-Stochastic Gradient Descent (SGD) updates on a subset of devices
-and synchronize the local models once in a while. 
-The empirical success of FedAvg and its variants have
-attracted lots of efforts~\cite{li2018federated,stich2018local,khaled2019first,yu2019parallel,haddadpour2019convergence,li2019convergence,huo2020faster} on analyzing its convergence properties. 
-There are few key challenges that differentiates the theoretical analysis
-of FL from the tradition distribution optimization: 
-1) The data is non-identically distributed across the workers, which means the
-data in each local device cannot be regarded as samples drawn from
-a same distribution. 
-2) The workers are not active at every communication
-round. In FL, the central server has no control over the local devices. 
-It is more practical to assume only a subset of workers is active during
-each communication round. 
+% Motivate FL
+The widespread usage of smart home devices and mobile phones constitutes
+large-scale distributed networks that generate datasets of unprecedented size.
+The emergence of those massive amounts of data has empowered machine learning
+solutions to develop many successful applications such as personalized
+recommendations~\cite{chen2018federated}, keyboard predictions~\cite{47586},
+etc. Due to the increasing awareness of the privacy and rapid development of
+mobile devices' computational power, it becomes more and more attractive to
+push the computation to the edge. Recent years have witnessed the rise of
+federated learning~\cite{mcmahan2016communication} to full fill this demand.
 
-% The current gaps in FL.
-However, most of prior works~\cite{li2018federated,stich2018local,khaled2019first,yu2019parallel,haddadpour2019convergence} either assume
-the data is identically distributed or the all devices are active, which
-violates the practical characteristic in FL. The most recent work~\cite{li2019convergence} firstly presents $O(1/T)$ convergence guarantee without 
-making those unrealistic assumptions while their analysis focused 
-on strongly convex case only and the relation between the number of active
-workers and the convergence rate is not clearly discussed. 
+% Main challenge in FL.
+As a distributed learning paradigm, Federated Learning (FL) collaboratively
+learns a single statistical model leveraging the data from all devices while
+keeping the training data isolated.  Thus, FL can integrate cross-device
+information for acquiring a better model  without compromising the users'
+privacy~\cite{kairouz2019advances}. Comparing to the traditional distribution optimization,  FL confronts unique
+challenges~\cite{li2019convergence,smith2017federated}, including statistical heterogeneity: the data distribution in each local device can be significantly different, and system heterogeneity: only a subset of devices are accessible to the central server for model training. 
+
+% Gaps in the theoretical understanding. 
+Towards resolving the aforementioned challenges, Federated
+Averaging~\cite{mcmahan2016communication} (FedAvg) was proposed as an
+effective heuristic and its great empirical success~\cite{47586} has attracted
+lots of efforts on building up the theoretical understanding of FedAvg
+and its accelerated variants. 
+Roughly, the current convergence guarantee of FedAvg obtained by prior arts either established on simplified setting~\cite{stich2018local,khaled2019first,wang2018cooperative,yu2019parallel} or proved a suboptimal 
+convergence rate~\cite{li2019convergence}. Furthermore, the convergence of
+FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerating} under the realistic setting is still waiting to be solved.
+
+\textbf{Notations}
+Throughout the paper, we adopt the following notation. Let $N$ be the total
+number of local devices, and $K \leq N$ is the maximal number of devices
+that are accessible to the central server.  Let $T$ be the total number of  Stochastic Gradient Descent (SGD) performed on each local device, $E$ be the local steps between two communication steps. Thus, $\frac{T}{E}$ is
+the number of communications.
 
 % Our contributions
 \subsection{Contributions}
-Our work aims to systematically fill the gap in the convergence analysis
-of FedAvg and its accelerated variants. 
-Our theoretical results not only cover all general convex objectives, including strongly convex cases, convex smooth cases and convex non-smooth cases, but also provide tighter convergence guarantee for all convex smooth objectives, which shows the convergence rate enjoys a linear speedup w.r.t.
-the number of workers.
-Furthermore, we studied a popular over-parameterized setting~\cite{liu2018accelerating} where the optimal solution can obtain zero training loss. In this scenario, we provide a novel accelerated FL algorithm improving
-the convergence rate of FedAvg. Last but not least, we conduct extensive
-evaluation on both synthetic and real-world dataset, which demonstrates that our theoretical indications is well-aligned with the empirical observations.
+This work focus on providing comprehensive convergence analysis
+of FedAvg and accelerated variants under the realistic setting, showing
+the less number of communication round is needed to converge to the
+target accuracy and preserving the linear speedup at the same time.
+More specifically, for strongly convex and smooth problems, we provide the {\small{$\cO(\frac{1}{NT})$}} convergence  for FedAvg and the local steps can be as large as {\small{$\cO(\sqrt{\frac{T}{N}})$}}. For convex and smooth objectives, we prove the {\small{$\cO(\sqrt{\frac{1}{NT}})$}} and the local steps can be as large as {\small{$\cO(\sqrt{\frac{T}{N}})$}}. The same conclusions can be equally applied for Nesterov accelerated FedAvg. To the best of our knowledge, this is the first linear speedup results for FedAvg with Nesterov accelerated SGD. Furthermore, 
+we also provide the first improved convergence rate for Nesterov accelerated FedAvg comparing to FedAvg under a popular overparamterized setting. 
+Last but not least, we systematically examine the convergence rate of
+FedAvg and it accelerated variants on both a real-world dataset and a synthetic dataset. The empirical observations are well-aligned with theoretical indications.
 
+% Our theoretical results not only cover all general convex objectives, including strongly convex cases, convex smooth cases and convex non-smooth cases, but also provide tighter convergence guarantee for all convex smooth objectives, which shows the convergence rate enjoys a linear speedup w.r.t.
+% the number of workers.
+% Furthermore, we studied a popular over-parameterized setting~\cite{liu2018accelerating} where the optimal solution can obtain zero training loss. In this scenario, we provide a novel accelerated FL algorithm improving
+% the convergence rate of FedAvg. Last but not least, we conduct extensive
+% evaluation on both synthetic and real-world dataset, which demonstrates that our theoretical indications is well-aligned with the empirical observations.
+
+
+% \textbf{Organization} 
+% The reminader of this paper is organized as follows. In Section 
+
+
+
+
+% Intro and related work.
+% sec 4. linear speedup of FedAvg,  sec 5. linear speedup of Accelerated FedAvg.
+% sec 6 linear regression in 
+% 1. this is the first result on the exponential convergence of FedAvg algorithms in the
+% interpolation setting with linear speedup in the number of workers and explicit dependence on the
+% communication interval E.  
+% 2. Improved convergence rate over FedAvg for For the overparamterized quadratic problem. 
+
+% without considering statistical heterogeneity
+% or system heterogeneity~\cite{stich2018local,khaled2019first,wang2018cooperative,yu2019parallel,yu2019linear} or suboptimal 
+% convergence rate~\cite{li2019convergence}.
+
+% is perhaps the most widely adopted optimization algorithm, which runs local
+% Stochastic Gradient Descent (SGD) updates on a subset of devices
+% and synchronize the local models once in a while. 
+% The empirical success of FedAvg and its variants have
+% attracted lots of efforts~\cite{li2018federated,stich2018local,khaled2019first,yu2019parallel,haddadpour2019convergence,li2019convergence,huo2020faster} on analyzing its convergence properties. 
+% There are few key challenges that differentiates the theoretical analysis
+% of FL from the tradition distribution optimization: 
+% 1) The data is non-identically distributed across the workers, which means the
+% data in each local device cannot be regarded as samples drawn from
+% a same distribution. 
+% 2) The workers are not active at every communication
+% round. In FL, the central server has no control over the local devices. 
+% It is more practical to assume only a subset of workers is active during
+% each communication round. 
+
+% The current gaps in FL.
+% However, most of prior works~\cite{li2018federated,stich2018local,khaled2019first,yu2019parallel,haddadpour2019convergence} either assume
+% the data is identically distributed or the all devices are active, which
+% violates the practical characteristic in FL. The most recent work~\cite{li2019convergence} firstly presents $O(1/T)$ convergence guarantee without 
+% making those unrealistic assumptions while their analysis focused 
+% on strongly convex case only and the relation between the number of active
+% workers and the convergence rate is not clearly discussed. 
 
