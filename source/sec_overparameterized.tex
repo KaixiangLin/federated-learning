@@ -133,12 +133,14 @@ it suffices to project $\overline{w}_{t}-w^{\ast}$ onto the range
 of $H$, thus we may restrict to the non-zero eigenvalue of $H$. 
 
 We can use $w^{\ast T}x_{k,j}-z_{k,j}\equiv0$ to rewrite the local
-objectives 
+objectives $F_{k}(w)=\frac{1}{2}\|w-w^{\ast}\|_{H^{k}}^{2}$ so that
+$F(w)=\frac{1}{2}\|w-w^{\ast}\|_{H}^{2}$. %
+\begin{comment}
 \begin{align*}
 F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j}-(w^{\ast T}x_{k,j}-z_{k,j}))^{2}=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((w-w^{\ast})^{T}x_{k,j})^{2}\\
 & =\frac{1}{2}\langle w-w^{\ast},H^{k}(w-w^{\ast})\rangle=\frac{1}{2}\|w-w^{\ast}\|_{H^{k}}^{2}
 \end{align*}
-so that $F(w)=\frac{1}{2}\|w-w^{\ast}\|_{H}^{2}$. 
+\end{comment}
 
 Let $x_{t}^{k}$ be the stochastic sample on the $k$th device during
 iteration $t$, and define $\tilde{H}_{t}^{k}:=x_{t}^{k}(x_{t}^{k})^{T}$
@@ -218,7 +220,7 @@ $g_{t,k}=\nabla F_{k}(u_{t}^{k},x_{t}^{k})$ is the stochastic gradient
 and $g_{t}=\sum_{k=1}^{N}p_{k}g_{t,k}$ is the averaged stochastic
 gradient. When $\eta_{2}^{k}\equiv0$, this reduces to the accelerated
 FedAvg algorithm with Nesterov updates.
-
+\begin{comment}
 Also note that the update can equivalently be written as 
 \begin{align*}
 v_{t+1}^{k} & =(1-\alpha^{k})v_{t}^{k}+\alpha^{k}u_{t}^{k}-\delta^{k}g_{t,k}\\
@@ -240,7 +242,8 @@ $\overline{v}_{t}=\sum_{k=1}^{N}p_{k}v_{t}^{k}$, $\overline{u}_{t}=\sum_{k=1}^{N
 and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$. We have
 $\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{w}_{t+1}=\overline{u}_{t}-\eta_{t}g_{t}$,
 $\overline{v}_{t+1}=(1-\alpha^{k})\overline{v}_{t}+\alpha^{k}\overline{w}_{t}-\delta^{k}g_{t}$,
-and $\overline{u}_{t+1}=\frac{\alpha^{k}}{1+\alpha^{k}}\overline{v}_{t+1}+\frac{1}{1+\alpha^{k}}\overline{w}_{t+1}$. 
+and $\overline{u}_{t+1}=\frac{\alpha^{k}}{1+\alpha^{k}}\overline{v}_{t+1}+\frac{1}{1+\alpha^{k}}\overline{w}_{t+1}$.
+\end{comment} 
 
 We now present the exponential convergence result in overparameterized
 quadratic problems using FedAvg with local MaSS updates. 
