@@ -41,9 +41,10 @@ gradient.
 	Assume that $F_{k}$ is $L$-smooth and $\mu$-strongly convex for
 	all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$. Let $\kappa=\frac{L}{\mu}$,
 	$\gamma=\max\{32\kappa,E\}$ where $E$ is the communication delay,
-	and diminishing learning rates $\alpha_{t}=\beta_{t}=\frac{1}{4\mu(\gamma+t)}$.
-	Let $\overline{w}_{T}=\sum_{k=1}^{N}p_{k}w_{T}^{k}$ be the average
-	of local parameters at an arbitrary time $T$. 
+	and diminishing learning rates $\alpha_{t}=\frac{9}{\mu}\frac{1}{t+\gamma}$
+	and $\beta_{t-1}=\frac{9}{14\max\{\mu,1\}}\frac{1}{t+\gamma}$. Let
+	$\overline{y}_{T}=\sum_{k=1}^{N}p_{k}y_{T}^{k}$ be the average of
+	local parameters at an arbitrary time $T$. 
 	
 	With full device participation, 
 	\begin{align*}
@@ -72,16 +73,16 @@ others{]}, where a similar $O(1/\sqrt{NT})$ rate is given in terms
 of averaged gradient norm. 
 \begin{theorem}
 	Suppose $F_{k}$ is $L$-smooth and convex for all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$.
-	Set learning rate $\alpha_{t}=O(\sqrt{\frac{N}{T}})$.
+	Set learning rate $\alpha_{t},\beta_{t}=O(\sqrt{\frac{N}{T}})$.
 	
 	With full device participation, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{y}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{y}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
 	\end{align*}
 \end{theorem}
 %

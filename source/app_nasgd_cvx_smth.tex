@@ -2,123 +2,117 @@
 
 
 \begin{theorem}
-	Let Assumption~\ref{ass:lsmooth} and Assumption~\ref{ass:subgrad2} hold,  choose the learning rate $\eta = \frac{\alpha}{1 - \beta} = \sqrt{\frac{\Delta_0}{(D+C)T}}$, $\beta \in (0, 1)$ and $\beta \leq \min\{1, \frac{1}{1 + \sqrt{\frac{\Delta_0}{(D+C)T}}}\}$, then the FedNestrovAve with partial device participation satisfies
-	\begin{align}
-		 \EE F(\hat{\vw}_T) - F^* &\leq \sqrt{\frac{\Delta_0(D + C)}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D+C}}\frac{1}{T^{3/2}} 
-	\end{align}
-	where $\hat{\vw}_T = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$, $C$ is defined in \eq{\ref{eq:partialsample}},
-$D$ is given by $D =  G^2[6 + (4(E-1)^2+1)L]$.
+	Suppose $F_{k}$ is $L$-smooth and convex for all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$.
+	Set learning rate $\alpha_{t},\beta_{t}=O(\sqrt{\frac{N}{T}})$.
+	
+	With full device participation, 
+	\begin{align*}
+	\min_{t\leq T}F(\overline{y}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\end{align*}
+	and with partial device participation with $K$ sampled devices at
+	each communication round, 
+	\begin{align*}
+	\min_{t\leq T}F(\overline{y}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\end{align*}
 \end{theorem}
 
 \begin{proof}
-Follow the same derivation in \eq{\ref{eq:nagcvx1}}, we have the follow inequality.
-\begin{align}
-		\EE\|\overline{\vz}_{t+1} - \vw^* \|^2  & \leq  \| \overline{\vz}_{t} - \vw^*\|^2  - 2\eta_t\sum_{k=1}^K p_k\left<\EE g_{t,k}, \overline{\vz}_{t} - \vw^*\right> +  \eta_t^2\EE\|\vg_t\|^2 \label{eq:nasgdcvxsm0}
-\end{align}
 
-Bound $- 2\eta_t\sum_{k=1}^K p_k\left<\EE g_{t,k}, \overline{\vz}_{t} - \vw^*\right>$, 
-\begin{align}
-	& -2 \eta_{t} \left<\EE \vg_{t}, \ov{z}_{t}-\vw^{*}\right> \nonumber \\
- =  & -2 \eta_{t} \left<\EE \vg_{t}, \ov{z}_{t}- \vw^{k}_t \right> -2 \eta_{t} \left<\EE \vg_{t}, \vw^{k}_t - \vw^{*}\right>\nonumber \\
- \leq & -2 \eta_{t} \left<\EE \vg_{t}, \ov{z}_{t}- \vw^{k}_t \right> + 2 \eta_{t} (F_k(w^*) - F_k(\vw^{k}_t))\nonumber \\
- \leq &\sum_{k=1}^N p_k \left[2 \eta_{t} (F_k(\vw^{k}_t) - F_k(\ov{z}_t) + \frac{L}{2} \|\ov{z}_t - \vw^{k}_t\|^2 ) + 2 \eta_{t} (F_k(w^*) - F_k(\vw^{k}_t))\right]\nonumber \\
- = & \eta_t L \sum_{k=1}^N p_k  \|\ov{w}_t - \vw^{k}_t\|^2  + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2 	 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{z}_t)) 
-  \label{eq:nasgdcvxsm1}\\
-  = & \eta_t L \sum_{k=1}^N p_k  \|\ov{w}_t - \vw^{k}_t\|^2  + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2 	 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t) +  F_k(\ov{w}_t) -  F_k(\ov{z}_t)) \\
-  = & \eta_t L \sum_{k=1}^N p_k  \|\ov{w}_t - \vw^{k}_t\|^2  + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2 	 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t)) +  2 \eta_{t} \sum_{k=1}^N p_k  (F_k(\ov{w}_t) -  F_k(\ov{z}_t)) \label{eq:nasgdcvxsm1}
-\end{align}
-
-Now we bound $2 \eta_{t} \sum_{k=1}^N p_k  (F_k(\ov{w}_t) -  F_k(\ov{z}_t)) $
-
-\begin{align}
-	 & 2 \eta_{t} \sum_{k=1}^N p_k  (F_k(\ov{w}_t) -  F_k(\ov{z}_t))  \\
-\leq & 2 \eta_{t} \sum_{k=1}^N p_k  (\left<\vg_{t,k}(\ov{z}_t), \ov{w}_t - \ov{z}_t\right> + \frac{L}{2}\|\ov{w}_t - \ov{z}_t\|^2)\\
-\leq & 2 \eta_{t} \sum_{k=1}^N p_k (\frac{\eta_t}{2}\|\vg_{t,k}(\ov{z}_t)\|^2 + \frac{1}{2\eta_t}\|\ov{w}_t - \ov{z}_t\|^2+ \frac{L}{2}\|\ov{w}_t - \ov{z}_t\|^2)\\
-\leq & \sum_{k=1}^N p_k \eta_t^2\|\vg_{t,k}(\ov{z}_t)\|^2 + (1+ \eta_t L)\|\ov{w}_t - \ov{z}_t\|^2 \label{eq:nasgdcvxsm2}
-\end{align}
-Plug in \eq{\ref{eq:nasgdcvxsm2}} to \eq{\ref{eq:nasgdcvxsm1}}, 
-
-\begin{align}
-	& -2 \eta_{t} \left<\EE \vg_{t}, \ov{z}_{t}-\vw^{*}\right> \nonumber \\
-\leq & \eta_t L \sum_{k=1}^N p_k  \|\ov{w}_t - \vw^{k}_t\|^2  + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2 	 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t)) \nonumber \\
- & +  2 \eta_{t} \sum_{k=1}^N p_k  (F_k(\ov{w}_t) -  F_k(\ov{z}_t)) \\
-\leq & \eta_t L \sum_{k=1}^N p_k  \|\ov{w}_t - \vw^{k}_t\|^2  + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2 	 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t)) \nonumber \\
-  & +  \sum_{k=1}^N p_k \eta_t^2\|\vg_{t,k}(\ov{z}_t)\|^2 + (1+ \eta_t L)\|\ov{w}_t - \ov{z}_t\|^2 \label{eq:nasgdcvxsm3}
-\end{align}
-
-Now we can bound $\|\ov{w}_t - \ov{z}_t\|^2 = \| \ov{p}_t\|^2$ follow the \eq{\ref{eq:nagcvx6}}: 
-\begin{align}
-	\EE \|\ov{w}_t - \ov{z}_t\|^2 \leq \frac{\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 
-	\label{eq:nasgdcvxsm4}
-\end{align}
-
-Follow the proof in \eq{\ref{eq:nagcvx4-1}}, we can bound $\|\ov{w}_t - \vw^{k}_t\|^2$ as follows:
-\begin{align}
-	\EE \|\ov{w}_t - \vw^{k}_t\|^2  \leq \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \frac{(\beta^{t-t_0}-1)^2\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 + \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2 \label{eq:nasgdcvxsm5}
-\end{align}
-
-Plug in \eq{\ref{eq:nasgdcvxsm4}}, \eq{\ref{eq:nasgdcvxsm5}}, and \eq{\ref{eq:nasgdcvxsm3}} to \eq{\ref{eq:nasgdcvxsm0}}: 
-\begin{align}
-		\EE\|\overline{\vz}_{t+1} - \vw^* \|^2  & \leq  \| \overline{\vz}_{t} - \vw^*\|^2 +  \eta_t^2\EE\|\vg_t\|^2  \\
- & + \eta_t L \sum_{k=1}^N p_k  \|\ov{w}_t - \vw^{k}_t\|^2  + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2 	 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t)) \nonumber \\
-  & +  \sum_{k=1}^N p_k \eta_t^2\|\vg_{t,k}(\ov{z}_t)\|^2 + (1+ \eta_t L)\|\ov{w}_t - \ov{z}_t\|^2 \\
- & \leq  \| \overline{\vz}_{t} - \vw^*\|^2 +  \eta_t^2\EE\|\vg_t\|^2 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t)) \\
- & +  \sum_{k=1}^N p_k \eta_t^2\|\vg_{t,k}(\ov{z}_t)\|^2 + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2  	  \nonumber \\
-  & + \eta_t L \sum_{k=1}^N p_k  \|\ov{w}_t - \vw^{k}_t\|^2    + (1+ \eta_t L)\|\ov{w}_t - \ov{z}_t\|^2 \\
-& \leq  \| \overline{\vz}_{t} - \vw^*\|^2 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t)) \\
- & + \eta_t^2\EE\|\vg_t\|^2  +  \sum_{k=1}^N p_k \eta_t^2\|\vg_{t,k}(\ov{z}_t)\|^2 + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2  	  \nonumber \\
-  & + \eta_t L \sum_{k=1}^N p_k \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \frac{(\beta^{t-t_0}-1)^2\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 + \frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2   \\
-  &   + (1+ \eta_t L)\frac{\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2  \label{eq:nasgdcvxsm6}
-\end{align}
-Denote last three lines in \eq{\ref{eq:nasgdcvxsm6}} as $C_1$, we now give upper bound of $C_1$
+We again start by bounding the term
 \begin{align*}
-C_1 &= 	\eta_t^2\EE\|\vg_t\|^2  +  \sum_{k=1}^N p_k \eta_t^2\|\vg_{t,k}(\ov{z}_t)\|^2 + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2  	  \nonumber \\
-  &  + \eta_t L \sum_{k=1}^N p_k \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2 + \frac{(\beta^{t-t_0}-1)^2\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 + \sum_{k=1}^N p_k\frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2   \\
-  & + (1+ \eta_t L)\frac{\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2 \\
-  & = \underbrace{\eta_t^2\EE\|\vg_t\|^2  +  \sum_{k=1}^N p_k \eta_t^2\|\vg_{t,k}(\ov{z}_t)\|^2 + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2}_{C_2} + \underbrace{\eta_t L \sum_{k=1}^N p_k \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2}_{C_3}   \nonumber \\
-  & + \underbrace{\frac{[1+ \eta_t L + (\beta^{t-t_0}-1)^2]\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2}_{C_4} + \underbrace{\sum_{k=1}^N p_k\frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2}_{C_5}   \label{eq:nasgdcvxsm7}
+\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t}-\alpha_{t}g_{t})-w^{\ast}\|^{2}\\
+& =\|(\overline{w}_{t}-\alpha_{t}\overline{g}_{t}-w^{\ast})-\alpha_{t}(g_{t}-\overline{g}_{t})\|^{2}\\
+& =A_{1}+A_{2}+A_{3}
+\end{align*}
+where 
+\begin{align*}
+A_{1} & =\|\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2}\\
+A_{2} & =2\alpha_{t}\langle\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t},\overline{g}_{t}-g_{t}\rangle\\
+A_{3} & =\alpha_{t}^{2}\|g_{t}-\overline{g}_{t}\|^{2}
+\end{align*}
+$\mathbb{E}A_{2}=0$ by definition of $g_{t}$ and $\overline{g}_{t}$,
+while for $A_{3}$ we have
+\begin{align*}
+\alpha_{t}^{2}\mathbb{E}\|g_{t}-\overline{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|g_{t}-\mathbb{E}g_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+\end{align*}
+again by Jensen's inequality and using the independence of $g_{t,k},g_{t,k'}$. 
+
+Next we bound $A_{1}$: 
+\begin{align*}
+\|\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2} & =\|\overline{w}_{t}-w^{\ast}\|^{2}+2\langle\overline{w}_{t}-w^{\ast},-\alpha_{t}\overline{g}_{t}\rangle+\|\alpha_{t}\overline{g}_{t}\|^{2}
+\end{align*}
+Using the convexity and $L$-smoothness of $F_{k}$, 
+\begin{align*}
+-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle & =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w^{\ast})-F_{k}(w_{t}^{k}))\\
+& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+F_{k}(w^{\ast})-F_{k}(w_{t}^{k})\right]\\
+& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]
+\end{align*}
+which results in 
+\begin{align*}
+\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]+\alpha_{t}^{2}\|\overline{g}_{t}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 \end{align*}
 
-With Assumption~\ref{ass:subgrad2}, the upper bound of first line is given by:
+The difference of this bound with that in the strongly convex case
+is that we no longer have a contraction factor in front of $\|\overline{w}_{t}-w^{\ast}\|^{2}$.
+In the strongly convex case, we were able to cancel $\alpha_{t}^{2}\|\overline{g}_{t}\|^{2}$
+with $2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]$
+and obtain only lower order terms. In the convex case, we use a different
+strategy and preserve $\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]$
+in order to obtain a telescoping sum. 
+
+We have
 \begin{align*}
-		C_2 = \eta_t^2\EE\|\vg_t\|^2  +  \sum_{k=1}^N p_k \eta_t^2\|\vg_{t,k}(\ov{z}_t)\|^2 + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2  	  \leq 3 \eta_t^2 G^2
+\|\overline{g}_{t}\|^{2} & =\|\sum_{k}p_{k}\nabla F_{k}(w_{t}^{k})\|^{2}\\
+& =\|\sum_{k}p_{k}\nabla F_{k}(w_{t}^{k})-\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})+\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}\\
+& \leq2\|\sum_{k}p_{k}\nabla F_{k}(w_{t}^{k})-\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}+2\|\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}\\
+& \leq2L^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}+2\|\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}\\
+& =2L^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}+2\|\nabla F(\overline{w}_{t})\|^{2}
 \end{align*}
+using $\nabla F(w^{\ast})=0$. Now using the $L$ smoothness of $F$,
+we have $\|\nabla F(\overline{w}_{t})\|^{2}\leq2L(F(\overline{w}_{t})-F(w^{\ast}))$,
+so that 
 \begin{align*}
-C_3 =	& \eta_t L \sum_{k=1}^N p_k \EE \|\sum_{j=t_0}^{t-1}\eta_j \vg_{j,k}\|^2  \leq \eta_t L (4 (E-1)^2\eta_t^2 G^2) = 4(E-1)^2\eta_t^3L G^2 
+\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]\\
+& +2\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}+4\alpha_{t}^{2}L(F(\overline{w}_{t})-F(w^{\ast}))+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+& =\|\overline{w}_{t}-w^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+& +\alpha_{t}(1-4\alpha_{t}L)(F(w^{\ast})-F(\overline{w}_{t}))
 \end{align*}
+Since $F(w^{\ast})\leq F(\overline{w}_{t})$, as long as $4\alpha_{t}L\leq1$,
+we can ignore the last term, and rearrange the inequality to obtain
 \begin{align*}
-C_4 = 	\frac{[1+ \eta_t L + (\beta^{t-t_0}-1)^2]\beta^4}{(1-\beta)^2}\EE\|\sum_{j=0}^{t_0 - 1}\beta^{t_0-1-j}\vg_j\|^2  \leq \eta_t^4(2 + L) G^2 
-\end{align*}
-\begin{align*}
-	C_5 = \sum_{k=1}^N p_k\frac{\beta^4}{(1 - \beta)^2} \EE\|\sum_{j=t_0}^{t-1}\beta^{t-j-1}\vg_{j,k}\|^2 
-	\leq \eta_t^4 G^2
+\|\overline{w}_{t+1}-w^{\ast}\|^{2}+\alpha_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+& \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\frac{3}{2}\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 \end{align*}
 
-Plug in $C_2 - C_5$ into \eq{\ref{eq:nasgdcvxsm6}}, 
-
-\begin{align}
-	\EE\|\overline{\vz}_{t+1} - \vw^* \|^2 & \leq  \| \overline{\vz}_{t} - \vw^*\|^2 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t))  + 3\eta_t G^2 + 4(E-1)^2\eta_t^3L G^2  +  \eta_t^4(2 + L) G^2  + \eta_t^4 G^2 \\
-& \leq  \| \overline{\vz}_{t} - \vw^*\|^2 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t))  + \eta_t^2 \underbrace{G^2[6 + (4(E-1)^2+1)L] }_{D}
-\end{align}
-Sum two sides over time step $t$, take totoal expectation and use constant rate $\eta_t = \eta$ and follow \eq{\ref{eq:nagcvxc4}}:
-\begin{align}
-	\EE F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0D}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D}}\frac{1}{T^{3/2}} \nonumber\\
-\end{align}
-where $D = G^2[6 + (4(E-1)^2+1)L] $, $\hat{w}_t = \frac{1}{T}\sum_{t=0}^{T-1} \ov{w}_t$, $\eta = \sqrt{\frac{\Delta_0}{DT}}$.
-
-\textbf{Consider partial device participation:}
+The same argument as before yields $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}\leq4E^{2}\alpha_{t}^{2}G^{2}$
+which gives 
 \begin{align*}
-	 \EE F(\hat{w}_t) - F^* & \leq \sqrt{\frac{\Delta_0(D + C)}{T}} + \frac{\Delta_0^{3/2}}{2\sqrt{D+C}}\frac{1}{T^{3/2}} \nonumber\\
+\|\overline{w}_{t+1}-w^{\ast}\|^{2}+\alpha_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+6\alpha_{t}^{3}E^{2}LG^{2}\\
+& \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6\alpha_{t}^{3}E^{2}LG^{2}
 \end{align*}
-where $\eta = \sqrt{\frac{\Delta_0}{(D+C)T}}$. 
+Summing the inequalities from $t=0$ to $t=T$, we obtain 
+\begin{align*}
+\sum_{t=0}^{T}\alpha_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}
+\end{align*}
+so that
+\begin{align*}
+\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+\end{align*}
+
+By setting the constant learning rate $\alpha_{t}\equiv\sqrt{\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T+6E^{2}LG^{2}T^{2/3}}}=O(\sqrt{\frac{N}{T}})$,
+we have 
+
+\begin{align*}
+\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{T\sqrt{\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T+6E^{2}LG^{2}T^{2/3}}}}\cdot\left(\|w_{0}-w^{\ast}\|^{2}+T\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6E^{2}LG^{2}T\frac{\|w_{0}-w^{\ast}\|^{2}}{6E^{2}LG^{2}T}\right)\\
+& =\frac{3\|w_{0}-w^{\ast}\|^{2}}{T\sqrt{\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T+6E^{2}LG^{2}T^{2/3}}}}=3\|w_{0}-w^{\ast}\|\sqrt{(\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{6E^{2}LG^{2}}{T^{4/3}})}
+\end{align*}
+
+Similarly, for partial participation, we just need to replace $\frac{\nu_{\max}^{2}\sigma^{2}}{NT}$
+with $\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+C\frac{E^{2}G^{2}}{KT}$,
+so that we have 
+\begin{align*}
+\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+\end{align*}
 \end{proof}
-
-% Approach 1. 
-% \begin{align}
-% 	& -2 \eta_{t} \left<\EE \vg_{t}, \ov{z}_{t}-\vw^{*}\right> \nonumber \\
-%  =  & -2 \eta_{t} \left<\EE \vg_{t}, \ov{z}_{t}- \vw^{k}_t \right> -2 \eta_{t} \left<\EE \vg_{t}, \vw^{k}_t - \vw^{*}\right>\nonumber \\
-%  \leq & -2 \eta_{t} \left<\EE \vg_{t}, \ov{z}_{t}- \vw^{k}_t \right> + 2 \eta_{t} (F_k(w^*) - F_k(\vw^{k}_t))\nonumber \\
-%  \leq & -2 \eta_{t} \left<\EE \vg_{t}, \ov{w}_{t} - \vw^{k}_t \right> -2 \eta_{t} \left<\EE \vg_{t},  \ov{p}_{t} - \vw^{k}_t \right> + 2 \eta_{t} (F_k(w^*) - F_k(\vw^{k}_t))\nonumber \\
-%  \leq &\sum_{k=1}^N p_k \left[2 \eta_{t} (F_k(\vw^{k}_t) - F_k(\ov{w}_t) + \frac{L}{2} \|\ov{w}_t - \vw^{k}_t\|^2 ) + \|\ov{p}_t - \vw_t^k\|^2 + \eta_t^2 \|\EE \vg_{t,k}\|^2  + 2 \eta_{t} (F_k(w^*) - F_k(\vw^{k}_t))\right]\nonumber \\
-%  = & \eta_t L \sum_{k=1}^N p_k  \|\ov{w}_t - \vw^{k}_t\|^2 + \sum_{k=1}^N p_k \|\ov{p}_t - \vw_t^k\|^2 + \sum_{k=1}^N p_k\eta_t^2 \|\EE \vg_{t,k}\|^2 	 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t)) \label{eq:nasgdcvxsm1}
-% \end{align}

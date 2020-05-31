@@ -20,66 +20,122 @@ $\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\overline{g}_{t}=\sum_{k=1
 We have $\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{y}_{t+1}=\overline{w}_{t}-\alpha_{t}g_{t}$,
 and $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})$. 
 
-We first summarize some properties of $L$-smooth and $\mu$-strongly
-convex functions. 
-\begin{lemma}
-	Let $F$ be a convex $L$-smooth function. Then we have the following
-	inequalities:
-	
-	1. Quadratic upper bound: $0\leq F(w)-F(w')-\langle\nabla F(w'),w-w'\rangle\leq\frac{L}{2}\|w-w'\|^{2}$. 
-	
-	2. Coercivity: $\frac{1}{L}\|\nabla F(w)-\nabla F(w')\|^{2}\leq\langle\nabla F(w)-\nabla F(w'),w-w'\rangle$.
-	
-	3. Lower bound: $F(w)\geq F(w')+\langle\nabla F(w'),w-w'\rangle+\frac{1}{2L}\|\nabla F(w)-\nabla F(w')\|^{2}$.
-	In particular, $\|\nabla F(w)\|^{2}\leq2L(F(w)-F(w^{\ast}))$.
-	
-	4. Optimality gap: $F(w)-F(w^{\ast})\leq$$\langle\nabla F(w),w-w^{\ast}\rangle$.
-\end{lemma}
-%
-\begin{lemma}
-	Let $F$ be a $\mu$-strongly convex function. Then 
-	\begin{align*}
-	F(w) & \leq F(w')+\langle\nabla F(w'),w-w'\rangle+\frac{1}{2\mu}\|\nabla F(w)-\nabla F(w')\|^{2}\\
-	F(w)-F(w^{\ast}) & \leq\frac{1}{2\mu}\|\nabla F(w)\|^{2}
-	\end{align*}
-\end{lemma}
 \begin{theorem}
-	(Full device participation) Suppose $F_{k}$ is $L$-smooth and $\mu$-strongly
-	convex for all $k$. Let $\kappa=\frac{L}{\mu}$, $\gamma=\max\{8\kappa-1,E\}$
-	where $E$ is the communication interval, and learning rates 
-	\begin{align*}
-	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}\\
-	\beta_{t} & \leq\alpha_{t}
-	\end{align*}
-	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
-	is small enough such that the following hold: 
-	\begin{align*}
-	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
-	\alpha_{t} & \leq\frac{1}{4L}\\
-	4\alpha_{t-1}^{2} & \leq\alpha_{t}
-	\end{align*}
-	for all $t\geq0$. Suppose also that $G$ is a constant satisfying
-	$\mathbb{E}\|w_{0}-\alpha_{0}g_{0,k}\|^{2}=\mathbb{E}\|w_{0}-\alpha_{0}\nabla F_{k}(w_{0},\xi_{0}^{k})\|^{2}\leq G^{2}$
-	for all $k$, and $\mathbb{E}\|g_{t,k}\|^{2}\leq G^{2}$ for all $t,k$. 
+	Assume that $F_{k}$ is $L$-smooth and $\mu$-strongly convex for
+	all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$. Let $\kappa=\frac{L}{\mu}$,
+	$\gamma=\max\{32\kappa,E\}$ where $E$ is the communication delay,
+	and diminishing learning rates $\alpha_{t}=\frac{9}{\mu}\frac{1}{t+\gamma}$
+	and $\beta_{t-1}=\frac{9}{14\max\{\mu,1\}}\frac{1}{t+\gamma}$. Let
+	$\overline{y}_{T}=\sum_{k=1}^{N}p_{k}y_{T}^{k}$ be the average of
+	local parameters at an arbitrary time $T$. 
 	
-	Then with full device participation, 
+	With full device participation, 
 	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{\kappa}{\gamma+t}(\frac{B'}{\mu}+4L\|w_{0}-w^{\ast}\|^{2})\\
-	B' & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}+2K^{2}
+	\mathbb{E}F(\overline{y}_{T})-F^{\ast}=O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
-	and $K$ is such that 
+	and with partial device participation with $K$ sampled devices at
+	each communication round, 
 	\begin{align*}
-	\alpha_{0}B+2K\cdot G & \leq\mu K^{2}\\
-	B & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}
-	\end{align*}
-	and
-	\begin{align*}
-	K & \geq\max\{\|w_{0}-w^{\ast}\|^{2},\frac{G}{2\alpha_{0}}\}
+	\mathbb{E}F(\overline{y}_{T})-F^{\ast}\leq O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
 \end{theorem}
+%
+%
+\textbf{}%
+\begin{comment}
+This implies that $E$ canot be chosen $O(T^{\beta})$ for any $\beta>0$
+without degrading the performance. This should be checked in experiments,
+whether with partial participation if the communication round is set
+to scale with $T$, the convergence deteriorates. This is in constrast
+with the full participation case, where $E=O(\sqrt{\frac{T}{N}})$
+is allowed. \textbf{If we can confirm that full participation allows
+linear speedup with $\nu=N\cdot\max_{k}p_{k}\approx1$ and $E=O(\sqrt{\frac{T}{N}})$,
+whereas partial participation only allows $E=O(1)$, then this would
+an interesting phenomenon that is not reported by previous studies!}
+
+The convergence result implies that with fixed $E$, as long as \$N\$
+satisfies \$E=O(\textbackslash sqrt\{T/N\})\$, there is linear speedup.
+When \$N\$ exceeds an upper bound, however, linear speedup may fail
+to happen, and \$T/N\$ may remain constant, i.e. the number of iterations
+required for convergence may increase with \$N\$. 
+\end{comment}
+
 \begin{proof}
-	First, we derive a bound on $\mathbb{E}\|\overline{y}_{t+1}-\overline{y}_{t}\|^{2}$
-	that is useful in the proof. We have the recursion 
+	The proof again uses the $L$-smoothness of $F$ to bound 
+	\begin{align*}
+	\mathbb{E}(F(\overline{y}_{t}))-F^{\ast} & =\mathbb{E}(F(\overline{y}_{t})-F(w^{\ast}))\\
+	& \leq\frac{L}{2}\mathbb{E}\|\overline{y}_{t}-w^{\ast}\|^{2}
+	\end{align*}
+	
+	Our main step is to prove the bound 
+	\begin{align*}
+	\mathbb{E}\|\overline{y}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{y}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+5E^{2}L\alpha_{t}^{3}G^{2}
+	\end{align*}
+	
+	We have 
+	\begin{align*}
+	\|\overline{y}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t}-\alpha_{t}g_{t})-w^{\ast}\|^{2}\\
+	& =\|(\overline{w}_{t}-\alpha_{t}\overline{g}_{t}-w^{\ast})-\alpha_{t}(g_{t}-\overline{g}_{t})\|^{2}\\
+	& =A_{1}+A_{2}+A_{3}
+	\end{align*}
+	where 
+	\begin{align*}
+	A_{1} & =\|\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2}\\
+	A_{2} & =2\alpha_{t}\langle\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t},\overline{g}_{t}-g_{t}\rangle\\
+	A_{3} & =\alpha_{t}^{2}\|g_{t}-\overline{g}_{t}\|^{2}
+	\end{align*}
+	$\mathbb{E}A_{2}=0$ by definition of $g_{t}$ and $\overline{g}_{t}$,
+	while for $A_{3}$ we have
+	\begin{align*}
+	\alpha_{t}^{2}\mathbb{E}\|g_{t}-\overline{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|g_{t}-\mathbb{E}g_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	\end{align*}
+	again by Jensen's inequality and using the independence of $g_{t,k},g_{t,k'}$. 
+	
+	Next we bound $A_{1}$: 
+	\begin{align*}
+	\|\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2} & =\|\overline{w}_{t}-w^{\ast}\|^{2}+2\langle\overline{w}_{t}-w^{\ast},-\alpha_{t}\overline{g}_{t}\rangle+\|\alpha_{t}\overline{g}_{t}\|^{2}
+	\end{align*}
+	Same as the SGD case, 
+	\begin{align*}
+	-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle+\|\alpha_{t}\overline{g}_{t}\|^{2} & \leq\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}-\alpha_{t}\mu\|\overline{w}_{t}-w^{\ast}\|^{2}
+	\end{align*}
+	so that 
+	\begin{align*}
+	\|\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2} & \leq(1-\alpha_{t}\mu)\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}
+	\end{align*}
+	
+	Different from the SGD case, we have 
+	\begin{align*}
+	\|\overline{w}_{t}-w^{\ast}\|^{2} & =\|\overline{y}_{t}+\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1})-w^{\ast}\|^{2}\\
+	& =\|(1+\beta_{t-1})(\overline{y}_{t}-w^{\ast})-\beta_{t-1}(\overline{y}_{t-1}-w^{\ast})\|^{2}\\
+	& =(1+\beta_{t-1})^{2}\|\overline{y}_{t}-w^{\ast}\|^{2}-2\beta_{t-1}(1+\beta_{t-1})\langle\overline{y}_{t}-w^{\ast},\overline{y}_{t-1}-w^{\ast}\rangle+\beta_{t-1}^{2}\|(\overline{y}_{t-1}-w^{\ast})\|^{2}\\
+	& \leq(1+\beta_{t-1})^{2}\|\overline{y}_{t}-w^{\ast}\|^{2}+2\beta_{t-1}(1+\beta_{t-1})\|\overline{y}_{t}-w^{\ast}\|\cdot\|\overline{y}_{t-1}-w^{\ast}\|+\beta_{t-1}^{2}\|(\overline{y}_{t-1}-w^{\ast})\|^{2}
+	\end{align*}
+	which gives 
+	\begin{align*}
+	\|\overline{y}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)(1+\beta_{t-1})^{2}\|\overline{y}_{t}-w^{\ast}\|^{2}+2(1-\alpha_{t}\mu)\beta_{t-1}(1+\beta_{t-1})\|\overline{y}_{t}-w^{\ast}\|\cdot\|\overline{y}_{t-1}-w^{\ast}\|+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	& +\beta_{t-1}^{2}(1-\alpha_{t}\mu)\|(\overline{y}_{t-1}-w^{\ast})\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{3}LG^{2}
+	\end{align*}
+	and we will using this recursive relation to obtain the desired bound. 
+	
+	First we bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}$.
+	Since communication is done every $E$ steps, for any $t\geq0$, we
+	can find a $t_{0}\leq t$ such that $t-t_{0}\leq E-1$ and $w_{t_{0}}^{k}=\overline{w}_{t_{0}}$for
+	all $k$. Moreover, using $\alpha_{t}$ is non-increasing and $\alpha_{t_{0}}\leq2\alpha{}_{t}$
+	for any $t-t_{0}\leq E-1$, we have 
+	\begin{align*}
+	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2} & =\mathbb{E}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t_{0}}-(\overline{w}_{t}-\overline{w}_{t_{0}})\|^{2}\\
+	& \leq\mathbb{E}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t_{0}}\|^{2}\\
+	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-w_{t_{0}}^{k}\|^{2}\\
+	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\sum_{i=t_{0}}^{t-1}\beta_{i}(y_{i+1}^{k}-y_{i}^{k})-\sum_{i=t_{0}}^{t-1}\alpha_{i}g_{i,k}\|^{2}\\
+	& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}\|g_{i,k}\|^{2}+2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\beta_{i}^{2}\|(y_{i+1}^{k}-y_{i}^{k})\|^{2}\\
+	& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}(\|g_{i,k}\|^{2}+\|(y_{i+1}^{k}-y_{i}^{k})\|^{2})\\
+	& \leq4\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}G^{2}\\
+	& \leq4(E-1)^{2}\alpha_{t_{0}}^{2}G^{2}\leq16(E-1)^{2}\alpha_{t}^{2}G^{2}
+	\end{align*}
+	where we have used $\mathbb{E}\|\overline{y}_{t+1}-\overline{y}_{t}\|^{2}\leq G^{2}$.
+	To see this identity for appropriate $\alpha_{t},\beta_{t}$, note
+	the recursion 
 	\begin{align*}
 	y_{t+1}^{k}-y_{t}^{k} & =w_{t}^{k}-w_{t-1}^{k}-(\alpha_{t}g_{t,k}-\alpha_{t-1}g_{t-1,k})\\
 	w_{t+1}^{k}-w_{t}^{k} & =-\alpha_{t}g_{t,k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})
@@ -95,417 +151,89 @@ convex functions.
 	\mathbb{E}\|y_{t+1}^{k}-y_{t}^{k}\|^{2} & \leq2\beta_{t-1}^{2}\mathbb{E}\|y_{t}^{k}-y_{t-1}^{k}\|^{2}+2\alpha_{t}^{2}G^{2}
 	\end{align*}
 	as long as $\alpha_{t},\beta_{t}$ satisfy $2\beta_{t-1}^{2}+2\alpha_{t}^{2}\leq1$,
-	and\textbf{ $\mathbb{E}\|w_{0}-\alpha_{0}g_{0,k}\|^{2}\leq G^{2}$},
-	we can guarantee that $\mathbb{E}\|y_{t}^{k}-y_{t-1}^{k}\|^{2}\leq G^{2}$.
-	This together with Jensen's inequality gives $\mathbb{E}\|\overline{y}_{t}-\overline{y}_{t-1}\|^{2}\leq G^{2}$
+	we can guarantee that $\mathbb{E}\|y_{t}^{k}-y_{t-1}^{k}\|^{2}\leq G^{2}$
+	for all $k$. This together with Jensen's inequality gives $\mathbb{E}\|\overline{y}_{t}-\overline{y}_{t-1}\|^{2}\leq G^{2}$
 	for all $t$. 
 	
-	The idea of the proof is to observe that the $L$-smoothness of $F$
-	provides the upper bound
-	\begin{align*}
-	\mathbb{E}(F(\overline{w}_{t}))-F^{\ast} & =\mathbb{E}(F(\overline{w}_{t})-F(w^{\ast}))\\
-	& \leq\frac{L}{2}\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}
-	\end{align*}
-	and to show that $\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}=O(\frac{1}{t})$. 
+	Using the bound on $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}$,
+	we can conclude that, with $\nu_{max}:=N\cdot\max_{k}p_{k}$ and $\nu_{min}:=N\cdot\min_{k}p_{k}$, 
 	
-	Our main step is to prove the bound 
 	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B'
+	\mathbb{E}\|\overline{y}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\overline{y}_{t}-w^{\ast}\|^{2}+16E^{2}L\alpha_{t}^{3}G^{2}+16E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{3}LG^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\overline{y}_{t-1}-w^{\ast})\|^{2}\\
+	& +\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\overline{y}_{t}-w^{\ast}\|\cdot\|\overline{y}_{t-1}-w^{\ast}\|\\
+	& \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\overline{y}_{t}-w^{\ast}\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\overline{y}_{t-1}-w^{\ast})\|^{2}\\
+	& +\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\overline{y}_{t}-w^{\ast}\|\cdot\|\overline{y}_{t-1}-w^{\ast}\|
 	\end{align*}
-	where $B'$ is define in the statement of the theorem. 
+	where $\sigma^{2}=\max_{k}\sigma_{k}^{2}$, and $\alpha_{t}$ satisfies
+	$L\alpha_{t}\leq\frac{1}{8}$. We show next that $\mathbb{E}\|\overline{y}_{t}-w^{\ast}\|^{2}=O(\frac{1}{tN}+\frac{1}{t^{2}})$
+	by induction.
+	
+	Assume that we have shown 
+	\begin{align*}
+	\mathbb{E}\|\overline{y}_{t}-w^{\ast}\|^{2} & \leq b(C\alpha_{t}^{2}+D\alpha_{t})
+	\end{align*}
+	where $C=20E^{2}LG^{2}$, $D=\frac{1}{N}\nu_{max}^{2}\sigma^{2}$,
+	and $b$ is to be chosen later. For step sizes we choose $\alpha_{t}=\frac{9}{\mu}\frac{1}{t+\gamma}$
+	and $\beta_{t-1}=\frac{9}{14\mu}\frac{1}{t+\gamma}$ if $\mu>1$ and
+	$\frac{9}{14}\frac{1}{t+\gamma}$ if $\mu<1$, so that $\beta_{t-1}\leq\alpha_{t}$
+	and $(1-\mu\alpha_{t})(1+14\beta_{t-1})^{2}\leq(1-\mu\alpha_{t})(1+\mu\alpha_{t})$.
+	Moreover, $\|\overline{y}_{t-1}-w^{\ast}\|\leq2\|\overline{y}_{t}-w^{\ast}\|$.
+	Recall that we require $\alpha_{t_{0}}\leq\alpha_{t}$ for any $t-t_{0}\leq E-1$,
+	and $L\alpha_{t}\leq\frac{1}{8}$. 
+	
+	Then the bound for $\mathbb{E}\|\overline{y}_{t+1}-w^{\ast}\|^{2}$
+	can be further simplified with 
+	\begin{align*}
+	2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\overline{y}_{t}-w^{\ast}\|\cdot\|\overline{y}_{t-1}-w^{\ast}\| & \leq4\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\overline{y}_{t}-w^{\ast}\|^{2}
+	\end{align*}
+	and 
+	\begin{align*}
+	(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\overline{y}_{t-1}-w^{\ast})\|^{2} & \leq4(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\overline{y}_{t}-w^{\ast})\|^{2}
+	\end{align*}
+	Thus 
+	\begin{align*}
+	\mathbb{E}\|\overline{y}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})((1+\beta_{t-1})^{2}+4\beta_{t-1}(1+\beta_{t-1})+4\beta_{t-1}^{2})\|(\overline{y}_{t}-w^{\ast})\|^{2}\\
+	& +20E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\\
+	& \leq\mathbb{E}(1-\mu\alpha_{t})(1+14\beta_{t-1})\|(\overline{y}_{t}-w^{\ast})\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\\
+	& \leq b(1-\mu\alpha_{t})^{2}(C\alpha_{t}^{2}+D\alpha_{t})+C\alpha_{t}^{3}+D\alpha_{t}^{2}\\
+	& =(b(1-\mu\alpha_{t})^{2}+\alpha_{t})\alpha_{t}^{2}C+(b(1-\mu\alpha_{t})^{2}+\alpha_{t})\alpha_{t}D
+	\end{align*}
+	and so it remains to choose $b$ such that 
+	\begin{align*}
+	(b(1-\mu\alpha_{t})^{2}+\alpha_{t})\alpha_{t} & \leq b\alpha_{t+1}\\
+	(b(1-\mu\alpha_{t})^{2}+\alpha_{t})\alpha_{t}^{2} & \leq b\alpha_{t+1}^{2}
+	\end{align*}
 	
 	We have 
 	\begin{align*}
-	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t}-\alpha_{t}g_{t})+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})-w^{\ast}\|^{2}\\
-	& =\|(\overline{w}_{t}-\alpha_{t}\overline{g}_{t}-w^{\ast})+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})-\alpha_{t}(g_{t}-\overline{g}_{t})\|^{2}\\
-	& =A_{1}+A_{2}+A_{3}
+	(b(1-\mu\alpha_{t})^{2}+\alpha_{t})\alpha_{t} & =(b(1-\frac{4}{t+\gamma})^{2}+\frac{4}{\mu(t+\gamma)})\frac{4}{\mu(t+\gamma)}\\
+	& =(b\frac{(t+\gamma-4)^{2}}{(t+\gamma)^{2}}+\frac{4}{\mu(t+\gamma)})\frac{4}{\mu(t+\gamma)}\\
+	& =b(\frac{(t+\gamma-4)^{2}+t+\gamma}{(t+\gamma)^{2}})\frac{4}{\mu(t+\gamma)}\\
+	& =b\frac{4}{\mu(t+\gamma+1)}
 	\end{align*}
-	where 
+	where we have used 
 	\begin{align*}
-	A_{1} & =\|\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})\|^{2}\\
-	A_{2} & =2\alpha_{t}\langle\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}),\overline{g}_{t}-g_{t}\rangle\\
-	A_{3} & =\alpha_{t}^{2}\|g_{t}-\overline{g}_{t}\|^{2}
+	\frac{(t+\gamma-4)^{2}+t+\gamma}{(t+\gamma)^{2}}\frac{1}{t+\gamma} & \leq\frac{1}{t+\gamma+1}
 	\end{align*}
-	$\mathbb{E}A_{2}=0$ by definition of $g_{t}$ and $\overline{g}_{t}$,
-	while for $A_{3}$ we have
+	Similarly $(b(1-\mu\alpha_{t})^{2}+\alpha_{t})\alpha_{t}^{2}\leq b\alpha_{t+1}^{2}$.
+	It follows that $\mathbb{E}\|\overline{y}_{t}-w^{\ast}\|^{2}\leq b(C\alpha_{t}^{2}+D\alpha_{t})$
+	for all $t$. Thus 
 	\begin{align*}
-	\alpha_{t}^{2}\mathbb{E}\|g_{t}-\overline{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|g_{t}-\mathbb{E}g_{t}\|^{2}\leq\alpha_{t}^{2}\mathbb{E}\|g_{t}\|^{2}\\
-	& =\alpha_{t}^{2}\mathbb{E}\|\sum_{k=1}^{N}p_{k}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\mathbb{E}\sum_{k=1}^{N}p_{k}\|g_{t,k}\|^{2}\leq\alpha_{t}^{2}G^{2}
-	\end{align*}
-	again by Jensen's inequality.
-	
-	Next we bound $A_{1}$: 
-	\begin{align*}
-	\|\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})\|^{2} & =\|\overline{w}_{t}-w^{\ast}\|^{2}+2\langle\overline{w}_{t}-w^{\ast},\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})-\alpha_{t}\overline{g}_{t}\rangle+\|\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})-\alpha_{t}\overline{g}_{t}\|^{2}\\
-	& \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+2\langle\overline{w}_{t}-w^{\ast},\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})-\alpha_{t}\overline{g}_{t}\rangle+2\|\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})\|^{2}+2\|\alpha_{t}\overline{g}_{t}\|^{2}
+	\mathbb{E}(F(\overline{y}_{T}))-F^{\ast} & =O(\frac{\kappa}{\mu}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\cdot\frac{1}{T}+\frac{\kappa}{\mu^{2}}E^{2}LG^{2}\cdot\frac{1}{T^{2}})
 	\end{align*}
 	
-	The last two terms are straightforward to bound: $\mathbb{E}\|\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})\|^{2}\leq\beta_{t}^{2}G^{2}\leq\alpha_{t}^{2}G^{2}$,
-	while by the convexity of $\|\cdot\|^{2}$ and $L$-smoothness of
-	$F_{k}$,
+	With partial participation, the update at each communication round
+	is now given by averages over a subset of sampled devices. The key
+	is to bound 
 	\begin{align*}
-	2\alpha_{t}^{2}\|\overline{g}_{t}\|^{2} & \leq2\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(w_{t}^{k})\|^{2}\leq4L\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast})
+	\mathbb{E}\|\overline{w}_{t}-\overline{y}_{t}\|^{2} & =\frac{1}{K}\sum_{k}p^{k}\|w_{t}^{k}-\sum_{k}p_{k}w_{t}^{k}\|^{2}
 	\end{align*}
-	
-	Now 
+	This can be bounded by the same argument as before and yield 
 	\begin{align*}
-	2\langle\overline{w}_{t}-w^{\ast},\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})-\alpha_{t}\overline{g}_{t}\rangle & =2\beta_{t}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle\\
-	& =B_{1}+B_{2}
+	\mathbb{E}\|\overline{w}_{t}-\overline{y}_{t}\|^{2} & \leq\frac{4}{K}\alpha_{t}^{2}E^{2}G^{2}
 	\end{align*}
-	where 
+	which results in the bound 
 	\begin{align*}
-	B_{1} & =2\beta_{t}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle\\
-	B_{2} & =-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle
-	\end{align*}
-	we first bound $B_{2}$. We have
-	\begin{align*}
-	-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle & =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle
-	\end{align*}
-	and again we bound the two terms separately. 
-	
-	Using $\|\frac{1}{\sqrt{\alpha_{t}}}(\overline{w}_{t}-w_{t}^{k})-\sqrt{\alpha_{t}}\nabla F_{k}(w_{t}^{k})\|^{2}\geq0$,
-	we have
-	\begin{align*}
-	-2\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle & \leq\frac{1}{\alpha_{t}}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}\|\nabla F_{k}(w_{t}^{k})\|^{2}
-	\end{align*}
-	Using the $L$-smoothness of $F_{k}$,
-	\begin{align*}
-	-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle & \leq\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}^{2}L\cdot\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast})
-	\end{align*}
-	
-	On the other hand, the $\mu$-strong convexity of $F_{k}$ implies
-	\begin{align*}
-	-(w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle & \leq-\langle F_{k}(w_{t}^{k})-F_{k}(w^{\ast}))-\frac{\mu}{2}\|w_{t}^{k}-w^{\ast}\|^{2}
-	\end{align*}
-	
-	Combining the above, 
-	\begin{align*}
-	B_{2}=-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle & \leq\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}^{2}L\cdot\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast})\\
-	& -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle F_{k}(w_{t}^{k})-F_{k}(w^{\ast}))-\mu\alpha_{t}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-w^{\ast}\|^{2}
-	\end{align*}
-	and the last term $-\mu\alpha_{t}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-w^{\ast}\|^{2}\leq-\mu\alpha_{t}\|\sum_{k=1}^{N}p_{k}w_{t}^{k}-w^{\ast}\|^{2}=-\mu\alpha_{t}\|\overline{w}_{t}-w^{\ast}\|^{2}$
-	by Jensen. 
-	
-	Plugging in the bound for $B_{2}$, we have so far proved 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\overline{w}_{t}-w^{\ast}\|^{2}+\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+3\alpha_{t}^{2}G^{2}+2\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle\\
-	& +\underset{C}{\underbrace{6L\alpha_{t}^{2}\mathbb{E}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast})-2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast}))}}
-	\end{align*}
-	To bound $C$, note that 
-	\begin{align*}
-	\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}^{\ast}) & =\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast})+F_{k}(w^{\ast})-F_{k}^{\ast})\\
-	& =\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast}))+\Gamma
-	\end{align*}
-	and 
-	\begin{align*}
-	C & =-2\alpha_{t}(1-3\alpha_{t}L)\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast}))+6L\alpha_{t}^{2}\Gamma
-	\end{align*}
-	Furthermore, by convexity and $L$-smoothness,
-	\begin{align*}
-	\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(w^{\ast})) & =\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))\\
-	& \geq\sum_{k=1}^{N}p_{k}\langle\nabla F_{k}(\overline{w}_{t}),w_{t}^{k}-\overline{w}_{t}\rangle+F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))\\
-	& \geq-\frac{1}{2}\sum_{k=1}^{N}p_{k}\left[\alpha_{t}\|\nabla F_{k}(\overline{w}_{t})\|^{2}+\frac{1}{\alpha_{t}}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\right]+F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))\\
-	& \geq-\sum_{k=1}^{N}p_{k}\left[\alpha_{t}L(F_{k}(\overline{w}_{k})-F_{k}^{\ast})+\frac{1}{2\alpha_{t}}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\right]+F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))
-	\end{align*}
-	and so 
-	\begin{align*}
-	C & \leq2\alpha_{t}(1-3\alpha_{t}L)\sum_{k=1}^{N}p_{k}\left[\alpha_{t}L(F_{k}(\overline{w}_{k})-F_{k}^{\ast})+\frac{1}{2\alpha_{t}}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\right]-2\alpha_{t}(1-3\alpha_{t}L)(F_{k}(\overline{w}_{t})-F_{k}(w^{\ast}))+6L\alpha_{t}^{2}\Gamma\\
-	& =2\alpha_{t}(1-3\alpha_{t}L)(\alpha_{t}L-1)\sum_{k=1}^{N}p_{k}\alpha_{t}L(F_{k}(\overline{w}_{k})-F^{\ast})+(6L\alpha_{t}^{2}+2\alpha_{t}(1-3\alpha_{t}L)\alpha_{t}L)\Gamma+(1-3\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\\
-	& \leq(6L\alpha_{t}^{2}+2\alpha_{t}(1-3\alpha_{t}L)\alpha_{t}L)\Gamma+(1-3\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}\\
-	& \leq8\alpha_{t}^{2}\Gamma+\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}
-	\end{align*}
-	using $\alpha_{t}\leq\frac{1}{4L}$, $F_{k}(\overline{w}_{k})-F^{\ast}\geq0$,
-	and 
-	
-	Plugging this back in, we get 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+2\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+3\alpha_{t}^{2}G^{2}+8L\alpha_{t}^{2}\Gamma+2\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle
-	\end{align*}
-	
-	Now we bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}$.
-	Since communication is done every $E$ steps, for any $t\geq0$, we
-	can find a $t_{0}\leq t$ such that $t-t_{0}\leq E-1$ and $w_{t_{0}}^{k}=\overline{w}_{t_{0}}$for
-	all $k$. Moreover, using $\eta_{t}$ is non-increasing and $\alpha_{t_{0}}\leq\alpha{}_{t}$
-	for any $t-t_{0}\leq E-1$, we have 
-	\begin{align*}
-	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2} & =\mathbb{E}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t_{0}}-(\overline{w}_{t}-\overline{w}_{t_{0}})\|^{2}\\
-	& \leq\mathbb{E}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\overline{w}_{t_{0}}\|^{2}\\
-	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-w_{t_{0}}^{k}\|^{2}\\
-	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\sum_{i=t_{0}}^{t-1}\beta_{i}(y_{i+1}^{k}-y_{i}^{k})-\sum_{i=t_{0}}^{t-1}\alpha_{i}g_{i,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}\|g_{i,k}\|^{2}+2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\beta_{i}^{2}\|(y_{i+1}^{k}-y_{i}^{k})\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}(\|g_{i,k}\|^{2}+\|(y_{i+1}^{k}-y_{i}^{k})\|^{2})\\
-	& \leq4\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}G^{2}\\
-	& \leq4(E-1)^{2}\alpha_{t_{0}}^{2}G^{2}\leq16(E-1)^{2}\alpha_{t}^{2}G^{2}
-	\end{align*}
-	where we have used $\mathbb{E}\|(y_{i+1}^{k}-y_{i}^{k})\|^{2}\leq G^{2}$
-	as proved earlier. 
-	
-	Using the bound on $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}$,
-	we can conclude that 
-	
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+8L\alpha_{t}^{2}\Gamma+32\alpha_{t}^{2}(E-1)^{2}G^{2}+3\alpha_{t}^{2}G^{2}\\
-	& +2\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle\\
-	& =(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B+2\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle
-	\end{align*}
-	where 
-	\begin{align*}
-	B & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}
-	\end{align*}
-	Our next step is to show that $2\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle=O(\alpha_{t}^{2})$
-	as well. 
-	
-	With appropriate choice of constant $K$ depending on the other constants,
-	we first show that 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq K^{2}
-	\end{align*}
-	for all $t$, i.e. the updates always stay in a large ball around
-	the optimum during the Nesterov accelerated gradient descent. In general
-	this can be shown for coercive functions using Lyapunov function arguments.
-	We prove it here using elementary arguments. Note that
-	\begin{align*}
-	\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle & \leq\beta_{t}\sqrt{\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}}\cdot\sqrt{\mathbb{E}\|\overline{y}_{t+1}-\overline{y}_{t}\|^{2}}
-	\end{align*}
-	by Cauchy-Schwarz so that 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B+2\beta_{t}\sqrt{\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}}\cdot\sqrt{\mathbb{E}\|\overline{y}_{t+1}-\overline{y}_{t}\|^{2}}\\
-	& \leq(1-\alpha_{t}\mu)\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B+2\beta_{t}\sqrt{\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}}\cdot G
-	\end{align*}
-	where $B=8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}$. For a large $K$ satisfying
-	$\|w_{0}-w^{\ast}\|^{2}\leq K^{2}$, we show by induction that $\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}\leq K^{2}$
-	for all $t\geq0$. 
-	
-	Suppose $\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}\leq K^{2}$ for
-	some $t$, then 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)K^{2}+\alpha_{t}^{2}B+2\beta_{t}K\cdot G\\
-	& \leq K^{2}+(\alpha_{t}^{2}B+2\alpha_{t}K\cdot G-\alpha_{t}\mu K^{2})
-	\end{align*}
-	and as long as $\alpha_{0}$ and $K$ satisfy 
-	\begin{align*}
-	\alpha_{0}B+2K\cdot G & \leq\mu K^{2}
-	\end{align*}
-	then since $\alpha_{t}\leq\alpha_{0}$, we get $\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2}\leq K$,
-	where $K$ only depends on $G,L,\mu,\Gamma,\|w_{0}-w^{\ast}\|^{2},E$. 
-	
-	Now we can finally bound $\beta_{t}\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle$.
-	Recall the recursive relation
-	\begin{align*}
-	\overline{y}_{t+1}-\overline{y}_{t} & =\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1})-\alpha_{t}g_{t}
-	\end{align*}
-	and so 
-	\begin{align*}
-	\beta_{t}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle & =\beta_{t}\langle\overline{w}_{t}-w^{\ast},\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1})-\alpha_{t}g_{t}\rangle\\
-	& =\beta_{t}\langle\overline{w}_{t}-w^{\ast},\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1})\rangle-\beta_{t}\langle\overline{w}_{t}-w^{\ast},\alpha_{t}g_{t}\rangle
-	\end{align*}
-	and we further expand the first term: 
-	\begin{align*}
-	\beta_{t}\langle\overline{w}_{t}-w^{\ast},\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1})\rangle & =\beta_{t}\langle\overline{w}_{t}-\overline{w}_{t-1}+\overline{w}_{t-1}-w^{\ast},\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1})\rangle\\
-	& =\beta_{t}\langle\overline{w}_{t}-\overline{w}_{t-1},\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1})\rangle+\beta_{t}\langle\overline{w}_{t-1}-w^{\ast},\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1})\rangle\\
-	& =\beta_{t}\beta_{t-1}\langle-\alpha_{t-1}g_{t-1}+\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1}),(\overline{y}_{t}-\overline{y}_{t-1})\rangle+\beta_{t}\langle\overline{w}_{t-1}-w^{\ast},\beta_{t-1}(\overline{y}_{t}-\overline{y}_{t-1})\rangle\\
-	& =\beta_{t}\beta_{t-1}\langle-\alpha_{t-1}g_{t-1},(\overline{y}_{t}-\overline{y}_{t-1})\rangle+\beta_{t}\beta_{t-1}^{2}\|\overline{y}_{t}-\overline{y}_{t-1}\|^{2}+\beta_{t}\beta_{t-1}\langle\overline{w}_{t-1}-w^{\ast},(\overline{y}_{t}-\overline{y}_{t-1})\rangle
-	\end{align*}
-	and so 
-	\begin{align*}
-	\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle & =-\beta_{t-1}\alpha_{t-1}\langle g_{t-1},\overline{y}_{t}-\overline{y}_{t-1}\rangle+\beta_{t-1}^{2}\|\overline{y}_{t}-\overline{y}_{t-1}\|^{2}+\beta_{t-1}\langle\overline{w}_{t-1}-w^{\ast},(\overline{y}_{t}-\overline{y}_{t-1})\rangle-\alpha_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle
-	\end{align*}
-	Noting the recursive structure of the above identity, we can show
-	by induction that $|\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle|\leq2\alpha_{t}K^{2}$\textbf{
-	}for all $t\geq0$ if $4\alpha_{t-1}^{2}\leq\alpha_{t}$. We check
-	that 
-	\begin{align*}
-	\mathbb{E}|\langle w_{0}-w^{\ast},w_{0}-\alpha_{0}g_{0,k}\rangle| & \leq\sqrt{\|w_{0}-w^{\ast}\|^{2}}\cdot\sqrt{\|w_{0}-\alpha_{0}g_{0,k}\|^{2}}\leq GK\leq2\alpha_{0}K^{2}
-	\end{align*}
-	if $2\alpha_{0}K\geq G$, then $|\mathbb{E}\langle\overline{w}_{t-1}-w^{\ast},(\overline{y}_{t}-\overline{y}_{t-1})\rangle|\leq2\alpha_{t-1}K^{2}$
-	for some $t$ implies 
-	\begin{align*}
-	|\mathbb{E}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle| & \leq\beta_{t-1}\alpha_{t-1}\mathbb{E}|\langle g_{t-1},\overline{y}_{t}-\overline{y}_{t-1}\rangle|+\beta_{t-1}^{2}\mathbb{E}\|\overline{y}_{t}-\overline{y}_{t-1}\|^{2}+2\alpha_{t-1}K^{2}+\alpha_{t}\mathbb{E}|\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle|\\
-	& \leq\alpha_{t-1}^{2}G^{2}+\alpha_{t-1}^{2}G^{2}+2\alpha_{t-1}^{2}K^{2}+\alpha_{t}KG\\
-	& \leq4\alpha_{t-1}^{2}K^{2}+\alpha_{t}K^{2}\leq2\alpha_{t}^{2}K^{2}
-	\end{align*}
-	
-	This gives the bound
-	\begin{align*}
-	|\mathbb{E}\beta_{t}\langle\overline{w}_{t}-w^{\ast},(\overline{y}_{t+1}-\overline{y}_{t})\rangle| & \leq2\alpha_{t}^{2}K^{2}
-	\end{align*}
-	and so
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B'
-	\end{align*}
-	where 
-	\begin{align*}
-	B' & =B+2K^{2}\\
-	& =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}+2K^{2}
-	\end{align*}
-	
-	To complete the proof of convergence, for $\alpha_{t}=\frac{\delta}{t+\gamma}$
-	for $\delta>\frac{1}{\mu}$ and $\gamma>0$ such that $\alpha_{1}\leq\min\{\frac{1}{\mu},\frac{1}{4L}\}$and
-	$\alpha_{t}\leq2\alpha_{t+E}$, we can show that 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq\frac{v}{\gamma+t}
-	\end{align*}
-	where $v=\max\{\frac{\delta^{2}B'}{\delta\mu-c+1},(\gamma+1)\|w_{0}-w^{\ast}\|^{2}\}$
-	by induction. The definition of $v$ ensures that 
-	\begin{align*}
-	\|w_{0}-w^{\ast}\|^{2} & \leq\frac{v}{\gamma}
-	\end{align*}
-	and suppose $\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}\leq\frac{v}{\gamma+t}$
-	holds for some $t\geq0$. Then 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2}\leq & (1-\alpha_{t}\mu)\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B'\\
-	& \leq(1-\frac{\delta\mu}{t+\gamma})\frac{v}{t+\gamma}+\frac{\delta^{2}B'}{(t+\gamma)^{2}}\\
-	& =\frac{t+\gamma-1}{(t+\gamma)^{2}}v+\left[\frac{\delta^{2}B'}{(t+\gamma)^{2}}-\frac{\delta\mu-1}{(t+\gamma)^{2}}v\right]\\
-	& \leq\frac{v}{t+\gamma+1}
-	\end{align*}
-	by definition of $v$.
-	
-	Finally, the $L$-smoothness of $F$ implies 
-	\begin{align*}
-	\mathbb{E}(F(\overline{w}_{t}))-F^{\ast} & =\mathbb{E}(F(\overline{w}_{t})-F(w^{\ast}))\\
-	& \leq\frac{L}{2}\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}\leq\frac{L}{2}\frac{v}{\gamma+t}
-	\end{align*}
-	Now if we choose $\delta=\frac{c}{\mu}$ where $c\leq1$ is small
-	enough such that the required conditions 
-	\begin{align*}
-	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
-	\alpha_{t} & \leq\frac{1}{4L}\\
-	4\alpha_{t-1}^{2} & \leq\alpha_{t}
-	\end{align*}
-	hold for all $t\geq0$, $\gamma=\max\{8\kappa-1,E\}$, then $\alpha_{t}=\frac{c}{\mu}\frac{1}{\gamma+t}$
-	and recalling $v=\max\{\frac{\delta^{2}B'}{\delta\mu-c+1},(\gamma+1)\|w_{0}-w^{\ast}\|^{2}\}$,
-	we finally have 
-	\begin{align*}
-	\mathbb{E}(F(\overline{w}_{t}))-F^{\ast} & \leq\frac{L}{2}\frac{v}{\gamma+t}\leq\frac{L/2}{\gamma+t}(\frac{\delta^{2}B'}{\delta\mu-c+1}+(\gamma+1)\|w_{0}-w^{\ast}\|^{2})\\
-	& \leq\frac{\kappa}{\gamma+t}(\frac{B'}{\mu}+4L\|w_{0}-w^{\ast}\|^{2})
-	\end{align*}
-\end{proof}
-%
-We now move on to prove the result in the case of partial participation.
-Now the FedAvg algorithm with Nesterov Accelerated SGD (NASGD) follows
-the updates
-\begin{align*}
-y_{t+1}^{k} & =w_{t}^{k}-\alpha_{t}g_{t,k}\\
-w_{t+1}^{k} & =\begin{cases}
-y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E}\\
-\sum_{k\in\mathcal{S}_{t+1}}\left(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})\right) & \text{if }t+1\in\mathcal{I}_{E}
-\end{cases}
-\end{align*}
-where $\mathcal{S}_{t+1}$ is the multiset obtained by sampling from
-$[N]$ according to $p_{k}$, \emph{with replacement, }a total of
-$S=|\mathcal{S}_{t+1}|$ times. 
-
-As before we define the virtual sequences $\overline{y}_{t}=\sum_{k=1}^{N}p_{k}y_{t}^{k}$,
-$\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$.
-We have $\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{y}_{t+1}=\overline{w}_{t}-\alpha_{t}g_{t}$,
-and as in the full participation case, $\overline{w}_{t+1}=\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})$
-for $t+1\notin\mathcal{I}_{E}$. When $t+1$ is a communication round,
-because of the sampling step, this identity is no longer true, but
-is true when we take expectation with respect to the sampling distribution
-$\mathbb{P}_{\mathcal{S}_{t+1}}$. 
-\begin{theorem}
-	(Partial device participation) Suppose $F_{k}$ is $L$-smooth and
-	$\mu$-strongly convex for all $k$. Let $\kappa=\frac{L}{\mu}$,
-	$\gamma=\max\{8\kappa-1,E\}$ where $E$ is the communication interval,
-	and learning rates 
-	\begin{align*}
-	\alpha_{t} & =\frac{c}{\mu(\gamma+t)}\\
-	\beta_{t} & \leq\alpha_{t}
-	\end{align*}
-	so that $\alpha_{t}\leq2\alpha_{t+E}$, and where $0\leq c\leq1$
-	is small enough such that the following hold: 
-	\begin{align*}
-	\alpha_{t}^{2}+\beta_{t-1}^{2} & \leq\frac{1}{2}\\
-	\alpha_{t} & \leq\frac{1}{4L}\\
-	4\alpha_{t-1}^{2} & \leq\alpha_{t}
-	\end{align*}
-	for all $t\geq0$. Suppose also that $G$ is a constant satisfying
-	$\mathbb{E}\|w_{0}-\alpha_{0}g_{0,k}\|^{2}=\mathbb{E}\|w_{0}-\alpha_{0}\nabla F_{k}(w_{0},\xi_{0}^{k})\|^{2}\leq G^{2}$
-	for all $k$, and $\mathbb{E}\|g_{t,k}\|^{2}\leq G^{2}$ for all $t,k$. 
-	
-	Then with the partial device participation scheme described above,
-	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{\kappa}{\gamma+T}(\frac{B'+C}{\mu}+4L(\|w_{0}-w^{\ast}\|^{2})\\
-	B' & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}+2K^{2}\\
-	C & =\frac{16}{S}E^{2}G^{2}
-	\end{align*}
-	and $K$ is such that 
-	\begin{align*}
-	\alpha_{0}B+2K\cdot G & \leq\mu K^{2}\\
-	B & =8L\Gamma+32(E-1)^{2}G^{2}+3G^{2}
-	\end{align*}
-	and
-	\begin{align*}
-	K & \geq\max\{\|w_{0}-w^{\ast}\|^{2},\frac{G}{2\alpha_{0}}\}
-	\end{align*}
-\end{theorem}
-%
-\begin{proof}
-	We have
-	\begin{align*}
-	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))+(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\|^{2}\\
-	& =\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}+\|(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\|^{2}\\
-	& +2\langle\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})),(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\rangle
-	\end{align*}
-	Note that 
-	\begin{align*}
-	\mathbb{E}_{\mathcal{S}_{t+1}}\langle\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})),(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\rangle & =0
-	\end{align*}
-	since 
-	\begin{align*}
-	\mathbb{E}_{\mathcal{S}_{t+1}}\overline{w}_{t+1} & =\mathbb{E}_{\mathcal{S}_{t+1}}\frac{1}{S}\sum_{k\in\mathcal{S}_{t+1}}(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}))\\
-	& =\frac{1}{S}\sum_{k\in\mathcal{S}_{t+1}}\mathbb{E}_{\mathcal{S}_{t+1}}(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}))\\
-	& =\frac{1}{S}\cdot S\cdot\sum_{k=1}^{N}p_{k}(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}))\\
-	& =\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t})
-	\end{align*}
-	Moreover, if $t+1\notin\mathcal{I}_{E}$, $\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}=0$
-	as well, while if $t+1\notin\mathcal{I}_{E}$, we show that 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2} & =O(\alpha_{t}^{2})
-	\end{align*}
-	assuming $\eta_{t}$ is non-increasing and $\eta_{t}\leq2\eta_{t+E}$
-	for all $t\geq0$. We have 
-	\begin{align*}
-	\mathbb{E}_{\mathcal{S}_{t+1}}\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2} & =\mathbb{E}_{\mathcal{S}_{t+1}}\|\frac{1}{S}\sum_{k\in\mathcal{S}_{t+1}}(y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k}))-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}\\
-	& =\frac{1}{S^{2}}\sum_{k\in\mathcal{S}_{t+1}}\mathbb{E}_{\mathcal{S}_{t+1}}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}\\
-	& =\frac{1}{S}\sum_{k=1}^{N}p_{k}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}
-	\end{align*}
-	where we have used the general fact that $\mathbb{E}\|\frac{1}{S}\sum_{k\in\mathcal{S}_{t+1}}x_{k}-\mathbb{E}x_{k}\|^{2}=\frac{1}{S^{2}}\sum_{k\in\mathcal{S}_{t+1}}\mathbb{E}\|x_{k}-\mathbb{E}x_{k}\|^{2}$
-	for $x_{k}$ iid. Since $t+1\in\mathcal{I}_{E}$, we know that $t_{0}=t-E+1\in\mathcal{I}_{E}$
-	is also a communication round, so that $w_{t_{0}}^{k}\equiv\overline{w}_{t_{0}}$
-	does not depend on $k$. Then 
-	\begin{align*}
-	\sum_{k=1}^{N}p_{k}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2} & =\sum_{k=1}^{N}p_{k}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-\overline{w}_{t_{0}}+\overline{w}_{t_{0}}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2}\\
-	& \leq\sum_{k=1}^{N}p_{k}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-\overline{w}_{t_{0}}\|^{2}
-	\end{align*}
-	so that 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))\|^{2} & \leq\frac{1}{S}\sum_{k=1}^{N}p_{k}\mathbb{E}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-\overline{w}_{t_{0}}\|^{2}\\
-	& =\frac{1}{S}\sum_{k=1}^{N}p_{k}\mathbb{E}\|y_{t+1}^{k}+\beta_{t}(y_{t+1}^{k}-y_{t}^{k})-w_{t_{0}}^{k}\|^{2}\\
-	& =\frac{1}{S}\sum_{k=1}^{N}p_{k}\mathbb{E}\|\sum_{i=t_{0}}^{t}\beta_{i}(y_{i+1}^{k}-y_{i}^{k})-\sum_{i=t_{0}}^{t}\alpha_{i}g_{i,k}\|^{2}\\
-	& \leq\frac{2}{S}\left[\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t}E\alpha_{i}^{2}\|g_{i,k}\|^{2}+\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t}E\beta_{i}^{2}\|(y_{i+1}^{k}-y_{i}^{k})\|^{2}\right]\\
-	& \leq\frac{16}{S}\alpha_{t}^{2}E^{2}G^{2}
-	\end{align*}
-	Now we turn to $\mathbb{E}\|(\overline{y}_{t+1}+\beta_{t}(\overline{y}_{t+1}-\overline{y}_{t}))-w^{\ast}\|^{2}$.
-	This term is bounded in the proof of the full participation case,
-	with 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}B'
-	\end{align*}
-	
-	
-	Now we can conclude that 
-	\begin{align*}
-	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}(B'+C)
-	\end{align*}
-	where 
-	\begin{align*}
-	C & =\frac{16}{S}E^{2}G^{2}
-	\end{align*}
-	
-	The exact argument then yields 
-	\begin{align*}
-	\mathbb{E}F(w_{T})-F^{\ast} & \leq\frac{\kappa}{\gamma+T}(\frac{B'+C}{\mu}+4L(\|w_{0}-w^{\ast}\|^{2})
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast}=O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
 \end{proof}
