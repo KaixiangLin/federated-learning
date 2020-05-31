@@ -32,19 +32,19 @@ The Nesterov Accelerated FedAvg algorithm follows the updates
 where $g_{t,k}:=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})$ is
 the stochastic gradient sampled on the $k$-th device at time $t$.  
 \begin{theorem}
-	Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$
+	\label{thm:nesterov_scvx}Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$
 	be the average of local parameters of Nesterov accelerated FedAvg
 	with learning rates $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$
 	and $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$,
 	$\gamma=\max\{32\kappa,E\}$ and $\kappa=\frac{L}{\mu}$. Then with
 	full device participation, 
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}\leq O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}\leq\mathcal{O}(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
 \end{theorem}
 %
@@ -67,16 +67,16 @@ part, as well as the non-convex smooth setting in \cite{huo2020faster,yu2019line
 where a similar $\mathcal{O}(1/\sqrt{NT})$ rate is given in terms
 of averaged gradient norm. 
 \begin{theorem}
-	Set learning rates $\alpha_{t}=\beta_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$
+	\label{thm:Nesterov_cvx}Set learning rates $\alpha_{t}=\beta_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$
 	for Accelerated FedAvg with convex and $L$-smooth objectives. With
 	full device participation, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
 	\end{align*}
 \end{theorem}
 %
