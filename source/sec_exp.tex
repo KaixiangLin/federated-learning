@@ -29,8 +29,7 @@ appendix.
 
 
 % ~\ref{th:strongcvxsmth}~\ref{th:cvxsmoth}~\ref{th:fedmasslr}
-\textbf{Linear speedup.} To verify the linear speedup results in Theorems
-\lkxcom{cite sgd theorems}, we evaluate the number of iterations needed to reach
+\textbf{Linear speedup.} To verify the linear speedup results of FedAvg in Theorem~\ref{thm:SGD_scvx}~\ref{thm:SGD_cvx}, we evaluate the number of iterations needed to reach
 $\epsilon$-accuracy in three objectives. We initialize all runs with $\vw_0 = \textbf{0}_d$ and measure. For each configuration, we run three random seeds and report
 the best seed results for each configuration $(E, K)$. In each configure, we
 extensive search the stepsize from $\min(\eta_0, \frac{nc}{1 + t})$, where
@@ -46,7 +45,7 @@ FedAve enjoys linear speedup in various settings even with partial
 device participation.
 
 \textbf{Nesterov accelerated FedAvg.} In the third row of Figure~\ref{fig:speedup}, 
-we report the last iteration to converge to $\epsilon$-accuracy of Nesterov accelerated FedAvg. The empirical observations align with our theorems \lkxcom{cite accelerated theorems} that the accelerated version of FedAvg can also achieve the linear speedup
+we report the last iteration to converge to $\epsilon$-accuracy of Nesterov accelerated FedAvg. The empirical observations align with Theorem~\ref{thm:nesterov_scvx}~\ref{thm:Nesterov_cvx} that the accelerated version of FedAvg can also achieve the linear speedup
 w.r.t the number of workers.
 
 \textbf{The impact of $E$.} We further examine how does the number of local steps ($E$) 
