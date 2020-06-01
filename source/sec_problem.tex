@@ -126,10 +126,11 @@ will become close to $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})\|^
 and $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})-\nabla F_{k}(\mathbf{w}^{\ast})\|^{2}$.
 Therefore, there is no substantial difference between these assumptions
 and assuming the bounds at $\mathbf{w}^{\ast}$ only. On the other
-hand, some works such as \cite{haddadpour2019convergence} assume
-bounds on the ``gradient diversity'', defined as $\frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$.
+hand, some works such as \cite{haddadpour2019convergence,li2018federated}
+assume bounds on the ``gradient diversity'' or ``dissimilarity'',
+defined as $\frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$.
 Such assumptions are more restrictive than our assumptions, because
 they imply $\nabla F_{k}(\mathbf{w}^{\ast})\equiv0$ for all local
-objectives. For such ``overparameterized'' settings, we also prove
-that the convergence is in fact exponential. 
+objectives. For such ``overparameterized'' settings, we will prove
+that the convergence is in fact geometric. 
 
