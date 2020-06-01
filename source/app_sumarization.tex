@@ -6,12 +6,24 @@
 \begin{table}
 \centering
 \begin{tabular}{|c|c|c|}\hline 
-	Algorithm \textbackslash Setting            & Strongly Convex        & Convex \\ \hline \hline
+	Algorithm \textbackslash\  Objective function        & Strongly Convex        & Convex \\ \hline \hline
 	FedAvg                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
 	Nesterov accelerated FedAvg    & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    & $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
 \end{tabular}
 \caption{The summary of the convergence results in this work.}
 \end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|}\hline 
+	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex \\ \hline \hline
+	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
+	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$      \\ \hline
+\end{tabular}
+\caption{The summary of the convergence results in this work. The}
+\end{table}
+
+
 
 \begin{table}
 \centering
