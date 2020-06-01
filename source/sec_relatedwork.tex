@@ -24,21 +24,20 @@
 % we provide the first linear speedup convergence results for accelerated FedAvg in the practical setting.
 
 
-\textbf{The Convergence of FedAvg and Linear Speedup}
-There has been a vast amount of convergence analysis for Federated averaging
-(FedAvg) in different settings. However, most of the prior works provide the
-convergence guarantee under the simplified setting, where either statistical
+\textbf{The Convergence of FedAvg and Linear Speedup.}
+There has been a vast amount of convergence analysis for FedAvg in different settings. However, most of the prior works provide the
+convergence guarantee under a simplified setting, where either statistical
 heterogeneity~\cite{stich2018local,zhou2017convergence,wang2018cooperative,woodworth2018graph} or system
 heterogeneity~\cite{yu2019parallel,wang2019adaptive,khaled2019first,jiang2018linear} are not
 considered. This simplified setting is also referred as local SGD. 
 In~\cite{li2019convergence},
-the authors firstly provide convergence of FedAvg for strongly convex problem considering both statistical heterogeneity and system heterogeneity, while their results
+the authors for the first time provide convergence of FedAvg for strongly convex problem considering both statistical heterogeneity and system heterogeneity, yet it
 didn't achieve linear speedup. In~\cite{haddadpour2019convergence,liang2019variance,huo2020faster,jiang2018linear}, the convergence of FedAvg for non-convex problems has been studied. 
 However, \cite{huo2020faster} did not discuss the linear speedup and the theorems in \cite{haddadpour2019convergence,liang2019variance} failed to cover the accelerated version of
 FedAvg. 
 
 
-\textbf{Federated Learning Beyond Local SGD}
+\textbf{Federated Learning Beyond Local SGD.}
 % The accelerated SGD methods has achieved optimal convergence rate in strongly convex
 % optimization~\cite{nesterov1983method}.
 In \cite{liu2019accelerating}, the authors provide a convergence rate of accelerated FedAvg for strongly convex problems, while it is considered in full participation setting.
