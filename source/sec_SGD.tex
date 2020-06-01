@@ -3,6 +3,7 @@
 
 
 \section{Linear Speedup Analysis of FedAvg}
+\label{sec:sgd}
 
 In this section, we provide convergence analyses of FedAvg with local
 SGD updates in the general setting with heterogeneous data and partial
@@ -39,46 +40,41 @@ the other hand, with partial participation, $E$ must be $\mathcal{O}(1)$.
 	where $\nu_{\max}=\max_{k}Np_{k}$.
 \end{theorem}
 %
-\begin{remark}
-	\textbf{Linear speedup. }We first compare our bound with that in \cite{li2019convergence},
-	which is $\mathcal{O}(\frac{1}{NT}\nu_{\max}^{2}\sigma^{2}\kappa/\mu+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{E^{2}G^{2}}{T}\kappa/\mu)$.
-	Because the third term $\frac{E^{2}G^{2}}{T}\kappa/\mu$ is also $\mathcal{O}(1/T)$
-	without a dependence on $N$, for any choice of $E$ their bound cannot
-	achieve linear speedup. The improvement of our bound comes from the
-	term $\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}$, which now is $\mathcal{O}(1/T^{2})$.
-	As a result, all leading terms scale with $1/N$ in the full device
-	particiaption setting, and with $1/K$ in the partial participation
-	setting. This implies that in both settings, there is a linear speedup
-	in the number of active workers during the communication round. 
-\end{remark}
-%
-\begin{remark}
-	\textbf{Communication Complexity.} Our bound implies a distinction
-	in the choice of $E$ between the full and partial participation settings.
-	With full participation there is linear speedup $\mathcal{O}(1/N)$
-	as long as $E=\mathcal{O}(\sqrt{T/N})$. This corresponds to a communication
-	complexity of $\mathcal{O}(\sqrt{NT})$. In contrast, the bound in
-	\cite{li2019convergence} does not allow $E$ to scale with $\sqrt{T}$,
-	even for full participation. On the other hand, with partial participation,
-	the term $\frac{\kappa E^{2}G^{2}/\mu}{KT}$ is also a leading term,
-	and so $E$ must be $\mathcal{O}(1)$. In this setting, our bound
-	still yields a linear speedup in $K$, which is not the case for previous
-	analyses. 
-\end{remark}
-%
-\begin{remark}
-	\textbf{Comparison with related works.} There have been a line of
-	works that demonstrate that linear speedup is possible in distributed
-	optimization with infrequent communication. In particular, \cite{haddadpour2019convergence}
-	is the only other work that demonstrates linear speedup for strongly
-	convex and smooth objectives in the heterogeneous data with partial
-	participation setting, with $\mathcal{O}(N^{1/3}T^{2/3})$ communication
-	complexity. However, their results are derived based on a gradient
-	diversity assumption, and the learning rates are carefully chosen
-	based on an upper bound of the gradient diversity. Thus our results
-	are not directly comparable as we use the gradient bound assumption
-	instead, and our learning rate does not depend on the bound $G$.
-\end{remark}
+\textbf{Linear speedup. }We first compare our bound with that in \cite{li2019convergence},
+which is $\mathcal{O}(\frac{1}{NT}\nu_{\max}^{2}\sigma^{2}\kappa/\mu+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{E^{2}G^{2}}{T}\kappa/\mu)$.
+Because the third term $\frac{E^{2}G^{2}}{T}\kappa/\mu$ is also $\mathcal{O}(1/T)$
+without a dependence on $N$, for any choice of $E$ their bound cannot
+achieve linear speedup. The improvement of our bound comes from the
+term $\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}$, which now is $\mathcal{O}(1/T^{2})$.
+As a result, all leading terms scale with $1/N$ in the full device
+particiaption setting, and with $1/K$ in the partial participation
+setting. This implies that in both settings, there is a linear speedup
+in the number of active workers during the communication round. To
+our knowledge, this is the first result that explicitly demonstrates
+linear speedup in the number of active workers in the setting with
+both non i.i.d. data and partial participation. \\
+\textbf{Communication Complexity.} Our bound implies a distinction
+in the choice of $E$ between the full and partial participation settings.
+With full participation there is linear speedup $\mathcal{O}(1/N)$
+as long as $E=\mathcal{O}(\sqrt{T/N})$. This corresponds to a communication
+complexity of $\mathcal{O}(\sqrt{NT})$. In contrast, the bound in
+\cite{li2019convergence} does not allow $E$ to scale with $\sqrt{T}$,
+even for full participation. On the other hand, with partial participation,
+the term $\frac{\kappa E^{2}G^{2}/\mu}{KT}$ is also a leading term,
+and so $E$ must be $\mathcal{O}(1)$. In this setting, our bound
+still yields a linear speedup in $K$, which is not the case for previous
+analyses. \\
+\textbf{Comparison with related works.} \cite{haddadpour2019convergence}
+also proves a linear speedup $\mathcal{O}(1/NT)$ result for strongly
+convex and smooth objectives in the heterogeneous data with partial
+participation setting, with $\mathcal{O}(N^{1/3}T^{2/3})$ communication
+complexity. However, their results are derived based on the more restrictive
+bounded gradient diversity assumption. As discussed before, if $\frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$
+is bounded, then $L$-smoothness implies $\nabla F_{k}(\mathbf{w}^{\ast})\equiv0$
+for all $k$. In this overparameterized setting, we show in Section
+\label{sec:overparameterized} that the convergence is in fact exponential,
+which improves on the $\mathcal{O}(1/NT)$ rate in \cite{haddadpour2019convergence}
+with better communication complexity.
 
 \subsection{Convex Smooth Objectives}
 Next we provide linear speedup analyses of FedAvg with convex and
@@ -101,24 +97,18 @@ gradient norm.
 	\end{align*}
 \end{theorem}
 %
-\begin{remark}
-	\textbf{Choice of $E$ and linear speedup. }With full participation,
-	as long as $E=\mathcal{O}(\sqrt{T^{1/2}/N^{3/2}})$, the convergence
-	rate is $\mathcal{O}(1/\sqrt{NT})$ with $\mathcal{O}(N^{3/4}T^{3/4})$
-	communication rounds. In the partial participation setting, $E$ must
-	be $O(1)$ in order to achieve linear speedup of $\mathcal{O}(1/\sqrt{KT})$.
-	Our result again demonstrates the difference in communication efficiencies
-	between full and partial participation, and is to our knowledge the
-	first result on linear speedup in the general federated learning setting
-	with both heterogeneous data and partial participation. 
-\end{remark}
-%
-\begin{remark}
-	\textbf{Learning rate. }The learning rate now depends on the final
-	horizon $T$ of the convergence statement, whereas before the learning
-	rate was set to $\mathcal{O}(1/t)$ for the $t$-th iteration. We
-	also note that the requirement on $\alpha_{t}=\mathcal{O}(\sqrt{N/T})$
-	is present in the works \cite{haddadpour2019convergence,yu2019parallel}
-	on nonconvex problems with $O(1/\sqrt{NT})$ linear speedup convergence
-	results. 
-\end{remark}
+\textbf{Choice of $E$ and linear speedup. }With full participation,
+as long as $E=\mathcal{O}(\sqrt{T^{1/2}/N^{3/2}})$, the convergence
+rate is $\mathcal{O}(1/\sqrt{NT})$ with $\mathcal{O}(N^{3/4}T^{3/4})$
+communication rounds. In the partial participation setting, $E$ must
+be $O(1)$ in order to achieve linear speedup of $\mathcal{O}(1/\sqrt{KT})$.
+Our result again demonstrates the difference in communication complexities
+between full and partial participation, and is to our knowledge the
+first result on linear speedup in the general federated learning setting
+with both heterogeneous data and partial participation. \\
+\textbf{Learning rate. }The learning rate now depends on the final
+horizon $T$ of the convergence statement, whereas in the strongly
+convex case the learning rate decays as $\mathcal{O}(1/t)$. Such
+a requirement $\alpha_{t}=\mathcal{O}(\sqrt{N/T})$ is also present
+in the works \cite{haddadpour2019convergence,yu2019parallel} on nonconvex
+problems with $\mathcal{O}(1/\sqrt{NT})$ linear speedup convergence results. 
