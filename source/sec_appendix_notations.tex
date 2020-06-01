@@ -1,6 +1,7 @@
 % !TEX ROOT=./main.tex
 
 \section{Additional Notations}
+\label{sec:app:notations}
 In this section, we introduce additional notations that are used throughout
 the proof. Following common practice~\cite{stich2018local,li2019convergence}, we define two virtual sequences $\overline{\mathbf{v}}_{t}$ and $\overline{\mathbf{w}}_{t}$. For full device participation and $t \notin \cI_E$,
 $\ov{v}_t = \ov{w}_t =\sum_{k=1}^{N} p_{k} \mathbf{v}_{t}^{k}$. For partial participation, $t \in \cI_E$, $\ov{w}_t \neq \ov{v}_t$ since $\ov{v}_t=\sum_{k=1}^{N} p_{k} \mathbf{v}_{t}^{k}$ while $\ov{w}_t=\sum_{k\in \cS_t}\mathbf{w}_{t}^{k}$. However, we can
@@ -25,3 +26,22 @@ Similarly, we denote the expected one-step gradient $\ov{g}_{t}= \EE_{\xi_t}[\vg
  \end{array}\right.
 \end{align}
 and $\xi_t = \{\xi_t^k\}_{k=1}^N$ denotes random samples at all devices at time step $t$. 
+Since in this work, we also consider the case of partial participation. The sampling
+strategy to approximate the system heterogeneity can also affect the convergence. Here we
+follow the prior arts~\cite{haddadpour2019convergence} considering two types of sampling
+schemes. 
+The sampling scheme I establishes $\cS_{t+1}$ by i.i.d. sampling the devices with replacement,
+in this case the upper bound of expected square norm of $\ov{w}_{t+1} - \ov{v}_{t+1}$ is given by:
+\begin{align}
+\EE_{\cS_{t+1}}\left\|\ov{w}_{t+1} - \ov{v}_{t+1}\right\|^2	\leq \frac{4}{K} \eta_t^2 E^2G^2
+\end{align}
+The sampling scheme II establishes $\cS_{t+1}$ by uniformly sampling all devices without
+replacement, in which we have the 
+\begin{align}
+\EE_{\cS_{t+1}}\left\|\ov{w}_{t+1} - \ov{v}_{t+1}\right\|^2	\leq \frac{4(N - K)}{K(N-1)} \eta_t^2 E^2G^2
+\end{align}
+We denote this upper bound as follows for concise presentation. 
+\begin{align}
+	\EE_{\cS_{t+1}}\left\|\ov{w}_{t+1} - \ov{v}_{t+1}\right\|^2 \leq  \eta_t^2 C
+	\label{eq:partialsample}
+\end{align}

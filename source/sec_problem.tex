@@ -48,17 +48,20 @@ where $\vw_t^k$ is the local model parameter maintained in the $k$-th device at 
 
 Since federated learning usually involves an enormous amount of 
 local devices, it is more realistic to consider only a subset of 
-local devices is active at each communication round. In this work,
+local devices is active at each communication round (system heterogeneity). In this work,
 we consider both the case of \textbf{full participation} where the model is
 averaging over all devices at the communication round, i.e.,
 $\mathbf{w}_{t+1}^{k} = \sum_{k=1}^N p_k \mathbf{v}_{t+1}^{k}$, and
 the case of \textbf{partial participation} where $|\cS_{t+1}| < N$. 
-In the partial participation scenario, $\cS_{t+1}$ is obtained by two types of
-sampling schemes to simulate the practical scenarios~\cite{li2019convergence}. The first one samples
-each device with probability $p_k$, with replacement. The second one samples
-each device uniformly without replacement. Both of these sampling schemes
+In the partial participation scenario, $\cS_{t+1}$ is obtained by two types
+sampling schemes to simulate practical scenarios~\cite{li2019convergence}. 
+The sampling scheme I establishes $\cS_{t+1}$ by i.i.d. sampling the devices according to
+the weight $p_k$ with replacement. 
+The sampling scheme II establishes $\cS_{t+1}$ by uniformly sampling all devices without
+replacement. Both of the sampling schemes
 guarantee that gradient updates in FedAvg are unbiased stochastic versions of
-updates in FedAvg with full participation, during the communication round. 
+updates in FedAvg with full participation. For 
+more details on the notations and setup, please also refer to the Section~\ref{sec:app:notations} in the appendix.
 
 % Thus when $t+1 \notin \mathcal{I}_{E}$, each device updates its local parameter based on local
 % stochastic gradient descent, and every $E$ iterations, parameters are aggregated
