@@ -1,0 +1,38 @@
+% !TEX ROOT=./main.tex
+
+
+\section{Comparison of convergence rates}
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|}\hline 
+	Algorithm \textbackslash Setting            & Strongly Convex        & Convex \\ \hline \hline
+	FedAvg                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
+	Nesterov accelerated FedAvg    & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    & $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
+\end{tabular}
+\caption{The summary of the convergence results in this work.}
+\end{table}
+
+\begin{table}
+\centering
+{\small
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline Reference                 & Convergence rate    & E                           & Non-IID & Participation & Extra Assumptions  		  & Setting  \\ \hline\hline 
+\cite{li2019convergence}         & $\cO(\frac{E^2}{T})$& $\cO(1)$                    & \cmark  & Partial       & Bounded gradient   		  & Strongly convex  \\ \hline
+\cite{haddadpour2019convergence} & $\cO(\frac{1}{KT})$ & $\cO(K^{1/3}T^{2/3})^*$     & \cmark  & Partial       & Bounded gradient diversity   & Strongly convex  \\ \hline
+This work                        & $\cO(\frac{1}{KT})$ & $\cO(N^{-1/2}T^{1/2})^{**}$ & \cmark  & Partial       & Bounded gradient             & Strongly convex  \\\hline\hline
+\cite{zanette2019tighter}        &                     &                             & \cmark  & Partial       & Bounded gradient             & Convex  \\\hline\hline
+
+% Khaled et al. (2020) & & & \\
+% Li et al. (2019) & & & \\
+% this work & $\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}}{NT\mu}+\frac{\kappa E^{2}G^{2}}{KT\mu}+\frac{\kappa^{2}E^{2}G^{2}}{T^{2}\mu}\right)$ &  &  \\
+\end{tabular}
+}
+\caption{$^*$ This $E$ is obtained under i.i.d. setting. 
+         $^{**}$: This $E$ is obtained under full participation setting.}
+\end{table}
+
+
+
+
+
