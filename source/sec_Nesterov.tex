@@ -72,12 +72,12 @@ of averaged gradient norm.
 	for Accelerated FedAvg with convex and $L$-smooth objectives. With
 	full device participation, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}\left(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}}\right)
+	\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}\left(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}}\right)
+	\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
 	\end{align*}
 \end{theorem}
 %
