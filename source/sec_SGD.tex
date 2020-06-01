@@ -32,12 +32,12 @@ partial participation, $E$ must be $O(1)$.
 	
 	With full device participation, 
 	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast}=O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast}=O\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right)
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq O\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right)
 	\end{align*}
 \end{theorem}
 %
@@ -81,14 +81,14 @@ smooth setting in {[}CITE Yu and others{]}, where a similar $O(1/\sqrt{NT})$
 rate is given in terms of averaged gradient norm. 
 \begin{theorem}
 	Suppose $F_{k}$ is $L$-smooth and convex for all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$.
-	Set learning rate $\alpha_{t}=O(\sqrt{\frac{N}{T}})$. With full device participation, 
+	Set learning rate $\alpha_{t}=O\left(\sqrt{\frac{N}{T}}\right)$. With full device participation, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O\left(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}}\right)
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O\left(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}}\right)
 	\end{align*}
 \end{theorem}
 

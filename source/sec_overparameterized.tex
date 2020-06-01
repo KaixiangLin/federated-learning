@@ -85,7 +85,7 @@ with linear speedup in the number of workers.
 	every $E$ iterations with constant step size $\overline{\alpha}=\frac{1}{4E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
 	gives the exponential convergence guarantee 
 	\begin{align*}
-	\mathbb{E}F(\overline{w}_{t}) & \leq\frac{L}{2}(1-\mu\overline{\alpha})^{t}\|w_{0}-w^{\ast}\|^{2}=O(L\exp(-\frac{\mu}{4E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t)\cdot\|w_{0}-w^{\ast}\|^{2})
+	\mathbb{E}F(\overline{w}_{t}) & \leq\frac{L}{2}(1-\mu\overline{\alpha})^{t}\|w_{0}-w^{\ast}\|^{2}=O\left(L\exp\left(-\frac{\mu}{4E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t\right)\cdot\|w_{0}-w^{\ast}\|^{2}\right)
 	\end{align*}
 \end{theorem}
 %
@@ -114,7 +114,7 @@ We now consider the federated learning problem with overparameterized
 quadratic objectives. In other words, the local device objectives
 are given by the sum of squares. 
 \begin{align*}
-F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j})^{2}
+F_{k}(w) & =\frac{1}{2n_{k}}\sum\nolimits_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j})^{2}
 \end{align*}
 and there exists $w^{\ast}$ such that $F(w^{\ast})=\sum_{k}p_{k}F_{k}(w^{\ast})\equiv0$.
 For such quadratic problems, we will present a sharper bound for FedAvg
@@ -150,7 +150,7 @@ so that $\tilde{H}_{t}^{k}$ is an unbiased estimate of $H^{k}$.
 Moreover, we have
 \begin{align*}
 g_{t,k} & =\nabla F_{k}(w_{t}^{k},x_{t}^{k})=\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\\
-g_{t} & =\sum_{k=1}^{N}p_{k}\nabla F_{k}(w_{t}^{k},x_{t}^{k})=\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})
+g_{t} & =\sum\nolimits_{k=1}^{N}p_{k}\nabla F_{k}(w_{t}^{k},x_{t}^{k})=\sum\nolimits_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})
 \end{align*}
 
 Define $l$ to be the smallest positive number such that $\mathbb{E}\|x_{t}^{k}\|^{2}$$x_{t}^{k}$($x_{t}^{k})^{T}\preceq lH^{k}$

@@ -5,9 +5,9 @@
 
 % \subsection{The Federated Learning Problem}
 
-We study the federated learning problem
+In this paper, we study the following federated learning problem:
 \begin{align}
-	\min _{\mathbf{w}}\left\{F(\mathbf{w}) \triangleq \sum_{k=1}^{N} p_{k} F_{k}(\mathbf{w})\right\},
+	\min _{\mathbf{w}}\left\{F(\mathbf{w}) \triangleq \sum\nolimits_{k=1}^{N} p_{k} F_{k}(\mathbf{w})\right\},
 	\label{eq:problem}
 \end{align}
 where $N$ is the number of local devices (users/nodes/workers) and $p_k$ is the $k$-th device's weight satisfying $p_k \geq 0$ and $\sum_{k=1}^N p_k = 1$. 

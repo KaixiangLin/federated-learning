@@ -56,18 +56,22 @@
 \maketitle
 
 \begin{abstract}
-Federated learning is a distributed learning paradigm that enables learning
-a model jointly over a large number of workers without sharing the private
-data on local workers. The characteristics of non-identically distributed data
-across the network and low device participation brings significant challenges
-in analyzing the convergence of federated learning algorithms. Prior works
-have either analyzed the convergence with i.i.d. data, or with full device
-participation, and often with suboptimal rates. In this work, we provide a
-comprehensive analysis of the convergence rate of Federated Averaging (FedAvg)
-with SGD and Nesterov SGD updates for general convex problems with arbitrarily
-heterogeneous data. Firstly we show that the convergence rates enjoy a linear
-speedup in the number of participating workers for all convex smooth problems
-for both algorithms.  Furthermore, in the overparamterized setting, we prove that the convergence under FedAvg is in fact exponential, also with a speedup factor linear in the number of workers. We also propose a new accelerated federated learning algorithm that further improves this convergence rate with provable guarantees in the linear regression setting. Empirical evaluation of the algorithms in various settings match our theoretical results.
+Federated learning learns
+a model jointly from a set of distributed workers without sharing their private
+data. The characteristics of non-\emph{i.i.d.} data
+across the network and low device participation bring significant challenges
+in understanding the convergence of federated learning algorithms. Prior work
+analyzed the convergence with restrained settings,
+%either \emph{i.i.d.} data, or with full device participation, 
+and often with suboptimal rates. 
+In this work, we provide a
+comprehensive convergence analysis of the widely used framework Federated Averaging (FedAvg),
+using SGD or Nesterov SGD updates, for general convex problems with arbitrarily
+heterogeneous data. 
+We first show that the convergence rates of both algorithms enjoy a linear speedup w.r.t. the number of participating workers for all convex smooth problems. 
+Furthermore, in the overparamterized setting, we show that the convergence of FedAvg is in fact exponential, also with a speedup factor linear in the number of workers. 
+We propose a new accelerated federated learning algorithm that further improves this convergence rate with provable guarantees in the linear regression setting. 
+Empirical studies of the algorithms in various settings have supported our theoretical results.
 \end{abstract}
 
 \input{sec_intro}
@@ -88,3 +92,9 @@ for both algorithms.  Furthermore, in the overparamterized setting, we prove tha
 \appendix
 \input{sec_appendix}
 \end{document}
+
+
+
+\iffalse
+
+\endif
