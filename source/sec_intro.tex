@@ -6,20 +6,46 @@ Federated learning (FL) is a machine learning setting where many clients (e.g. m
 In recent years, FL has swiftly emerged to be an important learning paradigm~\cite{mcmahan2016communication}--one that enjoys widespread success in applications such as personalized recommendations~\cite{chen2018federated}, virtual assistants~\cite{lamautonomy}, keyboard predictions~\cite{47586} to name a few--for at least two reasons: First, the rapid proliferation of smart devices that are equipped with both computing power and data-capturing capabilities provided the infrastructure core for FL. Second, the rising awareness of privacy and the exponential growth of computational power (blessed by Moore's law) in mobile devices have made it increasingly attractive to push the computation to the edge.
 
 Despite its promise and broad applicability in our current era, the potential value FL delivers is coupled with the unique challenges it brings forth. In particular,
-when FL learns a single statistical model using data from across all the devices while keeping each individual device's data isolated (and hence private)~\cite{kairouz2019advances}, it faces two challenges that are absent in centralized optimization and 
-traditional distributed optimization~\cite{li2019convergence,smith2017federated}:
+when FL learns a single statistical model using data from across all the devices while keeping each individual device's data isolated (and hence private)~\cite{kairouz2019advances}, it faces two challenges that are absent in centralized optimization and traditional distributed optimization~\cite{li2019convergence,smith2017federated}:
 \begin{enumerate}
 \item\textbf{Statistical heterogeneity:} data distributions in different devices are different.
 \item\textbf{System heterogeneity:} only a subset of devices may access the central server at each time. 
 \end{enumerate}
 
 % Gaps in the theoretical understanding. 
-To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success~\cite{47586}. 
-Its success has since motivated a growing line of research efforts into understanding its theoretical convergence guarantees in various settings.
+To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success~\cite{47586}. Its success has since motivated a growing line of research efforts into understanding its theoretical convergence guarantees in various settings.
 
- Existing convergence guarantees of FedAvg were either largely established on simplified settings~\cite{stich2018local,khaled2019first,wang2018cooperative,yu2019parallel} or provides a suboptimal 
+Existing convergence guarantees of FedAvg were either largely established on simplified settings~\cite{stich2018local,khaled2019first,wang2018cooperative,yu2019parallel} or provides a suboptimal 
 convergence rate~\cite{li2019convergence}. Furthermore, the convergence of
 FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerating} under the realistic setting is yet to be analyzed.
+
+\subsection{Related Work}
+\textbf{The Convergence of FedAvg and Linear Speedup.}
+There has been a vast amount of convergence analysis for FedAvg in different settings. However, most of the prior works provide the
+convergence guarantee under a simplified setting, where either statistical
+heterogeneity~\cite{stich2018local,zhou2017convergence,wang2018cooperative,woodworth2018graph} or system
+heterogeneity~\cite{yu2019parallel,wang2019adaptive,khaled2019first,jiang2018linear} are not
+considered. This simplified setting is also referred as local SGD. 
+In~\cite{li2019convergence},
+the authors for the first time provide convergence of FedAvg for strongly convex problem considering both statistical heterogeneity and system heterogeneity, yet it
+didn't achieve linear speedup. In~\cite{haddadpour2019convergence,liang2019variance,huo2020faster,jiang2018linear}, the convergence of FedAvg for non-convex problems has been studied. 
+However, \cite{huo2020faster} did not discuss the linear speedup and the theorems in \cite{haddadpour2019convergence,liang2019variance} failed to cover the accelerated version of
+FedAvg. 
+
+
+\textbf{Federated Learning Beyond Local SGD.}
+% The accelerated SGD methods has achieved optimal convergence rate in strongly convex
+% optimization~\cite{nesterov1983method}.
+In \cite{liu2019accelerating}, the authors provide a convergence rate of accelerated FedAvg for strongly convex problems, while it is considered in full participation setting.
+\cite{yu2019linear} and \citep{huo2020faster} provide
+convergence guarantee for Nesterov accelerated FedAvg for non-convex. 
+However, \cite{yu2019linear} did not consider the system heterogeneity and \cite{huo2020faster} haven't discuss the linear speedup.
+Furthermore, the accelerated FedAvg admitting a similar convergence rate as FedAvg in all previous works.  In this work, we provide a novel accelerated FedAvg with improved convergence rates under a popular overparameterized setting. 
+
+
+
+
+
 
 
 
