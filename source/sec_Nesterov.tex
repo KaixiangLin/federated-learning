@@ -39,12 +39,12 @@ the stochastic gradient sampled on the $k$-th device at time $t$.
 	$\gamma=\max\{32\kappa,E\}$ and $\kappa=\frac{L}{\mu}$. Then with
 	full device participation, 
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right)
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}\leq\mathcal{O}(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}\leq\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right)
 	\end{align*}
 \end{theorem}
 %
@@ -71,12 +71,12 @@ of averaged gradient norm.
 	for Accelerated FedAvg with convex and $L$-smooth objectives. With
 	full device participation, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}\left(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}}\right)
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}\left(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}}\right)
 	\end{align*}
 \end{theorem}
 %

@@ -29,12 +29,12 @@ the other hand, with partial participation, $E$ must be $\mathcal{O}(1)$.
 	where $\gamma=\max\{32\kappa,E\}$ and $\kappa=\frac{L}{\mu}$. Then
 	with full device participation, 
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}=\mathcal{O}(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right)
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}\leq\mathcal{O}(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}\leq\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right)
 	\end{align*}
 	where $\nu_{\max}=\max_{k}Np_{k}$.
 \end{theorem}
@@ -92,12 +92,12 @@ gradient norm.
 	\label{thm:SGD_cvx}With full device participation and constant learning
 	rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right)
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round and learning rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{K}{T}})$,
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right)
 	\end{align*}
 \end{theorem}
 %
