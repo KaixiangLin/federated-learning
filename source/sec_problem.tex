@@ -90,7 +90,7 @@ more details on the notations and setup, please also refer to the Section~\ref{s
 % where $\mathcal{S}_{t+1}$ is obtained using some sampling scheme. We consider two types of common unbiased sampling strategies. The first one samples each device with probability $p_k$, with replacement, while the second one samples each device uniformly without replacement. Both of these sampling schemes guarantee that updates in FedAvg with partial participation are unbiased stochastic versions of updates in FedAvg with full participation, during the communication round.
 
 \subsection{Assumptions}
-
+\label{sec:assumptions}
 We make the following standard assumptions on the objective function $F_1,\dots, F_N$. Assumption~\ref{ass:lsmooth} and Assumption~\ref{ass:stroncvx} are common assumptions satisfied by a range of popular objective functions, such as $\ell^{2}$ regularized logistic regression and cross-entropy loss functions.
 
  %Assumption~\ref{ass:lsmooth} is made to achieve linear speedup of convergence rate with respect to the number of workers, though it is not necessary for FedAvg and its variants to convergence.
