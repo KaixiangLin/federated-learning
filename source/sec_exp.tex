@@ -49,11 +49,11 @@ we report the last iteration to converge to $\epsilon$-accuracy of Nesterov acce
 w.r.t the number of workers.
 
 \textbf{The impact of $E$.} We further examine how does the number of local steps ($E$) 
-affect convergence. As shown in Figure~\ref{fig:e}, the number of iterations increases as $E$ increase, which slow down the convergence in
+affect convergence. As shown in Figure~\ref{fig:e} in appendix section~\ref{sec:expsupp}, the number of iterations increases as $E$ increase, which slow down the convergence in
 terms of gradient computation. However, it can save communication costs as
 the number of rounds decreased when the $E$ increases. This showcase that
 we need a proper choice of $E$ to trade-off the communication cost and
-convergence speed.
+convergence speed. 
 
 
 \begin{figure}[t!]
@@ -104,20 +104,20 @@ convergence speed.
 
 
 
-\begin{figure}
-\centering
-	\begin{tabular}{ccc}
-	\hspace{-2em} \includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupEpochsT-min-w8a-epsilon0131-reg1e-05.pdf} &
-	\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupEpochsT-min-w8a-epsilon0134-reg0.pdf} & 
-	\includegraphics[width=0.33\textwidth]{fig/paper-linregression-newspeedupEpochsT-min-linearregressionw8a-epsilon002-reg0.pdf} \\
-	\hspace{-2em} \includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupEpochsRounds-min-w8a-epsilon0131-reg1e-05.pdf} &
-	\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupEpochsRounds-min-w8a-epsilon0134-reg0.pdf} & 
-	\includegraphics[width=0.33\textwidth]{fig/paper-linregression-newspeedupEpochsRounds-min-linearregressionw8a-epsilon002-reg0.pdf} \\
-(a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
-	\end{tabular}
-\caption{The convergence of FedAvg w.r.t the number of local steps $E$. }
-\label{fig:e}
-\end{figure}
+% \begin{figure}
+% \centering
+% 	\begin{tabular}{ccc}
+% 	\hspace{-2em} \includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupEpochsT-min-w8a-epsilon0131-reg1e-05.pdf} &
+% 	\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupEpochsT-min-w8a-epsilon0134-reg0.pdf} & 
+% 	\includegraphics[width=0.33\textwidth]{fig/paper-linregression-newspeedupEpochsT-min-linearregressionw8a-epsilon002-reg0.pdf} \\
+% 	\hspace{-2em} \includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupEpochsRounds-min-w8a-epsilon0131-reg1e-05.pdf} &
+% 	\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupEpochsRounds-min-w8a-epsilon0134-reg0.pdf} & 
+% 	\includegraphics[width=0.33\textwidth]{fig/paper-linregression-newspeedupEpochsRounds-min-linearregressionw8a-epsilon002-reg0.pdf} \\
+% (a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
+% 	\end{tabular}
+% \caption{The convergence of FedAvg w.r.t the number of local steps $E$. }
+% \label{fig:e}
+% \end{figure}
 
 
 
