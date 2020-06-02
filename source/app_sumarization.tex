@@ -1,47 +1,61 @@
 % !TEX ROOT=./main.tex
 
 
-\section{Comparison of convergence rates}
+% \section{Comparison of convergence rates}
 
-\begin{table}
+
+\begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|}\hline 
 	Algorithm \textbackslash\  Objective function        & Strongly Convex        & Convex \\ \hline \hline
 	FedAvg                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
 	Nesterov accelerated FedAvg    & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    & $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
 \end{tabular}
-\caption{The summary of the convergence results under full participation setting in this work.}
+\caption{A high level summary of the convergence results for full participation in this paper. This table only hightlights the
+dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices.}
+\label{tb:convergenceratev1}
 \end{table}
 
-\begin{table}
+\begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|}\hline 
 	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex \\ \hline \hline
 	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
 	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$      \\ \hline
 \end{tabular}
-\caption{The summary of the convergence results of FedAvg and Nesterov accelerated FedAvg in this work.}
+\caption{A high level summary of the convergence results in this paper. This table only hightlights the
+dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices.
+These convergence rates applied to both FedAvg and Nesterov accelerated FedAvg.}
+\label{tb:convergenceratev2}
 \end{table}
 
 
 
-\begin{table}
+\begin{table}[h!]
 \centering
+\hspace{-2em}
 {\small
 \begin{tabular}{|c|c|c|c|c|c|c|}
-\hline Reference                 & Convergence rate    & E                           & Non-IID & Participation & Extra Assumptions  		  & Setting  \\ \hline\hline 
-\cite{li2019convergence}         & $\cO(\frac{E^2}{T})$& $\cO(1)$                    & \cmark  & Partial       & Bounded gradient   		  & Strongly convex  \\ \hline
-\cite{haddadpour2019convergence} & $\cO(\frac{1}{KT})$ & $\cO(K^{1/3}T^{2/3})^*$     & \cmark  & Partial       & Bounded gradient diversity   & Strongly convex  \\ \hline
-This work                        & $\cO(\frac{1}{KT})$ & $\cO(N^{-1/2}T^{1/2})^{**}$ & \cmark  & Partial       & Bounded gradient             & Strongly convex  \\\hline\hline
-\cite{zanette2019tighter}        &                     &                             & \cmark  & Partial       & Bounded gradient             & Convex  \\\hline\hline
-
-% Khaled et al. (2020) & & & \\
-% Li et al. (2019) & & & \\
-% this work & $\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}}{NT\mu}+\frac{\kappa E^{2}G^{2}}{KT\mu}+\frac{\kappa^{2}E^{2}G^{2}}{T^{2}\mu}\right)$ &  &  \\
+\hline Reference                 & Convergence rate    & E                           			& Participation & Extra Assumptions  		  & Setting  \\ \hline\hline 
+\cite{li2019convergence}         & $\cO(\frac{E^2}{T})$& $\cO(1)$                    			& Partial       & Bounded gradient   		  & Strongly convex  \\ \hline
+\cite{haddadpour2019convergence} & $\cO(\frac{1}{KT})$ & $\cO(K^{1/3}T^{2/3})^1$     			& Partial       & Bounded gradient diversity   & Strongly convex$^{3}$  \\ \hline
+This work                        & $\cO(\frac{1}{KT})$ & $\cO(N^{-1/2}T^{1/2})^{2}$ 			& Partial       & Bounded gradient             & Strongly convex  \\\hline\hline
+\cite{zanette2019tighter}  & $\cO(\frac{1}{\sqrt{NT}})$ & $\cO(N^{-3/2}T^{1/2})$     			& Full        & Bounded gradient             & Convex  \\\hline
+This work      & $\cO\left(\frac{1}{\sqrt{NT}}\right)$ &  $\cO(N^{-1/2}T^{1/2})^{2}$			& Partial     & Bounded gradient            &  Convex   \\ \hline\hline
+This work & $\cO\left(\exp(-\frac{NT}{E\kappa_1})\right)$ & $ \cO(T^{\beta})$                   &  Partial     & Bounded gradient    & Overparameterized (LR)$^{4}$ \\ \hline
+This work & $\cO\left(\exp(-\frac{NT}{E\sqrt{\kappa_1\tilde{\kappa}}})\right)$ & $ \cO(T^{\beta})$  &  Partial     & Bounded gradient    & Overparameterized LR \\ \hline
 \end{tabular}
 }
-\caption{$^*$ This $E$ is obtained under i.i.d. setting. 
-         $^{**}$: This $E$ is obtained under full participation setting.}
+\caption{A high level summary of the convergence results in this paper and their comparison to prior state-of-the-art FL algorithms, considering heterogeneous data. This table only hightlights the
+dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices. 
+$\kappa$ is the condition number of the system and $\beta \in (0,1)$. 
+We note that all our results for strongly convex and convex smooth problems are unified results for both FedAvg and accelerated FedAvg. The converegence results for prior arts only apply for FedAvg.}
+{\raggedright 
+         $^1$ This $E$ is obtained under i.i.d. setting. \\
+         $^{2}$ This $E$ is obtained under full participation setting. \\ 
+         $^{3}$ In~\cite{haddadpour2019convergence}, the convergence rate is for non-convex smooth problem with PL condition. Thus, it is also applied for strongly convex problem. For unified comparison, we denote it as strongly convex setting here. \\
+         $^{4}$ The convergence of FedAvg for general overparameterized strongly convex and overparameterized linear regression share the same result.  \par}
+\label{tb:convergenceratev3}
 \end{table}
 
 
