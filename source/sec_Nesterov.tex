@@ -24,7 +24,7 @@ We first show that the Nesterov accelerated FedAvg has $\mathcal{O}(1/NT)$
 convergence rate for $\mu$-strongly convex and $L$-smooth objectives.
 The Nesterov Accelerated FedAvg algorithm follows the updates
 \begin{align*}
-\mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}g_{t,k}\\
+\mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}\mathbf{g}_{t,k}\\
 \mathbf{w}_{t+1}^{k} & =\begin{cases}
 \mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E}\\
 \sum_{k=1}^{N}p_{k}\left[\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E}
