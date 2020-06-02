@@ -115,7 +115,7 @@ We make the following standard assumptions on the objective function $F_1,\dots,
 \end{assumption}
 
 \textbf{Justfication for Assumptions~\ref{ass:boundedvariance} and~\ref{ass:subgrad2}.} These standard assumptions have been made in many previous
-works in federated learning ~\cite{yu2019parallel,li2019convergence,stich2018local}. Here we provide one more justification
+works in federated learning\cite{yu2019parallel,li2019convergence,stich2018local}. Here we provide one more justification
 for their generality: even though they require bounds for all $\mathbf{w}$,
 they are not much stronger than requiring bounds at the global optimal
 parameter $\mathbf{w}^{\ast}$. As model average parameters become
@@ -130,7 +130,7 @@ hand, some works such as \cite{haddadpour2019convergence,li2018federated}
 assume bounds on the ``gradient diversity'' or ``dissimilarity'',
 defined as $\frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$.
 Such assumptions are more restrictive than our assumptions, because
-they imply $\nabla F_{k}(\mathbf{w}^{\ast})\equiv0$ for all local
+they effectively require $\nabla F_{k}(\mathbf{w}^{\ast})\equiv0$ for all local
 objectives. For such ``overparameterized'' settings, we will prove
 that the convergence is in fact geometric. 
 
