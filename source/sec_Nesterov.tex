@@ -12,11 +12,12 @@ updates focus on the non-convex smooth case \cite{huo2020faster,yu2019linear,li2
 In this section, we complete the picture with $\mathcal{O}(1/NT)$
 and $\mathcal{O}(1/\sqrt{NT})$ convergence results for Nesterov-accelerated
 FedAvg for convex objectives that match the original FedAvg results.
-As we know from stochastic optimization, Nesterov and other momumtum
+As we know from stochastic optimization, Nesterov and other momentum
 updates may fail to accelerate over SGD \cite{liu2018accelerating,kidambi2018insufficiency,liu2018toward,yuan2016influence}.
 Therefore in Section~\ref{sec:overparameterized} we will specialize to overparameterized
 problems where we demonstrate that a particular FedAvg variant with
 momentum updates is able to accelerate over the original FedAvg algorithm. 
+The convergence proof of Nesterov-accelerated FedAvg is deferred in Appendix Section~\ref{sec:app:Nesterovfedavg}.
 
 \subsection{Strongly Convex and Smooth Objectives}
 
@@ -81,10 +82,10 @@ of averaged gradient norm.
 \end{theorem}
 %
 	It is possible to extend the analyses in this section to accelerated
-	FedAvg algorithms with other momentum-based updates. However, in the
-	stochastic optimization setting, none of these methods will be able
-	to achieve a better rate than the original FedAvg with SGD in general.
-	For this reason, we will instead turn to the overparameterized setting
-	\cite{ma2017power,liu2018accelerating,canziani2016analysis} in the
-	next section where we show that FedAvg enjoys exponential convergence
-	and it is possible to improve its convergence rate with momentum based
+    FedAvg algorithms with other momentum-based updates. However, in the
+    stochastic optimization setting, none of these methods will be able
+    to achieve a better rate than the original FedAvg with SGD updates in general.
+    For this reason, we will instead turn to the overparameterized setting
+    \cite{ma2017power,liu2018accelerating,canziani2016analysis} in the
+    next section where we show that FedAvg enjoys geometric convergence
+    and it is possible to improve its convergence rate with momentum-based updates.
