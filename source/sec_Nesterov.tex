@@ -8,15 +8,15 @@
 A natural extension of the FedAvg algorithm is to use momentum-based
 local updates instead of local SGD updates. To our knowledge, the
 only convergence analyses of FedAvg with momentum-based stochastic
-updates focus on the non-convex smooth case \cite{yu2019linear,huo2020faster,li2018federated}.
+updates focus on the non-convex smooth case \cite{huo2020faster,yu2019linear,li2018federated}.
 In this section, we complete the picture with $\mathcal{O}(1/NT)$
 and $\mathcal{O}(1/\sqrt{NT})$ convergence results for Nesterov-accelerated
-FedAvg for convex objectives. As we know from stochastic optimization,
-Nesterov updates may fail to accelerate over SGD, so in general we
-cannot hope to obtain acceleration results over FedAvg. However, in
-the following section we specialize to overparameterized problems
-where we demonstrate that a particular FedAvg variant with momentum
-updates is able to accelerate over the original FedAvg algorithm. 
+FedAvg for convex objectives that match the original FedAvg results.
+As we know from stochastic optimization, Nesterov and other momumtum
+updates may fail to accelerate over SGD \cite{liu2018accelerating,kidambi2018insufficiency,liu2018toward,yuan2016influence}.
+Therefore in Section~\ref{sec:overparameterized} we will specialize to overparameterized
+problems where we demonstrate that a particular FedAvg variant with
+momentum updates is able to accelerate over the original FedAvg algorithm. 
 
 \subsection{Strongly Convex and Smooth Objectives}
 
@@ -49,14 +49,13 @@ the stochastic gradient sampled on the $k$-th device at time $t$.
 	\end{align*}
 \end{theorem}
 %
-\begin{remark}
 To our knowledge, this is the first convergence result for Nesterov
 accelerated FedAvg in the strongly convex and smooth setting. The
 same discussion about linear speedup of FedAvg applies to the Nesterov
 accelerated variant. In particular, to achieve $\mathcal{O}(1/NT)$
 linear speedup, $T$ iterations of the algorithm requires only $\mathcal{O}(\sqrt{NT})$
 communication rounds with full participation. 
-\end{remark}
+
 
 \subsection{Convex Smooth Objectives}
 
@@ -81,7 +80,6 @@ of averaged gradient norm.
 	\end{align*}
 \end{theorem}
 %
-\begin{remark}
 	It is possible to extend the analyses in this section to accelerated
 	FedAvg algorithms with other momentum-based updates. However, in the
 	stochastic optimization setting, none of these methods will be able
@@ -90,5 +88,3 @@ of averaged gradient norm.
 	\cite{ma2017power,liu2018accelerating,canziani2016analysis} in the
 	next section where we show that FedAvg enjoys exponential convergence
 	and it is possible to improve its convergence rate with momentum based
-	local updates. 
-\end{remark}
