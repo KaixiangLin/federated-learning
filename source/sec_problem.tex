@@ -113,9 +113,8 @@ We make the following standard assumptions on the objective function $F_1,\dots,
 	$\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)\right\|^{2} \leq G^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.
 	\label{ass:subgrad2}
 \end{assumption}
-
-\textbf{Justfication for Assumptions~\ref{ass:boundedvariance} and~\ref{ass:subgrad2}.} These standard assumptions have been made in many previous
-works in federated learning\cite{yu2019parallel,li2019convergence,stich2018local}. Here we provide one more justification
+These standard assumptions have been made in many previous works in federated learning\cite{yu2019parallel,li2019convergence,stich2018local}. 
+Here we provide one more justification
 for their generality: even though they require bounds for all $\mathbf{w}$,
 they are not much stronger than requiring bounds at the global optimal
 parameter $\mathbf{w}^{\ast}$. As model average parameters become
@@ -125,12 +124,18 @@ and $\mathbb{E}\|\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})-\nabla F_{k}(\math
 will become close to $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})\|^{2}$
 and $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})-\nabla F_{k}(\mathbf{w}^{\ast})\|^{2}$.
 Therefore, there is no substantial difference between these assumptions
-and assuming the bounds at $\mathbf{w}^{\ast}$ only. On the other
-hand, some works such as \cite{haddadpour2019convergence,li2018federated}
-assume bounds on the ``gradient diversity'' or ``dissimilarity'',
-defined as $\frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$.
-Such assumptions are more restrictive than our assumptions, because
-they effectively require $\nabla F_{k}(\mathbf{w}^{\ast})\equiv0$ for all local
-objectives. For such ``overparameterized'' settings, we will prove
-that the convergence is in fact geometric. 
+and assuming the bounds at $\mathbf{w}^{\ast}$ only. Furthermore, instead of  
+assuming \textit{bounded gradient diversity} as in related works~\cite{haddadpour2019convergence,li2018federated}, 
+we argue that Assumption~\ref{ass:subgrad2} is more general. Because when converging to target accuracy $\epsilon$ and $\epsilon \rightarrow 0$,
+bounded gradient diversity restricts local objectives to the same minimizer as global objective, which contradicts to the heterogeneous data setting, 
+while our assumption is still feasible.
+For more detailed explanations of our assumptions, please refer to Appendix Section~\ref{sec:app:comparison}.
+
+% On the other hand, some works such as \cite{haddadpour2019convergence,li2018federated}
+% assume bounds on the ``gradient diversity'' or ``dissimilarity'',
+% defined as $\frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$.
+% Such assumptions are more restrictive than our assumptions, because
+% they effectively require $\nabla F_{k}(\mathbf{w}^{\ast})\equiv0$ for all local
+% objectives. For such ``overparameterized'' settings, we will prove
+% that the convergence is in fact geometric. 
 

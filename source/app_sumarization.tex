@@ -1,8 +1,24 @@
 % !TEX ROOT=./main.tex
 
 
-% \section{Comparison of convergence rates}
+\section{Comparison of convergence rates with related works.}
+\label{sec:app:comparison}
+In this section, we summarize the convergence results in this work from various perspectives
+and compare our results with related works. In Table~\ref{tb:convergenceratev1} and Table~\ref{tb:convergenceratev2}, we summarize 
+the convergence results in terms of participations and accelerations. In Table~\ref{tb:convergenceratev3}, we compare our 
+results with the best known results in the literatures. 
 
+In~\cite{haddadpour2019convergence}, they also provide $\cO(1/NT)$ convergence rate of non-convex problems under Polyak-Łojasiewicz (PL) condition, which
+means their results can directly apply to the strongly convex problems. However, their assumption is based on bounded gradient diversity, defined as follows: 
+\begin{align*}
+	\Lambda(\vw) = \frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}} \leq B
+\end{align*} 
+This is a more restrictive comparing to assuming bounded gradient under the case of target accuracy $\epsilon \rightarrow 0$ and PL condition.
+To see this, consider the gradient diversity at the global optimal $\vw^*$,i.e., $\Lambda(\vw^*) = \frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$. For $\Lambda(\vw^*)$ to be bounded, it requires $\|\nabla F_{k}(\mathbf{w}^*)\|_{2}^{2} = 0$, $\forall \ k$. This indicates 
+$\vw^*$ is also the minimizer of each local objective, which contradicts to the practical setting of heterogeneous data. Therefore, their bound 
+is not effective for arbitrary small $\epsilon$-accuracy under general heterogeneous data while our convergence results still hold in this case.
+% If we only consider the domain $\vw \in \{\vw | \|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2} > c\}$, where $c$ is a positive constant. 
+% The bounded gradient can imply gradient diversity (see Corollary 10 in ~\cite{li2018federated}). In this case, the gradient diversity is a relaxed 
 
 \begin{table}[h!]
 \centering
@@ -11,7 +27,7 @@
 	FedAvg                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
 	Nesterov accelerated FedAvg    & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    & $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
 \end{tabular}
-\caption{A high level summary of the convergence results for full participation in this paper. This table only hightlights the
+\caption{A high level summary of the convergence results for full participation in this paper. This table only highlights the
 dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices.}
 \label{tb:convergenceratev1}
 \end{table}
@@ -23,7 +39,7 @@ dependence on $T$ (number of iterations), $E$ (the largest number of local steps
 	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
 	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$      \\ \hline
 \end{tabular}
-\caption{A high level summary of the convergence results in this paper. This table only hightlights the
+\caption{A high level summary of the convergence results in this paper. This table only highlights the
 dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices.
 These convergence rates applied to both FedAvg and Nesterov accelerated FedAvg.}
 \label{tb:convergenceratev2}
@@ -32,32 +48,31 @@ These convergence rates applied to both FedAvg and Nesterov accelerated FedAvg.}
 
 \begin{table}[h!]
 \centering
-\hspace{-2em}
-{\small
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline Reference                 & Convergence rate    & E                           			& Participation & Extra Assumptions  		  & Setting  \\ \hline\hline 
-\cite{li2019convergence}         & $\cO(\frac{E^2}{T})$& $\cO(1)$                    			& Partial       & Bounded gradient   		  & Strongly convex  \\ \hline
-\cite{haddadpour2019convergence} & $\cO(\frac{1}{KT})$ & $\cO(K^{1/3}T^{2/3})^{\dagger}$     			& Partial       & Bounded gradient diversity   & Strongly convex$^{\mathsection}$  \\ \hline
-This work                        & $\cO(\frac{1}{KT})$ & $\cO(N^{-1/2}T^{1/2})^{\dagger\dagger}$ 			& Partial       & Bounded gradient             & Strongly convex  \\\hline\hline
-\cite{zanette2019tighter}  & $\cO(\frac{1}{\sqrt{NT}})$ & $\cO(N^{-3/2}T^{1/2})$     			& Full        & Bounded gradient             & Convex  \\\hline
-This work      & $\cO\left(\frac{1}{\sqrt{NT}}\right)$ &  $\cO(N^{-3/4}T^{1/4})^{\dagger\dagger}$			& Partial     & Bounded gradient            &  Convex   \\ \hline\hline
-This work & $\cO\left(\exp(-\frac{NT}{E\kappa_1})\right)$ & $ \cO(T^{\beta})$                   &  Partial     & Bounded gradient    & Overparameterized (LR)$^{\ddagger}$ \\ \hline
-This work & $\cO\left(\exp(-\frac{NT}{E\sqrt{\kappa_1\tilde{\kappa}}})\right)$ & $ \cO(T^{\beta})$  &  Partial     & Bounded gradient    & Overparameterized LR \\ \hline
+{\tiny
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline Reference                 & Convergence rate    & E                           			& NonIID & Participation & Extra Assumptions  		  & Setting  \\ \hline\hline 
+\cite{li2019convergence}         & $\cO(\frac{E^2}{T})$& $\cO(1)$                    			& \cmark & Partial       & Bounded gradient   		  & Strongly convex  \\ \hline
+\cite{haddadpour2019convergence} & $\cO(\frac{1}{KT})$ & $\cO(K^{1/3}T^{2/3})^{\dagger}$     	& \cmark$^{\ddagger\ddagger}$ & Partial       & Bounded gradient diversity   & Strongly convex$^{\mathsection}$  \\ \hline
+This work                        & $\cO(\frac{1}{KT})$ & $\cO(N^{-1/2}T^{1/2})^{\dagger\dagger}$& \cmark			& Partial       & Bounded gradient             & Strongly convex  \\\hline\hline
+\cite{zanette2019tighter}  & $\cO(\frac{1}{\sqrt{NT}})$ & $\cO(N^{-3/2}T^{1/2})$     			 & \cmark& Full        & Bounded gradient             & Convex  \\\hline
+This work      & $\cO\left(\frac{1}{\sqrt{NT}}\right)$ &  $\cO(N^{-3/4}T^{1/4})^{\dagger\dagger}$& \cmark			& Partial     & Bounded gradient            &  Convex   \\ \hline\hline
+This work & $\cO\left(\exp(-\frac{NT}{E\kappa_1})\right)$ & $ \cO(T^{\beta})$                   & \cmark&  Partial     & Bounded gradient    & Overparameterized (LR)$^{\ddagger}$ \\ \hline
+This work & $\cO\left(\exp(-\frac{NT}{E\sqrt{\kappa_1\tilde{\kappa}}})\right)$ & $ \cO(T^{\beta})$ & \cmark &  Partial     & Bounded gradient    & Overparameterized LR \\ \hline
 \end{tabular}
 }
-\caption{A high level summary of the convergence results in this paper and their comparison to prior state-of-the-art FL algorithms, considering heterogeneous data. This table only hightlights the
+\caption{A high level summary of the convergence results in this paper and their comparison to prior state-of-the-art FL algorithms, considering heterogeneous data. This table only highlights the
 dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices. 
 $\kappa$ is the condition number of the system and $\beta \in (0,1)$. 
-We note that all our results for strongly convex and convex smooth problems are unified results for both FedAvg and accelerated FedAvg. The converegence results for prior arts only apply for FedAvg.}
+We note that all our results for strongly convex and convex smooth problems are unified results for both FedAvg and accelerated FedAvg. The convergence results for prior arts only apply for FedAvg.}
 {\raggedright 
          $^{\dagger}$ This $E$ is obtained under i.i.d. setting. \\
          $^{\dagger\dagger}$ This $E$ is obtained under full participation setting. \\ 
-         $^{\mathsection}$ In~\cite{haddadpour2019convergence}, the convergence rate is for non-convex smooth problem with PL condition. Thus, it is also applied for strongly convex problem. For unified comparison, we denote it as strongly convex setting here. \\
-         $^{\ddagger}$ The convergence of FedAvg for general overparameterized strongly convex and overparameterized linear regression share the same result.  \par}
+         $^{\ddagger}$ The convergence of FedAvg for general overparameterized strongly convex and overparameterized linear regression share the same result.\\
+         $^{\mathsection}$ In~\cite{haddadpour2019convergence}, the convergence rate is for non-convex smooth problem with PL condition, which also applies for strongly convex problems. Therefore, we compare it with our strongly convex results here. \\
+         $^{\ddagger\ddagger}$ The bounded gradient diversity assumption is not applicable for general heterogeneous data when converging to arbitrarily small $\epsilon$-accuracy (see discussions in Sec~\ref{sec:app:comparison}).
+           \par}
 \label{tb:convergenceratev3}
 \end{table}
-
-
 
 
 
