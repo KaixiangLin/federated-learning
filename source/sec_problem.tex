@@ -11,29 +11,25 @@ In this paper, we study the following federated learning problem:
 	\label{eq:problem}
 \end{align}
 where $N$ is the number of local devices (users/nodes/workers) and $p_k$ is the $k$-th device's weight satisfying $p_k \geq 0$ and $\sum_{k=1}^N p_k = 1$. 
-In $k$-th local device, there are a finite number of $n_k$ data points:
+In $k$-th local device, there are $n_k$ data points:
 $\vx_k^1, \vx_k^2, \dots, \vx_k^{n_k}$.  
 The local objective $F_k(\cdot)$ is defined as:
 % \begin{align}
 $F_{k}(\mathbf{w}) \triangleq \frac{1}{n_{k}} \sum_{j=1}^{n_{k}} \ell\left(\mathbf{w} ; \vx_k^j\right)$,
 % \label{eq:localloss}
 % \end{align}
-where $\ell$ denotes a user-specified loss function. In federated learning, each device stores its local data, which gives rise to its own local objective $F_k$. Note that we do not make any assumption on the
+where $\ell$ denotes a user-specified loss function. Each device only has access to its local data, which gives rise to its own local objective $F_k$. Note that we do not make any assumptions on the
 data distributions of each local device. The local minimum
-$\vw^{*}_k= \argmin_{\vw \in R^d} F_k(\vw)$ can be drifted far from
-the global minimum of \eq{\ref{eq:problem}}, which quantifies the 
-heterogeneity of the problem.
-In this paper, we systematically investigate the convergence results, 
-when the local objectives are convex smooth, strongly convex and convex but
-non-smooth.
+$\vw^{*}_k= \argmin_{\vw \in R^d} F_k(\vw)$ can be far from
+the global minimum of \eq{\ref{eq:problem}}.
 
 % A key difference with many problems in the distributed optimization setting is that data on local devices is heterogeneous, i.e. $F_k(w)$ may have different minimizers $w^{\ast}_k$. Moreover, each local device only has access to stochastic gradients based on data stored on the local device. In this paper, we investigate local objectives that are convex or strongly convex and smooth, although convergence results for non-smooth objectives are also given in the appendix. 
 
 
 \subsection{The Federated Averaging (FedAvg) Algorithm}
-We first introduce the standard Federated Average (FedAvg) algorithm.
-The FedAvg updates the model in each device by local Stochastic Gradient Descent (SGD) and send the latest model to the central server every $E$
-steps. The central server conducts a weighted average over the models
+We first introduce the standard Federated Average (FedAvg) algorithm~\cite{mcmahan2016communication}.
+FedAvg updates the model in each device by local Stochastic Gradient Descent (SGD) and send the latest model to the central server every $E$
+steps. The central server conducts a weighted average over the model parameters
 received from active devices and broadcasts the latest averaged model to all devices.
 Formally, the updates of FedAvg at round $t$ is described as follows:
 \begin{align}
@@ -44,21 +40,18 @@ Formally, the updates of FedAvg at round $t$ is described as follows:
 \sum_{k \in \cS_{t+1}} \mathbf{v}_{t+1}^{k} & \text { if } t+1 \in \mathcal{I}_{E}
 \end{array}\right.
 \end{align}
-where $\vw_t^k$ is the local model parameter maintained in the $k$-th device at the $t$-th iteration, $\vg_{t,k}:=\nabla F_{k}(\vw_{t}^{k},\xi_{t}^{k})$ is the stochastic gradient based on $\xi_{t}^{k}$, the data sampled from $k$-th device’s local data uniformly at random. $\mathcal{I}_{E}=\{E,2E,\dots\}$ is the set of global synchronization steps. We use $\mathcal{S}_{t+1}$ to represent the set of active devices at $t+1$.
+where $\vw_t^k$ is the local model parameter maintained in the $k$-th device at the $t$-th iteration, $\vg_{t,k}:=\nabla F_{k}(\vw_{t}^{k},\xi_{t}^{k})$ is the stochastic gradient based on $\xi_{t}^{k}$, the data sampled from $k$-th device’s local data uniformly at random. $\mathcal{I}_{E}=\{E,2E,\dots\}$ is the set of global communication steps. We use $\mathcal{S}_{t+1}$ to represent the set of active devices at $t+1$.
 
 Since federated learning usually involves an enormous amount of 
-local devices, it is more realistic to consider only a subset of 
+local devices, it is often more realistic to assume only a subset of 
 local devices is active at each communication round (system heterogeneity). In this work,
 we consider both the case of \textbf{full participation} where the model is
 averaging over all devices at the communication round, i.e.,
 $\mathbf{w}_{t+1}^{k} = \sum_{k=1}^N p_k \mathbf{v}_{t+1}^{k}$, and
 the case of \textbf{partial participation} where $|\cS_{t+1}| < N$. 
-In the partial participation scenario, $\cS_{t+1}$ is obtained by two types
-sampling schemes to simulate practical scenarios~\cite{li2019convergence}. 
-The sampling scheme I establishes $\cS_{t+1}$ by i.i.d. sampling the devices according to
-the weight $p_k$ with replacement. 
-The sampling scheme II establishes $\cS_{t+1}$ by uniformly sampling all devices without
-replacement. Both of the sampling schemes
+With partial participation, $\cS_{t+1}$ is obtained by two types of
+sampling schemes to simulate practical scenarios~\cite{li2019convergence}. For example, Sampling scheme I establishes $\cS_{t+1}$ by i.i.d. sampling the devices with probability $p_k$ with replacement. 
+Both schemes
 guarantee that gradient updates in FedAvg are unbiased stochastic versions of
 updates in FedAvg with full participation. For 
 more details on the notations and setup, please refer to Section~\ref{sec:app:notations} in the appendix.
@@ -91,7 +84,7 @@ more details on the notations and setup, please refer to Section~\ref{sec:app:no
 
 \subsection{Assumptions}
 \label{sec:assumptions}
-We make the following standard assumptions on the objective function $F_1,\dots, F_N$. Assumption~\ref{ass:lsmooth} and Assumption~\ref{ass:stroncvx} are common assumptions satisfied by a range of popular objective functions, such as $\ell^{2}$ regularized logistic regression and cross-entropy loss functions.
+We make the following standard assumptions on the objective function $F_1,\dots, F_N$. Assumptions~\ref{ass:lsmooth} and~\ref{ass:stroncvx} are commonly satisfied by a range of popular objective functions, such as $\ell^{2}$ regularized logistic regression and cross-entropy loss functions.
 
  %Assumption~\ref{ass:lsmooth} is made to achieve linear speedup of convergence rate with respect to the number of workers, though it is not necessary for FedAvg and its variants to convergence.
 
@@ -115,7 +108,7 @@ We make the following standard assumptions on the objective function $F_1,\dots,
 \end{assumption}
 
 \textbf{Justfication for Assumptions~\ref{ass:boundedvariance} and~\ref{ass:subgrad2}.} These standard assumptions have been made in many previous
-works in federated learning\cite{yu2019parallel,li2019convergence,stich2018local}. Here we provide one more justification
+works in federated learning\cite{yu2019parallel,li2019convergence,stich2018local}. We provide one more justification
 for their generality: even though they require bounds for all $\mathbf{w}$,
 they are not much stronger than requiring bounds at the global optimal
 parameter $\mathbf{w}^{\ast}$. As model average parameters become
