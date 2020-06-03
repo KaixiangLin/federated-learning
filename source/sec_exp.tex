@@ -5,12 +5,12 @@
 \section{Numerical Experiments}
 \label{sec:exp}
 
-In this section, we empirically examine the linear speedup convergence of FedAvg and Nesterov accelerated FedAvg on various scenarios, including strongly convex function, convex smooth function, and overparameterized setting, as proved in previous theorems.
+In this section, we empirically examine the linear speedup convergence of FedAvg and Nesterov accelerated FedAvg in various settings, including strongly convex function, convex smooth function, and overparameterized objectives, as analyzed in previous sections.
 
-\textbf{Setup.} Follow the experimental setting in~\cite{stich2018local}, we
+\textbf{Setup.} Following the experimental setting in~\cite{stich2018local}, we
 conduct experiments on both synthetic datasets and real-world dataset
 w8a~\cite{platt1998fast} $(d=300, n=49749)$. We consider the distributed
-objectives $F(\vw) = \sum_{k=1}^N p_kF_k(\vw)$, and the objective function on
+objectives $F(\vw) = \sum_{k=1}^N p_kF_k(\vw)$, and the objective function on the
 $k$-th local device includes three cases: 1) \textbf{Strongly convex
 objective}: the regularized binary logistic regression problem, $F_k(\vw) =
 \frac{1}{N_k} \sum_{i=1}^{N_k} \log( 1+ \exp(-y_i^k \vw^T\vx_i^k) + \frac{\lambda}{2}
@@ -26,12 +26,12 @@ the linear regression problem without adding noise to the label, $F_k(\vw) =
 % overparameterized setting. 
 
 % ~\ref{th:strongcvxsmth}~\ref{th:cvxsmoth}~\ref{th:fedmasslr}
-\textbf{Linear speedup of FedAvg and Nesterov accelerated FedAvg.} To verify the linear speedup convergence as shown in Theorem~\ref{thm:SGD_scvx}~\ref{thm:SGD_cvx}~\ref{thm:nesterov_scvx}~\ref{thm:Nesterov_cvx}, we evaluate the number of iterations needed to reach
+\textbf{Linear speedup of FedAvg and Nesterov accelerated FedAvg.} To verify the linear speedup convergence as shown in Theorems~\ref{thm:SGD_scvx}~\ref{thm:SGD_cvx}~\ref{thm:nesterov_scvx}~\ref{thm:Nesterov_cvx}, we evaluate the number of iterations needed to reach
 $\epsilon$-accuracy in three objectives. We initialize all runs with $\vw_0 = \textbf{0}_d$ and measure the number of iterations to reach the target accuracy $\epsilon$. For each configuration $(E, K)$, we extensively search the learning rate from $\min(\eta_0, \frac{nc}{1 + t})$, where
 $\eta_0 \in \{0.1, 0.12, 1, 32 \}$ according to different problems and $c$ can
 take the values $c = 2^i \ \forall i \in \ZZ$. As the results shown in Figure~\ref{fig:speedup},
 the number of iterations decreases as the number of (active) workers increasing, which is consistent for FedAvg and Nesterov accelerated FedAvg across all scenarios.
-For the additional experiments on the impact of $E$, detailed experimental setup, and hyperparameter setting, please refer to the Appendix, section~\ref{sec:expsupp}.
+For additional experiments on the impact of $E$, detailed experimental setup, and hyperparameter setting, please refer to the Appendix Section~\ref{sec:expsupp}.
 
 % \textbf{Partial participations.} We verify the linear speedup in the
 % partial participation settings, where we set $50\%$ of devices
