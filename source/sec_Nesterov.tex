@@ -20,9 +20,10 @@ momentum updates is able to accelerate over the original FedAvg algorithm.
 The convergence proof of Nesterov-accelerated FedAvg is deferred to Appendix Section~\ref{sec:app:Nesterovfedavg}.
 
 \subsection{Strongly Convex and Smooth Objectives}
-
+\begin{comment}
 We first show that the Nesterov accelerated FedAvg has $\mathcal{O}(1/NT)$
 convergence rate for $\mu$-strongly convex and $L$-smooth objectives.
+\end{comment}
 The Nesterov Accelerated FedAvg algorithm follows the updates
 \begin{align*}
 \mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}\mathbf{g}_{t,k},\\
@@ -31,15 +32,11 @@ The Nesterov Accelerated FedAvg algorithm follows the updates
 \sum_{k=1}^{N}p_{k}\left[\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E}.
 \end{cases}
 \end{align*}
-where $g_{t,k}:=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})$ is
+where $\mathbf{g}_{t,k}:=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})$ is
 the stochastic gradient sampled on the $k$-th device at time $t$.  
 \begin{theorem}
 	\label{thm:nesterov_scvx}Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$
-	be the average of local parameters of Nesterov accelerated FedAvg
-	with learning rates $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$
-	and $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$,
-	$\gamma=\max\{32\kappa,E\}$ and $\kappa=\frac{L}{\mu}$. Then with
-	full device participation, 
+	and set learning rates $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$,  $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:stroncvx},\ref{ass:boundedvariance},\ref{ass:subgrad2} with full device participation, 
 	\begin{align*}
 	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right),
 	\end{align*}
@@ -65,9 +62,8 @@ part, as well as the non-convex smooth setting in \cite{huo2020faster,yu2019line
 where a similar $\mathcal{O}(1/\sqrt{NT})$ rate is given in terms
 of averaged gradient norm. 
 \begin{theorem}
-	\label{thm:Nesterov_cvx}Set learning rates $\alpha_{t}=\beta_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$
-	for Accelerated FedAvg with convex and $L$-smooth objectives. With
-	full device participation, 
+	\label{thm:Nesterov_cvx}Set learning rates $\alpha_{t}=\beta_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} Nesterov accelerated FedAvg with
+	full device participation has rate
 	\begin{align*}
 	\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right),
 	\end{align*}
