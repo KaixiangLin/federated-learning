@@ -4,7 +4,6 @@
 
 \section{Geometric Convergence of FedAvg in the Overparameterized Setting}
 \label{sec:overparameterized}
-
 % In this section, we turn to the special setting of overparameterized
 % problems, where a non-negative loss function admits a zero-loss global
 % minimizer. Such problems are prevalent especially at the age of deep learning,
@@ -21,7 +20,6 @@
 % problems. In addition, we show that the convergence rate speeds up
 % linearly in the number of workers $N$ when $N$ is below some problem-dependent
 % threshold, while it decreases with $E$ through $1/E$. 
-
 Overparameterization is a prevalent machine learning setting where the
 statistical model has much more parameters than the number of training samples
 and the existence of parameter choices with zero training loss is
@@ -38,7 +36,7 @@ We then sharpen this result in the special case of
 quadratic problems.
 Inspiring by the recent advances in SGD~\cite{liu2019accelerating,jain2017accelerating}, 
 we further propose a novel momentum-based FedAvg algorithm, which enjoys an
-improved convergence rate over FedAvg. 
+improved convergence rate over FedAvg. The proof is deferred to Appendix Section~\ref{sec:interpolation}.
 \begin{comment}
 we deal with the question of whether FedAvg with momentum-based
 local updates can outperform FedAvg with SGD updates. In contrast
