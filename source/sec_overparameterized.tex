@@ -93,16 +93,26 @@ result also illustrates that $E$ can be taken $\mathcal{O}(T^{\beta})$
 for any $\beta<1$ to achieve geometric convergence, achieving better communication efficiency than
 the standard FL setting. 
 
-\subsection{Overparameterized Quadratic Problems}
-We now turn to quadratic problems
-and demonstrate how the general bound in Theorem~\ref{thm:overparameterized_general}
-can be sharpened to explicitly depend on the condition number of the
-system, and how this rate can be further improved with a new FedAvg
-algorithm with momentum updates. 
+\subsection{Acceleration of FedAvg with Momentum-based Updates}
 
-The local device objectives are now given by the sum of squares {\small$F_{k}(\mathbf{w})=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{w}^{T}\mathbf{x}_{k}^{j}-z_{k}^{j})^{2}$},
-and there exists $\mathbf{w}^{\ast}$ such that $F(\mathbf{w}^{\ast})\equiv0$.
-Define the local Hessian matrix as $H^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}$, and the stochastic Hessian matrix as $\tilde{H}_{t}^{k}:=\xi_{t}^{k}(\xi_{t}^{k})^{T}$. 
+We now turn to quadratic problems and show that the bound in Theorem \ref{thm:overparameterized_general} can be improved to $\mathcal{O}(\exp(-\frac{N}{E\kappa_{1}}t))$. We then propose a variant of FedAvg that has provable acceleration over FedAvg with SGD updates. The local device objectives are now given by the sum of squares {\small$F_{k}(\mathbf{w})=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{w}^{T}\mathbf{x}_{k}^{j}-z_{k}^{j})^{2}$},
+and there exists $\mathbf{w}^{\ast}$ such that $F(\mathbf{w}^{\ast})\equiv0$. Two notions of condition number are important in our results:$\kappa_1$ which is based on local Hessians, and $\tilde{\kappa}$, which is termed the statistical condition number~\cite{liu2018accelerating,jain2017accelerating}. For their detailed definitions, please refer to Appendix Section~\ref{sec:interpolation}. Here we use the fact $\tilde{\kappa} \leq \kappa_1$.
+
+\begin{comment}
+Define the local Hessian matrix as $H^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}$, and the stochastic Hessian matrix as $\tilde{H}_{t}^{k}:=\xi_{t}^{k}(\xi_{t}^{k})^{T}$. Define $l$ to be the smallest positive number such that $\mathbb{E}\|\xi_{t}^{k}\|^{2}$$\mathbf{\xi}_{t}^{k}$($\mathbf{\xi}_{t}^{k})^{T}\preceq lH^{k}$
+for all $k$. Note that $l\leq\max_{k,j}\|\mathbf{x}_{k}^{j}\|^{2}$.
+Let $L$ and $\mu$ be lower and upper bounds of non-zero eigenvalues
+of $H^{k}$. Define $\kappa_{1}:=l/\mu$ and $\kappa:=L/\mu$. Following
+\cite{liu2018accelerating,jain2017accelerating}, we define the statistical
+condition number $\tilde{\kappa}$ as the smallest positive real number
+such that $\mathbb{E}\left[\langle\xi_{t}^{k}(H^{k})^{-1},\xi_{t}^{k}\rangle\xi_{t}^{k}(\xi_{t}^{k})^{T}\right] \  \preceq\tilde{\kappa}H^{k}$, for all $k$. 
+The condition numbers $\kappa_{1}$ and $\tilde{\kappa}$
+are important in the characterization of convergence rates for FedAvg
+algorithms. Note that $\kappa_{1}>\kappa$ and $\kappa_{1}>\tilde{\kappa}$.
+\end{comment}
+%details to be moved to the appendix.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{comment}
 In general $H$ has zero eigevalues. However, because the null space
 of $H$ and range of $H$ are orthogonal, in our subsequence analysis
@@ -128,20 +138,6 @@ Note that $\mathbb{E}\tilde{H}_{t}^{k}=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{
 and $\mathbf{g}_{t,k}=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\tilde{H}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$
 while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$.
 \end{comment}
-Define $l$ to be the smallest positive number such that $\mathbb{E}\|\xi_{t}^{k}\|^{2}$$\mathbf{\xi}_{t}^{k}$($\mathbf{\xi}_{t}^{k})^{T}\preceq lH^{k}$
-for all $k$. Note that $l\leq\max_{k,j}\|\mathbf{x}_{k}^{j}\|^{2}$.
-Let $L$ and $\mu$ be lower and upper bounds of non-zero eigenvalues
-of $H^{k}$. Define $\kappa_{1}:=l/\mu$ and $\kappa:=L/\mu$. Following
-\cite{liu2018accelerating,jain2017accelerating}, we define the statistical
-condition number $\tilde{\kappa}$ as the smallest positive real number
-such that $\mathbb{E}\left[\langle\xi_{t}^{k}(H^{k})^{-1},\xi_{t}^{k}\rangle\xi_{t}^{k}(\xi_{t}^{k})^{T}\right] \  \preceq\tilde{\kappa}H^{k}$, for all $k$. 
-The condition numbers $\kappa_{1}$ and $\tilde{\kappa}$
-are important in the characterization of convergence rates for FedAvg
-algorithms. Note that $\kappa_{1}>\kappa$ and $\kappa_{1}>\tilde{\kappa}$. 
-
-\subsection{Acceleration of FedAvg with Momentum-based Updates}
-
-We show that the bound in Theorem \ref{thm:overparameterized_general} can be improved to $\mathcal{O}(\exp(-\frac{N}{E\kappa_{1}}t))$ for quadratic problems, then propose a variant of FedAvg that has provable acceleration over FedAvg with SGD updates. 
 
 \begin{theorem}
 	\label{thm:overparameterized_quadratic}For the overparamterized quadratic
