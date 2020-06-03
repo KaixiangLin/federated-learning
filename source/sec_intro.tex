@@ -13,34 +13,31 @@ when FL learns a single statistical model using data from across all the devices
 \end{enumerate}
 
 % Gaps in the theoretical understanding. 
-To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success~\cite{47586}. Its success has since motivated a growing line of research efforts into understanding its theoretical convergence guarantees in various settings.
-
-Existing convergence guarantees of FedAvg were either largely established on simplified settings~\cite{stich2018local,khaled2019first,wang2018cooperative,yu2019parallel} or provides a suboptimal 
+To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success~\cite{47586}. Its success has since motivated a growing line of research efforts into understanding its theoretical convergence guarantees in various settings. Most existing convergence guarantees of FedAvg were either established in simplified settings~\cite{stich2018local,khaled2019first,wang2018cooperative,yu2019parallel,khaled2020tighter,li2018federated}, have restrictive assumptions~\cite{haddadpour2019convergence} or provide a suboptimal 
 convergence rate~\cite{li2019convergence}. Furthermore, the convergence of
-FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerating} under the realistic setting is yet to be analyzed.
+FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerating} in the general heterogeneous and convex setting is yet to be analyzed. At the heart of the success of FL is the \emph{linear speedup} property with respect to the number of participating clients that can be achieved with infrequent communications. Although results of this kind are abundant in distributed optimization~\cite{yu2019linear,yu2019parallel,stich2018local,khaled2020tighter,stich2018local}, generalization to the FL setting with both types of heterogeneity is currently lacking. 
 
-\subsection{Related Work}
+\subsection{Related Works}
 \textbf{The Convergence of FedAvg and Linear Speedup.}
-There has been a vast amount of convergence analysis for FedAvg in different settings. However, most of the prior works provide the
-convergence guarantee under a simplified setting, where either statistical
+There have been a considerable amount of convergence results in distributed stochastic optimization with infrequent communications that establish linear speedup in the number of clients. However, most of these prior works provide
+convergence guarantees under simplified settings, where either statistical
 heterogeneity~\cite{stich2018local,zhou2017convergence,wang2018cooperative,woodworth2018graph} or system
 heterogeneity~\cite{yu2019parallel,wang2019adaptive,khaled2019first,jiang2018linear} are not
-considered. This simplified setting is also referred as local SGD. 
-In~\cite{li2019convergence},
-the authors for the first time provide convergence of FedAvg for strongly convex problem considering both statistical heterogeneity and system heterogeneity, yet it
-didn't achieve linear speedup. In~\cite{haddadpour2019convergence,liang2019variance,huo2020faster,jiang2018linear}, the convergence of FedAvg for non-convex problems has been studied. 
+considered, and the associated algorithm is often referred to as local SGD. ~\cite{li2019convergence} are the first to provide convergence of FedAvg for strongly convex problems considering both statistical heterogeneity and system heterogeneity, yet it
+didn't achieve linear speedup \cite{yu2019parallel,haddadpour2019convergence,stich2018local}. In~\cite{haddadpour2019convergence,liang2019variance,huo2020faster,jiang2018linear}, the convergence of FedAvg for non-convex problems has been studied, whereas this paper focuses on convex settings.
+\begin{comment}
 However, \cite{huo2020faster} did not discuss the linear speedup and the theorems in \cite{haddadpour2019convergence,liang2019variance} failed to cover the accelerated version of
 FedAvg. 
+\end{comment}
 
-
-\textbf{Federated Learning Beyond Local SGD.}
+\textbf{Accelerating Stochastic Federated Learning Algorithms.}
 % The accelerated SGD methods has achieved optimal convergence rate in strongly convex
 % optimization~\cite{nesterov1983method}.
-In \cite{liu2019accelerating}, the authors provide a convergence rate of accelerated FedAvg for strongly convex problems, while it is considered in full participation setting.
-\cite{yu2019linear} and \citep{huo2020faster} provide
-convergence guarantee for Nesterov accelerated FedAvg for non-convex. 
-However, \cite{yu2019linear} did not consider the system heterogeneity and \cite{huo2020faster} haven't discuss the linear speedup.
-Furthermore, the accelerated FedAvg admitting a similar convergence rate as FedAvg in all previous works.  In this work, we provide a novel accelerated FedAvg with improved convergence rates under a popular overparameterized setting. 
+The convergence of accelerated FL algorithms using momentum (Nesterov and Heavy Ball) updates has been studied mostly in non-convex settings~\cite{yu2019linear,huo2020faster}. \cite{yu2019linear} does not consider system heterogeneity, while the result in \cite{huo2020faster} does not have linear speedup. Furthermore, the rates cannot improve over SGD-based algorithms in general. \cite{liu2019accelerating} provides an acceleration result for FedAvg with accelerated GD. \cite{liang2019variance} considers variance reduction based acceleration of FedAvg. This paper considers accelerated FedAvg with momentum-based stochastic updates in general and overparameterized convex settings.
+
+\begin{comment}
+	In this work, we provide a novel accelerated FedAvg with improved convergence rates under a popular overparameterized setting. 
+\end{comment}
 
 
 
@@ -52,18 +49,16 @@ Furthermore, the accelerated FedAvg admitting a similar convergence rate as FedA
 % Our contributions
 % \subsection{Contributions}
 \textbf{Contributions.}
-This work focuses on providing comprehensive convergence analysis
-of FedAvg and its accelerated variants under a realistic setting.
-Our results show
-that the less number of communication rounds is needed to converge to a
-target accuracy while preserving the linear speedup w.r.t. the number of participating devices.
+We provide a comprehensive convergence analysis
+of FedAvg and its accelerated variants in convex stochastic problems with both system and statistical heterogeneity.
+Our results demonstrate the desirable linear speedup property with respect to the number of participating clients.
 More specifically, for strongly convex and smooth problems, we show 
 that FedAvg admits a convergence rate of 
-{\small{$\cO(1/NT)$}}, and local steps can be as large as {\small{$\cO(\sqrt{T/N})$}}. For convex and smooth objectives, we show the rate of {\small{$\cO(1/\sqrt{NT})$}} and local steps can be as large as {\small{$\cO(\sqrt{T/N})$}}. 
+{\small{$\cO(1/NT)$}}, and local steps can be as large as {\small{$\cO(\sqrt{T/N})$}}. For convex and smooth objectives, the rate is {\small{$\cO(1/\sqrt{NT})$}}. 
 Moreover, we show that FedAvg with Nesterov acceleration also enjoys the same rates and speedup. 
 %The same conclusions are equally applied for Nesterov accelerated FedAvg. 
-To the best of our knowledge, this is the first linear speedup results for FedAvg with Nesterov accelerated SGD. Furthermore, 
-we provide the first improved convergence rate for Nesterov accelerated FedAvg comparing to FedAvg under the popular overparamterized setting. 
+To the best of our knowledge, this is the first linear speedup result for FedAvg and accelerated variants in the full heterogeneous FL setting. Furthermore, 
+we propose a new variant of FedAvg and provide the first improved convergence rate for stochastic momentum-accelerated FedAvg in the popular overparamterized setting.
 Last but not least, we systematically examine the convergence rate of
 FedAvg and its accelerated variants on both a synthetic dataset and  a real-world dataset. The empirical observations are well-aligned with the obtained theoretical findings.
 
@@ -77,7 +72,7 @@ FedAvg and its accelerated variants on both a synthetic dataset and  a real-worl
 \textbf{Notations.}
 Throughout the paper, we adopt the following notations. Let $N$ be the total
 number of local devices, and $K \leq N$ is the maximal number of devices
-that are accessible to the central server.  Let $T$ be the total number of SGD iterations performed by each local device, $E$ be the local steps between two consecutive server communications. Thus, $T/E$ is
+that are accessible to the central server.  Let $T$ be the total number of stochastic updates performed by each local device, $E$ be the local steps between two consecutive server communications. Thus, $T/E$ is
 the number of communications.
 
 % \textbf{Organization} 
