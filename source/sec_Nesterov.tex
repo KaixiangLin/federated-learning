@@ -60,10 +60,7 @@ communication rounds with full participation.
 
 \subsection{Convex Smooth Objectives}
 
-We now provide linear speedup analysis of Nesterov Accelerated FedAvg
-with convex and smooth objectives and show that the optimality gap
-is $\mathcal{O}(1/\sqrt{NT})$ where $N$ is the number of participating
-devices. This result complements the strongly convex case in the previous
+We now show that the optimality gap of Nesterov Accelerated FedAvg has $\mathcal{O}(1/\sqrt{NT})$ rate. This result complements the strongly convex case in the previous
 part, as well as the non-convex smooth setting in \cite{huo2020faster,yu2019linear,li2018federated},
 where a similar $\mathcal{O}(1/\sqrt{NT})$ rate is given in terms
 of averaged gradient norm. 
@@ -81,7 +78,7 @@ of averaged gradient norm.
 	\end{align*}
 \end{theorem}
 %
-	It is possible to extend the analyses in this section to accelerated
+	It is possible to extend the results in this section to accelerated
     FedAvg algorithms with other momentum-based updates. However, in the
     stochastic optimization setting, none of these methods will be able
     to achieve a better rate than the original FedAvg with SGD updates in general.

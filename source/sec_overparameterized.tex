@@ -34,7 +34,7 @@ of FedAvg for the overparameterized strongly convex and smooth problems,
 and we show that it preserves the linear speedup at the same time.  
 We then sharpen this result in the special case of
 quadratic problems.
-Inspiring by the recent advances in SGD~\cite{liu2019accelerating,jain2017accelerating}, 
+Inspired by recent advances in accelerating SGD~\cite{liu2019accelerating,jain2017accelerating}, 
 we further propose a novel momentum-based FedAvg algorithm, which enjoys an
 improved convergence rate over FedAvg. The proof is deferred to Appendix Section~\ref{sec:interpolation}.
 \begin{comment}
@@ -87,14 +87,14 @@ with linear speedup in the number of workers.
 %
 \textbf{Linear speedup and Communication Complexity} When $l>L$,
 the speedup factor is on the order of $\mathcal{O}(N/E)$ %\frac{N}{E(l\nu_{\max}+L(N-\nu_{\min}))}/\frac{1}{l\nu_{\max}+L(1-\nu_{\min})}\approx\frac{Nl}{E(l+L(N-1))}=
-for $N\leq\frac{l}{L}+1$, i.e. FedAvg with $N$ workers and communication
+for $N\leq\mathcal{O}(\frac{l}{L})$, i.e. FedAvg with $N$ workers and communication
 every $E$ iterations provides a geometric convergence speedup factor
-of $\mathcal{O}(N/E)$, for $N\leq\frac{l}{L}+1$. When $N$ is above
+of $\mathcal{O}(N/E)$, for $N\leq\mathcal{O}(\frac{l}{L})$. When $N$ is above
 this threshold, however, the speedup is almost constant in the number
 of workers. This matches the findings in \cite{ma2017power}. Our
 result also illustrates that $E$ can be taken $\mathcal{O}(T^{\beta})$
 for any $\beta<1$, achieving better communication efficiency than
-the standard setting. 
+the standard FL setting. 
 
 \subsection{Overparameterized Quadratic Problems}
 We now turn to quadratic problems
@@ -145,10 +145,8 @@ algorithms. Note that $\kappa_{1}>\kappa$ and $\kappa_{1}>\tilde{\kappa}$.
 
 \subsection{Acceleration of FedAvg with Momentum-based Updates}
 
-We show that the bound in \ref{thm:overparameterized_general} can
-be improved for quadratic problems with explicit dependence on condition
-number, which is then used to illustrate the acceleration of our proposed
-FedAvg with MaSS updates over SGD updates.
+We show that the bound in Theorem \ref{thm:overparameterized_general} can be improved to $\mathcal{O}(\exp(-\frac{N}{E\kappa_{1}}t))$ for quadratic problems, then propose a variant of FedAvg that has provable acceleration over FedAvg with SGD updates. 
+
 \begin{theorem}
 	\label{thm:overparameterized_quadratic}For the overparamterized quadratic
 	problem, FedAvg with local SGD updates and communication every $E$
@@ -186,7 +184,7 @@ FedAvg with momentum updates over SGD updates.
 	\end{align*}
 \end{theorem}
 \textbf{Speedup of FedMaSS over FedAvg} 
-To better understand the significance of the above result, we briefly discuss the related works in SGD.
+To better understand the significance of the above result, we briefly discuss related works on accelerating SGD.
 Nesterov and Heavy Ball updates are known to fail to accelerate over SGD in both the overparameterized
 and convex settings~\cite{liu2018accelerating,kidambi2018insufficiency,liu2018toward,yuan2016influence}.
 Thus in general one cannot hope to obtain acceleration results for
