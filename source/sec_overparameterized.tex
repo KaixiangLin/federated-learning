@@ -23,7 +23,7 @@
 Overparameterization is a prevalent machine learning setting where the
 statistical model has much more parameters than the number of training samples
 and the existence of parameter choices with zero training loss is
-assured~\cite{allen2018convergence,zhang2016understanding}.  Due to the
+ensured~\cite{allen2018convergence,zhang2016understanding}.  Due to the
 property of \textit{automatic variance reduction} in overparameterization,  a
 line of recent works proved that SGD and accelerated methods achieve geometric
 convergence~\cite{ma2017power,moulines2011non,needell2014stochastic,schmidt2013fast,strohmer2009randomized}.
@@ -31,12 +31,12 @@ A natural question is whether such a result still holds in the federated
 learning setting. 
 In this section, we provide the first geometric convergence rate
 of FedAvg for the overparameterized strongly convex and smooth problems,
-and we show that it preserves the linear speedup at the same time.  
+and show that it preserves linear speedup at the same time.  
 We then sharpen this result in the special case of
 quadratic problems.
 Inspired by recent advances in accelerating SGD~\cite{liu2019accelerating,jain2017accelerating}, 
 we further propose a novel momentum-based FedAvg algorithm, which enjoys an
-improved convergence rate over FedAvg. The proof is deferred to Appendix Section~\ref{sec:interpolation}.
+improved convergence rate over FedAvg. Detailed proofs are deferred to Appendix Section~\ref{sec:interpolation}.
 \begin{comment}
 we deal with the question of whether FedAvg with momentum-based
 local updates can outperform FedAvg with SGD updates. In contrast
@@ -67,33 +67,30 @@ over FedAvg with local SGD updates.
 Recall the federated learning problem $\min_{w}\sum_{k=1}^{N}p_{k}F_{k}(\mathbf{w})$
 with $F_{k}(\mathbf{w})=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\ell(\mathbf{w};\mathbf{x}_{k}^{j})$.
 In this section, we consider the standard Empirical Risk Minimization (ERM) setting where $\ell$
-is non-negative, $l$-smooth, and convex, and as before, we assume
-that each $F_{k}(\mathbf{w})$ is $L$-smooth and $\mu$-strongly convex. Note that $l\geq L$. This
+is non-negative, $l$-smooth, and convex, and as before, each $F_{k}(\mathbf{w})$ is $L$-smooth and $\mu$-strongly convex. Note that $l\geq L$. This
 setup includes many important problems in practice. In the overparameterized
 setting, there exists $\mathbf{w}^{\ast}\in\arg\min_{w}\sum_{k=1}^{N}p_{k}F_{k}(\mathbf{w})$
 such that $\ell(\mathbf{w}^{\ast};\mathbf{x}_{k}^{j})=0$ for all
-$\mathbf{x}_{k}^{j}$. We first show that FedAvg with local SGD updates
-and communication every $E$ iterations achieves geometric convergence
+$\mathbf{x}_{k}^{j}$. We first show that FedAvg achieves geometric convergence
 with linear speedup in the number of workers. 
 \begin{theorem}
 	\label{thm:overparameterized_general}In the overparameterized setting,
-	FedAvg with local SGD updates and communication every $E$ iterations
-	with constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})})$
-	has geometric convergence,
+	FedAvg with communication every $E$ iterations
+	and constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})})$
+	has geometric convergence
 	\begin{align*}
 	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\frac{L}{2}(1-\overline{\alpha})^{T}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}=\mathcal{O}\left(L\exp(-\frac{\mu}{E}\frac{NT}{l\nu_{\max}+L(N-\nu_{\min})})\cdot\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 	\end{align*}
 \end{theorem}
 %
-\textbf{Linear speedup and Communication Complexity} When $l>L$,
-the speedup factor is on the order of $\mathcal{O}(N/E)$ %\frac{N}{E(l\nu_{\max}+L(N-\nu_{\min}))}/\frac{1}{l\nu_{\max}+L(1-\nu_{\min})}\approx\frac{Nl}{E(l+L(N-1))}=
+\textbf{Linear speedup and Communication Complexity} The linear speedup factor is on the order of $\mathcal{O}(N/E)$ %\frac{N}{E(l\nu_{\max}+L(N-\nu_{\min}))}/\frac{1}{l\nu_{\max}+L(1-\nu_{\min})}\approx\frac{Nl}{E(l+L(N-1))}=
 for $N\leq\mathcal{O}(\frac{l}{L})$, i.e. FedAvg with $N$ workers and communication
 every $E$ iterations provides a geometric convergence speedup factor
 of $\mathcal{O}(N/E)$, for $N\leq\mathcal{O}(\frac{l}{L})$. When $N$ is above
 this threshold, however, the speedup is almost constant in the number
 of workers. This matches the findings in \cite{ma2017power}. Our
 result also illustrates that $E$ can be taken $\mathcal{O}(T^{\beta})$
-for any $\beta<1$, achieving better communication efficiency than
+for any $\beta<1$ to achieve geometric convergence, achieving better communication efficiency than
 the standard FL setting. 
 
 \subsection{Overparameterized Quadratic Problems}
@@ -105,8 +102,7 @@ algorithm with momentum updates.
 
 The local device objectives are now given by the sum of squares {\small$F_{k}(\mathbf{w})=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{w}^{T}\mathbf{x}_{k}^{j}-z_{k}^{j})^{2}$},
 and there exists $\mathbf{w}^{\ast}$ such that $F(\mathbf{w}^{\ast})\equiv0$.
-Define the local Hessian matrix as $H^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}$,
-the averaged Hessian matrix as $H:=\sum_{k=1}^{N}p_{k}H^{k}$, and the stochastic Hessian matrix as $\tilde{H}_{t}^{k}:=\xi_{t}^{k}(\xi_{t}^{k})^{T}$. 
+Define the local Hessian matrix as $H^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}$, and the stochastic Hessian matrix as $\tilde{H}_{t}^{k}:=\xi_{t}^{k}(\xi_{t}^{k})^{T}$. 
 \begin{comment}
 In general $H$ has zero eigevalues. However, because the null space
 of $H$ and range of $H$ are orthogonal, in our subsequence analysis
@@ -149,7 +145,7 @@ We show that the bound in Theorem \ref{thm:overparameterized_general} can be imp
 
 \begin{theorem}
 	\label{thm:overparameterized_quadratic}For the overparamterized quadratic
-	problem, FedAvg with local SGD updates and communication every $E$
+	problem, FedAvg with communication every $E$
 	iterations with constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})})$
 	has geometric convergence:
 	\begin{align*}
