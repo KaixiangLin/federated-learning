@@ -2,33 +2,45 @@
 
 
 
-\section{Exponential Convergence of FedAvg in the Overparameterized Setting}
+\section{Geometric Convergence of FedAvg in the Overparameterized Setting}
 \label{sec:overparameterized}
 
-In this section, we turn to the special setting of overparameterized
-problems, where a non-negative loss function admits a zero-loss global
-minimizer. Such problems are very common in machine learning systems
-where the number of parameters far exceeds the number of data points,
-and perfect fitting is possible. There have been a line of recent
-works showing that SGD and accelerated methods achieve exponential
-convergence in similar settings thanks to the property of ``automatic
-variance reduction'' \cite{ma2017power,moulines2011non,needell2014stochastic,schmidt2013fast,strohmer2009randomized}.
-The natural question is whether such a result also holds in the federated
-learning setting. We show that this is indeed the case and establish
-the geometric (linear) convergence of FedAvg with local SGD updates
-with constant step size for general strongly convex and smooth overparameterized
-problems. In addition, we show that the convergence rate speeds up
-linearly in the number of workers $N$ when $N$ is below some problem-dependent
-threshold, while it decreases with $E$ through $1/E$. 
+% In this section, we turn to the special setting of overparameterized
+% problems, where a non-negative loss function admits a zero-loss global
+% minimizer. Such problems are prevalent especially at the age of deep learning,
+% where the number of parameters far exceeds the number of data points,
+% and perfect fitting is possible. There have been a line of recent
+% works showing that SGD and accelerated methods achieve geometric
+% convergence in similar settings thanks to the property of \textit{automatic
+% variance reduction}~\cite{ma2017power,moulines2011non,needell2014stochastic,schmidt2013fast,strohmer2009randomized}.
+% The natural question is whether such a result also holds in the federated
+% learning setting. 
+% We show that this is indeed the case and establish
+% the geometric (linear) convergence of FedAvg with local SGD updates
+% with constant step size for general strongly convex and smooth overparameterized
+% problems. In addition, we show that the convergence rate speeds up
+% linearly in the number of workers $N$ when $N$ is below some problem-dependent
+% threshold, while it decreases with $E$ through $1/E$. 
 
-To our knowledge, this is the first result on the exponential convergence
-of FedAvg algorithms in the overparameterized setting with linear
-speedup in the number of workers and explicit dependence on the communication
-interval $E$. We next sharpen this result in the special case of
-quadratic problems, and show that it is $\mathcal{O}(\exp(-\frac{NT}{E\kappa_{1}}))$,
-for $\kappa_{1}$ a condition number of the system.
-
-Lastly, we deal with the question of whether FedAvg with momentum-based
+Overparameterization is a prevalent machine learning setting where the
+statistical model has much more parameters than the number of training samples
+and the existence of parameter choices with zero training loss is
+assured~\cite{allen2018convergence,zhang2016understanding}.  Due to the
+property of \textit{automatic variance reduction} in overparameterization,  a
+line of recent works proved that SGD and accelerated methods achieve geometric
+convergence~\cite{ma2017power,moulines2011non,needell2014stochastic,schmidt2013fast,strohmer2009randomized}.
+A natural question is whether such a result still holds in the federated
+learning setting. 
+In this section, we provide the first geometric convergence rate
+of FedAvg for the overparameterized strongly convex and smooth problems,
+and we show that it preserves the linear speedup at the same time.  
+We then sharpen this result in the special case of
+quadratic problems.
+Inspiring by the recent advances in SGD~\cite{liu2019accelerating,jain2017accelerating}, 
+we further propose a novel momentum-based FedAvg algorithm, which enjoys an
+improved convergence rate over FedAvg. 
+\begin{comment}
+we deal with the question of whether FedAvg with momentum-based
 local updates can outperform FedAvg with SGD updates. In contrast
 to the gradient descent setting, Nesterov and Heavy Ball updates are
 known to fail to accelerate over SGD, both in the overparameterized
@@ -50,16 +62,17 @@ where $\tilde{\kappa}$ is a ``statistical condition number''\cite{liu2018acceler
 that satisfies $\tilde{\kappa}\leq\kappa_{1}$. Thus our new FedAvg
 algorithm achieves a speedup of factor $\sqrt{\kappa_{1}/\tilde{\kappa}}$
 over FedAvg with local SGD updates. 
+\end{comment}
+
 
 \subsection{Geometric Convergence of FedAvg in the Overparameterized Setting}
 Recall the federated learning problem $\min_{w}\sum_{k=1}^{N}p_{k}F_{k}(\mathbf{w})$
 with $F_{k}(\mathbf{w})=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\ell(\mathbf{w};\mathbf{x}_{k}^{j})$.
-In this section, we consider the standard ERM setting where each $\ell$
+In this section, we consider the standard Empirical Risk Minimization (ERM) setting where $\ell$
 is non-negative, $l$-smooth, and convex, and as before, we assume
-that each $F_{k}(\mathbf{w})=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\ell(\mathbf{w};\mathbf{x}_{k}^{j})$
-is $L$-smooth and $\mu$-strongly convex. Note that $l\geq L$. This
+that each $F_{k}(\mathbf{w})$ is $L$-smooth and $\mu$-strongly convex. Note that $l\geq L$. This
 setup includes many important problems in practice. In the overparameterized
-setting, we assume that there exists $\mathbf{w}^{\ast}\in\arg\min_{w}\sum_{k=1}^{N}p_{k}F_{k}(\mathbf{w})$
+setting, there exists $\mathbf{w}^{\ast}\in\arg\min_{w}\sum_{k=1}^{N}p_{k}F_{k}(\mathbf{w})$
 such that $\ell(\mathbf{w}^{\ast};\mathbf{x}_{k}^{j})=0$ for all
 $\mathbf{x}_{k}^{j}$. We first show that FedAvg with local SGD updates
 and communication every $E$ iterations achieves geometric convergence
@@ -68,35 +81,34 @@ with linear speedup in the number of workers.
 	\label{thm:overparameterized_general}In the overparameterized setting,
 	FedAvg with local SGD updates and communication every $E$ iterations
 	with constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})})$
-	has geometric convergence
+	has geometric convergence,
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\frac{L}{2}(1-\overline{\alpha})^{T}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}=\mathcal{O}\left(L\exp(-\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t)\cdot\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right)
+	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\frac{L}{2}(1-\overline{\alpha})^{T}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}=\mathcal{O}\left(L\exp(-\frac{\mu}{E}\frac{NT}{l\nu_{\max}+L(N-\nu_{\min})})\cdot\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 	\end{align*}
 \end{theorem}
 %
 \textbf{Linear speedup and Communication Complexity} When $l>L$,
-the speedup factor is on the order of $\frac{N}{E(l\nu_{\max}+L(N-\nu_{\min}))}/\frac{1}{l\nu_{\max}+L(1-\nu_{\min})}\approx\frac{Nl}{E(l+L(N-1))}=\mathcal{O}(N/E)$
+the speedup factor is on the order of $\mathcal{O}(N/E)$ %\frac{N}{E(l\nu_{\max}+L(N-\nu_{\min}))}/\frac{1}{l\nu_{\max}+L(1-\nu_{\min})}\approx\frac{Nl}{E(l+L(N-1))}=
 for $N\leq\frac{l}{L}+1$, i.e. FedAvg with $N$ workers and communication
 every $E$ iterations provides a geometric convergence speedup factor
 of $\mathcal{O}(N/E)$, for $N\leq\frac{l}{L}+1$. When $N$ is above
 this threshold, however, the speedup is almost constant in the number
 of workers. This matches the findings in \cite{ma2017power}. Our
-result also illustrates that $E$ can be taken $\mathcal{O}(t^{\beta})$
+result also illustrates that $E$ can be taken $\mathcal{O}(T^{\beta})$
 for any $\beta<1$, achieving better communication efficiency than
 the standard setting. 
 
 \subsection{Overparameterized Quadratic Problems}
-
-In the remaining part of the section, we specialize to quadratic problems
-and demonstrate how the general bound in \ref{thm:overparameterized_general}
+We now turn to quadratic problems
+and demonstrate how the general bound in Theorem~\ref{thm:overparameterized_general}
 can be sharpened to explicitly depend on the condition number of the
 system, and how this rate can be further improved with a new FedAvg
 algorithm with momentum updates. 
 
-The local device objectives are now given by the sum of squares $F_{k}(\mathbf{w})=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{w}^{T}\mathbf{x}_{k}^{j}-z_{k}^{j})^{2}$,
-and there exists $\mathbf{w}^{\ast}$ such that $F(\mathbf{w}^{\ast})=\sum_{k}p_{k}F_{k}(\mathbf{w}^{\ast})\equiv0$.
-Define the local Hessian matrix as $H^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}$
-and the averaged Hessian matrix as $H:=\sum_{k=1}^{N}p_{k}H^{k}$.
+The local device objectives are now given by the sum of squares {\small$F_{k}(\mathbf{w})=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{w}^{T}\mathbf{x}_{k}^{j}-z_{k}^{j})^{2}$},
+and there exists $\mathbf{w}^{\ast}$ such that $F(\mathbf{w}^{\ast})\equiv0$.
+Define the local Hessian matrix as $H^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}$,
+the averaged Hessian matrix as $H:=\sum_{k=1}^{N}p_{k}H^{k}$, and the stochastic Hessian matrix as $\tilde{H}_{t}^{k}:=\xi_{t}^{k}(\xi_{t}^{k})^{T}$. 
 \begin{comment}
 In general $H$ has zero eigevalues. However, because the null space
 of $H$ and range of $H$ are orthogonal, in our subsequence analysis
@@ -106,32 +118,30 @@ of $H$. We can use $\mathbf{w}^{\ast T}\mathbf{x}_{k}^{j}-z_{k}^{j}\equiv0$
 to rewrite the local objectives as $F_{k}(\mathbf{w})=\frac{1}{2}\langle\mathbf{w}-\mathbf{w}^{\ast},H^{k}(\mathbf{w}-\mathbf{w}^{\ast})\rangle\equiv\frac{1}{2}\|\mathbf{w}-\mathbf{w}^{\ast}\|_{H^{k}}^{2}$
 so that $F(\mathbf{w})=\frac{1}{2}\|\mathbf{w}-\mathbf{w}^{\ast}\|_{H}^{2}$.
 \end{comment}
-{} %
 \begin{comment}
 \begin{align*}
 F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j}-(w^{\ast T}x_{k,j}-z_{k,j}))^{2}=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((w-w^{\ast})^{T}x_{k,j})^{2}\\
 & =\frac{1}{2}\langle w-w^{\ast},H^{k}(w-w^{\ast})\rangle=\frac{1}{2}\|w-w^{\ast}\|_{H^{k}}^{2}
 \end{align*}
 \end{comment}
+\begin{comment}
 Let $\xi_{t}^{k}$ be the stochastic sample on the $k$th device at
 time $t$, and define $\tilde{H}_{t}^{k}:=\xi_{t}^{k}(\xi_{t}^{k})^{T}$
-as the stochastic Hessian matrix. %
+as the stochastic Hessian matrix. %	
+\end{comment}
 \begin{comment}
 Note that $\mathbb{E}\tilde{H}_{t}^{k}=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}=H^{k}$
 and $\mathbf{g}_{t,k}=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\tilde{H}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$
 while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$.
 \end{comment}
-{} Define $l$ to be the smallest positive number such that $\mathbb{E}\|\xi_{t}^{k}\|^{2}$$\mathbf{\xi}_{t}^{k}$($\mathbf{\xi}_{t}^{k})^{T}\preceq lH^{k}$
+Define $l$ to be the smallest positive number such that $\mathbb{E}\|\xi_{t}^{k}\|^{2}$$\mathbf{\xi}_{t}^{k}$($\mathbf{\xi}_{t}^{k})^{T}\preceq lH^{k}$
 for all $k$. Note that $l\leq\max_{k,j}\|\mathbf{x}_{k}^{j}\|^{2}$.
 Let $L$ and $\mu$ be lower and upper bounds of non-zero eigenvalues
 of $H^{k}$. Define $\kappa_{1}:=l/\mu$ and $\kappa:=L/\mu$. Following
 \cite{liu2018accelerating,jain2017accelerating}, we define the statistical
 condition number $\tilde{\kappa}$ as the smallest positive real number
-such that 
-\begin{align*}
-\mathbb{E}\left[\langle\xi_{t}^{k}(H^{k})^{-1},\xi_{t}^{k}\rangle\xi_{t}^{k}(\xi_{t}^{k})^{T}\right] & \preceq\tilde{\kappa}H^{k}
-\end{align*}
-for all $k$. The condition numbers $\kappa_{1}$ and $\tilde{\kappa}$
+such that $\mathbb{E}\left[\langle\xi_{t}^{k}(H^{k})^{-1},\xi_{t}^{k}\rangle\xi_{t}^{k}(\xi_{t}^{k})^{T}\right] \  \preceq\tilde{\kappa}H^{k}$, for all $k$. 
+The condition numbers $\kappa_{1}$ and $\tilde{\kappa}$
 are important in the characterization of convergence rates for FedAvg
 algorithms. Note that $\kappa_{1}>\kappa$ and $\kappa_{1}>\tilde{\kappa}$. 
 
@@ -145,42 +155,50 @@ FedAvg with MaSS updates over SGD updates.
 	\label{thm:overparameterized_quadratic}For the overparamterized quadratic
 	problem, FedAvg with local SGD updates and communication every $E$
 	iterations with constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})})$
-	has geometric convergence 
+	has geometric convergence:
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{w}}_{t}) & \leq\mathcal{O}\left(L(1-\frac{N}{E(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})^{t}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right)
+	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\mathcal{O}\left(L(1-\frac{N}{E(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})^{T}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 	\end{align*}
 \end{theorem}
 
-When $N=\mathcal{O}(\kappa_{1})$, the convergence rate is $\mathcal{O}((1-\frac{N}{E\kappa_{1}})^{t})=\mathcal{O}(\exp(-\frac{N}{E\kappa_{1}}t))$,
+When $N=\mathcal{O}(\kappa_{1})$, the convergence rate is $\mathcal{O}((1-\frac{N}{E\kappa_{1}})^{T})=\mathcal{O}(\exp(-\frac{NT}{E\kappa_{1}}))$,
 which exhibits linear speedup in the number of workers, as well as
 a $1/\kappa_{1}$ dependence on the condition number $\kappa_{1}$.
-Following \cite{liu2018accelerating}, we propose the \textbf{MaSS
+Inspired by \cite{liu2018accelerating}, we propose the \textbf{MaSS
 	accelerated FedAvg algorithm} (FedMaSS):
 \begin{align*}
 \mathbf{w}_{t+1}^{k} & =\begin{cases}
-\mathbf{u}_{t}^{k}-\eta_{1}^{k}\mathbf{g}_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
-\sum_{k=1}^{N}p_{k}\left[\mathbf{u}_{t}^{k}-\eta_{1}^{k}\mathbf{g}_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
+\mathbf{u}_{t}^{k}-\eta_{1}^{k}\mathbf{g}_{t,k} & \text{if }t+1\notin\mathcal{I}_{E},\\
+\sum_{k=1}^{N}p_{k}\left[\mathbf{u}_{t}^{k}-\eta_{1}^{k}\mathbf{g}_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E},
 \end{cases}\\
-\mathbf{u}_{t+1}^{k} & =\mathbf{w}_{t+1}^{k}+\gamma^{k}(\mathbf{w}_{t+1}^{k}-\mathbf{w}_{t}^{k})+\eta_{2}^{k}\mathbf{g}_{t,k}
+\mathbf{u}_{t+1}^{k} & =\mathbf{w}_{t+1}^{k}+\gamma^{k}(\mathbf{w}_{t+1}^{k}-\mathbf{w}_{t}^{k})+\eta_{2}^{k}\mathbf{g}_{t,k}. 
 \end{align*}
 When $\eta_{2}^{k}\equiv0$, this algorithm reduces to the Nesterov
 accelerated FedAvg algorithm. In the next theorem, we demonstrate
-that FedMaSS improves the convergence to $\mathcal{O}(\exp(-\frac{N}{E\sqrt{\kappa_{1}\tilde{\kappa}}}t))$.
-To our knowledge, this represents the first acceleration result of
+that FedMaSS improves the convergence to $\mathcal{O}(\exp(-\frac{NT}{E\sqrt{\kappa_{1}\tilde{\kappa}}}))$.
+To our knowledge, this is the first accelerated result of
 FedAvg with momentum updates over SGD updates.
 \begin{theorem}
 	\label{thm:overparameterized_MaSS}For the overparamterized quadratic
 	problem, FedMaSS with communication every $E$ iterations and constant
-	step sizes $\overline{\eta_{1}}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}),\overline{\eta_{2}}=\frac{\overline{\eta_{1}}(1-\frac{1}{\tilde{\kappa}})}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}},\overline{\gamma}=\frac{1-\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}$
-	has geometric convergence
+	step sizes $\overline{\eta}_1=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}),\overline{\eta}_{2}=\frac{\overline{\eta}_{1}(1-\frac{1}{\tilde{\kappa}})}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}},\overline{\gamma}=\frac{1-\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}$
+	has geometric convergence:
 	\begin{align*}
-	\mathbb{E}F(\overline{w}_{t}) & \leq\mathcal{O}\left((1-\frac{1}{E}\frac{N}{l\nu_{\max}\sqrt{\kappa_{1}\tilde{\kappa}}+(N-\nu_{\min})})^{t}\|w_{0}-w^{\ast}\|^{2}\right)
+	\mathbb{E}F(\overline{\vw}_{T}) & \leq\mathcal{O}\left((1-\frac{1}{E}\frac{N}{l\nu_{\max}\sqrt{\kappa_{1}\tilde{\kappa}}+(N-\nu_{\min})})^{T}\|w_{0}-w^{\ast}\|^{2}\right).
 	\end{align*}
 \end{theorem}
-\textbf{Speedup of FedMaSS over FedAvg} Compared to the convergence
-rate of FedAvg with local SGD updates, when $N=\mathcal{O}(\sqrt{\kappa_{1}\tilde{\kappa}})$,
-the convergence rate is $\mathcal{O}((1-\frac{N}{E\sqrt{\kappa_{1}\tilde{\kappa}}})^{t})=\mathcal{O}(\exp(-\frac{N}{E\sqrt{\kappa_{1}\tilde{\kappa}}}t))$
-as opposed to $\mathcal{O}(\exp(-\frac{N}{E\kappa_{1}}t))$. Since
+\textbf{Speedup of FedMaSS over FedAvg} 
+To better understand the significance of the above result, we briefly discuss the related works in SGD.
+Nesterov and Heavy Ball updates are known to fail to accelerate over SGD in both the overparameterized
+and convex settings~\cite{liu2018accelerating,kidambi2018insufficiency,liu2018toward,yuan2016influence}.
+Thus in general one cannot hope to obtain acceleration results for
+the FedAvg algorithm with Nesterov and Heavy Ball updates. 
+Luckily, recent works in SGD~\cite{jain2017accelerating,liu2018accelerating} introduced
+an additional compensation term to the Nesterov updates to address the non-acceleration issue. Surprisingly, 
+we show the same approach can effectively improve the rate of FedAvg.
+Comparing the convergence rate of FedMass (Theorem~\ref{thm:overparameterized_MaSS}) and FedAvg (Theorem~\ref{thm:overparameterized_quadratic}), when $N=\mathcal{O}(\sqrt{\kappa_{1}\tilde{\kappa}})$,
+the convergence rate is $\mathcal{O}((1-\frac{N}{E\sqrt{\kappa_{1}\tilde{\kappa}}})^{T})=\mathcal{O}(\exp(-\frac{NT}{E\sqrt{\kappa_{1}\tilde{\kappa}}}))$
+as opposed to $\mathcal{O}(\exp(-\frac{NT}{E\kappa_{1}}))$. Since
 $\kappa_{1}\geq\tilde{\kappa}$, this implies a speedup factor of
 $\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$ for FedMaSS. On the other
 hand, the same linear speedup in the number of workers holds for $N$
