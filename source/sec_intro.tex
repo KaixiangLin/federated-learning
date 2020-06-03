@@ -15,14 +15,14 @@ when FL learns a single statistical model using data from across all the devices
 % Gaps in the theoretical understanding. 
 To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success~\cite{47586}. This success has since motivated a growing line of research efforts into understanding its theoretical convergence guarantees in various settings. Most existing convergence guarantees of FedAvg were either established in simplified settings~\cite{stich2018local,khaled2019first,wang2018cooperative,yu2019parallel,khaled2020tighter,li2018federated,koloskova2020unified}, have restrictive assumptions~\cite{haddadpour2019convergence} or provide a suboptimal 
 convergence rate~\cite{li2019convergence}. Furthermore, the convergence of
-FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerating} in the general heterogeneous and convex setting is yet to be analyzed. At the heart of the success of FL is the \emph{linear speedup} property with respect to the number of participating clients that can be achieved with infrequent communications. Although results of this kind are abundant in distributed and decentralized optimization~\cite{yu2019linear,yu2019parallel,stich2018local,khaled2020tighter,stich2018local,koloskova2020unified}, generalization to the FL setting with both types of heterogeneity is currently lacking.
+FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerating} in the general heterogeneous and convex setting is yet to be analyzed. At the heart of the success of FL is the \emph{linear speedup} property with respect to the number of participating clients that can be achieved with infrequent communications. Although results of this kind are abundant in distributed and decentralized optimization~\cite{yu2019linear,yu2019parallel,stich2018local,khaled2020tighter,koloskova2020unified}, generalization to the FL setting with both types of heterogeneity is currently lacking.
 
 \subsection{Related Works}
 \textbf{The Convergence of FedAvg and Linear Speedup.}
 There have been a considerable amount of convergence results in distributed stochastic optimization with infrequent communications that establish linear speedup in the number of clients. However, most of these prior works provide
 convergence guarantees under simplified settings, where either statistical
 heterogeneity~\cite{stich2018local,zhou2017convergence,wang2018cooperative,woodworth2018graph,haddadpour2019convergence} or system
-heterogeneity~\cite{yu2019parallel,wang2019adaptive,khaled2019first,jiang2018linear} are not
+heterogeneity~\cite{yu2019parallel,wang2019adaptive,khaled2019first,jiang2018linear,koloskova2020unified} are not
 considered, and the associated algorithm is often referred to as local SGD. ~\cite{li2019convergence} are the first to provide convergence of FedAvg for strongly convex problems considering both statistical heterogeneity and system heterogeneity, yet it
 didn't achieve linear speedup \cite{yu2019parallel,haddadpour2019convergence,stich2018local}. In~\cite{haddadpour2019convergence,liang2019variance,huo2020faster,jiang2018linear}, the convergence of FedAvg for non-convex problems has been studied, whereas this paper focuses on convex settings.
 \begin{comment}
