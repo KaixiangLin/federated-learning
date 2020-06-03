@@ -22,7 +22,7 @@ we introduce parametering searching in each objective separately.
 
 \subsection{Strongly Convex Objectives}
 We first consider the strongly convex objective function, where we use
-a regularized binary logistic regression with regularization $\lambda=1/n\approx 1e-5$. We evenly distributed on $1, 2, 4, 8, 16, 32$ devices and  report the number of iterations/rounds needed to converge to $\epsilon-$accuracy, where $\epsilon=0.005$. The optimal objective function value $f^*$
+a regularized binary logistic regression with regularization $\lambda=1/n\approx 2e-5$. We evenly distributed on $1, 2, 4, 8, 16, 32$ devices and  report the number of iterations/rounds needed to converge to $\epsilon-$accuracy, where $\epsilon=0.005$. The optimal objective function value $f^*$
 is set as $f^* = 0.126433176216545$. This is determined numerically and we follow the setting in~\cite{stich2018local}. The learning rate is decayed as the $\eta_t = \min(\eta_0, \frac{nc}{1 + t})$, where we extensively search the best learning rate $c \in \{2^{-1}c_0, 2^{-2}c_0, c_0, 2c_0, 2^{2}c_0\}$. In this case, we search the initial learning rate $\eta_0\in \{1, 32\}$ and $c_0 = 1/8$.
 
 

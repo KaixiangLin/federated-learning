@@ -1,9 +1,19 @@
 % !TEX ROOT=./main.tex
 
 \section{Conclusions}
-This paper provides a comprehensive analysis of the convergence rate of FedAvg
+\begin{comment}
+This paper provides a comprehensive and unified analysis of the convergence rate of FedAvg
 and its accelerated variants in a general federated learning problem with heterogeneous local data and partial participation. We show that both Nesterov accelerated FedAvg and FedAvg
 can achieve {\small{$\cO(\frac{1}{\sqrt{NT}})$}} linear speedup convergence for convex smooth problems and {\small{$\cO(\frac{1}{NT})$}} convergence for strongly 
 convex smooth problems. In addition, we show that the local steps for stronlgy convex and convex smooth problems can be as large as {\small{$\cO(\sqrt{\frac{T}{N}})$}}, which can substantially save communication cost comparing to prior results. 
 Furthermore, this work also makes algorithmic contributions. We not only prove that FedAvg can achieve exponential convergence for overparameterized strongly convex smooth problems, but also propose the MaSS accelerated Fedavg algorithm, which has provable speedup in convergence rate over FedAvg on quadratic problems. Last but not least, we empirically
-verify the linear speedup of FedAvg and Nesterov accelerated FedAvg for strongly convex, convex smooth, and linear regression problems. The empirical results are well-aligned with our theories. 
+verify the linear speedup of FedAvg and Nesterov accelerated FedAvg for strongly convex, convex smooth, and linear regression problems. The empirical results are well-aligned with our theories.		
+\end{comment}
+This paper provides a comprehensive and unified analysis of the convergence rate of FedAvg
+and its accelerated variants in a general federated learning problem with heterogeneous local data and partial participation. 
+We show that both Nesterov accelerated FedAvg and FedAvg can achieve linear speedup convergence for convex smooth problems and strongly 
+convex smooth problems.  
+Furthermore, this work also makes algorithmic contributions. We not only prove that FedAvg can achieve geometric convergence for overparameterized strongly convex smooth problems 
+but also propose the MaSS accelerated Fedavg algorithm, which has provable speedup in convergence rate over FedAvg on quadratic problems. Last but not least, extensive empirical 
+evaluations demonstrate the linear speedup of FedAvg and Nesterov accelerated FedAvg under various settings.	
+
