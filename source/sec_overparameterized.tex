@@ -157,14 +157,14 @@ Inspired by \cite{liu2018accelerating}, we propose the \textbf{MaSS
 \begin{align*}
 \mathbf{w}_{t+1}^{k} & =\begin{cases}
 \mathbf{u}_{t}^{k}-\eta_{1}^{k}\mathbf{g}_{t,k} & \text{if }t+1\notin\mathcal{I}_{E},\\
-\sum_{k=1}^{N}p_{k}\left[\mathbf{u}_{t}^{k}-\eta_{1}^{k}\mathbf{g}_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E},
+\sum_{k \in \cS_{t+1}}\left[\mathbf{u}_{t}^{k}-\eta_{1}^{k}\mathbf{g}_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E},
 \end{cases}\\
 \mathbf{u}_{t+1}^{k} & =\mathbf{w}_{t+1}^{k}+\gamma^{k}(\mathbf{w}_{t+1}^{k}-\mathbf{w}_{t}^{k})+\eta_{2}^{k}\mathbf{g}_{t,k}. 
 \end{align*}
 When $\eta_{2}^{k}\equiv0$, this algorithm reduces to the Nesterov
 accelerated FedAvg algorithm. In the next theorem, we demonstrate
 that FedMaSS improves the convergence to $\mathcal{O}(\exp(-\frac{NT}{E\sqrt{\kappa_{1}\tilde{\kappa}}}))$.
-To our knowledge, this is the first accelerated result of
+To our knowledge, this is the first acceleration result of
 FedAvg with momentum updates over SGD updates.
 \begin{theorem}
 	\label{thm:overparameterized_MaSS}For the overparamterized quadratic
