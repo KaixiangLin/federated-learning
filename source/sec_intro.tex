@@ -15,7 +15,7 @@ when FL learns a single statistical model using data from across all the devices
 % Gaps in the theoretical understanding. 
 To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success~\cite{47586}. This success has since motivated a growing line of research efforts into understanding its theoretical convergence guarantees in various settings. Most existing convergence guarantees of FedAvg were either established in simplified settings~\cite{stich2018local,khaled2019first,wang2018cooperative,yu2019parallel,khaled2020tighter,li2018federated,koloskova2020unified}, have restrictive assumptions~\cite{haddadpour2019convergence} or provide a suboptimal 
 convergence rate~\cite{li2019convergence}. Furthermore, the convergence of
-FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerating} in the general heterogeneous and convex setting is yet to be analyzed. At the heart of the success of FL is the \emph{linear speedup} property with respect to the number of participating clients that can be achieved with infrequent communications. Although theoretical results of this kind are abundant in distributed and decentralized optimization~\cite{yu2019linear,yu2019parallel,stich2018local,khaled2020tighter,koloskova2020unified}, generalization to the FL setting with both types of heterogeneity is currently lacking.
+FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerating} in the general heterogeneous and convex setting is unknown. At the heart of the success of FL is the \emph{linear speedup} property with respect to the number of participating clients that can be achieved with infrequent communications. Although theoretical results of this kind are abundant in distributed and decentralized optimization~\cite{yu2019linear,yu2019parallel,stich2018local,khaled2020tighter,koloskova2020unified}, generalization to the FL setting with both types of heterogeneity is currently lacking.
 
 \subsection{Related Works}
 \textbf{Convergence of FedAvg}
@@ -42,19 +42,6 @@ The convergence of accelerated FL algorithms using momentum (Nesterov and Heavy 
 
 
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|}\hline 
-	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex \\ \hline \hline
-	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
-	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$      \\ \hline
-\end{tabular}
-\caption{A high level summary of the convergence results for FedAvg and Nesterov accelerated FedAvg in this paper.}
-\label{tb:convergencerateintro}
-\end{table}
-
-
-
 % Our contributions
 % \subsection{Contributions}
 \subsection{Our Contributions.}
@@ -70,6 +57,18 @@ To the best of our knowledge, this is the first linear speedup result for FedAvg
 we propose a new variant of FedAvg and provide the first improved convergence rate for stochastic momentum-accelerated FedAvg in the popular overparamterized setting.
 Last but not least, we systematically examine the convergence rate of
 FedAvg and its accelerated variants on both a synthetic dataset and  a real-world dataset. The empirical observations are well-aligned with the obtained theoretical findings.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|}\hline 
+	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex \\ \hline \hline
+	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
+	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$      \\ \hline
+\end{tabular}
+\caption{Our convergence results for FedAvg and Nesterov accelerated FedAvg in this paper.}
+\label{tb:convergencerateintro}
+\end{table}
+
 
 % Our theoretical results not only cover all general convex objectives, including strongly convex cases, convex smooth cases and convex non-smooth cases, but also provide tighter convergence guarantee for all convex smooth objectives, which shows the convergence rate enjoys a linear speedup w.r.t.
 % the number of workers.
