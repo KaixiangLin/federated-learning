@@ -22,8 +22,8 @@ FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerati
 There have been a considerable amount of convergence results in distributed stochastic optimization with infrequent communications that establish linear speedup in the number of clients. However, most of these prior works provide
 convergence guarantees under simplified settings, where either statistical
 heterogeneity~\cite{stich2018local,zhou2017convergence,wang2018cooperative,woodworth2018graph,haddadpour2019convergence} or system
-heterogeneity~\cite{yu2019parallel,wang2019adaptive,khaled2019first,jiang2018linear,koloskova2020unified} are not
-considered, and the associated algorithm is often referred to as local SGD. ~\cite{li2019convergence} is the first to provide convergence of FedAvg for strongly convex problems considering both statistical heterogeneity and system heterogeneity, yet it
+heterogeneity~\cite{yu2019parallel,wang2019adaptive,khaled2019first,jiang2018linear,koloskova2020unified} is not
+considered, and the associated algorithm is often referred to as local SGD. ~\cite{li2019convergence} is the first to provide convergence of FedAvg for general strongly convex problems considering both statistical heterogeneity and system heterogeneity, yet it
 didn't achieve linear speedup \cite{yu2019parallel,haddadpour2019convergence,stich2018local}. In~\cite{haddadpour2019convergence,liang2019variance,huo2020faster,jiang2018linear}, the convergence of FedAvg for non-convex problems has been studied, whereas this paper focuses on convex settings.
 \begin{comment}
 However, \cite{huo2020faster} did not discuss the linear speedup and the theorems in \cite{haddadpour2019convergence,liang2019variance} failed to cover the accelerated version of
