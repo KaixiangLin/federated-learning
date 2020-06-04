@@ -2,39 +2,34 @@
 
 % Broader impact: Authors are asked to include a section in their submissions discussing the broader impact of their work, including possible societal consequences — -both positive and negative.
 \section{Broader impact}
-With the widespread use of mobile devices, the powerful sensors
-collected enormous amount of data empowered with machine learning
-solutions can transform people's life in many aspects. The proper
-data integration can produce positive social
-impact in terms of better personalization~\cite{fallah2020personalized}, more efficient information solicitation~\cite{chen2018federated}, and enhanced service~\cite{47586}.
+With the growing availability of mobile devices and their increasing ability to capture data, enormous amounts of information can potentially be integrated to help improve and transform people's lives in many aspects such as personalized and enhanced services~\cite{fallah2020personalized,47586} and precision medicine~\cite{uddin2019artificial,frohlich2018hype}, to name a few.
 
-In the meantime, the increasing concerns of security and
-privacy leaking from both large companies and the entire society
-present significant challenges of proper utilization of local
-data. This trade-off between efficiency and privacy/security
-lies in the center of many industrial applications, including 
+Meanwhile, data breaches from central servers of big companies have become increasingly common, raising concerns about privacy and information security when individual clients' information is aggregated and stored centrally. 
+
+The challenge we face is therefore to properly integrate and leverage data from different sources to arrive at better solutions, while at the same time minimizing privacy risks. This trade-off between efficiency and privacy/security
+lies at the heart of many applications, including 
 but not limited to recommendation systems~\cite{chen2018federated}, virtual assistants~\cite{lamautonomy}, and mobile keyboard prediction~\cite{47586}.
 
-Federated learning balancing efficiency and privacy is not only an effective
-tool to provide enhanced entertainment, but also a vital approach that can
-save millions of lives in the short future.  Under the unprecedented outbreak
-of Covid'19, coronavirus patients have filled the emergency rooms
-thoroughly. It is imperative to have reliable, robust machine learning
-solutions that could help doctors treat patients. However,  Health Insurance Portability and Accountability (HIPAA) regulations~\cite{assistance2003summary}
+Federated learning has emerged as a promising solution to the challenge. Built on insights from decentralized and distributed optimization, it aggregates information by integrating model \emph{parameters} learned locally at each source, eliminating the need to transmit and store data centrally. 
+
+This desirable feature makes federated learning an effective tool to balance efficiency and privacy not just in the aforementioned applications with mobile devices, but also in other settings such as healthcare where it has the potential to save millions of lives. Under the unprecedented outbreak
+of Covid'19, coronavirus patients have filled emergency rooms nationwide. It is imperative to have reliable, robust machine learning
+solutions that could help doctors diagnose and treat patients. However,  Health Insurance Portability and Accountability (HIPAA) regulations~\cite{assistance2003summary}
 impose strict restrictions on sharing patients' clinical data: privacy is a
-top priority when developing machine learning techniques at those medical institutions. 
-Therefore, propelling the frontiers of federated learning for more efficient 
+top priority when developing solutions by leveraging information from different medical institutions. 
+Therefore, propelling the frontiers of federated learning to develop more efficient 
 algorithms under the privacy-preserving constraint has never been more
 important.
 
+Two important aspects where federated learning departs from traditional distributed optimization is the heterogeneity of data at different sources and the fact that not all local devices/sources are able to participate in the model averaging at every iteration. In this general setting, the question remains as to whether joint learning still enjoys the desirable feature of \emph{linear speedup} with respect to the number of participating devices/institutions.
+
 In this work, we establish solid theoretical foundations for federated
-learning that achieves efficiency and privacy at the same time. 
-On one hand, the data is isolated in each local devices, thus prevent
-the potential leakage of private information. On the other hand, the
-convergence rates can be improved substantially if the number of
-active local devices increases. In conclusion, our work 
-shows a faithful pathway to simultaneously secure people's privacy and improve
-users' experience.
+learning and demonstrate that linear speedup is possible in a variety of settings with the FedAvg algorithm and its variants, under both data and system heterogeneity, significantly improving previous understanding of federated learning.
+
+We therefore show that federated learning is able to achieve efficiency and privacy at the same time. On one hand, data is isolated in each local device/institution, preventing
+the potential leakage of private information. On the other hand, joint learning can speed up substantially if the number of
+participating devices/institutions increases. In conclusion, our work shows a promising machine learning pathway to simultaneously securing people's privacy and improving
+their lives.
 
 
 
