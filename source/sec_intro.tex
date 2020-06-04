@@ -18,7 +18,7 @@ convergence rate~\cite{li2019convergence}. Furthermore, the convergence of
 FedAvg's accelerated variants~\cite{yu2019linear,huo2020faster,liu2019accelerating} in the general heterogeneous and convex setting is yet to be analyzed. At the heart of the success of FL is the \emph{linear speedup} property with respect to the number of participating clients that can be achieved with infrequent communications. Although theoretical results of this kind are abundant in distributed and decentralized optimization~\cite{yu2019linear,yu2019parallel,stich2018local,khaled2020tighter,koloskova2020unified}, generalization to the FL setting with both types of heterogeneity is currently lacking.
 
 \subsection{Related Works}
-\textbf{The Convergence of FedAvg and Linear Speedup.}
+\textbf{Convergence of FedAvg}
 There have been a considerable amount of convergence results in distributed stochastic optimization with infrequent communications that establish linear speedup in the number of clients. However, most of these prior works provide
 convergence guarantees under simplified settings, where either statistical
 heterogeneity~\cite{stich2018local,zhou2017convergence,wang2018cooperative,woodworth2018graph,haddadpour2019convergence} or system
@@ -48,7 +48,7 @@ The convergence of accelerated FL algorithms using momentum (Nesterov and Heavy 
 
 % Our contributions
 % \subsection{Contributions}
-\textbf{Contributions.}
+\subsection{Our Contributions.}
 We provide a comprehensive convergence analysis
 of FedAvg and its accelerated variants in convex stochastic problems with both system and statistical heterogeneity.
 Our results demonstrate the desirable linear speedup property with respect to the number of participating clients.
