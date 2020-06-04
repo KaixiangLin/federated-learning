@@ -42,7 +42,16 @@ The convergence of accelerated FL algorithms using momentum (Nesterov and Heavy 
 
 
 
-
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|}\hline 
+	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex \\ \hline \hline
+	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
+	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$      \\ \hline
+\end{tabular}
+\caption{A high level summary of the convergence results for FedAvg and Nesterov accelerated FedAvg in this paper.}
+\label{tb:convergencerateintro}
+\end{table}
 
 
 
@@ -50,7 +59,7 @@ The convergence of accelerated FL algorithms using momentum (Nesterov and Heavy 
 % \subsection{Contributions}
 \textbf{Contributions.}
 We provide a comprehensive convergence analysis
-of FedAvg and its accelerated variants in convex stochastic problems with both system and statistical heterogeneity.
+of FedAvg and its accelerated variants in convex stochastic problems with both system and statistical heterogeneity (see Table~\ref{tb:convergencerateintro}).
 Our results demonstrate the desirable linear speedup property with respect to the number of participating clients.
 More specifically, for strongly convex and smooth problems, we show 
 that FedAvg admits a convergence rate of 
