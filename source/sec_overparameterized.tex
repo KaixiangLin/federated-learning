@@ -79,7 +79,7 @@ with linear speedup in the number of workers.
 	and constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})})$
 	has geometric convergence
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\frac{L}{2}(1-\overline{\alpha})^{T}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}=\mathcal{O}\left(L\exp(-\frac{\mu}{E}\frac{NT}{l\nu_{\max}+L(N-\nu_{\min})})\cdot\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
+	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\frac{L}{2}(1-\overline{\alpha})^{T}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}=\mathcal{O}\left(L\exp\left(-\frac{\mu}{E}\frac{NT}{l\nu_{\max}+L(N-\nu_{\min})}\right)\cdot\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 	\end{align*}
 \end{theorem}
 %
@@ -145,7 +145,7 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	iterations with constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})})$
 	has geometric convergence:
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\mathcal{O}\left(L(1-\frac{N}{E(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})^{T}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
+	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\mathcal{O}\left(L\exp(-\frac{NT}{E(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 	\end{align*}
 \end{theorem}
 
@@ -172,7 +172,7 @@ FedAvg with momentum updates over SGD updates.
 	step sizes $\overline{\eta}_1=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}),\overline{\eta}_{2}=\frac{\overline{\eta}_{1}(1-\frac{1}{\tilde{\kappa}})}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}},\overline{\gamma}=\frac{1-\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}$
 	has geometric convergence:
 	\begin{align*}
-	\mathbb{E}F(\overline{\vw}_{T}) & \leq\mathcal{O}\left(\left(1-\frac{1}{E}\frac{N}{l\nu_{\max}\sqrt{\kappa_{1}\tilde{\kappa}}+(N-\nu_{\min})}\right)^{T}\|w_{0}-w^{\ast}\|^{2}\right).
+	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\mathcal{O}\left(L\exp(-\frac{NT}{E(\nu_{\max}\sqrt{\kappa_{1}\tilde{\kappa}}+(N-\nu_{\min}))})\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 	\end{align*}
 \end{theorem}
 \textbf{Speedup of FedMaSS over FedAvg} 
