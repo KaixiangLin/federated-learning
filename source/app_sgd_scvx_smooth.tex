@@ -1,5 +1,5 @@
-We first summarize some properties of $L$-smooth and $\mu$-strongly
-convex functions. 
+To facilitate reading, theorems from the main paper are restated and numbered identically. We first summarize some properties of $L$-smooth and $\mu$-strongly
+convex functions~\cite{rockafellar1970convex}. 
 \begin{lemma}
 	Let $F$ be a convex $L$-smooth function. Then we have the following
 	inequalities:
@@ -21,20 +21,8 @@ convex functions.
 	F(w)-F(w^{\ast}) & \leq\frac{1}{2\mu}\|\nabla F(w)\|^{2}
 	\end{align*}
 \end{lemma}
-%
-\begin{assumption}
-	The stochastic gradients have bounded variance 
-	\begin{align*}
-	\mathbb{E}\|\nabla F_{k}(w_{t}^{k},\xi_{t}^{k})-\nabla F_{k}(w_{t}^{k})\|^{2} & \leq\sigma_{k}^{2}
-	\end{align*}
-	for all $k$. Moreover, the expected squared norm of stochastic gradients
-	is uniformly bounded, 
-	\begin{align*}
-	\mathbb{E}\|\nabla F_{k}(w_{t}^{k},\xi_{t}^{k})\|^{2} & \leq G^{2}
-	\end{align*}
-\end{assumption}
 
-\begin{theorem}
+\begin{thm}
 	Assume that $F_{k}$ is $L$-smooth and $\mu$-strongly convex for
 	all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$. Let $\kappa=\frac{L}{\mu}$,
 	$\gamma=\max\{32\kappa,E\}$ where $E$ is the communication delay,
@@ -51,7 +39,7 @@ convex functions.
 	\begin{align*}
 	\mathbb{E}F(\overline{w}_{T})-F^{\ast}\leq O(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
-\end{theorem}
+\end{thm}
 
 \begin{proof}
 		The idea of the proof is to observe that the $L$-smoothness of $F$
