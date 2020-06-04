@@ -1,18 +1,16 @@
 
-\begin{theorem}
-	Suppose $F_{k}$ is $L$-smooth and convex for all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$.
-	Set learning rate $\alpha_{t}=O(\sqrt{\frac{N}{T}})$.
-	
-	With full device participation, 
+\begin{thm}
+	Under assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} and constant learning
+	rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right)
 	\end{align*}
-	and with partial device participation with $K$ sampled devices at
-	each communication round, 
+	with full participation, and with partial device participation with $K$ sampled devices at
+	each communication round and learning rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{K}{T}})$,
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right)
 	\end{align*}
-\end{theorem}
+\end{thm}
 
 \begin{proof}
 	We again start by bounding the term
@@ -40,7 +38,8 @@
 	\end{align*}
 	Using the convexity and $L$-smoothness of $F_{k}$, 
 	\begin{align*}
-	-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle & =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& -2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
 	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
 	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w^{\ast})-F_{k}(w_{t}^{k}))\\
 	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+F_{k}(w^{\ast})-F_{k}(w_{t}^{k})\right]\\
@@ -71,7 +70,8 @@
 	we have $\|\nabla F(\overline{w}_{t})\|^{2}\leq2L(F(\overline{w}_{t})-F(w^{\ast}))$,
 	so that 
 	\begin{align*}
-	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]\\
+	& \|\overline{w}_{t+1}-w^{\ast}\|^{2}\\
+	& \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]\\
 	& +2\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}+4\alpha_{t}^{2}L(F(\overline{w}_{t})-F(w^{\ast}))+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
 	& =\|\overline{w}_{t}-w^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
 	& +\alpha_{t}(1-4\alpha_{t}L)(F(w^{\ast})-F(\overline{w}_{t}))
@@ -79,7 +79,8 @@
 	Since $F(w^{\ast})\leq F(\overline{w}_{t})$, as long as $4\alpha_{t}L\leq1$,
 	we can ignore the last term, and rearrange the inequality to obtain
 	\begin{align*}
-	\|\overline{w}_{t+1}-w^{\ast}\|^{2}+\alpha_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	& \|\overline{w}_{t+1}-w^{\ast}\|^{2}+\alpha_{t}(F(\overline{w}_{t})-F(w^{\ast}))\\
+	& \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
 	& \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\frac{3}{2}\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 	\end{align*}
 	
@@ -98,18 +99,23 @@
 	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
 	\end{align*}
 	
-	By setting the constant learning rate $\alpha_{t}\equiv\sqrt{\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T+6E^{2}LG^{2}T^{2/3}}}=O(\sqrt{\frac{N}{T}})$,
+	By setting the constant learning rate $\alpha_{t}\equiv\sqrt{\frac{N}{T}}$,
 	we have 
 	
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{T\sqrt{\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T+6E^{2}LG^{2}T^{2/3}}}}\cdot\left(\|w_{0}-w^{\ast}\|^{2}+T\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6E^{2}LG^{2}T\frac{\|w_{0}-w^{\ast}\|^{2}}{6E^{2}LG^{2}T}\right)\\
-	& =\frac{3\|w_{0}-w^{\ast}\|^{2}}{T\sqrt{\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T+6E^{2}LG^{2}T^{2/3}}}}=3\|w_{0}-w^{\ast}\|\sqrt{(\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{6E^{2}LG^{2}}{T^{4/3}})}
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sqrt{NT}}\cdot\|w_{0}-w^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}6E^{2}LG^{2}\\
+	& \leq\frac{1}{\sqrt{NT}}\cdot\|w_{0}-w^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{N}{T}6E^{2}LG^{2}\\
+	& =(\|w_{0}-w^{\ast}\|^{2}+\nu_{\max}^{2}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}6E^{2}LG^{2}
 	\end{align*}
 	
-	Similarly, for partial participation, we just need to replace $\frac{\nu_{\max}^{2}\sigma^{2}}{NT}$
-	with $\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+C\frac{E^{2}G^{2}}{KT}$,
-	so that we have 
+	Similarly, for partial participation, we have 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+	\end{align*}
+	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$,
+	so that in the former case, with $\alpha_{t}=\sqrt{\frac{K}{T}}$,
+	we have 
+	\begin{align*}
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
 	\end{align*}
 \end{proof}
