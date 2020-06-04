@@ -50,7 +50,7 @@ averaging over all devices at the communication round, i.e.,
 $\mathbf{w}_{t+1}^{k} = \sum_{k=1}^N p_k \mathbf{v}_{t+1}^{k}$, and
 the case of \textbf{partial participation} where $|\cS_{t+1}| < N$. 
 With partial participation, $\cS_{t+1}$ is obtained by two types of
-sampling schemes to simulate practical scenarios~\cite{li2019convergence}. For example, Sampling scheme I establishes $\cS_{t+1}$ by i.i.d. sampling the devices with probability $p_k$ with replacement. 
+sampling schemes to simulate practical scenarios~\cite{li2019convergence}. For example, one scheme establishes $\cS_{t+1}$ by i.i.d. sampling the devices with probability $p_k$ with replacement. 
 Both schemes
 guarantee that gradient updates in FedAvg are unbiased stochastic versions of
 updates in FedAvg with full participation. For 
