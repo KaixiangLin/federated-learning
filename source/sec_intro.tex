@@ -58,28 +58,19 @@ we propose a new variant of FedAvg and provide the first improved convergence ra
 Last but not least, we systematically examine the convergence rate of
 FedAvg and its accelerated variants on both a synthetic dataset and  a real-world dataset. The empirical observations are well-aligned with the obtained theoretical findings.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|}\hline 
-	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex \\ \hline \hline
-	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
-	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$      \\ \hline
-\end{tabular}
-\caption{Our convergence results for FedAvg and Nesterov accelerated FedAvg in this paper.}
-\label{tb:convergencerateintro}
-\end{table}
 
 \begin{table}[h!]
 \centering
+{\small
 \begin{tabular}{|c|c|c|c|}\hline 
 	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex  & Overparameterized \\ \hline \hline
 	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$   & $\cO(\exp(-\frac{NT}{E}))$    \\ \hline
 	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$ & $\cO(\exp(-\frac{KT}{E}))$     \\ \hline
 \end{tabular}
-\caption{A high level summary of the convergence results for FedAvg and Nesterov accelerated FedAvg in this paper.}
+}
+\caption{Our convergence results for FedAvg and Nesterov accelerated FedAvg in this paper.}
 \label{tb:convergencerateintro}
 \end{table}
-
 
 % Our theoretical results not only cover all general convex objectives, including strongly convex cases, convex smooth cases and convex non-smooth cases, but also provide tighter convergence guarantee for all convex smooth objectives, which shows the convergence rate enjoys a linear speedup w.r.t.
 % the number of workers.
