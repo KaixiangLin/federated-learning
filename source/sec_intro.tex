@@ -58,14 +58,17 @@ we propose a new variant of FedAvg and provide the first improved convergence ra
 Last but not least, we systematically examine the convergence rate of
 FedAvg and its accelerated variants on both a synthetic dataset and  a real-world dataset. The empirical observations are well-aligned with the obtained theoretical findings.
 
-
+%\multirow{2}{*}{Participation}
+% \multirow{2}{*}{\backslashbox{Participation}{Objective function}} 
 \begin{table}[h!]
-\centering
+\hspace{-1em}
 {\small
-\begin{tabular}{|c|c|c|c|}\hline 
-	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex  & Overparameterized \\ \hline \hline
-	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$   & $\cO(\exp(-\frac{NT}{E\kappa }))^{\dagger}$    \\ \hline
-	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$ & $\cO(\exp(-\frac{KT}{E\kappa }))^{\dagger}$     \\ \hline
+\centering
+\begin{tabular}{|c|c|c|c|c|}\hline 
+	\multirow{2}{*}{\backslashbox{{\tiny Participation} }{{\tiny Objective function}}} & \multirow{2}{*}{Strongly Convex}     &\multirow{2}{*}{Convex}    & Overparameterized & Overparameterized \\ 
+	                                &                        &         &     general case                 & linear regression   \\ \hline 
+	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$   & $\cO(\exp(-\frac{NT}{E}))$ & $\cO(\exp(-\frac{NT}{E\kappa }))^{\dagger}$    \\ \hline
+	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$ &  $\cO(\exp(-\frac{NT}{EL}))$ & $\cO(\exp(-\frac{KT}{EL\kappa }))^{\dagger}$     \\ \hline
 \end{tabular}
 }
 \caption{Our convergence results for FedAvg and accelerated FedAvg in this paper.  }
@@ -73,6 +76,7 @@ FedAvg and its accelerated variants on both a synthetic dataset and  a real-worl
          $^{\dagger}$ In the overparaterized setting, we have $\kappa=\kappa_1$ for FedAvg and $\kappa=\sqrt{\kappa_1\tilde{\kappa}}$ for accelerated FedAvg. Since
 $\kappa_{1}\geq\tilde{\kappa}$, this implies a speedup factor of
 $\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$ for accelerated FedAvg.\\
+% $^{*}$ The fourth column presents the results for the general overparaterized setting. The fifth column presents the results for overparaterized linear regression.
            \par}
 \label{tb:convergencerateintro}
 \end{table}
