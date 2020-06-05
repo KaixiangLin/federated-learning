@@ -28,18 +28,18 @@ the global minimum of \eq{\ref{eq:problem}}.
 
 \subsection{The Federated Averaging (FedAvg) Algorithm}
 We first introduce the standard Federated Averaging (FedAvg) algorithm~\cite{mcmahan2016communication}.
-FedAvg updates the model in each device by local Stochastic Gradient Descent (SGD) and send the latest model to the central server every $E$
+FedAvg updates the model in each device by local Stochastic Gradient Descent (SGD) and sends the latest model to the central server every $E$
 steps. The central server conducts a weighted average over the model parameters
 received from active devices and broadcasts the latest averaged model to all devices.
 Formally, the updates of FedAvg at round $t$ is described as follows:
-\begin{align}
-\vv_{t+1}^{k} & =\vw_{t}^{k}-\alpha_{t}\vg_{t,k}, \\
-\mathbf{w}_{t+1}^{k} &=\left\{
+\begin{align*} 
+\vv_{t+1}^{k} & =\vw_{t}^{k}-\alpha_{t}\vg_{t,k}, \hspace{1em}
+\mathbf{w}_{t+1}^{k} =\left\{
 \begin{array}{ll}
 \mathbf{v}_{t+1}^{k} & \text { if } t+1 \notin \mathcal{I}_{E}, \\ 
-\sum_{k \in \cS_{t+1}} \mathbf{v}_{t+1}^{k} & \text { if } t+1 \in \mathcal{I}_{E}.
+\sum_{k \in \cS_{t+1}} \mathbf{v}_{t+1}^{k} & \text { if } t+1 \in \mathcal{I}_{E},
 \end{array}\right.
-\end{align}
+\end{align*}
 where $\vw_t^k$ is the local model parameter maintained in the $k$-th device at the $t$-th iteration, $\vg_{t,k}:=\nabla F_{k}(\vw_{t}^{k},\xi_{t}^{k})$ is the stochastic gradient based on $\xi_{t}^{k}$, the data sampled from $k$-th device’s local data uniformly at random. $\mathcal{I}_{E}=\{E,2E,\dots\}$ is the set of global communication steps. We use $\mathcal{S}_{t+1}$ to represent the set of active devices at $t+1$.
 
 Since federated learning usually involves an enormous amount of 
@@ -50,7 +50,7 @@ averaging over all devices at the communication round, i.e.,
 $\mathbf{w}_{t+1}^{k} = \sum_{k=1}^N p_k \mathbf{v}_{t+1}^{k}$, and
 the case of \textbf{partial participation} where $|\cS_{t+1}| < N$. 
 With partial participation, $\cS_{t+1}$ is obtained by two types of
-sampling schemes to simulate practical scenarios~\cite{li2019convergence}. For example, one scheme establishes $\cS_{t+1}$ by i.i.d. sampling the devices with probability $p_k$ with replacement. 
+sampling schemes to simulate practical scenarios~\cite{li2019convergence}. For example, one scheme establishes $\cS_{t+1}$ by \emph{i.i.d.} sampling the devices with probability $p_k$ with replacement. 
 Both schemes
 guarantee that gradient updates in FedAvg are unbiased stochastic versions of
 updates in FedAvg with full participation. For 
@@ -84,7 +84,7 @@ more details on the notations and setup, please refer to Section~\ref{sec:app:no
 
 \subsection{Assumptions}
 \label{sec:assumptions}
-We make the following standard assumptions on the objective function $F_1,\dots, F_N$. Assumptions~\ref{ass:lsmooth} and~\ref{ass:stroncvx} are commonly satisfied by a range of popular objective functions, such as $\ell^{2}$ regularized logistic regression and cross-entropy loss functions.
+We make the following standard assumptions on the objective function $F_1,\dots, F_N$. Assumptions~\ref{ass:lsmooth} and~\ref{ass:stroncvx} are commonly satisfied by a range of popular objective functions, such as $\ell^{2}$-regularized logistic regression and cross-entropy loss functions.
 
  %Assumption~\ref{ass:lsmooth} is made to achieve linear speedup of convergence rate with respect to the number of workers, though it is not necessary for FedAvg and its variants to convergence.
 
@@ -114,7 +114,7 @@ and $\mathbb{E}\|\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})-\nabla F_{k}(\math
 approach $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})\|^{2}$
 and $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})-\nabla F_{k}(\mathbf{w}^{\ast})\|^{2}$.
 Therefore, there is no substantial difference between these assumptions
-and assuming the bounds at $\mathbf{w}^{\ast}$ only. Furthermore, compared to assuming \textit{bounded gradient diversity} as in related works~\cite{haddadpour2019convergence,li2018federated}, Assumption~\ref{ass:subgrad2} is much less restrictive. When target accuracy $\epsilon \rightarrow 0$,
+and assuming the bounds at $\mathbf{w}^{\ast}$ only. Furthermore, compared to assuming \textit{bounded gradient diversity} as in related work~\cite{haddadpour2019convergence,li2018federated}, Assumption~\ref{ass:subgrad2} is much less restrictive. When the optimality gap converges to zero,
 bounded gradient diversity restricts local objectives to have the same minimizer as the global objective, contradicting the heterogeneous data setting. 
 For detailed explanations of our assumptions, please refer to Appendix Section~\ref{sec:app:comparison}.
 

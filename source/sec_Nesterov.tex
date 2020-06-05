@@ -24,12 +24,12 @@ Detailed proofs of convergence results in this section are deferred to Appendix 
 We first show that the Nesterov accelerated FedAvg has $\mathcal{O}(1/NT)$
 convergence rate for $\mu$-strongly convex and $L$-smooth objectives.
 \end{comment}
-The Nesterov Accelerated FedAvg algorithm follows the updates
+The Nesterov Accelerated FedAvg algorithm follows the updates:
 \begin{align*}
 \mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}\mathbf{g}_{t,k},\\
 \mathbf{w}_{t+1}^{k} & =\begin{cases}
 \mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E},\\
-\sum_{k \in \cS_{t+1}}\left[\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E}.
+\sum_{k \in \cS_{t+1}}\left[\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E},
 \end{cases}
 \end{align*}
 where $\mathbf{g}_{t,k}:=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})$ is
@@ -51,7 +51,7 @@ To our knowledge, this is the first convergence result for Nesterov
 accelerated FedAvg in the strongly convex and smooth setting. The
 same discussion about linear speedup of FedAvg applies to the Nesterov
 accelerated variant. In particular, to achieve $\mathcal{O}(1/NT)$
-linear speedup, $T$ iterations of the algorithm requires only $\mathcal{O}(\sqrt{NT})$
+linear speedup, $T$ iterations of the algorithm require only $\mathcal{O}(\sqrt{NT})$
 communication rounds with full participation. 
 
 
