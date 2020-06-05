@@ -64,11 +64,16 @@ FedAvg and its accelerated variants on both a synthetic dataset and  a real-worl
 {\small
 \begin{tabular}{|c|c|c|c|}\hline 
 	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex  & Overparameterized \\ \hline \hline
-	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$   & $\cO(\exp(-\frac{NT}{E}))$    \\ \hline
-	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$ & $\cO(\exp(-\frac{KT}{E}))$     \\ \hline
+	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$   & $\cO(\exp(-\frac{NT}{E\kappa }))^{\dagger}$    \\ \hline
+	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$ & $\cO(\exp(-\frac{KT}{E\kappa }))^{\dagger}$     \\ \hline
 \end{tabular}
 }
-\caption{Our convergence results for FedAvg and accelerated FedAvg in this paper.}
+\caption{Our convergence results for FedAvg and accelerated FedAvg in this paper.  }
+{\raggedright 
+         $^{\dagger}$ In the overparaterized setting, $\kappa=\kappa_1$ for FedAvg and $\kappa=\sqrt{\kappa_1\tilde{\kappa}}$ for accelerated FedAvg. Since
+$\kappa_{1}\geq\tilde{\kappa}$, this implies a speedup factor of
+$\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$ for accelerated FedAvg.\\
+           \par}
 \label{tb:convergencerateintro}
 \end{table}
 
