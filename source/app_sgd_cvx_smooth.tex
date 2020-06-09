@@ -3,12 +3,12 @@
 	Under assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} and constant learning
 	rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right)
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right)
 	\end{align*}
 	with full participation, and with partial device participation with $K$ sampled devices at
 	each communication round and learning rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{K}{T}})$,
 	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right)
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right)
 	\end{align*}
 \end{thm}
 
@@ -102,20 +102,20 @@
 	By setting the constant learning rate $\alpha_{t}\equiv\sqrt{\frac{N}{T}}$,
 	we have 
 	
-	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sqrt{NT}}\cdot\|w_{0}-w^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}6E^{2}LG^{2}\\
-	& \leq\frac{1}{\sqrt{NT}}\cdot\|w_{0}-w^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{N}{T}6E^{2}LG^{2}\\
-	& =(\|w_{0}-w^{\ast}\|^{2}+\nu_{\max}^{2}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}6E^{2}LG^{2}
-	\end{align*}
+\begin{align*}
+\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sqrt{NT}}\cdot\|w_{0}-w^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}6E^{2}LG^{2}\\
+& \leq\frac{1}{\sqrt{NT}}\cdot\|w_{0}-w^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{N}{T}6E^{2}LG^{2}\\
+& =(\|w_{0}-w^{\ast}\|^{2}+\nu_{\max}^{2}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}6E^{2}LG^{2}\\
+& =O(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
+\end{align*}
 	
 	Similarly, for partial participation, we have 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
 	\end{align*}
 	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$,
-	so that in the former case, with $\alpha_{t}=\sqrt{\frac{K}{T}}$,
-	we have 
+	so that with $\alpha_{t}=\sqrt{\frac{K}{T}}$, we have 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
 	\end{align*}
 \end{proof}
