@@ -4,8 +4,10 @@
 \section{Comparison of convergence rates with related works.}
 \label{sec:app:comparison}
 In this section, we summarize the convergence results in this work from various perspectives
-and compare our results with related works. In Table~\ref{tb:convergenceratev1} and Table~\ref{tb:convergenceratev2}, we summarize 
-the convergence results in terms of participations and accelerations. In Table~\ref{tb:convergenceratev3}, we compare our 
+and compare our results with related works. 
+% In Table~\ref{tb:convergenceratev1} and Table~\ref{tb:convergenceratev2}, we summarize 
+% the convergence results in terms of participations and accelerations. 
+In Table~\ref{tb:convergenceratev3}, we compare our 
 results with the best known results in the literatures. 
 
 In~\cite{haddadpour2019convergence}, they also provide $\cO(1/NT)$ convergence rate of non-convex problems under Polyak-Łojasiewicz (PL) condition, which
@@ -20,30 +22,30 @@ is not effective for arbitrary small $\epsilon$-accuracy under general heterogen
 % If we only consider the domain $\vw \in \{\vw | \|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2} > c\}$, where $c$ is a positive constant. 
 % The bounded gradient can imply gradient diversity (see Corollary 10 in ~\cite{li2018federated}). In this case, the gradient diversity is a relaxed 
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|}\hline 
-	Algorithm \textbackslash\  Objective function        & Strongly Convex        & Convex \\ \hline \hline
-	FedAvg                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
-	Nesterov accelerated FedAvg    & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    & $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
-\end{tabular}
-\caption{A high level summary of the convergence results for full participation in this paper. This table only highlights the
-dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices.}
-\label{tb:convergenceratev1}
-\end{table}
+% \begin{table}[h!]
+% \centering
+% \begin{tabular}{|c|c|c|}\hline 
+% 	Algorithm \textbackslash\  Objective function        & Strongly Convex        & Convex \\ \hline \hline
+% 	FedAvg                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
+% 	Nesterov accelerated FedAvg    & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    & $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
+% \end{tabular}
+% \caption{A high level summary of the convergence results for full participation in this paper. This table only highlights the
+% dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices.}
+% \label{tb:convergenceratev1}
+% \end{table}
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|}\hline 
-	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex \\ \hline \hline
-	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
-	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$      \\ \hline
-\end{tabular}
-\caption{A high level summary of the convergence results in this paper. This table only highlights the
-dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices.
-These convergence rates applied to both FedAvg and Nesterov accelerated FedAvg.}
-\label{tb:convergenceratev2}
-\end{table}
+% \begin{table}[h!]
+% \centering
+% \begin{tabular}{|c|c|c|}\hline 
+% 	Participation \textbackslash\ Objective function            & Strongly Convex        & Convex \\ \hline \hline
+% 	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$       \\ \hline
+% 	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$      \\ \hline
+% \end{tabular}
+% \caption{A high level summary of the convergence results in this paper. This table only highlights the
+% dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices.
+% These convergence rates applied to both FedAvg and Nesterov accelerated FedAvg.}
+% \label{tb:convergenceratev2}
+% \end{table}
 
 
 \begin{table}[h!]
