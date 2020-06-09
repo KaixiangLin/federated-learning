@@ -1,118 +1,120 @@
 % !TEX ROOT=./main.tex
 
 
-\begin{theorem}
-	Suppose $F_{k}$ is $L$-smooth and convex for all $k$, and let $\nu_{\max}=\max_{k}\frac{1}{N}p_{k}$.
-	Set learning rate $\alpha_{t},\beta_{t}=O(\sqrt{\frac{N}{T}})$.
-	
-	With full device participation, 
+\begin{thm}
+	Set learning rates $\alpha_{t}=\beta_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} Nesterov accelerated FedAvg with
+	full device participation has rate
 	\begin{align*}
-	\min_{t\leq T}F(\overline{y}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right),
 	\end{align*}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
 	\begin{align*}
-	\min_{t\leq T}F(\overline{y}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right).
 	\end{align*}
-\end{theorem}
+\end{thm}
 
 \begin{proof}
-
-We again start by bounding the term
-\begin{align*}
-\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t}-\alpha_{t}g_{t})-w^{\ast}\|^{2}\\
-& =\|(\overline{w}_{t}-\alpha_{t}\overline{g}_{t}-w^{\ast})-\alpha_{t}(g_{t}-\overline{g}_{t})\|^{2}\\
-& =A_{1}+A_{2}+A_{3}
-\end{align*}
-where 
-\begin{align*}
-A_{1} & =\|\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2}\\
-A_{2} & =2\alpha_{t}\langle\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t},\overline{g}_{t}-g_{t}\rangle\\
-A_{3} & =\alpha_{t}^{2}\|g_{t}-\overline{g}_{t}\|^{2}
-\end{align*}
-$\mathbb{E}A_{2}=0$ by definition of $g_{t}$ and $\overline{g}_{t}$,
-while for $A_{3}$ we have
-\begin{align*}
-\alpha_{t}^{2}\mathbb{E}\|g_{t}-\overline{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|g_{t}-\mathbb{E}g_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
-\end{align*}
-again by Jensen's inequality and using the independence of $g_{t,k},g_{t,k'}$. 
-
-Next we bound $A_{1}$: 
-\begin{align*}
-\|\overline{w}_{t}-w^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2} & =\|\overline{w}_{t}-w^{\ast}\|^{2}+2\langle\overline{w}_{t}-w^{\ast},-\alpha_{t}\overline{g}_{t}\rangle+\|\alpha_{t}\overline{g}_{t}\|^{2}
-\end{align*}
-Using the convexity and $L$-smoothness of $F_{k}$, 
-\begin{align*}
--2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\overline{g}_{t}\rangle & =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
-& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
-& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w^{\ast})-F_{k}(w_{t}^{k}))\\
-& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+F_{k}(w^{\ast})-F_{k}(w_{t}^{k})\right]\\
-& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]
-\end{align*}
-which results in 
-\begin{align*}
-\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]+\alpha_{t}^{2}\|\overline{g}_{t}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
-\end{align*}
-
-The difference of this bound with that in the strongly convex case
-is that we no longer have a contraction factor in front of $\|\overline{w}_{t}-w^{\ast}\|^{2}$.
-In the strongly convex case, we were able to cancel $\alpha_{t}^{2}\|\overline{g}_{t}\|^{2}$
-with $2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]$
-and obtain only lower order terms. In the convex case, we use a different
-strategy and preserve $\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]$
-in order to obtain a telescoping sum. 
-
-We have
-\begin{align*}
-\|\overline{g}_{t}\|^{2} & =\|\sum_{k}p_{k}\nabla F_{k}(w_{t}^{k})\|^{2}\\
-& =\|\sum_{k}p_{k}\nabla F_{k}(w_{t}^{k})-\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})+\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}\\
-& \leq2\|\sum_{k}p_{k}\nabla F_{k}(w_{t}^{k})-\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}+2\|\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}\\
-& \leq2L^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}+2\|\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}\\
-& =2L^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}+2\|\nabla F(\overline{w}_{t})\|^{2}
-\end{align*}
-using $\nabla F(w^{\ast})=0$. Now using the $L$ smoothness of $F$,
-we have $\|\nabla F(\overline{w}_{t})\|^{2}\leq2L(F(\overline{w}_{t})-F(w^{\ast}))$,
-so that 
-\begin{align*}
-\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]\\
-& +2\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}+4\alpha_{t}^{2}L(F(\overline{w}_{t})-F(w^{\ast}))+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-& =\|\overline{w}_{t}-w^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-& +\alpha_{t}(1-4\alpha_{t}L)(F(w^{\ast})-F(\overline{w}_{t}))
-\end{align*}
-Since $F(w^{\ast})\leq F(\overline{w}_{t})$, as long as $4\alpha_{t}L\leq1$,
-we can ignore the last term, and rearrange the inequality to obtain
-\begin{align*}
-\|\overline{w}_{t+1}-w^{\ast}\|^{2}+\alpha_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-& \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\frac{3}{2}\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
-\end{align*}
-
-The same argument as before yields $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}\leq4E^{2}\alpha_{t}^{2}G^{2}$
-which gives 
-\begin{align*}
-\|\overline{w}_{t+1}-w^{\ast}\|^{2}+\alpha_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+6\alpha_{t}^{3}E^{2}LG^{2}\\
-& \leq\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6\alpha_{t}^{3}E^{2}LG^{2}
-\end{align*}
-Summing the inequalities from $t=0$ to $t=T$, we obtain 
-\begin{align*}
-\sum_{t=0}^{T}\alpha_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}
-\end{align*}
-so that
-\begin{align*}
-\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
-\end{align*}
-
-By setting the constant learning rate $\alpha_{t}\equiv\sqrt{\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T+6E^{2}LG^{2}T^{2/3}}}=O(\sqrt{\frac{N}{T}})$,
-we have 
-
-\begin{align*}
-\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{T\sqrt{\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T+6E^{2}LG^{2}T^{2/3}}}}\cdot\left(\|w_{0}-w^{\ast}\|^{2}+T\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6E^{2}LG^{2}T\frac{\|w_{0}-w^{\ast}\|^{2}}{6E^{2}LG^{2}T}\right)\\
-& =\frac{3\|w_{0}-w^{\ast}\|^{2}}{T\sqrt{\frac{\|w_{0}-w^{\ast}\|^{2}}{\frac{1}{N}\nu_{\max}^{2}\sigma^{2}T+6E^{2}LG^{2}T^{2/3}}}}=3\|w_{0}-w^{\ast}\|\sqrt{(\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{6E^{2}LG^{2}}{T^{4/3}})}
-\end{align*}
-
-Similarly, for partial participation, we just need to replace $\frac{\nu_{\max}^{2}\sigma^{2}}{NT}$
-with $\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+C\frac{E^{2}G^{2}}{KT}$,
-so that we have 
-\begin{align*}
-\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =O(\sqrt{\frac{\nu_{\max}^{2}\sigma^{2}}{NT}+\frac{E^{2}G^{2}}{KT}+\frac{E^{2}LG^{2}}{T^{4/3}}})
-\end{align*}
+	Define $\overline{p}_{t}:=\frac{\beta_{t}}{1-\beta_{t}}\left[\overline{w}_{t}-\overline{w}_{t-1}+\alpha_{t}g_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\overline{v}_{t}-\overline{v}_{t-1})$
+	for $t\geq1$ and 0 for $t=0$. We can check that 
+	\begin{align*}
+	\overline{w}_{t+1}+\overline{p}_{t+1} & =\overline{w}_{t}+\overline{p}_{t}-\frac{\alpha_{t}}{1-\beta_{t}}g_{t}
+	\end{align*}
+	Now we define $\overline{z}_{t}:=\overline{w}_{t}+\overline{p}_{t}$
+	and $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}$ for all $t$, so that
+	we have the recursive relation 
+	\begin{align*}
+	\overline{z}_{t+1} & =\overline{z}_{t}-\eta_{t}g_{t}
+	\end{align*}
+	Now 
+	\begin{align*}
+	\|\overline{z}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{z}_{t}-\eta_{t}g_{t})-w^{\ast}\|^{2}\\
+	& =\|(\overline{z}_{t}-\eta_{t}\overline{g}_{t}-w^{\ast})-\eta_{t}(g_{t}-\overline{g}_{t})\|^{2}\\
+	& =A_{1}+A_{2}+A_{3}
+	\end{align*}
+	where 
+	\begin{align*}
+	A_{1} & =\|\overline{z}_{t}-w^{\ast}-\eta_{t}\overline{g}_{t}\|^{2}\\
+	A_{2} & =2\eta_{t}\langle\overline{z}_{t}-w^{\ast}-\eta_{t}\overline{g}_{t},\overline{g}_{t}-g_{t}\rangle\\
+	A_{3} & =\eta_{t}^{2}\|g_{t}-\overline{g}_{t}\|^{2}
+	\end{align*}
+	where again $\mathbb{E}A_{2}=0$ and $\mathbb{E}A_{3}\leq\eta_{t}^{2}\sum_{k}p_{k}^{2}\sigma_{k}^{2}$.
+	For $A_{1}$ we have 
+	\begin{align*}
+	\|\overline{z}_{t}-w^{\ast}-\eta_{t}\overline{g}_{t}\|^{2} & =\|\overline{z}_{t}-w^{\ast}\|^{2}+2\langle\overline{z}_{t}-w^{\ast},-\eta_{t}\overline{g}_{t}\rangle+\|\eta_{t}\overline{g}_{t}\|^{2}
+	\end{align*}
+	Using the convexity and $L$-smoothness of $F_{k}$, 
+	\begin{align*}
+	& -2\eta_{t}\langle\overline{z}_{t}-w^{\ast},\overline{g}_{t}\rangle\\
+	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\overline{w}_{t},\nabla F_{k}(w_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& \leq-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\overline{w}_{t},\nabla F_{k}(w_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle+2\eta_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w^{\ast})-F_{k}(w_{t}^{k}))\\
+	& \leq2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+F_{k}(w^{\ast})-F_{k}(w_{t}^{k})\right]\\
+	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\overline{w}_{t},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& =\eta_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\overline{w}_{t},\nabla F_{k}(w_{t}^{k})\rangle
+	\end{align*}
+	which results in 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+\eta_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right]\\
+	& +\eta_{t}^{2}\|\overline{g}_{t}\|^{2}+\eta_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\overline{w}_{t},\nabla F_{k}(w_{t}^{k})\rangle
+	\end{align*}
+	As before, $\|\overline{g}_{t}\|^{2}\leq2L^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}+4L(F(\overline{w}_{t})-F(w^{\ast}))$,
+	so that 
+	\begin{align*}
+	\eta_{t}^{2}\|\overline{g}_{t}\|^{2}+\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w^{\ast})-F_{k}(\overline{w}_{t})\right] & \leq2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}+\eta_{t}(1-4\eta_{t}L)(F(w^{\ast})-F(\overline{w}_{t}))\\
+	& \leq2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|w_{t}^{k}-\overline{w}_{t}\|^{2}
+	\end{align*}
+	for $\eta_{t}\le1/4L$. Using $\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}\leq16E^{2}\alpha_{t}^{2}G^{2}$
+	and $\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\leq\nu_{\max}\frac{1}{N}\sigma^{2}$,
+	it follows that 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2}+\eta_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+(\eta_{t}L+2L^{2}\eta_{t}^{2})\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+\eta_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\overline{w}_{t},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& \leq\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}\\
+	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\overline{w}_{t},\nabla F_{k}(w_{t}^{k})\rangle
+	\end{align*}
+	if $\eta_{t}\leq\frac{1}{2L}$. It remains to bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\overline{w}_{t},\nabla F_{k}(w_{t}^{k})\rangle$.
+	Recall that $\overline{z}_{t}-\overline{w}_{t}=\frac{\beta_{t}}{1-\beta_{t}}\left[\overline{w}_{t}-\overline{w}_{t-1}+\alpha_{t}g_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\overline{v}_{t}-\overline{v}_{t-1})$
+	and $\mathbb{E}\|\overline{v}_{t}-\overline{v}_{t-1}\|^{2}\leq G^{2}$,
+	$\mathbb{E}\|\nabla F_{k}(w_{t}^{k})\|^{2}\leq G^{2}$. 
+	
+	Cauchy-Schwarz gives
+	\begin{align*}
+	\mathbb{E}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\overline{w}_{t},\nabla F_{k}(w_{t}^{k})\rangle & \leq\sum_{k=1}^{N}p_{k}\sqrt{\mathbb{E}\|\overline{z}_{t}-\overline{w}_{t}\|^{2}}\cdot\sqrt{\mathbb{E}\|\nabla F_{k}(w_{t}^{k})\|^{2}}\\
+	& \leq\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	\end{align*}
+	Thus 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2}+\eta_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	\end{align*}
+	Summing the inequalities from $t=0$ to $t=T$, we obtain 
+	\begin{align*}
+	\sum_{t=0}^{T}\eta_{t}(F(\overline{w}_{t})-F(w^{\ast})) & \leq\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	\end{align*}
+	so that
+	\begin{align*}
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\eta_{t}}\left(\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}\right)
+	\end{align*}
+	
+	By setting the constant learning rates $\alpha_{t}\equiv\sqrt{\frac{N}{T}}$
+	and $\beta_{t}\equiv c\sqrt{\frac{N}{T}}$ so that $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}=\frac{\sqrt{\frac{N}{T}}}{1-c\sqrt{\frac{N}{T}}}\leq2\sqrt{\frac{N}{T}}$,
+	we have 
+	
+	\begin{align*}
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{2\sqrt{NT}}\cdot\|w_{0}-w^{\ast}\|^{2}+\frac{2}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}32LE^{2}G^{2}+\frac{2}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}G^{2}\\
+	& =(\frac{1}{2}\|w_{0}-w^{\ast}\|^{2}+2\nu_{\max}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}(32LE^{2}G^{2}+2G^{2})\\
+	& =O(\frac{\nu_{\max}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
+	\end{align*}
+	
+	Similarly, for partial participation, we have 
+	\begin{align*}
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|w_{0}-w^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+	\end{align*}
+	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$,
+	so that with $\alpha_{t}\equiv\sqrt{\frac{K}{T}}$ and $\beta_{t}\equiv c\sqrt{\frac{K}{T}}$,
+	we have 
+	\begin{align*}
+	\min_{t\leq T}F(\overline{w}_{t})-F(w^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
+	\end{align*}
 \end{proof}
