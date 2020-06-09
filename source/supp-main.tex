@@ -1,0 +1,85 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+     \usepackage[nonatbib]{neurips_2020}
+\usepackage{geometry}
+\geometry{margin=0.2in}
+\usepackage{slashbox,multirow}
+% \usepackage{tikz}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amsthm}     % for theorems
+\usepackage{algorithm,algorithmic}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\allowdisplaybreaks
+\usepackage{amssymb}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\usepackage{balance}
+\usepackage{comment}
+\newcommand{\eq}[1]{{Eq~(#1)}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{thm}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\lkxcom}[1]{{\color{red}{#1}}}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\def\lowcomma{_{\textstyle{,}}}
+\def\lowperiod{_{\textstyle.}}
+
+\newcommand{\ov}[1]{{\overline{\mathbf{#1}}}}
+\input{bmacros}
+\newtheorem*{assumption*}{Assumption}
+
+\title{Supplementary materials for Federated Learning's Blessing: FedAvg has Linear Speedup}
+
+% \author{}
+
+\begin{document}
+
+\maketitle
+
+% \begin{abstract}
+% \end{abstract}
+
+
+% \input{sec_conclude}
+
+
+% \newpage
+\appendix
+\input{sec_appendix}
+
+
+\bibliographystyle{unsrt}
+\bibliography{ref.bib}
+\end{document}
+
+
+
+\iffalse
+
+\endif
