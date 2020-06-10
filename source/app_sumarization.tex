@@ -3,20 +3,18 @@
 
 \section{Comparison of convergence rates with related works.}
 \label{sec:app:comparison}
-In this section, we summarize the convergence results in this work from various perspectives
-and compare our results with related works. 
+In this section, we compare our convergence rate with the best-known results in the literature (see Table~\ref{tb:convergenceratev3}). 
 % In Table~\ref{tb:convergenceratev1} and Table~\ref{tb:convergenceratev2}, we summarize 
 % the convergence results in terms of participations and accelerations. 
-In Table~\ref{tb:convergenceratev3}, we compare our 
-results with the best known results in the literatures. 
-
-In~\cite{haddadpour2019convergence}, they also provide $\cO(1/NT)$ convergence rate of non-convex problems under Polyak-Łojasiewicz (PL) condition, which
+% In Table~\ref{tb:convergenceratev3}, we compare our 
+% results with the best known results in the literatures. 
+In~\cite{haddadpour2019convergence}, the authors provide $\cO(1/NT)$ convergence rate of non-convex problems under Polyak-Łojasiewicz (PL) condition, which
 means their results can directly apply to the strongly convex problems. However, their assumption is based on bounded gradient diversity, defined as follows: 
 \begin{align*}
 	\Lambda(\vw) = \frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}} \leq B
 \end{align*} 
-This is a more restrictive comparing to assuming bounded gradient under the case of target accuracy $\epsilon \rightarrow 0$ and PL condition.
-To see this, consider the gradient diversity at the global optimal $\vw^*$,i.e., $\Lambda(\vw^*) = \frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$. For $\Lambda(\vw^*)$ to be bounded, it requires $\|\nabla F_{k}(\mathbf{w}^*)\|_{2}^{2} = 0$, $\forall \ k$. This indicates 
+This is a more restrictive assumption comparing to assuming bounded gradient under the case of target accuracy $\epsilon \rightarrow 0$ and PL condition.
+To see this, consider the gradient diversity at the global optimal $\vw^*$, i.e., $\Lambda(\vw^*) = \frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$. For $\Lambda(\vw^*)$ to be bounded, it requires $\|\nabla F_{k}(\mathbf{w}^*)\|_{2}^{2} = 0$, $\forall \ k$. This indicates 
 $\vw^*$ is also the minimizer of each local objective, which contradicts to the practical setting of heterogeneous data. Therefore, their bound 
 is not effective for arbitrary small $\epsilon$-accuracy under general heterogeneous data while our convergence results still hold in this case.
 % If we only consider the domain $\vw \in \{\vw | \|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2} > c\}$, where $c$ is a positive constant. 
@@ -64,14 +62,14 @@ FedAvg & $\cO\left(\exp(-\frac{NT}{E\kappa_1})\right)$ & $ \cO(T^{\beta})$      
 FedMass & $\cO\left(\exp(-\frac{NT}{E\sqrt{\kappa_1\tilde{\kappa}}})\right)$ & $ \cO(T^{\beta})$ & \cmark &  Partial     & Bounded gradient    & Overparameterized LR \\ \hline
 \end{tabular}
 }
-\caption{A high level summary of the convergence results in this paper and their comparison to prior state-of-the-art FL algorithms, considering heterogeneous data. This table only highlights the
-dependence on $T$ (number of iterations), $E$ (the largest number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices. 
+\caption{A high-level summary of the convergence results in this paper compared to prior state-of-the-art FL algorithms. This table only highlights the
+dependence on $T$ (number of iterations), $E$ (the maximal number of local steps), $N$ (the total number of devices), and $K\leq N$ the number of participated devices. 
 $\kappa$ is the condition number of the system and $\beta \in (0,1)$. We denote Nesterov accelerated FedAvg as N-FedAvg in this table.}
 {\raggedright 
          $^{\dagger}$ This $E$ is obtained under i.i.d. setting. \\
          $^{\ddagger}$ This $E$ is obtained under full participation setting. \\ 
          % $^{\ddagger}$ The convergence of FedAvg for general overparameterized strongly convex and overparameterized linear regression share the same order in terms of $E, T, N$.\\
-         $^{\mathsection}$ In~\cite{haddadpour2019convergence}, the convergence rate is for non-convex smooth problem with PL condition, which also applies for strongly convex problems. Therefore, we compare it with our strongly convex results here. \\
+         $^{\mathsection}$ In~\cite{haddadpour2019convergence}, the convergence rate is for non-convex smooth problems with PL condition, which also applies to strongly convex problems. Therefore, we compare it with our strongly convex results here.\\
          $^{\ddagger\ddagger}$ The bounded gradient diversity assumption is not applicable for general heterogeneous data when converging to arbitrarily small $\epsilon$-accuracy (see discussions in Sec~\ref{sec:app:comparison}).
            \par}
 \label{tb:convergenceratev3}
