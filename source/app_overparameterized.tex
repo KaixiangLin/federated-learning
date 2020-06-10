@@ -273,7 +273,7 @@
 	
 	Finally, using the $L$-smoothness of $F$, 
 	\begin{align*}
-	F(\overline{w}_{T})-F(w^{\ast}) & \leq\frac{L}{2}\mathbb{E}\|\overline{w}_{T}-w^{\ast}\|^{2}=O(L\exp(\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t))\|w_{0}-w^{\ast}\|^{2}
+	F(\overline{w}_{T})-F(w^{\ast}) & \leq\frac{L}{2}\mathbb{E}\|\overline{w}_{T}-w^{\ast}\|^{2}=O(L\exp(-\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}T))\|w_{0}-w^{\ast}\|^{2}
 	\end{align*}
 \end{proof}
 
@@ -324,151 +324,159 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 		\end{align*}
 	\end{thm}
 	% 
-	\begin{proof}
-		We again show the result first when $E=2$ and $t-1$ is a communication
-		round. We have 
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t}-\alpha_{t}g_{t})-w^{\ast}\|^{2}\\
-		& =\|\overline{w}_{t}-w^{\ast}\|^{2}-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle+\alpha_{t}^{2}\|g_{t}\|^{2}
-		\end{align*}
-		and 
-		\begin{align*}
-		-2\alpha_{t}\mathbb{E}_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle & =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
-		& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
-		& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},H^{k}(w_{t}^{k}-w^{\ast})\rangle\\
-		& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})\\
-		& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2})-4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})\\
-		& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t})-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})\\
-		& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\overline{w}_{t}-w^{\ast}),H^{k}(\overline{w}_{t}-w^{\ast})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})
-		\end{align*}
-		and 
-		\begin{align*}
-		\|g_{t}\|^{2} & =\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\|^{2}\\
-		& =\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})+\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2}\\
-		& \leq2\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+2\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2}
-		\end{align*}
-		which gives 
-		\begin{align*}
-		\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t},H^{k}\overline{w}_{t}\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
-		& +\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})
-		\end{align*}
-		we first prove that 
-		\begin{align*}
-		\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\overline{w}_{t}-w^{\ast}),H^{k}(\overline{w}_{t}-w^{\ast})\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2} & \leq(1-c)\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}
-		\end{align*}
-		for $c\in(0,1)$, with appropriately chosen $\alpha_{t}$. We have
-		\begin{align*}
-		\mathbb{E}_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2} & =\mathbb{E}_{t}\langle\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k}),\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\rangle\\
-		& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k}),\nabla F_{j}(\overline{w}_{t},\xi_{t}^{j})\rangle\\
-		& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\langle\nabla F_{k}(\overline{w}_{t}),\nabla F_{j}(\overline{w}_{t})\rangle\\
-		& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\langle\nabla F_{k}(\overline{w}_{t}),\nabla F_{j}(\overline{w}_{t})\rangle\\
-		& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j=1}^{N}p_{j}p_{k}\langle\nabla F_{k}(\overline{w}_{t}),\nabla F_{j}(\overline{w}_{t})\rangle-\sum_{k=1}^{N}p_{k}^{2}\|\nabla F_{k}(\overline{w}_{t})\|^{2}\\
-		& \leq\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+\|\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}-\frac{1}{N}\nu_{\min}\|\sum_{k}p_{k}\nabla F_{k}(\overline{w}_{t})\|^{2}\\
-		& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\nabla F(\overline{w}_{t})\|^{2}
-		\end{align*}
-		\begin{align*}
-		\mathbb{E}_{t}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2} & =\mathbb{E}_{t}\langle\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast}),\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\rangle\\
-		& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast}),\tilde{H}_{t}^{j}(\overline{w}_{t}-w^{\ast})\rangle\\
-		& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle H^{k}(\overline{w}_{t}-w^{\ast}),H^{j}(\overline{w}_{t}-w^{\ast})\rangle\\
-		& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\sum_{k=1}^{N}\sum_{j=1}^{N}p_{j}p_{k}\mathbb{E}_{t}\langle H^{k}(\overline{w}_{t}-w^{\ast}),H^{j}(\overline{w}_{t}-w^{\ast})\rangle-\sum_{k=1}^{N}p_{k}^{2}\|H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
-		& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}-\sum_{k=1}^{N}p_{k}^{2}\|H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
-		& \leq\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}-\frac{1}{N}\nu_{\min}\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
-		& \leq\frac{1}{N}\nu_{\max}\sum_{k=1}^{N}p_{k}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
-		& \leq\frac{1}{N}\nu_{\max}l\sum_{k=1}^{N}p_{k}\langle(\overline{w}_{t}-w^{\ast}),H^{k}(\overline{w}_{t}-w^{\ast})\rangle+(1-\frac{1}{N}\nu_{\min})\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}
-		\end{align*}
-		using that each $x_{t}^{k}$ has $\|x_{t}^{k}\|\leq l$, so that $\|\tilde{H}_{t}^{k}\|\leq l$. 
-		
-		Now we have 
-		\begin{align*}
-		\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\overline{w}_{t}-w^{\ast}),H^{k}(\overline{w}_{t}-w^{\ast})\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2} & =\\
-		\langle\overline{w}_{t}-w^{\ast},(I-\alpha_{t}H+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}H+\frac{N-\nu_{\min}}{N}H^{2}))(\overline{w}_{t}-w^{\ast})\rangle
-		\end{align*}
-		and it remains to bound the maximum eigenvalue of 
-		\begin{align*}
-		(I-\alpha_{t}H+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}H+\frac{N-\nu_{\min}}{N}H^{2}))
-		\end{align*}
-		If we choose $\alpha_{t}<\frac{N}{2(\nu_{\max}l+(N-\nu_{\min})L)}$,
-		then 
-		\begin{align*}
-		-\alpha_{t}H+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}H+\frac{N-\nu_{\min}}{N}H^{2}) & \prec0
-		\end{align*}
-		and the convergence rate is given by the maximum of $1-\alpha_{t}\lambda+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\lambda+\frac{N-\nu_{\min}}{N}\lambda^{2})$
-		maximized over the non-zero eigenvalue of $H$. To optimize the step
-		size $\alpha_{t}$, we then minimize over $\alpha_{t}$, resulting
-		in 
-		\begin{align*}
-		\min_{\alpha_{t}<\frac{N}{2(\nu_{\max}l+(N-\nu_{\min})L)}}\max_{\lambda}\left\{ 1-\alpha_{t}\lambda+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\lambda+\frac{N-\nu_{\min}}{N}\lambda^{2})\right\} 
-		\end{align*}
-		When $N\leq\frac{4\nu_{\max}l}{L-\lambda_{\min}}+4\nu_{\min}$, i.e.
-		when $N=O(l/\lambda_{\min})=O(\kappa_{1})$, the optimal step size
-		is given by $\frac{N}{4(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})}$
-		and the optimal convergence rate is given by $\frac{1}{4}\frac{N\lambda_{\min}}{(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})}$.
-		This implies that when $N=O(l/\lambda_{k})$, the optimal convergence
-		rate has a linear speedup in $N$: $O((1-\frac{1}{4}\frac{N\lambda_{\min}}{(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})}))=O(1-\frac{N}{\nu_{\max}\kappa_{1}+(N-\nu_{\min})})=O(1-\frac{N}{\kappa_{1}})$. 
-		
-		For general $E$, by choosing step size $\frac{N}{4E(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})}$,
-		we can achieve a convergence rate given by 
-		\begin{align*}
-		\mathbb{E}F(\overline{w}_{t}) & \leq L(1-\frac{N}{4E(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})^{t}\|w_{0}-w^{\ast}\|^{2}
-		\end{align*}
-		so that when $N=O(l/\lambda_{\min})=O(\kappa_{1})$, the RHS is $O((1-\frac{N}{E\kappa_{1}})^{t}\|w_{0}-w^{\ast}\|^{2})$. 
-		
-		\begin{comment}
-		\begin{proof}
-		Using $g_{t}=\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})$
-		where$\tilde{H}_{t}^{k}$ is the sample covariance on the $k$th device
-		in iteration $t$, we have
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t}-\alpha_{t}g_{t})-w^{\ast}\|^{2}\\
-		& =\|\overline{w}_{t}-\alpha_{t}\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})-w^{\ast}\|^{2}\\
-		& =\|\sum_{k=1}^{N}p_{k}w_{t}-\alpha_{t}\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})-\sum_{k=1}^{N}p_{k}w^{\ast}\|^{2}\\
-		& =\|\sum_{k=1}^{N}p_{k}(I-\alpha_{t}\tilde{H}_{t}^{k})(w_{t}^{k}-w^{\ast})\|^{2}
-		\end{align*}
-		where $\tilde{H}_{t}^{k}$ is the sample covariance on the $k$th
-		device in iteration $t$. 
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)(1-\alpha_{t-1}\mu)\|\overline{w}_{t-1}-w^{\ast}\|^{2}
-		\end{align*}
-		
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t-1}-\alpha_{t-1}g_{t-1}-\alpha_{t}g_{t})-w^{\ast}\|^{2}\\
-		& =\|\overline{w}_{t-1}-\alpha_{t-1}\sum_{k=1}^{N}p_{k}\tilde{H}_{t-1}^{k}(\overline{w}_{t-1}-w^{\ast})-\alpha_{t}\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})-w^{\ast}\|^{2}\\
-		& =\|\sum_{k=1}^{N}p_{k}w_{t}-\alpha_{t}\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})-\sum_{k=1}^{N}p_{k}w^{\ast}\|^{2}\\
-		& =\|\sum_{k=1}^{N}p_{k}(I-\alpha_{t}\tilde{H}_{t}^{k})(w_{t}-w^{\ast})\|^{2}
-		\end{align*}
-		
-		\begin{align*}
-		\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})-\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}^{k}-w^{\ast})\| & =\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})-\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}^{k}-w^{\ast})\|\\
-		& =\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2}
-		\end{align*}
-		
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t}-\alpha_{t}g_{t})-w^{\ast}\|^{2}\\
-		& =\|\overline{w}_{t}-w^{\ast}\|^{2}-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\rangle+\alpha_{t}^{2}\|g_{t}\|^{2}\\
-		& \leq\|\overline{w}_{t}-w^{\ast}\|^{2}-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\rangle+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\|^{2}-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\rangle
-		\end{align*}
-		
-		$\|g_{t}\|^{2}=\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\|^{2}\leq\sum_{k}p_{k}\|\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\|^{2}\leq\sum_{k}p_{k}l\langle w_{t}^{k}-w^{\ast},H^{k}w_{t}^{k}-w^{\ast}\rangle$
-		
-		\begin{align*}
-		-2\alpha_{t}\mathbb{E}_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle & =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
-		& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
-		& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},H^{k}(w_{t}^{k}-w^{\ast})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},H^{k}(w_{t}^{k}-w^{\ast})\rangle\\
-		& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},H^{k}(w_{t}^{k}-w^{\ast})\rangle-4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})\\
-		& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t})-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})
-		\end{align*}
-		so that 
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|\overline{w}_{t}-w^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t})-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})+\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\|^{2}
-		\end{align*}
-		and applying this recursively, we have 
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|\overline{w}_{t-1}-w^{\ast}\|^{2}-4\alpha_{t-1}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t-1})+\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t-1}-w^{\ast})\|^{2}\\
-		& +\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t})-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})+\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\|^{2}
-		\end{align*}
-		\end{proof}
-		\end{comment}
-	\end{proof}
+\begin{proof}
+	We again show the result first when $E=2$ and $t-1$ is a communication
+	round. We have 
+	\begin{align*}
+	\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|(\overline{w}_{t}-\alpha_{t}g_{t})-w^{\ast}\|^{2}\\
+	& =\|\overline{w}_{t}-w^{\ast}\|^{2}-2\alpha_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle+\alpha_{t}^{2}\|g_{t}\|^{2}
+	\end{align*}
+	and 
+	\begin{align*}
+	& -2\alpha_{t}\mathbb{E}_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},H^{k}(w_{t}^{k}-w^{\ast})\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})\\
+	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2})-4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})\\
+	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t})-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})\\
+	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\overline{w}_{t}-w^{\ast}),H^{k}(\overline{w}_{t}-w^{\ast})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})
+	\end{align*}
+	and 
+	\begin{align*}
+	\|g_{t}\|^{2} & =\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\|^{2}\\
+	& =\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})+\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2}\\
+	& \leq2\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+2\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2}
+	\end{align*}
+	which gives 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},H^{k}\overline{w}_{t}-w^{\ast}\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
+	& +\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})
+	\end{align*}
+	we first prove that 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\overline{w}_{t}-w^{\ast}),H^{k}(\overline{w}_{t}-w^{\ast})\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
+	\leq(1-\frac{N}{8(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}
+	\end{align*}
+	with appropriately chosen $\alpha_{t}$. Compared to the rate $O(\frac{\mu N}{l\nu_{\max}+L(N-\nu_{\min})})=O(\frac{N}{\nu_{\max}\kappa_{1}+(N-\nu_{\min})\kappa})$
+	for general strongly convex and smooth objectives, this is an improvement
+	as linear speedup is now available for a larger range of $N$. 
+	
+	We have 
+	\begin{align*}
+	& \mathbb{E}_{t}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
+	& =\mathbb{E}_{t}\langle\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast}),\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast}),\tilde{H}_{t}^{j}(\overline{w}_{t}-w^{\ast})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle H^{k}(\overline{w}_{t}-w^{\ast}),H^{j}(\overline{w}_{t}-w^{\ast})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\sum_{k=1}^{N}\sum_{j=1}^{N}p_{j}p_{k}\mathbb{E}_{t}\langle H^{k}(\overline{w}_{t}-w^{\ast}),H^{j}(\overline{w}_{t}-w^{\ast})\rangle-\sum_{k=1}^{N}p_{k}^{2}\|H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}-\sum_{k=1}^{N}p_{k}^{2}\|H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
+	& \leq\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}-\frac{1}{N}\nu_{\min}\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
+	& \leq\frac{1}{N}\nu_{\max}\sum_{k=1}^{N}p_{k}\mathbb{E}_{t}\|\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
+	& \leq\frac{1}{N}\nu_{\max}l\sum_{k=1}^{N}p_{k}\langle(\overline{w}_{t}-w^{\ast}),H^{k}(\overline{w}_{t}-w^{\ast})\rangle+(1-\frac{1}{N}\nu_{\min})\|\sum_{k}p_{k}H^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
+	& =\frac{1}{N}\nu_{\max}l\langle(\overline{w}_{t}-w^{\ast}),H(\overline{w}_{t}-w^{\ast})\rangle+(1-\frac{1}{N}\nu_{\min})\langle\overline{w}_{t}-w^{\ast},H^{2}(\overline{w}_{t}-w^{\ast})\rangle
+	\end{align*}
+	using $\|\tilde{H}_{t}^{k}\|\leq l$. 
+	
+	Now we have 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\overline{w}_{t}-w^{\ast}),H^{k}(\overline{w}_{t}-w^{\ast})\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2} & =\\
+	\langle\overline{w}_{t}-w^{\ast},(I-\alpha_{t}H+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}H+\frac{N-\nu_{\min}}{N}H^{2}))(\overline{w}_{t}-w^{\ast})\rangle
+	\end{align*}
+	and it remains to bound the maximum eigenvalue of 
+	\begin{align*}
+	(I-\alpha_{t}H+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}H+\frac{N-\nu_{\min}}{N}H^{2}))
+	\end{align*}
+	
+	If we choose $\alpha_{t}<\frac{N}{2(\nu_{\max}l+(N-\nu_{\min})L)}$,
+	then 
+	\begin{align*}
+	-\alpha_{t}H+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}H+\frac{N-\nu_{\min}}{N}H^{2}) & \prec0
+	\end{align*}
+	and the convergence rate is given by the maximum of $1-\alpha_{t}\lambda+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\lambda+\frac{N-\nu_{\min}}{N}\lambda^{2})$
+	maximized over the non-zero eigenvalues $\lambda$ of $H$. To select
+	the step size $\alpha_{t}$ that gives the smallest upper bound, we
+	then minimize over $\alpha_{t}$, resulting in 
+	\begin{align*}
+	\min_{\alpha_{t}<\frac{N}{2(\nu_{\max}l+(N-\nu_{\min})L)}}\max_{\lambda>0:\exists v,Hv=\lambda v}\left\{ 1-\alpha_{t}\lambda+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\lambda+\frac{N-\nu_{\min}}{N}\lambda^{2})\right\} 
+	\end{align*}
+	Since the objective is quadratic in $\lambda$, the maximum is achieved
+	at either the largest eigenvalue $\lambda_{\max}$ of $H$ or the
+	smallest non-zero eigenvalue $\lambda_{\min}$ of $H$. 
+	
+	When $N\leq\frac{4\nu_{\max}l}{L-\lambda_{\min}}+4\nu_{\min}$, i.e.
+	when $N=O(l/\lambda_{\min})=O(\kappa_{1})$, the optimal objective
+	value is achieved at $\lambda_{\min}$ and the optimal step size is
+	given by $\alpha_{t}=\frac{N}{4(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})}$.
+	The optimal convergence rate (i.e. the optimal objective value) is
+	equal to $1-\frac{1}{8}\frac{N\lambda_{\min}}{(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})}=1-\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))}$.
+	This implies that when $N=O(\kappa_{1})$, the optimal convergence
+	rate has a linear speedup in $N$. When $N$ is larger, this step
+	size is no longer optimal, but we still have $1-\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))}$
+	as an upper bound on the convergence rate. 
+	
+	Now we have proved 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq(1-\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2}\\
+	& +\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(w_{t}^{k})
+	\end{align*}
+	Next we bound terms in the second line using a similar argument as
+	the general case. We have 
+	\begin{align*}
+	2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2} & \leq2\alpha_{t}^{2}l^{2}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}
+	\end{align*}
+	and 
+	\begin{align*}
+	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2} & \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}+8\alpha_{t-1}^{2}lF(\overline{w}_{t-1})\\
+	& =4\alpha_{t-1}^{2}l\langle\overline{w}_{t-1}-w^{\ast},H(\overline{w}_{t-1}-w^{\ast})\rangle
+	\end{align*}
+	and if $\alpha_{t},\alpha_{t-1}$ satisfy 
+	\begin{align*}
+	\alpha_{t}L+2\alpha_{t}^{2} & \leq(1-\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})(\alpha_{t-1}L+2\alpha_{t-1}^{2})/3\\
+	2(1+2l^{2}\alpha_{t-1}^{2}) & \leq3\\
+	\alpha_{t}L+2\alpha_{t}^{2} & \leq1
+	\end{align*}
+	we have 
+	\begin{align*}
+	& \mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2}\\
+	& \leq(1-\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})[\mathbb{E}\|\overline{w}_{t-1}-w^{\ast}\|^{2}-\alpha_{t}\langle\overline{w}_{t-1}-w^{\ast},H\overline{w}_{t-1}-w^{\ast}\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\overline{w}_{t}-w^{\ast})\|^{2}\\
+	& +(\alpha_{t-1}L+2\alpha_{t-1}^{2})\cdot2\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}l\langle\overline{w}_{t-1}-w^{\ast},H(\overline{w}_{t-1}-w^{\ast})\rangle]
+	\end{align*}
+	and again by choosing $\alpha_{t-1}=c\frac{N}{8(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})}$
+	for a small constant $c$, we can guarantee that 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t-1}-w^{\ast}\|^{2}-\alpha_{t-1}\langle\overline{w}_{t-1}-w^{\ast},H\overline{w}_{t-1}-w^{\ast}\rangle\\
+	+2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t-1}^{k}(\overline{w}_{t-1}-w^{\ast})\|^{2}+4\alpha_{t-1}^{2}l\langle\overline{w}_{t-1}-w^{\ast},H(\overline{w}_{t-1}-w^{\ast})\rangle\\
+	\leq(1-c\frac{N}{16(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})})\mathbb{E}\|\overline{w}_{t-1}-w^{\ast}\|^{2}
+	\end{align*}
+	
+	For general $E$, we have the recursive relation
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}(1-c\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\cdots(1-c\frac{1}{8\tau}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})[\|\overline{w}_{t-\tau}-w^{\ast}\|^{2}\\
+	& -\alpha_{t-\tau}\langle\overline{w}_{t-\tau}-w^{\ast},H\overline{w}_{t-\tau}-w^{\ast}\rangle+2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t-\tau}^{k}(\overline{w}_{t-\tau}-w^{\ast})\|^{2}\\
+	& +4\tau\alpha_{t-1}^{2}l\langle\overline{w}_{t-1}-w^{\ast},H(\overline{w}_{t-1}-w^{\ast})\rangle\\
+	& +(2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L)((\tau+1)\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-\tau}-w_{t-\tau}^{k}\|^{2})]
+	\end{align*}
+	as long as the step sizes are chosen $\alpha_{t-\tau}=c\frac{N}{4\tau(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})}$
+	such that the following inequalities hold 
+	\begin{align*}
+	(2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L) & \leq(1-\alpha_{t-\tau}\mu)(2\alpha_{t-\tau-1}^{2}l^{2}+\alpha_{t-\tau-1}L)/3\\
+	2(1+2l^{2}\alpha_{t-\tau}^{2}) & \leq3\\
+	2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L & \leq1
+	\end{align*}
+	and 
+	\begin{align*}
+	& \|\overline{w}_{t-\tau}-w^{\ast}\|^{2}-\alpha_{t-\tau}\langle\overline{w}_{t-\tau}-w^{\ast},H\overline{w}_{t-\tau}-w^{\ast}\rangle\\
+	& +2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t-\tau}^{k}(\overline{w}_{t-\tau}-w^{\ast})\|^{2}+4\tau\alpha_{t-1}^{2}l\langle\overline{w}_{t-1}-w^{\ast},H(\overline{w}_{t-1}-w^{\ast})\rangle\\
+	& \leq(1-c\frac{N}{8(\tau+1)(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\mathbb{E}\|\overline{w}_{t-\tau}-w^{\ast}\|^{2}
+	\end{align*}
+	which gives 
+	\begin{align*}
+	\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq(1-c\frac{1}{8E}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})^{t}\|w_{0}-w^{\ast}\|^{2}\\
+	& =O(\exp(-\frac{1}{E}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))}t))\|w_{0}-w^{\ast}\|^{2}
+	\end{align*}
+	and with partial participation, the same bound holds with a possibly
+	different choice of $c$. 
+\end{proof}
 	
 	
 	\subsection{Geometric Convergence of FedMaSS for Overparameterized Linear Regression}
