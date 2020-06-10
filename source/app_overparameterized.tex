@@ -29,7 +29,8 @@
 	and the cross term can be bounded as usual using $\mu$-convexity
 	and $L$-smoothness of $F_{k}$:
 	\begin{align*}
-	-2\alpha_{t}\mathbb{E}_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle & =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
+	&-2\alpha_{t}\mathbb{E}_{t}\langle\overline{w}_{t}-w^{\ast},g_{t}\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
 	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-w^{\ast},\nabla F_{k}(w_{t}^{k})\rangle\\
 	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\overline{w}_{t}-w_{t}^{k},\nabla F_{k}(w_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(w^{\ast})-F_{k}(w_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-w^{\ast}\|^{2}\\
 	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(w_{t}^{k})-F_{k}(\overline{w}_{t})+\frac{L}{2}\|\overline{w}_{t}-w_{t}^{k}\|^{2}+F_{k}(w^{\ast})-F_{k}(w_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}(w_{t}^{k}-w^{\ast})\|^{2}\\
@@ -128,7 +129,8 @@
 	for a $q\in[0,1]$ to be optimized later, we have 
 	
 	\begin{align*}
-	\mathbb{E}_{t}(F(\overline{w}_{t})-\alpha_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}) & \geq\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t})-\alpha_{t}\left[\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\nabla F(\overline{w}_{t})\|^{2}\right]\\
+	& \mathbb{E}_{t}(F(\overline{w}_{t})-\alpha_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2})\\
+	& \geq\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}F_{k}(\overline{w}_{t})-\alpha_{t}\left[\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\nabla F(\overline{w}_{t})\|^{2}\right]\\
 	& \geq\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}(qF_{k}(\overline{w}_{t},\xi_{t}^{k})-\alpha_{t}\frac{1}{N}\nu_{\max}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2})+((1-q)F(\overline{w}_{t})-\alpha_{t}(1-\frac{1}{N}\nu_{\min})\|\nabla F(\overline{w}_{t})\|^{2})\\
 	& \geq q\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\overline{w}_{t},\xi_{t}^{k})-\frac{1}{2l}\|\nabla F_{k}(\overline{w}_{t},\xi_{t}^{k})\|^{2})+(1-q)(F(\overline{w}_{t})-\frac{1}{2L}\|\nabla F(\overline{w}_{t})\|^{2})\\
 	& \geq0
@@ -165,12 +167,14 @@
 	\end{align*}
 	and
 	\begin{align*}
-	\sum_{k}p_{k}\|g_{t-1,k}-g_{t-1}\|^{2}=\sum_{k}p_{k}(\|g_{t-1,k}\|^{2}-\|g_{t-1}\|^{2}) & =\sum_{k}p_{k}\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})+\nabla F_{k}(w_{t-1}^{k},\xi_{t-1}^{k})-\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}-\|g_{t-1}\|^{2}\\
+	& \sum_{k}p_{k}\|g_{t-1,k}-g_{t-1}\|^{2}=\sum_{k}p_{k}(\|g_{t-1,k}\|^{2}-\|g_{t-1}\|^{2})\\
+	& =\sum_{k}p_{k}\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})+\nabla F_{k}(w_{t-1}^{k},\xi_{t-1}^{k})-\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}-\|g_{t-1}\|^{2}\\
 	& \leq2\sum_{k}p_{k}\left(\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}+l^{2}\|w_{t-1}^{k}-\overline{w}_{t-1}\|^{2}\right)-\|g_{t-1}\|^{2}
 	\end{align*}
 	so that using the $l$-smoothness of $\ell$, 
 	\begin{align*}
-	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2} & \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}\sum_{k}p_{k}\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}-2\alpha_{t-1}^{2}\|g_{t-1}\|^{2}\\
+	& \mathbb{E}\sum_{k=1}^{N}p_{k}\|\overline{w}_{t}-w_{t}^{k}\|^{2}\\
+	& \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}\sum_{k}p_{k}\|\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}-2\alpha_{t-1}^{2}\|g_{t-1}\|^{2}\\
 	& \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}2l\sum_{k}p_{k}(F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})-F_{k}(w^{\ast},\xi_{t-1}^{k}))-2\alpha_{t-1}^{2}\|g_{t-1}\|^{2}\\
 	& =\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2}+8\alpha_{t-1}^{2}lF(\overline{w}_{t-1})-2\alpha_{t-1}^{2}\|g_{t-1}\|^{2}
 	\end{align*}
