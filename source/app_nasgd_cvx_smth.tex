@@ -20,68 +20,68 @@
 	\begin{align*}
 	\ov{w}_{t+1}+\overline{p}_{t+1} & =\ov{w}_{t}+\overline{p}_{t}-\frac{\alpha_{t}}{1-\beta_{t}}g_{t}
 	\end{align*}
-	Now we define $\overline{z}_{t}:=\ov{w}_{t}+\overline{p}_{t}$
+	Now we define $\ov{z}_{t}:=\ov{w}_{t}+\overline{p}_{t}$
 	and $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}$ for all $t$, so that
 	we have the recursive relation 
 	\begin{align*}
-	\overline{z}_{t+1} & =\overline{z}_{t}-\eta_{t}g_{t}
+	\ov{z}_{t+1} & =\ov{z}_{t}-\eta_{t}g_{t}
 	\end{align*}
 	Now 
 	\begin{align*}
-	\|\overline{z}_{t+1}-\vw^{\ast}\|^{2} & =\|(\overline{z}_{t}-\eta_{t}g_{t})-\vw^{\ast}\|^{2}\\
-	& =\|(\overline{z}_{t}-\eta_{t}\overline{g}_{t}-\vw^{\ast})-\eta_{t}(g_{t}-\overline{g}_{t})\|^{2}\\
+	\|\ov{z}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{z}_{t}-\eta_{t}g_{t})-\vw^{\ast}\|^{2}\\
+	& =\|(\ov{z}_{t}-\eta_{t}\ov{g}_{t}-\vw^{\ast})-\eta_{t}(g_{t}-\ov{g}_{t})\|^{2}\\
 	& =A_{1}+A_{2}+A_{3}
 	\end{align*}
 	where 
 	\begin{align*}
-	A_{1} & =\|\overline{z}_{t}-\vw^{\ast}-\eta_{t}\overline{g}_{t}\|^{2}\\
-	A_{2} & =2\eta_{t}\langle\overline{z}_{t}-\vw^{\ast}-\eta_{t}\overline{g}_{t},\overline{g}_{t}-g_{t}\rangle\\
-	A_{3} & =\eta_{t}^{2}\|g_{t}-\overline{g}_{t}\|^{2}
+	A_{1} & =\|\ov{z}_{t}-\vw^{\ast}-\eta_{t}\ov{g}_{t}\|^{2}\\
+	A_{2} & =2\eta_{t}\langle\ov{z}_{t}-\vw^{\ast}-\eta_{t}\ov{g}_{t},\ov{g}_{t}-g_{t}\rangle\\
+	A_{3} & =\eta_{t}^{2}\|g_{t}-\ov{g}_{t}\|^{2}
 	\end{align*}
 	where again $\mathbb{E}A_{2}=0$ and $\mathbb{E}A_{3}\leq\eta_{t}^{2}\sum_{k}p_{k}^{2}\sigma_{k}^{2}$.
 	For $A_{1}$ we have 
 	\begin{align*}
-	\|\overline{z}_{t}-\vw^{\ast}-\eta_{t}\overline{g}_{t}\|^{2} & =\|\overline{z}_{t}-\vw^{\ast}\|^{2}+2\langle\overline{z}_{t}-\vw^{\ast},-\eta_{t}\overline{g}_{t}\rangle+\|\eta_{t}\overline{g}_{t}\|^{2}
+	\|\ov{z}_{t}-\vw^{\ast}-\eta_{t}\ov{g}_{t}\|^{2} & =\|\ov{z}_{t}-\vw^{\ast}\|^{2}+2\langle\ov{z}_{t}-\vw^{\ast},-\eta_{t}\ov{g}_{t}\rangle+\|\eta_{t}\ov{g}_{t}\|^{2}
 	\end{align*}
 	Using the convexity and $L$-smoothness of $F_{k}$, 
 	\begin{align*}
-	& -2\eta_{t}\langle\overline{z}_{t}-\vw^{\ast},\overline{g}_{t}\rangle\\
-	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& \leq-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle+2\eta_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))\\
+	& -2\eta_{t}\langle\ov{z}_{t}-\vw^{\ast},\ov{g}_{t}\rangle\\
+	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& \leq-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle+2\eta_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))\\
 	& \leq2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]\\
-	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =\eta_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
+	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& =\eta_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
 	\end{align*}
 	which results in 
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\eta_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
-	& +\eta_{t}^{2}\|\overline{g}_{t}\|^{2}+\eta_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
+	& +\eta_{t}^{2}\|\ov{g}_{t}\|^{2}+\eta_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
 	\end{align*}
-	As before, $\|\overline{g}_{t}\|^{2}\leq2L^{2}\sum_{k}p_{k}\|w_{t}^{k}-\ov{w}_{t}\|^{2}+4L(F(\ov{w}_{t})-F(\vw^{\ast}))$,
+	As before, $\|\ov{g}_{t}\|^{2}\leq2L^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}+4L(F(\ov{w}_{t})-F(\vw^{\ast}))$,
 	so that 
 	\begin{align*}
-	\eta_{t}^{2}\|\overline{g}_{t}\|^{2}+\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right] & \leq2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|w_{t}^{k}-\ov{w}_{t}\|^{2}+\eta_{t}(1-4\eta_{t}L)(F(\vw^{\ast})-F(\ov{w}_{t}))\\
-	& \leq2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|w_{t}^{k}-\ov{w}_{t}\|^{2}
+	\eta_{t}^{2}\|\ov{g}_{t}\|^{2}+\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right] & \leq2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}+\eta_{t}(1-4\eta_{t}L)(F(\vw^{\ast})-F(\ov{w}_{t}))\\
+	& \leq2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}
 	\end{align*}
 	for $\eta_{t}\le1/4L$. Using $\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\leq16E^{2}\alpha_{t}^{2}G^{2}$
 	and $\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\leq\nu_{\max}\frac{1}{N}\sigma^{2}$,
 	it follows that 
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+(\eta_{t}L+2L^{2}\eta_{t}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\eta_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle\\
 	& \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}\\
-	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
+	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
 	\end{align*}
-	if $\eta_{t}\leq\frac{1}{2L}$. It remains to bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle$.
-	Recall that $\overline{z}_{t}-\ov{w}_{t}=\frac{\beta_{t}}{1-\beta_{t}}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha_{t}g_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\ov{v}_{t}-\ov{v}_{t-1})$
+	if $\eta_{t}\leq\frac{1}{2L}$. It remains to bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle$.
+	Recall that $\ov{z}_{t}-\ov{w}_{t}=\frac{\beta_{t}}{1-\beta_{t}}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha_{t}g_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\ov{v}_{t}-\ov{v}_{t-1})$
 	and $\mathbb{E}\|\ov{v}_{t}-\ov{v}_{t-1}\|^{2}\leq G^{2}$,
 	$\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}\leq G^{2}$. 
 	
 	Cauchy-Schwarz gives
 	\begin{align*}
-	\mathbb{E}\sum_{k=1}^{N}p_{k}\langle\overline{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle & \leq\sum_{k=1}^{N}p_{k}\sqrt{\mathbb{E}\|\overline{z}_{t}-\ov{w}_{t}\|^{2}}\cdot\sqrt{\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}}\\
+	\mathbb{E}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle & \leq\sum_{k=1}^{N}p_{k}\sqrt{\mathbb{E}\|\ov{z}_{t}-\ov{w}_{t}\|^{2}}\cdot\sqrt{\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}}\\
 	& \leq\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
 	\end{align*}
 	Thus 

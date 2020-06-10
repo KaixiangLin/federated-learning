@@ -35,8 +35,8 @@ required for convergence may increase with \$N\$.
 
 \begin{proof}
 Define the virtual sequences $\ov{v}_{t}=\sum_{k=1}^{N}p_{k}v_{t}^{k}$,
-$\ov{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$.
-We have $\mathbb{E}g_{t}=\overline{g}_{t}$ and $\ov{v}_{t+1}=\ov{w}_{t}-\alpha_{t}g_{t}$,
+$\ov{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\ov{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$.
+We have $\mathbb{E}g_{t}=\ov{g}_{t}$ and $\ov{v}_{t+1}=\ov{w}_{t}-\alpha_{t}g_{t}$,
 and $\ov{w}_{t+1}=\ov{v}_{t+1}$ for all $t$. The proof
 again uses the $L$-smoothness of $F$ to bound 
 \begin{align*}
@@ -52,33 +52,33 @@ Our main step is to prove the bound
 We have 
 \begin{align*}
 \|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}g_{t})-\vw^{\ast}\|^{2}\\
-& =\|(\ov{w}_{t}-\alpha_{t}\overline{g}_{t}-\vw^{\ast})-\alpha_{t}(g_{t}-\overline{g}_{t})\|^{2}\\
+& =\|(\ov{w}_{t}-\alpha_{t}\ov{g}_{t}-\vw^{\ast})-\alpha_{t}(g_{t}-\ov{g}_{t})\|^{2}\\
 & =A_{1}+A_{2}+A_{3}
 \end{align*}
 where 
 \begin{align*}
-A_{1} & =\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2}\\
-A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\overline{g}_{t},\overline{g}_{t}-g_{t}\rangle\\
-A_{3} & =\alpha_{t}^{2}\|g_{t}-\overline{g}_{t}\|^{2}
+A_{1} & =\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2}\\
+A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-g_{t}\rangle\\
+A_{3} & =\alpha_{t}^{2}\|g_{t}-\ov{g}_{t}\|^{2}
 \end{align*}
-$\mathbb{E}A_{2}=0$ by definition of $g_{t}$ and $\overline{g}_{t}$,
+$\mathbb{E}A_{2}=0$ by definition of $g_{t}$ and $\ov{g}_{t}$,
 while for $A_{3}$ we have
 \begin{align*}
-\alpha_{t}^{2}\mathbb{E}\|g_{t}-\overline{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|g_{t}-\mathbb{E}g_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+\alpha_{t}^{2}\mathbb{E}\|g_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|g_{t}-\mathbb{E}g_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 \end{align*}
 again by Jensen's inequality and using the independence of $g_{t,k},g_{t,k'}$. 
 
 Next we bound $A_{1}$: 
 \begin{align*}
-\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2} & =\|\ov{w}_{t}-\vw^{\ast}\|^{2}+2\langle\ov{w}_{t}-\vw^{\ast},-\alpha_{t}\overline{g}_{t}\rangle+\|\alpha_{t}\overline{g}_{t}\|^{2}
+\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2} & =\|\ov{w}_{t}-\vw^{\ast}\|^{2}+2\langle\ov{w}_{t}-\vw^{\ast},-\alpha_{t}\ov{g}_{t}\rangle+\|\alpha_{t}\ov{g}_{t}\|^{2}
 \end{align*}
 Same as the SGD case, 
 \begin{align*}
--2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\overline{g}_{t}\rangle+\|\alpha_{t}\overline{g}_{t}\|^{2} & \leq\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
+-2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle+\|\alpha_{t}\ov{g}_{t}\|^{2} & \leq\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
 \end{align*}
 so that 
 \begin{align*}
-\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\overline{g}_{t}\|^{2} & \leq(1-\alpha_{t}\mu)\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}
+\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2} & \leq(1-\alpha_{t}\mu)\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}
 \end{align*}
 
 Different from the SGD case, we have 
@@ -101,9 +101,9 @@ can find a $t_{0}\leq t$ such that $t-t_{0}\leq E-1$ and $w_{t_{0}}^{k}=\ov{w}_{
 all $k$. Moreover, using $\alpha_{t}$ is non-increasing, $\alpha_{t_{0}}\leq2\alpha{}_{t}$,
 and $\beta_{t}\leq\alpha_{t}$ for any $t-t_{0}\leq E-1$, we have
 \begin{align*}
-\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\mathbb{E}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\ov{w}_{t_{0}}-(\ov{w}_{t}-\ov{w}_{t_{0}})\|^{2}\\
-& \leq\mathbb{E}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\ov{w}_{t_{0}}\|^{2}\\
-& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|w_{t}^{k}-\vw_{t_{0}}^{k}\|^{2}\\
+\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}-(\ov{w}_{t}-\ov{w}_{t_{0}})\|^{2}\\
+& \leq\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2}\\
+& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw_{t_{0}}^{k}\|^{2}\\
 & =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\sum_{i=t_{0}}^{t-1}\beta_{i}(v_{i+1}^{k}-v_{i}^{k})-\sum_{i=t_{0}}^{t-1}\alpha_{i}g_{i,k}\|^{2}\\
 & \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}\|g_{i,k}\|^{2}+2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\beta_{i}^{2}\|(v_{i+1}^{k}-v_{i}^{k})\|^{2}\\
 & \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}(\|g_{i,k}\|^{2}+\|(v_{i+1}^{k}-v_{i}^{k})\|^{2})\\
