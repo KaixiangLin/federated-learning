@@ -22,9 +22,10 @@ where $\vg_{t} = \sum_{k=1}^{N} p_{k} \vg_{t,k} $ is one-step stochastic gradien
 %  \end{array}\right.
 % \end{align}
 Similarly, we denote the expected one-step gradient $\ov{g}_{t}= \EE_{\xi_t}[\vg_t] = \sum_{k=1}^{N} p_{k} \EE_{\mathbf{\xi}_{t}^{k}} \vg_{t,k}$, where
-\begin{align*}
+\begin{align}
 \EE_{\mathbf{\xi}_{t}^{k}} \vg_{t,k}  = \nabla F_{k}\left(\mathbf{w}_{t}^{k}\right), 
-\end{align*}
+\label{eq:gradient}
+\end{align}
 % \begin{align}
 % \EE_{\mathbf{\xi}_{t}^{k}} \vg_{t,k}  \left\{\begin{array}{ll} 
 %  = \nabla F_{k}\left(\mathbf{w}_{t}^{k}\right)  &  \text{smooth}\\
