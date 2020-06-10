@@ -230,7 +230,7 @@
 	for some small constant $c$ satisfies the requirements. 
 	
 	Since communication is done every $E$ iterations, $\overline{w}_{t_{0}}=w_{t_{0}}^{k}$
-	for some $t_{0}<t-E$ , from which we can conclude that 
+	for some $t_{0}>t-E$ , from which we can conclude that 
 	
 	\begin{align*}
 	\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq(\prod_{\tau=1}^{t-t_{0}-1}(1-\mu\alpha_{t-\tau}))\|w_{t_{0}}-w^{\ast}\|^{2}\\
@@ -272,7 +272,43 @@
 \end{proof}
 
 \subsection{Geometric Convergence of FedAvg for Overparameterized Linear Regression}
-	
+
+We first provide details on quantities used in the proof of results on linear regression in Section~\ref{sec:overparameterized} in the main text. The local device objectives are now given by the sum of squares {\small$F_{k}(\mathbf{w})=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{w}^{T}\mathbf{x}_{k}^{j}-z_{k}^{j})^{2}$},
+and there exists $\mathbf{w}^{\ast}$ such that $F(\mathbf{w}^{\ast})\equiv0$. 
+Define the local Hessian matrix as $H^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}$, and the stochastic Hessian matrix as $\tilde{H}_{t}^{k}:=\xi_{t}^{k}(\xi_{t}^{k})^{T}$, where $\xi_{t}^{k}$ is the stochastic sample on the $k$th device at
+time $t$. 
+for all $k$. Define $l$ to be the smallest positive number such that $\mathbb{E}\|\xi_{t}^{k}\|^{2}$$\mathbf{\xi}_{t}^{k}$($\mathbf{\xi}_{t}^{k})^{T}\preceq lH^{k}$. Note that $l\leq\max_{k,j}\|\mathbf{x}_{k}^{j}\|^{2}$.
+Let $L$ and $\mu$ be lower and upper bounds of non-zero eigenvalues
+of $H^{k}$. Define $\kappa_{1}:=l/\mu$ and $\kappa:=L/\mu$. 
+
+Following
+\cite{liu2018accelerating,jain2017accelerating}, we define the statistical
+condition number $\tilde{\kappa}$ as the smallest positive real number
+such that $\mathbb{E}\left[\langle\xi_{t}^{k}(H^{k})^{-1},\xi_{t}^{k}\rangle\xi_{t}^{k}(\xi_{t}^{k})^{T}\right] \  \preceq\tilde{\kappa}H^{k}$, for all $k$. 
+The condition numbers $\kappa_{1}$ and $\tilde{\kappa}$
+are important in the characterization of convergence rates for FedAvg
+algorithms. Note that $\kappa_{1}>\kappa$ and $\kappa_{1}>\tilde{\kappa}$.
+
+
+Let $H=\sum_{k}p_kH^k$. In general $H$ has zero eigenvalues. However, because the null space
+of $H$ and range of $H$ are orthogonal, in our subsequence analysis
+it suffices to project $\overline{\mathbf{w}}_{t}-\mathbf{w}^{\ast}$
+onto the range of $H$, thus we may restrict to the non-zero eigenvalue
+of $H$. 
+
+A useful observation is that we can use $\mathbf{w}^{\ast T}\mathbf{x}_{k}^{j}-z_{k}^{j}\equiv0$
+to rewrite the local objectives as $F_{k}(\mathbf{w})=\frac{1}{2}\langle\mathbf{w}-\mathbf{w}^{\ast},H^{k}(\mathbf{w}-\mathbf{w}^{\ast})\rangle\equiv\frac{1}{2}\|\mathbf{w}-\mathbf{w}^{\ast}\|_{H^{k}}^{2}$:
+\begin{align*}
+F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j}-(w^{\ast T}x_{k,j}-z_{k,j}))^{2}=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((w-w^{\ast})^{T}x_{k,j})^{2}\\
+& =\frac{1}{2}\langle w-w^{\ast},H^{k}(w-w^{\ast})\rangle=\frac{1}{2}\|w-w^{\ast}\|_{H^{k}}^{2}
+\end{align*}
+
+so that $F(\mathbf{w})=\frac{1}{2}\|\mathbf{w}-\mathbf{w}^{\ast}\|_{H}^{2}$.
+
+Finally, note that $\mathbb{E}\tilde{H}_{t}^{k}=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}=H^{k}$
+and $\mathbf{g}_{t,k}=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\tilde{H}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$
+while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$ and $\overline{\mathbf{g}}_{t}=\sum_{k=1}^{N}p_{k}H^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$ 
+\\
 	\begin{thm}
 		For the overparamterized linear regression problem, FedAvg with communication every $E$
 		iterations with constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})})$
