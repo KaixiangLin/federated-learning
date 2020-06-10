@@ -205,8 +205,14 @@
 	& -2\alpha_{t-1}F(\overline{w}_{t-1})+2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}+8\alpha_{t-1}^{2}lF(\overline{w}_{t-1})\\
 	& +(2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)(2\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2})]
 	\end{align*}
-	and if $\alpha_{t-1}$ is chosen such that $(F(\overline{w}_{t-1})-4\alpha_{t-1}lF(\overline{w}_{t-1}))-\alpha_{t-1}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}\geq0$
-	and $(2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)(1-\alpha_{t-1}\mu)\leq(2\alpha_{t-2}^{2}l^{2}+\alpha_{t-2}L)/3$,
+	and if $\alpha_{t-1}$ is chosen such that 
+	\begin{align*}
+	(F(\overline{w}_{t-1})-4\alpha_{t-1}lF(\overline{w}_{t-1}))-\alpha_{t-1}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\overline{w}_{t-1},\xi_{t-1}^{k})\|^{2}\geq0
+	\end{align*}
+	and
+	\begin{align*} (2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)(1-\alpha_{t-1}\mu)
+	&\leq(2\alpha_{t-2}^{2}l^{2}+\alpha_{t-2}L)/3
+	\end{align*}
 	we again have 
 	\begin{align*}
 	\mathbb{E}\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)(1-\alpha_{t-1}\mu)[\|\overline{w}_{t-1}-w^{\ast}\|^{2}+(2\alpha_{t-2}^{2}l^{2}+\alpha_{t-2}L)\cdot(2\sum_{k=1}^{N}p_{k}\|\overline{w}_{t-1}-w_{t-1}^{k}\|^{2})/3]
