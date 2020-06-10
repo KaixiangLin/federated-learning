@@ -1,3 +1,4 @@
+% !TEX ROOT=./supp-main.tex
 To facilitate reading, theorems from the main paper are restated and numbered identically. We first summarize some properties of $L$-smooth and $\mu$-strongly
 convex functions~\cite{rockafellar1970convex}. 
 \begin{lemma}
@@ -63,12 +64,12 @@ convex functions~\cite{rockafellar1970convex}.
 	A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-\vg_{t}\rangle\\
 	A_{3} & =\alpha_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
 	\end{align*}
-	$\mathbb{E}A_{2}=0$ by definition of $\vg_{t}$ and $\ov{g}_{t}$,
-	while for $A_{3}$ we have
+	By definition of $\vg_{t}$ and $\ov{g}_{t}$ (see \eq{\ref{eq:gradient}}), we have $\mathbb{E}A_{2}=0$.
+	For $A_{3}$, we have the follow upper bound:
 	\begin{align*}
 	\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|\vg_{t,k}-\mathbb{E}\vg_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 	\end{align*}
-	again by Jensen's inequality and using the independence of $\vg_{t,k},g_{t,k'}$. 
+	again by Jensen's inequality and using the independence of $\vg_{t,k},\vg_{t,k'}$ \cite[Lemma 2]{li2019convergence}. 
 	
 	Next we bound $A_{1}$: 
 	\begin{align*}
@@ -94,7 +95,7 @@ convex functions~\cite{rockafellar1970convex}.
 	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
 	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
 	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
-	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}w_{t}^{k}-\vw^{\ast}\|^{2}\\
+	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
 	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
 	\end{align*}
 	For the second term, which is negative, we can ignore it, but this
@@ -126,7 +127,7 @@ convex functions~\cite{rockafellar1970convex}.
 	
 	Now we bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$.
 	Since communication is done every $E$ steps, for any $t\geq0$, we
-	can find a $t_{0}\leq t$ such that $t-t_{0}\leq E-1$ and $w_{t_{0}}^{k}=\ov{w}_{t_{0}}$for
+	can find a $t_{0}\leq t$ such that $t-t_{0}\leq E-1$ and $\vw_{t_{0}}^{k}=\ov{w}_{t_{0}}$for
 	all $k$. Moreover, using $\alpha_{t}$ is non-increasing and $\alpha_{t_{0}}\leq2\alpha{}_{t}$
 	for any $t-t_{0}\leq E-1$, we have 
 	\begin{align*}
@@ -178,12 +179,12 @@ convex functions~\cite{rockafellar1970convex}.
 	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
 	& =\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\sum_{k=1}^{N}(p_{k}N)^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
 	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\nu_{max}^{2}\sum_{k=1}^{N}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
-	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+5E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}
+	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}
 	\end{align*}
-	where $\sigma^{2}=\max_{k}\sigma_{k}^{2}$, and if $\alpha_{t}$
+	where in the last inequality we use $\sigma^{2}=\max_{k}\sigma_{k}^{2}$, and assume $\alpha_{t}$
 	satisfies $L\alpha_{t}\leq\frac{1}{8}$. We show next that $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}=O(\frac{1}{tN}+\frac{E^{2}LG^{2}}{t^{2}})$. 
 	
-	Let $C\equiv5E^{2}LG^{2}$ and $D\equiv\frac{1}{N}\nu_{max}^{2}\sigma^{2}$.
+	Let $C\equiv6E^{2}LG^{2}$ and $D\equiv\frac{1}{N}\nu_{max}^{2}\sigma^{2}$.
 	Suppose that we have shown $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}\leq b\cdot(\alpha_{t}D+\alpha_{t}^{2}C)$
 	for some constant $b$ and $\alpha_{t}$. Then 
 	\begin{align*}
@@ -192,7 +193,7 @@ convex functions~\cite{rockafellar1970convex}.
 	\end{align*}
 	and so it remains to choose $\alpha_{t}$ and $b$ such that $(b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}\leq b\alpha_{t+1}$
 	and $(b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}^{2}\leq b\alpha_{t+1}^{2}$.
-	Recall that we require $\alpha_{t_{0}}\leq\alpha_{t}$ for any $t-t_{0}\leq E-1$,
+	Recall that we require $\alpha_{t_{0}}\leq2\alpha_{t}$ for any $t-t_{0}\leq E-1$,
 	and $L\alpha_{t}\leq\frac{1}{8}$. If we let $\alpha_{t}=\frac{4}{\mu(t+\gamma)}$
 	where $\gamma=\max\{E,32\kappa\}$, then we may check that $\alpha_{t}$
 	satisfies both requirements. 
@@ -243,7 +244,7 @@ convex functions~\cite{rockafellar1970convex}.
 	& =\mathbb{E}(F(\ov{w}_{T})-F(\vw^{\ast}))\\
 	& \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}\leq\frac{L}{2}c\|\vw_{0}-\vw^{\ast}\|^{2}\frac{4}{\mu}(D\alpha_{T}+C\alpha_{T}^{2})\\
 	& =2c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa(D\alpha_{T}+C\alpha_{T}^{2})\\
-	& \leq2c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{4}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{max}^{2}\sigma^{2}+5E^{2}LG^{2}\cdot(\frac{4}{\mu(T+\gamma)})^{2}\right]\\
+	& \leq2c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{4}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6E^{2}LG^{2}\cdot(\frac{4}{\mu(T+\gamma)})^{2}\right]\\
 	& =O(\frac{\kappa}{\mu}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\cdot\frac{1}{T}+\frac{\kappa^{2}}{\mu}E^{2}G^{2}\cdot\frac{1}{T^{2}})
 	\end{align*}
 	
@@ -256,7 +257,7 @@ convex functions~\cite{rockafellar1970convex}.
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}+\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
 	& =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}
 	\end{align*}
-	As before, $\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}\leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+5E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}$. 
+	As before, $\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}\leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}$. 
 	
 	The key is to bound $\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}$.
 	For sampling scheme I we have 
