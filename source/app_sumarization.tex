@@ -15,8 +15,8 @@ means their results can directly apply to the strongly convex problems. However,
 \begin{align*}
 	\Lambda(\vw) = \frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}} \leq B
 \end{align*} 
-This is a more restrictive comparing to assuming bounded gradient under the case of target accuracy $\epsilon \rightarrow 0$ and PL condition.
-To see this, consider the gradient diversity at the global optimal $\vw^*$,i.e., $\Lambda(\vw^*) = \frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$. For $\Lambda(\vw^*)$ to be bounded, it requires $\|\nabla F_{k}(\mathbf{w}^*)\|_{2}^{2} = 0$, $\forall \ k$. This indicates 
+This is a more restrictive assumption comparing to assuming bounded gradient under the case of target accuracy $\epsilon \rightarrow 0$ and PL condition.
+To see this, consider the gradient diversity at the global optimal $\vw^*$, i.e., $\Lambda(\vw^*) = \frac{\sum_{k}p_{k}\|\nabla F_{k}(\mathbf{w})\|_{2}^{2}}{\|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2}}$. For $\Lambda(\vw^*)$ to be bounded, it requires $\|\nabla F_{k}(\mathbf{w}^*)\|_{2}^{2} = 0$, $\forall \ k$. This indicates 
 $\vw^*$ is also the minimizer of each local objective, which contradicts to the practical setting of heterogeneous data. Therefore, their bound 
 is not effective for arbitrary small $\epsilon$-accuracy under general heterogeneous data while our convergence results still hold in this case.
 % If we only consider the domain $\vw \in \{\vw | \|\sum_{k}p_{k}\nabla F_{k}(\mathbf{w})\|_{2}^{2} > c\}$, where $c$ is a positive constant. 
