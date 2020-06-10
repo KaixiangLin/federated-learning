@@ -13,25 +13,25 @@ $\overline{\mathbf{v}}_{t+1}$ is one-step SGD from $\overline{\mathbf{w}}_{t}$.
 % $t+1 \in \cI_E$, we can fetch $\overline{\vw}_{t+1}$, we can communicate $\overline{\vw}_{t+1}$ to all devices.
 where $\vg_{t} = \sum_{k=1}^{N} p_{k} \vg_{t,k} $ is one-step stochastic gradient, averaged over all devices. 
 \begin{align*}
-\vg_{t,k} = \nabla F_{k}\left(\mathbf{w}_{t}^{k},\xi_{t}^{k} \right),   
+\vg_{t,k} = \nabla F_{k}\left(\mathbf{w}_{t}^{k},\mathbf{\xi}_{t}^{k} \right),   
 \end{align*}
 % \begin{align}
 % \vg_{t,k} \left\{\begin{array}{ll} 
-%  = \nabla F_{k}\left(\mathbf{w}_{t}^{k},\xi_{t}^{k} \right)  &  \text{smooth}\\
-%  \in \partial F_{k}\left(\vw_{t}^{k}, \xi_{t}^{k}\right)  & \text{non-smooth} \lkxcom{remove non-smooth}
+%  = \nabla F_{k}\left(\mathbf{w}_{t}^{k},\mathbf{\xi}_{t}^{k} \right)  &  \text{smooth}\\
+%  \in \partial F_{k}\left(\vw_{t}^{k}, \mathbf{\xi}_{t}^{k}\right)  & \text{non-smooth} \lkxcom{remove non-smooth}
 %  \end{array}\right.
 % \end{align}
-Similarly, we denote the expected one-step gradient $\ov{g}_{t}= \EE_{\xi_t}[\vg_t] = \sum_{k=1}^{N} p_{k} \EE_{\xi_{t}^{k}} \vg_{t,k}$, where
+Similarly, we denote the expected one-step gradient $\ov{g}_{t}= \EE_{\xi_t}[\vg_t] = \sum_{k=1}^{N} p_{k} \EE_{\mathbf{\xi}_{t}^{k}} \vg_{t,k}$, where
 \begin{align*}
-\EE_{\xi_{t}^{k}} \vg_{t,k}  = \nabla F_{k}\left(\mathbf{w}_{t}^{k}\right), 
+\EE_{\mathbf{\xi}_{t}^{k}} \vg_{t,k}  = \nabla F_{k}\left(\mathbf{w}_{t}^{k}\right), 
 \end{align*}
 % \begin{align}
-% \EE_{\xi_{t}^{k}} \vg_{t,k}  \left\{\begin{array}{ll} 
+% \EE_{\mathbf{\xi}_{t}^{k}} \vg_{t,k}  \left\{\begin{array}{ll} 
 %  = \nabla F_{k}\left(\mathbf{w}_{t}^{k}\right)  &  \text{smooth}\\
 %  \in \partial F_{k}\left(\vw_{t}^{k}\right)  & \text{non-smooth}
 %  \end{array}\right.
 % \end{align}
-and $\xi_t = \{\xi_t^k\}_{k=1}^N$ denotes random samples at all devices at time step $t$. 
+and $\mathbf{\xi}_t = \{\mathbf{\xi}_t^k\}_{k=1}^N$ denotes random samples at all devices at time step $t$. 
 Since in this work, we also consider the case of partial participation. The sampling
 strategy to approximate the system heterogeneity can also affect the convergence. Here we
 follow the prior arts~\cite{haddadpour2019convergence} considering two types of sampling

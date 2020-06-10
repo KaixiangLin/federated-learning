@@ -84,7 +84,7 @@ convex functions~\cite{rockafellar1970convex}.
 	\end{align*}
 	or 
 	\begin{align*}
-	\alpha_{t}^{2}\|\ov{g}_{t}\|^{2} & \leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k},\xi_{t}^{k})\|^{2}\leq\alpha_{t}^{2}G^{2}
+	\alpha_{t}^{2}\|\ov{g}_{t}\|^{2} & \leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k},\mathbf{\xi}_{t}^{k})\|^{2}\leq\alpha_{t}^{2}G^{2}
 	\end{align*}
 	\end{comment}
 	
@@ -276,7 +276,7 @@ convex functions~\cite{rockafellar1970convex}.
 	
 	\begin{comment}
 	\begin{proof}
-	With partial participation, $2E\sum_{\tau=1}^{E-1}\alpha_{t-\tau}^{2}\sum_{k=1}^{N}p_{k}\left(\|\nabla F_{k}(\ov{w}_{t-\tau},\xi_{t-\tau}^{k})\|^{2}+l^{2}\|w_{t-\tau}^{k}-\ov{w}_{t-\tau}\|^{2}\right)$
+	With partial participation, $2E\sum_{\tau=1}^{E-1}\alpha_{t-\tau}^{2}\sum_{k=1}^{N}p_{k}\left(\|\nabla F_{k}(\ov{w}_{t-\tau},\mathbf{\xi}_{t-\tau}^{k})\|^{2}+l^{2}\|w_{t-\tau}^{k}-\ov{w}_{t-\tau}\|^{2}\right)$
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+5E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+\frac{1}{K}\sum_{k}p^{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}\\
 	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+5E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+\frac{4}{K}\alpha_{t}^{2}E^{2}G^{2}\\
@@ -296,12 +296,12 @@ convex functions~\cite{rockafellar1970convex}.
 	\frac{1}{K}\sum_{k}p^{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2} & =O(\alpha_{t}^{2}G^{2}/K)\\
 	\sum_{k}p^{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}\le\sum_{k}p^{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2} & \leq\sum_{k}p^{k}\|-\alpha_{t_{0}}g_{t_{0},k}-\alpha_{t_{0}+1}g_{t_{0}+1,k}-\cdots-\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
 	& =\sum_{k}p^{k}\|\alpha_{t_{0}}g_{t_{0},k}+\alpha_{t_{0}+1}g_{t_{0}+1,k}+\cdots+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
-	& =\sum_{k}p^{k}\|\alpha_{t_{0}}\nabla F_{k}(\ov{w}_{t_{0}},\xi_{t_{0}}^{k})+\alpha_{t_{0}}\nabla F_{k}(\ov{w}_{t_{0}}-\alpha_{t_{0}+1}\nabla F_{k}(\ov{w}_{t_{0}},\xi_{t_{0}}^{k}),\xi_{t_{0}+1}^{k})+\cdots+\alpha_{t-1}\vg_{t-1,k}\|^{2}
+	& =\sum_{k}p^{k}\|\alpha_{t_{0}}\nabla F_{k}(\ov{w}_{t_{0}},\mathbf{\xi}_{t_{0}}^{k})+\alpha_{t_{0}}\nabla F_{k}(\ov{w}_{t_{0}}-\alpha_{t_{0}+1}\nabla F_{k}(\ov{w}_{t_{0}},\mathbf{\xi}_{t_{0}}^{k}),\mathbf{\xi}_{t_{0}+1}^{k})+\cdots+\alpha_{t-1}\vg_{t-1,k}\|^{2}
 	\end{align*}
 	The intuition is to approximate with the sequence starting at $w^{\ast}$,
 	i.e. 
 	\begin{align*}
-	\sum_{k}p^{k}\|\alpha_{t_{0}}\nabla F_{k}(\vw^{\ast},\xi_{t_{0}}^{k})+\alpha_{t_{0}+1}\nabla F_{k}(\vw^{\ast}-\alpha_{t_{0}+1}\nabla F_{k}(\vw^{\ast},\xi_{t_{0}}^{k}),\xi_{t_{0}+1}^{k})+\cdots+\alpha_{t-1}\vg_{t-1,k}\|^{2} & \approx\\
+	\sum_{k}p^{k}\|\alpha_{t_{0}}\nabla F_{k}(\vw^{\ast},\mathbf{\xi}_{t_{0}}^{k})+\alpha_{t_{0}+1}\nabla F_{k}(\vw^{\ast}-\alpha_{t_{0}+1}\nabla F_{k}(\vw^{\ast},\mathbf{\xi}_{t_{0}}^{k}),\mathbf{\xi}_{t_{0}+1}^{k})+\cdots+\alpha_{t-1}\vg_{t-1,k}\|^{2} & \approx\\
 	\end{align*}
 	since $\ov{w}_{t_{0}}\approx w^{\ast}+\frac{1}{t_{0}}$. We
 	can take 
