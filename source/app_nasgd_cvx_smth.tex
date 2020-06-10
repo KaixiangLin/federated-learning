@@ -15,28 +15,28 @@
 \end{thm}
 
 \begin{proof}
-	Define $\overline{p}_{t}:=\frac{\beta_{t}}{1-\beta_{t}}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha_{t}g_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\ov{v}_{t}-\ov{v}_{t-1})$
+	Define $\ov{p}_{t}:=\frac{\beta_{t}}{1-\beta_{t}}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha_{t}\vg_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\ov{v}_{t}-\ov{v}_{t-1})$
 	for $t\geq1$ and 0 for $t=0$. We can check that 
 	\begin{align*}
-	\ov{w}_{t+1}+\overline{p}_{t+1} & =\ov{w}_{t}+\overline{p}_{t}-\frac{\alpha_{t}}{1-\beta_{t}}g_{t}
+	\ov{w}_{t+1}+\ov{p}_{t+1} & =\ov{w}_{t}+\ov{p}_{t}-\frac{\alpha_{t}}{1-\beta_{t}}\vg_{t}
 	\end{align*}
-	Now we define $\ov{z}_{t}:=\ov{w}_{t}+\overline{p}_{t}$
+	Now we define $\ov{z}_{t}:=\ov{w}_{t}+\ov{p}_{t}$
 	and $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}$ for all $t$, so that
 	we have the recursive relation 
 	\begin{align*}
-	\ov{z}_{t+1} & =\ov{z}_{t}-\eta_{t}g_{t}
+	\ov{z}_{t+1} & =\ov{z}_{t}-\eta_{t}\vg_{t}
 	\end{align*}
 	Now 
 	\begin{align*}
-	\|\ov{z}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{z}_{t}-\eta_{t}g_{t})-\vw^{\ast}\|^{2}\\
-	& =\|(\ov{z}_{t}-\eta_{t}\ov{g}_{t}-\vw^{\ast})-\eta_{t}(g_{t}-\ov{g}_{t})\|^{2}\\
+	\|\ov{z}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{z}_{t}-\eta_{t}\vg_{t})-\vw^{\ast}\|^{2}\\
+	& =\|(\ov{z}_{t}-\eta_{t}\ov{g}_{t}-\vw^{\ast})-\eta_{t}(\vg_{t}-\ov{g}_{t})\|^{2}\\
 	& =A_{1}+A_{2}+A_{3}
 	\end{align*}
 	where 
 	\begin{align*}
 	A_{1} & =\|\ov{z}_{t}-\vw^{\ast}-\eta_{t}\ov{g}_{t}\|^{2}\\
-	A_{2} & =2\eta_{t}\langle\ov{z}_{t}-\vw^{\ast}-\eta_{t}\ov{g}_{t},\ov{g}_{t}-g_{t}\rangle\\
-	A_{3} & =\eta_{t}^{2}\|g_{t}-\ov{g}_{t}\|^{2}
+	A_{2} & =2\eta_{t}\langle\ov{z}_{t}-\vw^{\ast}-\eta_{t}\ov{g}_{t},\ov{g}_{t}-\vg_{t}\rangle\\
+	A_{3} & =\eta_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
 	\end{align*}
 	where again $\mathbb{E}A_{2}=0$ and $\mathbb{E}A_{3}\leq\eta_{t}^{2}\sum_{k}p_{k}^{2}\sigma_{k}^{2}$.
 	For $A_{1}$ we have 
@@ -75,7 +75,7 @@
 	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
 	\end{align*}
 	if $\eta_{t}\leq\frac{1}{2L}$. It remains to bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle$.
-	Recall that $\ov{z}_{t}-\ov{w}_{t}=\frac{\beta_{t}}{1-\beta_{t}}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha_{t}g_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\ov{v}_{t}-\ov{v}_{t-1})$
+	Recall that $\ov{z}_{t}-\ov{w}_{t}=\frac{\beta_{t}}{1-\beta_{t}}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha_{t}\vg_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\ov{v}_{t}-\ov{v}_{t-1})$
 	and $\mathbb{E}\|\ov{v}_{t}-\ov{v}_{t-1}\|^{2}\leq G^{2}$,
 	$\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}\leq G^{2}$. 
 	
@@ -90,11 +90,11 @@
 	\end{align*}
 	Summing the inequalities from $t=0$ to $t=T$, we obtain 
 	\begin{align*}
-	\sum_{t=0}^{T}\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\|w_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	\sum_{t=0}^{T}\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
 	\end{align*}
 	so that
 	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\eta_{t}}\left(\|w_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}\right)
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\eta_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}\right)
 	\end{align*}
 	
 	By setting the constant learning rates $\alpha_{t}\equiv\sqrt{\frac{N}{T}}$
@@ -102,14 +102,14 @@
 	we have 
 	
 	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{2\sqrt{NT}}\cdot\|w_{0}-\vw^{\ast}\|^{2}+\frac{2}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}32LE^{2}G^{2}+\frac{2}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}G^{2}\\
-	& =(\frac{1}{2}\|w_{0}-\vw^{\ast}\|^{2}+2\nu_{\max}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}(32LE^{2}G^{2}+2G^{2})\\
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{2\sqrt{NT}}\cdot\|\vw_{0}-\vw^{\ast}\|^{2}+\frac{2}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}32LE^{2}G^{2}+\frac{2}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}G^{2}\\
+	& =(\frac{1}{2}\|\vw_{0}-\vw^{\ast}\|^{2}+2\nu_{\max}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}(32LE^{2}G^{2}+2G^{2})\\
 	& =O(\frac{\nu_{\max}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
 	\end{align*}
 	
 	Similarly, for partial participation, we have 
 	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|w_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
 	\end{align*}
 	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$,
 	so that with $\alpha_{t}\equiv\sqrt{\frac{K}{T}}$ and $\beta_{t}\equiv c\sqrt{\frac{K}{T}}$,

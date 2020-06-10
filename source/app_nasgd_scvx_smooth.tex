@@ -36,7 +36,7 @@ required for convergence may increase with \$N\$.
 \begin{proof}
 Define the virtual sequences $\ov{v}_{t}=\sum_{k=1}^{N}p_{k}v_{t}^{k}$,
 $\ov{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\ov{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$.
-We have $\mathbb{E}g_{t}=\ov{g}_{t}$ and $\ov{v}_{t+1}=\ov{w}_{t}-\alpha_{t}g_{t}$,
+We have $\mathbb{E}\vg_{t}=\ov{g}_{t}$ and $\ov{v}_{t+1}=\ov{w}_{t}-\alpha_{t}\vg_{t}$,
 and $\ov{w}_{t+1}=\ov{v}_{t+1}$ for all $t$. The proof
 again uses the $L$-smoothness of $F$ to bound 
 \begin{align*}
@@ -51,20 +51,20 @@ Our main step is to prove the bound
 
 We have 
 \begin{align*}
-\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}g_{t})-\vw^{\ast}\|^{2}\\
-& =\|(\ov{w}_{t}-\alpha_{t}\ov{g}_{t}-\vw^{\ast})-\alpha_{t}(g_{t}-\ov{g}_{t})\|^{2}\\
+\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}\vg_{t})-\vw^{\ast}\|^{2}\\
+& =\|(\ov{w}_{t}-\alpha_{t}\ov{g}_{t}-\vw^{\ast})-\alpha_{t}(\vg_{t}-\ov{g}_{t})\|^{2}\\
 & =A_{1}+A_{2}+A_{3}
 \end{align*}
 where 
 \begin{align*}
 A_{1} & =\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2}\\
-A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-g_{t}\rangle\\
-A_{3} & =\alpha_{t}^{2}\|g_{t}-\ov{g}_{t}\|^{2}
+A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-\vg_{t}\rangle\\
+A_{3} & =\alpha_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
 \end{align*}
-$\mathbb{E}A_{2}=0$ by definition of $g_{t}$ and $\ov{g}_{t}$,
+$\mathbb{E}A_{2}=0$ by definition of $\vg_{t}$ and $\ov{g}_{t}$,
 while for $A_{3}$ we have
 \begin{align*}
-\alpha_{t}^{2}\mathbb{E}\|g_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|g_{t}-\mathbb{E}g_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 \end{align*}
 again by Jensen's inequality and using the independence of $g_{t,k},g_{t,k'}$. 
 
@@ -74,11 +74,11 @@ Next we bound $A_{1}$:
 \end{align*}
 Same as the SGD case, 
 \begin{align*}
--2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle+\|\alpha_{t}\ov{g}_{t}\|^{2} & \leq\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
+-2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle+\|\alpha_{t}\ov{g}_{t}\|^{2} & \leq\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
 \end{align*}
 so that 
 \begin{align*}
-\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2} & \leq(1-\alpha_{t}\mu)\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}
+\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2} & \leq(1-\alpha_{t}\mu)\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}
 \end{align*}
 
 Different from the SGD case, we have 
@@ -215,9 +215,9 @@ for all $t$. Thus
 
 \begin{align*}
 \mathbb{E}(F(\ov{w}_{T}))-F^{\ast} & =\mathbb{E}(F(\ov{w}_{T})-F(\vw^{\ast}))\\
-& \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}\leq\frac{L}{2}c\|w_{0}-\vw^{\ast}\|^{2}\frac{6}{\mu}(D\alpha_{T}+C\alpha_{T}^{2})\\
-& =3c\|w_{0}-\vw^{\ast}\|^{2}\kappa(D\alpha_{T}+C\alpha_{T}^{2})\\
-& \leq3c\|w_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{6}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+20E^{2}LG^{2}\cdot(\frac{6}{\mu(T+\gamma)})^{2}\right]\\
+& \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}\leq\frac{L}{2}c\|\vw_{0}-\vw^{\ast}\|^{2}\frac{6}{\mu}(D\alpha_{T}+C\alpha_{T}^{2})\\
+& =3c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa(D\alpha_{T}+C\alpha_{T}^{2})\\
+& \leq3c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{6}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+20E^{2}LG^{2}\cdot(\frac{6}{\mu(T+\gamma)})^{2}\right]\\
 & =O(\frac{\kappa}{\mu}\frac{1}{N}\nu_{\max}\sigma^{2}\cdot\frac{1}{T}+\frac{\kappa^{2}}{\mu}E^{2}G^{2}\cdot\frac{1}{T^{2}})
 \end{align*}
 

@@ -53,20 +53,20 @@ convex functions~\cite{rockafellar1970convex}.
 	
 	We have 
 	\begin{align*}
-	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}g_{t})-\vw^{\ast}\|^{2}\\
-	& =\|(\ov{w}_{t}-\alpha_{t}\ov{g}_{t}-\vw^{\ast})-\alpha_{t}(g_{t}-\ov{g}_{t})\|^{2}\\
+	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}\vg_{t})-\vw^{\ast}\|^{2}\\
+	& =\|(\ov{w}_{t}-\alpha_{t}\ov{g}_{t}-\vw^{\ast})-\alpha_{t}(\vg_{t}-\ov{g}_{t})\|^{2}\\
 	& =A_{1}+A_{2}+A_{3}
 	\end{align*}
 	where 
 	\begin{align*}
 	A_{1} & =\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2}\\
-	A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-g_{t}\rangle\\
-	A_{3} & =\alpha_{t}^{2}\|g_{t}-\ov{g}_{t}\|^{2}
+	A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-\vg_{t}\rangle\\
+	A_{3} & =\alpha_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
 	\end{align*}
-	$\mathbb{E}A_{2}=0$ by definition of $g_{t}$ and $\ov{g}_{t}$,
+	$\mathbb{E}A_{2}=0$ by definition of $\vg_{t}$ and $\ov{g}_{t}$,
 	while for $A_{3}$ we have
 	\begin{align*}
-	\alpha_{t}^{2}\mathbb{E}\|g_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|g_{t}-\mathbb{E}g_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 	\end{align*}
 	again by Jensen's inequality and using the independence of $g_{t,k},g_{t,k'}$. 
 	
@@ -104,13 +104,13 @@ convex functions~\cite{rockafellar1970convex}.
 	& 2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
 	& \leq2\alpha_{t}\left[F(\ov{w}_{t+1})-F(\ov{w}_{t})\right]\\
 	& \leq2\alpha_{t}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\ov{w}_{t+1}-\ov{w}_{t}\rangle+\alpha_{t}L\mathbb{E}\|\ov{w}_{t+1}-\ov{w}_{t}\|^{2}\\
-	& =-2\alpha_{t}^{2}\mathbb{E}\langle\nabla F(\ov{w}_{t}),g_{t}\rangle+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}\\
-	& =-2\alpha_{t}^{2}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\ov{g}_{t}\rangle+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}\\
-	& =-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\|\nabla F(\ov{w}_{t})-\ov{g}_{t}\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}\\
-	& =-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\|\nabla F(\ov{w}_{t})-\sum_{k}p_{k}\nabla F(\vw_{t}^{k})\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}\\
-	& \leq-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\sum_{k}p_{k}\|\nabla F(\ov{w}_{t})-\nabla F(\vw_{t}^{k})\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}\\
-	& \leq-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}\\
-	& \leq-\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
+	& =-2\alpha_{t}^{2}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\vg_{t}\rangle+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& =-2\alpha_{t}^{2}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\ov{g}_{t}\rangle+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& =-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\|\nabla F(\ov{w}_{t})-\ov{g}_{t}\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& =-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\|\nabla F(\ov{w}_{t})-\sum_{k}p_{k}\nabla F(\vw_{t}^{k})\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& \leq-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\sum_{k}p_{k}\|\nabla F(\ov{w}_{t})-\nabla F(\vw_{t}^{k})\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& \leq-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& \leq-\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
 	\end{align*}
 	where we have used the smoothness of $F$ twice. 
 	
@@ -120,9 +120,9 @@ convex functions~\cite{rockafellar1970convex}.
 	we have so far proved 
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-	& +\alpha_{t}^{2}L^{2}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|g_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
+	& +\alpha_{t}^{2}L^{2}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
 	\end{align*}
-	The term $\mathbb{E}\|g_{t}\|^{2}\leq G^{2}$ by assumption. 
+	The term $\mathbb{E}\|\vg_{t}\|^{2}\leq G^{2}$ by assumption. 
 	
 	Now we bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$.
 	Since communication is done every $E$ steps, for any $t\geq0$, we
@@ -142,12 +142,12 @@ convex functions~\cite{rockafellar1970convex}.
 	\begin{comment}
 	Alternatively, we can also write
 	\begin{align*}
-	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}g_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}g_{t-1,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}\left(\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\alpha_{t-1}g_{t-1}-\alpha_{t-1}g_{t-1,k}\|^{2}\right)
+	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}g_{t-1,k}\|^{2}\\
+	& \leq2\sum_{k=1}^{N}p_{k}\left(\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\alpha_{t-1}\vg_{t-1}-\alpha_{t-1}g_{t-1,k}\|^{2}\right)
 	\end{align*}
 	and write 
 	\begin{align*}
-	\sum_{k}p_{k}\|g_{t-1,k}-g_{t-1}\|^{2}\leq\sum_{k}p_{k}\|g_{t-1,k}\|^{2} & =\sum_{k}p_{k}\|g_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})+\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
+	\sum_{k}p_{k}\|g_{t-1,k}-\vg_{t-1}\|^{2}\leq\sum_{k}p_{k}\|g_{t-1,k}\|^{2} & =\sum_{k}p_{k}\|g_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})+\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
 	& \leq2\sum_{k}p_{k}\|g_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})\|^{2}+2\sum_{k}p_{k}\|\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
 	& \leq2\sum_{k}p_{k}\sigma_{k}^{2}+2\sum_{k}p_{k}\|\nabla F_{k}(\vw_{t-1}^{k})-\nabla F_{k}(\ov{w}_{t-1})+\nabla F_{k}(\ov{w}_{t-1})\|^{2}\\
 	& \leq2\sum_{k}p_{k}\sigma_{k}^{2}+4\sum_{k}p_{k}\left(\|\nabla F_{k}(\vw_{t-1}^{k})-\nabla F_{k}(\ov{w}_{t-1})\|^{2}+\|\nabla F_{k}(\ov{w}_{t-1})\|^{2}\right)\\
@@ -225,15 +225,15 @@ convex functions~\cite{rockafellar1970convex}.
 	\end{align*}
 	for our choice of $\alpha_{t}$ and $b$. Now to ensure 
 	\begin{align*}
-	\|w_{0}-\vw^{\ast}\|^{2} & \leq b\cdot(\alpha_{0}D+\alpha_{0}^{2}C)\\
+	\|\vw_{0}-\vw^{\ast}\|^{2} & \leq b\cdot(\alpha_{0}D+\alpha_{0}^{2}C)\\
 	& =b\cdot(\frac{4}{\mu\gamma}D+\frac{16}{\mu^{2}\gamma^{2}}C)
 	\end{align*}
-	we can simply scale $b$ by $c\|w_{0}-\vw^{\ast}\|^{2}$ for a constant
+	we can simply scale $b$ by $c\|\vw_{0}-\vw^{\ast}\|^{2}$ for a constant
 	$c$ large enough and the induction step still holds. 
 	
 	It follows that 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2} & \leq c\|w_{0}-\vw^{\ast}\|^{2}\frac{4}{\mu}(D\alpha_{t}+C\alpha_{t}^{2})
+	\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2} & \leq c\|\vw_{0}-\vw^{\ast}\|^{2}\frac{4}{\mu}(D\alpha_{t}+C\alpha_{t}^{2})
 	\end{align*}
 	for all $t\geq0$. 
 	
@@ -241,9 +241,9 @@ convex functions~\cite{rockafellar1970convex}.
 	\begin{align*}
 	& \mathbb{E}(F(\ov{w}_{T}))-F^{\ast}\\
 	& =\mathbb{E}(F(\ov{w}_{T})-F(\vw^{\ast}))\\
-	& \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}\leq\frac{L}{2}c\|w_{0}-\vw^{\ast}\|^{2}\frac{4}{\mu}(D\alpha_{T}+C\alpha_{T}^{2})\\
-	& =2c\|w_{0}-\vw^{\ast}\|^{2}\kappa(D\alpha_{T}+C\alpha_{T}^{2})\\
-	& \leq2c\|w_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{4}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{max}^{2}\sigma^{2}+5E^{2}LG^{2}\cdot(\frac{4}{\mu(T+\gamma)})^{2}\right]\\
+	& \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}\leq\frac{L}{2}c\|\vw_{0}-\vw^{\ast}\|^{2}\frac{4}{\mu}(D\alpha_{T}+C\alpha_{T}^{2})\\
+	& =2c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa(D\alpha_{T}+C\alpha_{T}^{2})\\
+	& \leq2c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{4}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{max}^{2}\sigma^{2}+5E^{2}LG^{2}\cdot(\frac{4}{\mu(T+\gamma)})^{2}\right]\\
 	& =O(\frac{\kappa}{\mu}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\cdot\frac{1}{T}+\frac{\kappa^{2}}{\mu}E^{2}G^{2}\cdot\frac{1}{T^{2}})
 	\end{align*}
 	
