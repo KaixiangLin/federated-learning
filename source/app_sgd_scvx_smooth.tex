@@ -66,9 +66,9 @@ convex functions~\cite{rockafellar1970convex}.
 	$\mathbb{E}A_{2}=0$ by definition of $\vg_{t}$ and $\ov{g}_{t}$,
 	while for $A_{3}$ we have
 	\begin{align*}
-	\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|\vg_{t,k}-\mathbb{E}\vg_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 	\end{align*}
-	again by Jensen's inequality and using the independence of $g_{t,k},g_{t,k'}$. 
+	again by Jensen's inequality and using the independence of $\vg_{t,k},g_{t,k'}$. 
 	
 	Next we bound $A_{1}$: 
 	\begin{align*}
@@ -92,7 +92,7 @@ convex functions~\cite{rockafellar1970convex}.
 	\begin{align*}
 	& -2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle\\
 	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle w_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
 	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
 	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}w_{t}^{k}-\vw^{\ast}\|^{2}\\
 	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
@@ -134,21 +134,21 @@ convex functions~\cite{rockafellar1970convex}.
 	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}-(\ov{w}_{t}-\ov{w}_{t_{0}})\|^{2}\\
 	& \leq\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2}\\
 	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw_{t_{0}}^{k}\|^{2}\\
-	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|-\sum_{i=t_{0}}^{t-1}\alpha_{i}g_{i,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}E\alpha_{i}^{2}\|g_{i,k}\|^{2}\\
+	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|-\sum_{i=t_{0}}^{t-1}\alpha_{i}\vg_{i,k}\|^{2}\\
+	& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}E\alpha_{i}^{2}\|\vg_{i,k}\|^{2}\\
 	& \leq2\sum_{k=1}^{N}p_{k}E^{2}\alpha_{t_{0}}^{2}G^{2}\\
 	& \leq4E^{2}\alpha_{t}^{2}G^{2}
 	\end{align*}
 	\begin{comment}
 	Alternatively, we can also write
 	\begin{align*}
-	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}g_{t-1,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}\left(\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\alpha_{t-1}\vg_{t-1}-\alpha_{t-1}g_{t-1,k}\|^{2}\right)
+	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
+	& \leq2\sum_{k=1}^{N}p_{k}\left(\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\alpha_{t-1}\vg_{t-1}-\alpha_{t-1}\vg_{t-1,k}\|^{2}\right)
 	\end{align*}
 	and write 
 	\begin{align*}
-	\sum_{k}p_{k}\|g_{t-1,k}-\vg_{t-1}\|^{2}\leq\sum_{k}p_{k}\|g_{t-1,k}\|^{2} & =\sum_{k}p_{k}\|g_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})+\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
-	& \leq2\sum_{k}p_{k}\|g_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})\|^{2}+2\sum_{k}p_{k}\|\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
+	\sum_{k}p_{k}\|\vg_{t-1,k}-\vg_{t-1}\|^{2}\leq\sum_{k}p_{k}\|\vg_{t-1,k}\|^{2} & =\sum_{k}p_{k}\|\vg_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})+\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
+	& \leq2\sum_{k}p_{k}\|\vg_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})\|^{2}+2\sum_{k}p_{k}\|\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
 	& \leq2\sum_{k}p_{k}\sigma_{k}^{2}+2\sum_{k}p_{k}\|\nabla F_{k}(\vw_{t-1}^{k})-\nabla F_{k}(\ov{w}_{t-1})+\nabla F_{k}(\ov{w}_{t-1})\|^{2}\\
 	& \leq2\sum_{k}p_{k}\sigma_{k}^{2}+4\sum_{k}p_{k}\left(\|\nabla F_{k}(\vw_{t-1}^{k})-\nabla F_{k}(\ov{w}_{t-1})\|^{2}+\|\nabla F_{k}(\ov{w}_{t-1})\|^{2}\right)\\
 	& \leq2\sigma^{2}+4\sum_{k}p_{k}\left(L^{2}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\nabla F_{k}(\ov{w}_{t-1})\|^{2}\right)
@@ -261,12 +261,12 @@ convex functions~\cite{rockafellar1970convex}.
 	The key is to bound $\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}$.
 	For sampling scheme I we have 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2} & =\frac{1}{K}\sum_{k}p_{k}\mathbb{E}\|w_{t+1}^{k}-\ov{w}_{t+1}\|^{2}\\
+	\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2} & =\frac{1}{K}\sum_{k}p_{k}\mathbb{E}\|\vw_{t+1}^{k}-\ov{w}_{t+1}\|^{2}\\
 	& \leq\frac{4}{K}\alpha_{t}^{2}E^{2}G^{2}
 	\end{align*}
 	while for sampling scheme II 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2} & =\frac{N-K}{N-1}\frac{1}{K}\sum_{k}p_{k}\mathbb{E}\|w_{t+1}^{k}-\ov{w}_{t+1}\|^{2}\\
+	\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2} & =\frac{N-K}{N-1}\frac{1}{K}\sum_{k}p_{k}\mathbb{E}\|\vw_{t+1}^{k}-\ov{w}_{t+1}\|^{2}\\
 	& \leq\frac{N-K}{N-1}\frac{4}{K}\alpha_{t}^{2}E^{2}G^{2}
 	\end{align*}
 	The same argument as the full participation case implies 
@@ -294,14 +294,14 @@ convex functions~\cite{rockafellar1970convex}.
 	Alternatively, show that 
 	\begin{align*}
 	\frac{1}{K}\sum_{k}p^{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2} & =O(\alpha_{t}^{2}G^{2}/K)\\
-	\sum_{k}p^{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}\le\sum_{k}p^{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2} & \leq\sum_{k}p^{k}\|-\alpha_{t_{0}}g_{t_{0},k}-\alpha_{t_{0}+1}g_{t_{0}+1,k}-\cdots-\alpha_{t-1}g_{t-1,k}\|^{2}\\
-	& =\sum_{k}p^{k}\|\alpha_{t_{0}}g_{t_{0},k}+\alpha_{t_{0}+1}g_{t_{0}+1,k}+\cdots+\alpha_{t-1}g_{t-1,k}\|^{2}\\
-	& =\sum_{k}p^{k}\|\alpha_{t_{0}}\nabla F_{k}(\ov{w}_{t_{0}},\xi_{t_{0}}^{k})+\alpha_{t_{0}}\nabla F_{k}(\ov{w}_{t_{0}}-\alpha_{t_{0}+1}\nabla F_{k}(\ov{w}_{t_{0}},\xi_{t_{0}}^{k}),\xi_{t_{0}+1}^{k})+\cdots+\alpha_{t-1}g_{t-1,k}\|^{2}
+	\sum_{k}p^{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}\le\sum_{k}p^{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2} & \leq\sum_{k}p^{k}\|-\alpha_{t_{0}}g_{t_{0},k}-\alpha_{t_{0}+1}g_{t_{0}+1,k}-\cdots-\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
+	& =\sum_{k}p^{k}\|\alpha_{t_{0}}g_{t_{0},k}+\alpha_{t_{0}+1}g_{t_{0}+1,k}+\cdots+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
+	& =\sum_{k}p^{k}\|\alpha_{t_{0}}\nabla F_{k}(\ov{w}_{t_{0}},\xi_{t_{0}}^{k})+\alpha_{t_{0}}\nabla F_{k}(\ov{w}_{t_{0}}-\alpha_{t_{0}+1}\nabla F_{k}(\ov{w}_{t_{0}},\xi_{t_{0}}^{k}),\xi_{t_{0}+1}^{k})+\cdots+\alpha_{t-1}\vg_{t-1,k}\|^{2}
 	\end{align*}
 	The intuition is to approximate with the sequence starting at $w^{\ast}$,
 	i.e. 
 	\begin{align*}
-	\sum_{k}p^{k}\|\alpha_{t_{0}}\nabla F_{k}(\vw^{\ast},\xi_{t_{0}}^{k})+\alpha_{t_{0}+1}\nabla F_{k}(\vw^{\ast}-\alpha_{t_{0}+1}\nabla F_{k}(\vw^{\ast},\xi_{t_{0}}^{k}),\xi_{t_{0}+1}^{k})+\cdots+\alpha_{t-1}g_{t-1,k}\|^{2} & \approx\\
+	\sum_{k}p^{k}\|\alpha_{t_{0}}\nabla F_{k}(\vw^{\ast},\xi_{t_{0}}^{k})+\alpha_{t_{0}+1}\nabla F_{k}(\vw^{\ast}-\alpha_{t_{0}+1}\nabla F_{k}(\vw^{\ast},\xi_{t_{0}}^{k}),\xi_{t_{0}+1}^{k})+\cdots+\alpha_{t-1}\vg_{t-1,k}\|^{2} & \approx\\
 	\end{align*}
 	since $\ov{w}_{t_{0}}\approx w^{\ast}+\frac{1}{t_{0}}$. We
 	can take 

@@ -34,8 +34,8 @@ required for convergence may increase with \$N\$.
 \end{comment}
 
 \begin{proof}
-Define the virtual sequences $\ov{v}_{t}=\sum_{k=1}^{N}p_{k}v_{t}^{k}$,
-$\ov{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\ov{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$.
+Define the virtual sequences $\ov{v}_{t}=\sum_{k=1}^{N}p_{k}\vv_{t}^{k}$,
+$\ov{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\ov{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}\vg_{t,k}$.
 We have $\mathbb{E}\vg_{t}=\ov{g}_{t}$ and $\ov{v}_{t+1}=\ov{w}_{t}-\alpha_{t}\vg_{t}$,
 and $\ov{w}_{t+1}=\ov{v}_{t+1}$ for all $t$. The proof
 again uses the $L$-smoothness of $F$ to bound 
@@ -64,9 +64,9 @@ A_{3} & =\alpha_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
 $\mathbb{E}A_{2}=0$ by definition of $\vg_{t}$ and $\ov{g}_{t}$,
 while for $A_{3}$ we have
 \begin{align*}
-\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|g_{t,k}-\mathbb{E}g_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|\vg_{t,k}-\mathbb{E}\vg_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 \end{align*}
-again by Jensen's inequality and using the independence of $g_{t,k},g_{t,k'}$. 
+again by Jensen's inequality and using the independence of $\vg_{t,k},g_{t,k'}$. 
 
 Next we bound $A_{1}$: 
 \begin{align*}
@@ -104,31 +104,31 @@ and $\beta_{t}\leq\alpha_{t}$ for any $t-t_{0}\leq E-1$, we have
 \mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}-(\ov{w}_{t}-\ov{w}_{t_{0}})\|^{2}\\
 & \leq\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2}\\
 & =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw_{t_{0}}^{k}\|^{2}\\
-& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\sum_{i=t_{0}}^{t-1}\beta_{i}(v_{i+1}^{k}-v_{i}^{k})-\sum_{i=t_{0}}^{t-1}\alpha_{i}g_{i,k}\|^{2}\\
-& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}\|g_{i,k}\|^{2}+2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\beta_{i}^{2}\|(v_{i+1}^{k}-v_{i}^{k})\|^{2}\\
-& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}(\|g_{i,k}\|^{2}+\|(v_{i+1}^{k}-v_{i}^{k})\|^{2})\\
+& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\sum_{i=t_{0}}^{t-1}\beta_{i}(\vv_{i+1}^{k}-\vv_{i}^{k})-\sum_{i=t_{0}}^{t-1}\alpha_{i}\vg_{i,k}\|^{2}\\
+& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}\|\vg_{i,k}\|^{2}+2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\beta_{i}^{2}\|(\vv_{i+1}^{k}-\vv_{i}^{k})\|^{2}\\
+& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}(\|\vg_{i,k}\|^{2}+\|(\vv_{i+1}^{k}-\vv_{i}^{k})\|^{2})\\
 & \leq4\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}(E-1)\alpha_{i}^{2}G^{2}\\
 & \leq4(E-1)^{2}\alpha_{t_{0}}^{2}G^{2}\leq16(E-1)^{2}\alpha_{t}^{2}G^{2}
 \end{align*}
-where we have used $\mathbb{E}\|v_{t}^{k}-v_{t-1}^{k}\|^{2}\leq G^{2}$.
+where we have used $\mathbb{E}\|\vv_{t}^{k}-\vv_{t-1}^{k}\|^{2}\leq G^{2}$.
 To see this identity for appropriate $\alpha_{t},\beta_{t}$, note
 the recursion 
 \begin{align*}
-v_{t+1}^{k}-v_{t}^{k} & =w_{t}^{k}-\vw_{t-1}^{k}-(\alpha_{t}g_{t,k}-\alpha_{t-1}g_{t-1,k})\\
-w_{t+1}^{k}-\vw_{t}^{k} & =-\alpha_{t}g_{t,k}+\beta_{t}(v_{t+1}^{k}-v_{t}^{k})
+\vv_{t+1}^{k}-\vv_{t}^{k} & =\vw_{t}^{k}-\vw_{t-1}^{k}-(\alpha_{t}\vg_{t,k}-\alpha_{t-1}\vg_{t-1,k})\\
+\vw_{t+1}^{k}-\vw_{t}^{k} & =-\alpha_{t}\vg_{t,k}+\beta_{t}(\vv_{t+1}^{k}-\vv_{t}^{k})
 \end{align*}
 so that 
 \begin{align*}
-v_{t+1}^{k}-v_{t}^{k} & =-\alpha_{t-1}g_{t-1,k}+\beta_{t-1}(v_{t}^{k}-v_{t-1}^{k})-(\alpha_{t}g_{t,k}-\alpha_{t-1}g_{t-1,k})\\
-& =\beta_{t-1}(v_{t}^{k}-v_{t-1}^{k})-\alpha_{t}g_{t,k}
+\vv_{t+1}^{k}-\vv_{t}^{k} & =-\alpha_{t-1}\vg_{t-1,k}+\beta_{t-1}(\vv_{t}^{k}-\vv_{t-1}^{k})-(\alpha_{t}\vg_{t,k}-\alpha_{t-1}\vg_{t-1,k})\\
+& =\beta_{t-1}(\vv_{t}^{k}-\vv_{t-1}^{k})-\alpha_{t}\vg_{t,k}
 \end{align*}
-Since the identity $v_{t+1}^{k}-v_{t}^{k}=\beta_{t-1}(v_{t}^{k}-v_{t-1}^{k})-\alpha_{t}g_{t,k}$
+Since the identity $\vv_{t+1}^{k}-\vv_{t}^{k}=\beta_{t-1}(\vv_{t}^{k}-\vv_{t-1}^{k})-\alpha_{t}\vg_{t,k}$
 implies 
 \begin{align*}
-\mathbb{E}\|v_{t+1}^{k}-v_{t}^{k}\|^{2} & \leq2\beta_{t-1}^{2}\mathbb{E}\|v_{t}^{k}-v_{t-1}^{k}\|^{2}+2\alpha_{t}^{2}G^{2}
+\mathbb{E}\|\vv_{t+1}^{k}-\vv_{t}^{k}\|^{2} & \leq2\beta_{t-1}^{2}\mathbb{E}\|\vv_{t}^{k}-\vv_{t-1}^{k}\|^{2}+2\alpha_{t}^{2}G^{2}
 \end{align*}
 as long as $\alpha_{t},\beta_{t-1}$ satisfy $2\beta_{t-1}^{2}+2\alpha_{t}^{2}\leq1/2$,
-we can guarantee that $\mathbb{E}\|v_{t}^{k}-v_{t-1}^{k}\|^{2}\leq G^{2}$
+we can guarantee that $\mathbb{E}\|\vv_{t}^{k}-\vv_{t-1}^{k}\|^{2}\leq G^{2}$
 for all $k$ by induction. This together with Jensen's inequality
 also gives $\mathbb{E}\|\ov{v}_{t}-\ov{v}_{t-1}\|^{2}\leq G^{2}$
 for all $t$. 
@@ -208,8 +208,8 @@ Similarly
 \end{align*}
 where we have used $\frac{t+\gamma-2}{(t+\gamma)^{3}}\leq\frac{1}{(t+\gamma+1)^{2}}$.
 
-Finally, to ensure $\|v_{0}-\vw^{\ast}\|^{2}\leq b(C\alpha_{0}^{2}+D\alpha_{0})$,
-we can rescale $b$ by $c\|v_{0}-\vw^{\ast}\|^{2}$ for some $c.$ It
+Finally, to ensure $\|\vv_{0}-\vw^{\ast}\|^{2}\leq b(C\alpha_{0}^{2}+D\alpha_{0})$,
+we can rescale $b$ by $c\|\vv_{0}-\vw^{\ast}\|^{2}$ for some $c.$ It
 follows that $\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2}\leq b(C\alpha_{t}^{2}+D\alpha_{t})$
 for all $t$. Thus 
 
