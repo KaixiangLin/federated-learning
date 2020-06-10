@@ -61,7 +61,7 @@
 \begin{document}
 
 \maketitle
-
+\tableofcontents
 % \begin{abstract}
 % \end{abstract}
 
@@ -72,6 +72,26 @@
 % \newpage
 \appendix
 \input{sec_appendix}
+
+
+\begin{assumption}[L-smooth]
+	$F_{1}, \cdots, F_{N}$ are all $L$-smooth: for all  $\mathbf{v}$  and $\mathbf{w}$, $F_{k}(\mathbf{v}) \leq F_{k}(\mathbf{w})+(\mathbf{v}- \\ \mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{L}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$.
+	\label{ass:lsmooth}
+\end{assumption}
+\begin{assumption}[Strongly-convex]
+	$	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v and } \mathbf{w}, F_{k}(\mathbf{v}) \geq F_{k}(\mathbf{w})+(\mathbf{v}-\mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{\mu}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$
+	\label{ass:stroncvx}
+\end{assumption}
+\begin{assumption}[Bounded local variance]
+	Let $\xi_{t}^{k}$ be sampled from the $k$-th device's local data uniformly at random. The variance of stochastic gradients in each device is bounded: $\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)-\nabla F_{k}\left(\mathbf{w}_{t}^{k}\right)\right\|^{2} \leq \sigma_{k}^{2}$,
+	for $k=1, \cdots, N$ and any $\mathbf{w}_{t}^{k}$. Let $\sigma^2=\sum_{k=1}^{N}p_k\sigma_{k}^{2}$.
+	\label{ass:boundedvariance}
+\end{assumption}
+\begin{assumption}[Bounded local gradient]
+	The expected squared norm of stochastic gradients is uniformly bounded. i.e.,
+	$\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)\right\|^{2} \leq G^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.
+	\label{ass:subgrad2}
+\end{assumption}
 
 
 \bibliographystyle{unsrt}
