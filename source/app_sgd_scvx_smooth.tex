@@ -39,7 +39,7 @@ convex functions~\cite{rockafellar1970convex}.
 \end{thm}
 
 \begin{proof}
-	The first step is to observe that the $L$-smoothness of $F$ provides
+	The proof builds on ideas from~\cite{li2019convergence}. The first step is to observe that the $L$-smoothness of $F$ provides
 	the upper bound
 	\begin{align*}
 	\mathbb{E}(F(\ov{w}_{t}))-F^{\ast} & =\mathbb{E}(F(\ov{w}_{t})-F(\vw^{\ast}))\\
@@ -125,7 +125,7 @@ convex functions~\cite{rockafellar1970convex}.
 	\end{align*}
 	The term $\mathbb{E}\|\vg_{t}\|^{2}\leq G^{2}$ by assumption. 
 	
-	Now we bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$.
+	Now we bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$ following \cite{li2019convergence}.
 	Since communication is done every $E$ steps, for any $t\geq0$, we
 	can find a $t_{0}\leq t$ such that $t-t_{0}\leq E-1$ and $\vw_{t_{0}}^{k}=\ov{w}_{t_{0}}$for
 	all $k$. Moreover, using $\alpha_{t}$ is non-increasing and $\alpha_{t_{0}}\leq2\alpha{}_{t}$
