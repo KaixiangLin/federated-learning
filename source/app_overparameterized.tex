@@ -305,7 +305,7 @@ A useful observation is that we can use $\mathbf{w}^{\ast T}\mathbf{x}_{k}^{j}-\
 to rewrite the local objectives as $F_{k}(\mathbf{w})=\frac{1}{2}\langle\mathbf{w}-\mathbf{w}^{\ast},\vH^{k}(\mathbf{w}-\mathbf{w}^{\ast})\rangle\equiv\frac{1}{2}\|\mathbf{w}-\mathbf{w}^{\ast}\|_{\vH^{k}}^{2}$:
 \begin{align*}
 F_{k}(\vw) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\vw^{T}x_{k,j}-\vz_{k,j}-(\vw^{\ast T}\vx_{k,j}-\vz_{k,j}))^{2}=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((\vw-\vw^{\ast})^{T}\vx_{k,j})^{2}\\
-& =\frac{1}{2}\langle \vw-\vw^{\ast},\vH^{k}(\vw-\vw^{\ast})\rangle=\frac{1}{2}\|w-\vw^{\ast}\|_{\vH^{k}}^{2}
+& =\frac{1}{2}\langle \vw-\vw^{\ast},\vH^{k}(\vw-\vw^{\ast})\rangle=\frac{1}{2}\|\vw-\vw^{\ast}\|_{\vH^{k}}^{2}
 \end{align*}
 
 so that $F(\mathbf{w})=\frac{1}{2}\|\mathbf{w}-\mathbf{w}^{\ast}\|_{H}^{2}$.
@@ -542,7 +542,7 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 		per-device result again starting at $t=E$ instead of $t=0$, for
 		each device we have the bound
 		\begin{align*}
-		\mathbb{E}\left[\|\vv_{2E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|u_{2E}^{k}-\eta g_{2E,k}-\vw^{\ast}\|^{2}\right] & \leq(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|w_{E}^{k}-\vw^{\ast}\|^{2})\\
+		\mathbb{E}\left[\|\vv_{2E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|u_{2E}^{k}-\eta g_{2E,k}-\vw^{\ast}\|^{2}\right] & \leq(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|\vw_{E}^{k}-\vw^{\ast}\|^{2})\\
 		& =(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|\ov{w}_{E}-\vw^{\ast}\|^{2})
 		\end{align*}
 		
@@ -571,7 +571,7 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 		Now we prove the result for partial device participation. Note that
 		now 
 		\begin{align*}
-		\mathbb{E}\left[\|\vv_{2E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|u_{2E}^{k}-\eta g_{2E,k}-\vw^{\ast}\|^{2}\right] & \leq(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|w_{E}^{k}-\vw^{\ast}\|^{2})\\
+		\mathbb{E}\left[\|\vv_{2E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|u_{2E}^{k}-\eta g_{2E,k}-\vw^{\ast}\|^{2}\right] & \leq(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|\vw_{E}^{k}-\vw^{\ast}\|^{2})\\
 		& =(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|\frac{1}{K}\sum_{j}\tilde{w}_{E,j}-\vw^{\ast}\|^{2})
 		\end{align*}
 		where $\tilde{w}_{E,j}$'s are i.i.d. drawn from the discrete distribution
@@ -600,7 +600,7 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 		\end{align*}
 		Thus 
 		\begin{align*}
-		\mathbb{E}\left[\|\vv_{2E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|u_{2E}^{k}-\eta g_{2E,k}-\vw^{\ast}\|^{2}\right] & \leq(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|w_{E}^{k}-\vw^{\ast}\|^{2})\\
+		\mathbb{E}\left[\|\vv_{2E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|u_{2E}^{k}-\eta g_{2E,k}-\vw^{\ast}\|^{2}\right] & \leq(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|\vw_{E}^{k}-\vw^{\ast}\|^{2})\\
 		& =(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|\frac{1}{K}\sum_{j}\tilde{w}_{E,j}-\vw^{\ast}\|^{2})\\
 		& \leq(1-\alpha)^{E}\mathbb{E}(\|v_{E}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|\ov{w}_{E}-\vw^{\ast}\|^{2})+\frac{4}{K}(1-\alpha)^{2E}\sum_{k=1}^{N}p_{k}(\|v_{0}^{k}-\vw^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|\vw_{0}^{k}-\vw^{\ast}\|^{2})
 		\end{align*}
