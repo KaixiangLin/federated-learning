@@ -282,8 +282,7 @@
 We first provide details on quantities used in the proof of results on linear regression in Section~\ref{sec:overparameterized} in the main text. The local device objectives are now given by the sum of squares {\small$F_{k}(\mathbf{w})=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{w}^{T}\mathbf{x}_{k}^{j}-z_{k}^{j})^{2}$},
 and there exists $\mathbf{w}^{\ast}$ such that $F(\mathbf{w}^{\ast})\equiv0$. 
 Define the local Hessian matrix as $H^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}$, and the stochastic Hessian matrix as $\tilde{H}_{t}^{k}:=\xi_{t}^{k}(\xi_{t}^{k})^{T}$, where $\xi_{t}^{k}$ is the stochastic sample on the $k$th device at
-time $t$. 
-for all $k$. Define $l$ to be the smallest positive number such that $\mathbb{E}\|\xi_{t}^{k}\|^{2}$$\mathbf{\xi}_{t}^{k}$($\mathbf{\xi}_{t}^{k})^{T}\preceq lH^{k}$. Note that $l\leq\max_{k,j}\|\mathbf{x}_{k}^{j}\|^{2}$.
+time $t$. Define $l$ to be the smallest positive number such that $\mathbb{E}\|\xi_{t}^{k}\|^{2}$$\mathbf{\xi}_{t}^{k}$($\mathbf{\xi}_{t}^{k})^{T}\preceq lH^{k}$ for all $k$. Note that $l\leq\max_{k,j}\|\mathbf{x}_{k}^{j}\|^{2}$.
 Let $L$ and $\mu$ be lower and upper bounds of non-zero eigenvalues
 of $H^{k}$. Define $\kappa_{1}:=l/\mu$ and $\kappa:=L/\mu$. 
 
@@ -481,23 +480,40 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	
 	\subsection{Geometric Convergence of FedMaSS for Overparameterized Linear Regression}
 	
-	We now present the exponential convergence result in linear regression
-	using FedAvg with MaSS updates. On each device, local data is stored
-	and mini-batch gradient descent with batch size $m$ is performed.
-	We assume that the batch size is the same across devices. 
 	\begin{thm}
-	(FedAvg with MaSS, Linear Regression) For the overparamterized quadratic
-	problem, FedAvg with local MaSS updates and communication every $E$
-	iterations with constant step sizes 
+	For the overparamterized linear regression problem, FedMaSS with communication every $E$ iterations and constant
+	step sizes $\overline{\eta}_1=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}),\overline{\eta}_{2}=\frac{\overline{\eta}_{1}(1-\frac{1}{\tilde{\kappa}})}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}},\overline{\gamma}=\frac{1-\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}$
+	has geometric convergence:
 	\begin{align*}
-	\eta_{t}=\frac{1}{4E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}, & \alpha_{t}=\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}},\delta_{t}=\frac{\eta_{t}}{\alpha_{t}\tilde{\kappa}}
-	\end{align*}
-	gives the exponential convergence guarantee 
-	\begin{align*}
-	\mathbb{E}F(\overline{w}_{t}) & \leq C(1-\frac{1}{4E}\frac{N}{l\nu_{\max}\sqrt{\kappa_{1}\tilde{\kappa}}+(N-\nu_{\min})})^{t}\|w_{0}-w^{\ast}\|^{2}
+	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\mathcal{O}\left(L\exp(-\frac{NT}{E(\nu_{\max}\sqrt{\kappa_{1}\tilde{\kappa}}+(N-\nu_{\min}))})\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 	\end{align*}
 	\end{thm}
 	\begin{proof}
+		
+		Note that the update can equivalently be written as 
+		\begin{align*}
+		v_{t+1}^{k} & =(1-\alpha^{k})v_{t}^{k}+\alpha^{k}u_{t}^{k}-\delta^{k}g_{t,k}\\
+		w_{t+1}^{k} & =\begin{cases}
+		u_{t}^{k}-\eta^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
+		\sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
+		\end{cases}\\
+		u_{t+1}^{k} & =\frac{\alpha^{k}}{1+\alpha^{k}}v_{t+1}^{k}+\frac{1}{1+\alpha^{k}}w_{t+1}^{k}
+		\end{align*}
+		where there is a bijection between the parameters $\frac{1-\alpha^{k}}{1+\alpha^{k}}=\gamma^{k},\eta^{k}=\eta_{1}^{k},\frac{\eta^{k}-\alpha^{k}\delta^{k}}{1+\alpha^{k}}=\eta_{2}^{k}$,
+		and we further introduce an auxiliary parameter $v_{t}^{k}$, which
+		is initialized at $v_{0}^{k}$. We also note that when $\delta^{k}=\frac{\eta^{k}}{\alpha^{k}}$,
+		the update reduces to the Nesterov accelerated SGD. This version of
+		the FedAvg algorithm with local MaSS updates is used for analyzing
+		the geometric convergence. 
+		
+		As before, define the virtual sequences $\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$,
+		$\overline{v}_{t}=\sum_{k=1}^{N}p_{k}v_{t}^{k}$, $\overline{u}_{t}=\sum_{k=1}^{N}p_{k}u_{t}^{k}$,
+		and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$. We have
+		$\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{w}_{t+1}=\overline{u}_{t}-\eta_{t}g_{t}$,
+		$\overline{v}_{t+1}=(1-\alpha^{k})\overline{v}_{t}+\alpha^{k}\overline{w}_{t}-\delta^{k}g_{t}$,
+		and $\overline{u}_{t+1}=\frac{\alpha^{k}}{1+\alpha^{k}}\overline{v}_{t+1}+\frac{1}{1+\alpha^{k}}\overline{w}_{t+1}$.
+
+		
 		We first prove the convergence for full device participation. Note
 		that at each communication round we update the $w_{t+1}^{k}$ parameters
 		to be the average across devices while fixing $v_{t+1}^{k}$. This
@@ -510,7 +526,7 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 		the same for all devices: $\delta_{m}\equiv\delta$, $\alpha_{m}\equiv\alpha$,
 		and $\eta_{m}\equiv\eta$. 
 		
-		Theorems 2 and 3 of the Liu\&Belkin paper give the bound 
+		Theorems 2 and 3 of \cite{liu2018accelerating} give the bound 
 		\begin{align*}
 		\mathbb{E}\left[\|v_{E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|u_{E}^{k}-\eta g_{E,k}-w^{\ast}\|^{2}\right] & \leq(1-\alpha)^{E}(\|v_{0}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|w_{0}^{k}-w^{\ast}\|^{2})
 		\end{align*}
@@ -603,100 +619,5 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 		\mathbb{E}\left[\sum_{k=1}^{N}p_{k}\|v_{t}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|\overline{w}_{t}-w^{\ast}\|^{2}\right] & \leq(1+\frac{4}{K}\cdot(\frac{t}{E}-1))\cdot(1-\alpha)^{t}\sum_{k=1}^{N}p_{k}(\|v_{0}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta}{\alpha}\|w_{0}^{k}-w^{\ast}\|^{2})
 		\end{align*}
 		
-		Next we show the linear speedup. Recall the iteration
-		\begin{align*}
-		v_{t+1}^{k} & =(1-\alpha^{k})v_{t}^{k}+\alpha^{k}u_{t}^{k}-\delta^{k}g_{t,k}\\
-		w_{t+1}^{k} & =\begin{cases}
-		u_{t}^{k}-\eta^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
-		\sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
-		\end{cases}\\
-		u_{t+1}^{k} & =\frac{\alpha^{k}}{1+\alpha^{k}}v_{t+1}^{k}+\frac{1}{1+\alpha^{k}}w_{t+1}^{k}
-		\end{align*}
 		
-		We first show that when $E=1$ and that during the broadcasting round
-		all of $v,w,u$ are averaged across devices so that $v_{t}^{k}\equiv\overline{v}_{t}$,
-		$w_{t}^{k}\equiv\overline{w}_{t}$, and $u_{t}^{k}\equiv\overline{u}_{t}$
-		for all $t$, we have
-		\begin{align*}
-		\mathbb{E}\|\overline{v}_{t}-w^{\ast}\|_{H^{-1}}^{2}+\frac{\delta}{\alpha}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq C\cdot(1-\frac{1}{\sqrt{\kappa_{N}\tilde{\kappa}_{N}}})^{t}
-		\end{align*}
-		where $N$ is the number of devices and $H=\sum_{k=1}^{N}p_{k}H^{k}$.
-		Proof should be same as Belkin paper. 
-		
-		Given the result for $E=1$, if at step $t$ we average over all devices,
-		and obtain updates using the broadcast parameters, then we have
-		\begin{align*}
-		\mathbb{E}\|\overline{v}_{t}-w^{\ast}\|_{H^{-1}}^{2}+\frac{\delta}{\alpha}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq(1-\alpha)\cdot(\|\overline{v}_{t-1}-w^{\ast}\|_{H^{-1}}^{2}+\frac{\delta}{\alpha}\|\overline{w}_{t-1}-w^{\ast}\|^{2})+(\alpha/\mu-\delta)\|\overline{u}_{t}-w^{\ast}\|^{2}\\
-		& +(\delta^{2}\tilde{\kappa}_{m}+\delta\eta^{2}L_{m}/\alpha-2\eta\delta/\alpha)\|\overline{u}_{t}-w^{\ast}\|_{H}^{2}
-		\end{align*}
-		Starting at $t_{0}$, we update local parameters based on stochastic
-		gradient evaluated at local parameter, rather than global paramter.
-		We will need to compare $\mathbb{E}\|\overline{v}_{t+1}-w^{\ast}\|_{H^{-1}}^{2}+\frac{\delta}{\alpha}\|\overline{w}_{t+1}-w^{\ast}\|^{2}$
-		with the quantity resulting from communicating at $t$. 
-		
-		Then 
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta g_{t,k}-w^{\ast}\|^{2}\\
-		& =\|\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(u{}_{t}^{k}-w^{\ast})-w^{\ast}\|^{2}\\
-		& =\|\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(\overline{u}_{t}-w^{\ast}+u_{t}^{k}-\overline{u}_{t})\|^{2}\\
-		& =\|\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(\overline{u}_{t}-w^{\ast})-w^{\ast}\|^{2}+\|\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(u_{t}^{k}-\overline{u}_{t})\|^{2}-2\langle\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(\overline{u}_{t}-w^{\ast}),\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(u_{t}^{k}-\overline{u}_{t})\rangle
-		\end{align*}
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & =\|\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta g_{t,k}-w^{\ast}\|^{2}\\
-		& =\|\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(u{}_{t}^{k}-w^{\ast})-w^{\ast}\|^{2}\\
-		& =\|\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(\overline{u}_{t}-w^{\ast}+u_{t}^{k}-\overline{u}_{t})\|^{2}\\
-		& =\|\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(\overline{u}_{t}-w^{\ast})-w^{\ast}\|^{2}+\|\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(u_{t}^{k}-\overline{u}_{t})\|^{2}-2\langle\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(\overline{u}_{t}-w^{\ast}),\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(u_{t}^{k}-\overline{u}_{t})\rangle
-		\end{align*}
-		and conditioning on $\overline{u}_{t}$, the last term vanishes.
-		Also %
-		\begin{comment}
-		\begin{align*}
-		\|\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(u_{t}^{k}-\overline{u}_{t})\|^{2} & \leq\frac{\alpha^{k}}{1+\alpha^{k}}\|\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(v_{t}^{k}-\overline{v}_{t})\|^{2}+\frac{1}{1+\alpha^{k}}\|\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(w_{t}^{k}-\overline{w}_{t})\|^{2}
-		\end{align*}
-		and
-		\end{comment}
-		\begin{align*}
-		\|\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(u_{t}^{k}-\overline{u}_{t})\|^{2} & \leq2\eta^{2}\|\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(u_{t}^{k}-w^{\ast})\|^{2}+2\eta^{2}\|\overline{u}_{t}-w^{\ast}\|_{H}^{2}\\
-		& \leq4\eta^{2}L_{m}(E-1)^{2}\|\overline{u}_{t}-w^{\ast}\|_{H}^{2}
-		\end{align*}
-		{} since 
-		\begin{align*}
-		\|\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(v_{t}^{k}-\overline{v}_{t})\|^{2} & =\|\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}\delta(g_{t-1,k}-\overline{g}_{t-1})\|^{2}\\
-		& =\delta^{2}\eta^{2}\|\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(g_{t-1,k}-\overline{g}_{t-1})\|^{2}
-		\end{align*}
-		and 
-		\begin{align*}
-		\|\sum_{k}p_{k}\tilde{H}_{t}^{k}(g_{t-1,k}-\overline{g}_{t-1})\|^{2} & =\|\sum_{k}p_{k}\tilde{H}_{t}^{k}\tilde{H}_{t-1}^{k}(\overline{u}_{t-1}-w^{\ast})-\sum_{k}p_{k}\tilde{H}_{t}^{k}\sum_{k'=1}^{N}p_{k'}\tilde{H}_{t-1}^{k'}(\overline{u}_{t-1}-w^{\ast})\|^{2}\\
-		& \leq\sum_{k}p_{k}\|\tilde{H}_{t-1}^{k}(\overline{u}_{t-1}-w^{\ast})-\sum_{k'=1}^{N}p_{k'}\tilde{H}_{t-1}^{k'}(\overline{u}_{t-1}-w^{\ast})\|_{\tilde{H}_{t-1}^{k}}^{2}\\
-		& \leq4\eta^{2}L_{m}(E-1)^{2}\|\overline{u}_{t}-w^{\ast}\|_{H}^{2}
-		\end{align*}
-		c.f. strong convexitty smooth proof. 
-		
-		Similarly, 
-		\begin{align*}
-		\mathbb{E}\|\overline{v}_{t+1}-w^{\ast}\|_{H^{-1}}^{2} & =\|(1-\alpha^{k})\overline{v}_{t}^{k}+\alpha^{k}\overline{u}_{t}^{k}-\delta\sum_{k}p_{k}\tilde{H}_{t}^{k}(u_{t}^{k}-w^{\ast})-w^{\ast}\|_{H^{-1}}^{2}\\
-		& =\|(1-\alpha^{k})\overline{v}_{t}^{k}+\alpha^{k}\overline{u}_{t}^{k}-\delta\sum_{k}p_{k}\tilde{H}_{t}^{k}(\overline{u}_{t}-w^{\ast})-w^{\ast}\|_{H^{-1}}^{2}+\|\delta\sum_{k}p_{k}\tilde{H}_{t}^{k}(\overline{u}_{t}-u_{t}^{k})\|_{H^{-1}}^{2}
-		\end{align*}
-		and 
-		\begin{align*}
-		\|\delta\sum_{k}p_{k}\tilde{H}_{t}^{k}(\overline{u}_{t}-u_{t}^{k})\|_{H^{-1}}^{2} & \leq4\delta^{2}(E-1)^{2}\|\overline{u}_{t}-w^{\ast}\|_{H}^{2}
-		\end{align*}
-		since we have 
-		\begin{align*}
-		\frac{\delta}{\alpha}\|\overline{u}_{t}-\sum_{k=1}^{N}p_{k}\eta\tilde{H}_{t}^{k}(\overline{u}_{t}-w^{\ast})-w^{\ast}\|^{2}+\|(1-\alpha^{k})\overline{v}_{t}^{k}+\alpha^{k}\overline{u}_{t}^{k}-\delta\sum_{k}p_{k}\tilde{H}_{t}^{k}(\overline{u}_{t}-w^{\ast})-w^{\ast}\|_{H^{-1}}^{2}\\
-		\leq(1-\alpha)\cdot(\|\overline{v}_{t}-w^{\ast}\|_{H^{-1}}^{2}+\frac{\delta}{\alpha}\|\overline{w}_{t}-w^{\ast}\|^{2})+(\alpha/\mu-\delta)\|\overline{u}_{t}-w^{\ast}\|^{2}\\
-		+(\delta^{2}\tilde{\kappa}_{m}+\delta\eta^{2}L_{m}/\alpha-2\eta\delta/\alpha)\|\overline{u}_{t}-w^{\ast}\|_{H}^{2}
-		\end{align*}
-		so that 
-		\begin{align*}
-		\frac{\delta}{\alpha}\|\overline{w}_{t+1}-w^{\ast}\|^{2}+\|\overline{v}_{t+1}-w^{\ast}\|_{H^{-1}}^{2} & \leq(1-\alpha)\cdot(\|\overline{v}_{t}-w^{\ast}\|_{H^{-1}}^{2}+\frac{\delta}{\alpha}\|\overline{w}_{t}-w^{\ast}\|^{2})+(\alpha/\mu-\delta)\|\overline{u}_{t}-w^{\ast}\|^{2}\\
-		& +(\delta^{2}\tilde{\kappa}_{m}+\delta\eta^{2}L_{m}/\alpha-2\eta\delta/\alpha+4\delta^{2}(E-1)^{2}+4\eta^{2}(E-1)^{2})\|\overline{u}_{t}-w^{\ast}\|_{H}^{2}\\
-		& \leq(1-\alpha)\cdot(\|\overline{v}_{t}-w^{\ast}\|_{H^{-1}}^{2}+\frac{\delta}{\alpha}\|\overline{w}_{t}-w^{\ast}\|^{2})
-		\end{align*}
-		for $\alpha=\frac{1}{\sqrt{(\kappa_{N}+(E-1)^{2})(\tilde{\kappa}_{N}+(E-1)^{2})}}$.
-		This implies that if $N=O(\min(L_{1}/L,\tilde{\kappa}))$, and $(E-1)^{2}\leq\min(\kappa_{N},\tilde{\kappa}_{N})$,
-		the convergence rate is given by 
-		\begin{align*}
-		\|\overline{w}_{t+1}-w^{\ast}\|^{2} & \leq C\cdot\exp(-\frac{Nt}{4\sqrt{\kappa_{1}\tilde{\kappa}}})
-		\end{align*}
 	\end{proof}
