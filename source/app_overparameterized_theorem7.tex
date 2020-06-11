@@ -12,7 +12,7 @@ has geometric convergence:
 \end{thm}
 \begin{proof}
 	
-	Note that the update can equivalently be written as 
+	The proof is based on results in~\cite{liu2018accelerating} which originally proposed the MaSS algorithm. Note that the update can equivalently be written as 
 	\begin{align*}
 	\mathbf{v}_{t+1}^{k} & =(1-\alpha^{k})\mathbf{v}_{t}^{k}+\alpha^{k}\mathbf{u}_{t}^{k}-\delta^{k}\vg_{t,k}\\
 	\mathbf{w}_{t+1}^{k} & =\begin{cases}
@@ -47,7 +47,7 @@ has geometric convergence:
 	& \underset{C}{\underbrace{-2\delta\langle\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vw^{\ast}),(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\rangle_{\vH^{-1}}}}\\
 	& -2\delta\langle\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\vu_{t}^{k}-\ov{u}_{t}),(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\rangle_{\vH^{-1}}
 	\end{align*}
-	Following the proof in, 
+	Following the proof in~\cite{liu2018accelerating}, 
 	\begin{align*}
 	\mathbb{E}A & \leq\mathbb{E}(1-\alpha)\|\ov{v}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\alpha\|\ov{u}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}\\
 	& \leq\mathbb{E}(1-\alpha)\|\ov{v}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\frac{\alpha}{\mu}\|\ov{u}_{t}-\vw^{\ast}\|^{2}
@@ -130,7 +130,7 @@ has geometric convergence:
 	& +\delta L\sum_{k}p_{k}\|(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2}
 	\end{align*}
 	
-	Choosing step sizes so that 
+	Following~\cite{liu2018accelerating} if we choose step sizes so that 
 	\begin{align*}
 	\frac{\alpha}{\mu}-\delta & \leq0\\
 	2\delta^{2}(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})-2\eta\delta/\alpha+\eta^{2}\delta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})/\alpha & \leq0
