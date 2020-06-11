@@ -61,12 +61,12 @@ A_{1} & =\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2}\\
 A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-\vg_{t}\rangle\\
 A_{3} & =\alpha_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
 \end{align*}
-$\mathbb{E}A_{2}=0$ by definition of $\vg_{t}$ and $\ov{g}_{t}$,
-while for $A_{3}$ we have
+By definition of $\vg_{t}$ and $\ov{g}_{t}$ (see \eq{\ref{eq:gradient}}), we have $\mathbb{E}A_{2}=0$.
+For $A_{3}$, we have the follow upper bound:
 \begin{align*}
 \alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|\vg_{t,k}-\mathbb{E}\vg_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 \end{align*}
-again by Jensen's inequality and using the independence of $\vg_{t,k},g_{t,k'}$. 
+again by Jensen's inequality and using the independence of $\vg_{t,k},\vg_{t,k'}$ \cite[Lemma 2]{li2019convergence}. 
 
 Next we bound $A_{1}$: 
 \begin{align*}
@@ -137,8 +137,8 @@ Using the bound on $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$
 we can conclude that, with $\nu_{\max}:=N\cdot\max_{k}p_{k}$,
 
 \begin{align*}
-\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+16E^{2}L\alpha_{t}^{3}G^{2}+16E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{3}LG^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
-& +\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|\\
+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+16E^{2}L\alpha_{t}^{3}G^{2}+16E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{3}LG^{2}\\
+& +(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2} +\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|\\
 & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
 & +\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|
 \end{align*}
@@ -148,7 +148,7 @@ by induction.
 
 Assume that we have shown 
 \begin{align*}
-\mathbb{E}\|\overline{y}_{t}-\vw^{\ast}\|^{2} & \leq b(C\alpha_{t}^{2}+D\alpha_{t})
+\mathbb{E}\|\ov{y}_{t}-\vw^{\ast}\|^{2} & \leq b(C\alpha_{t}^{2}+D\alpha_{t})
 \end{align*}
 for all iterations until $t$, where $C=20E^{2}LG^{2}$, $D=\frac{1}{N}\nu_{max}^{2}\sigma^{2}$,
 and $b$ is to be chosen later. For step sizes we choose $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$
@@ -164,7 +164,7 @@ $t-t_{0}\leq E-1$, $L\alpha_{t}\leq\frac{1}{5}$, and $2\beta_{t-1}^{2}+2\alpha_{
 which we can also check to hold by definition of $\alpha_{t}$ and
 $\beta_{t}$.
 
-Moreover, $\mathbb{E}\|\overline{y}_{t}-\vw^{\ast}\|^{2}\leq b(C\alpha_{t}^{2}+D\alpha_{t})$
+Moreover, $\mathbb{E}\|\ov{y}_{t}-\vw^{\ast}\|^{2}\leq b(C\alpha_{t}^{2}+D\alpha_{t})$
 with the chosen step sizes also implies $\|\ov{v}_{t-1}-\vw^{\ast}\|\leq2\|\ov{v}_{t}-\vw^{\ast}\|$.
 Therefore the bound for $\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}$
 can be further simplified with 
