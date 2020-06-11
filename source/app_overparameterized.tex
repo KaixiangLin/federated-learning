@@ -50,7 +50,7 @@
 	& -2\alpha_{t}F(\ov{w}_{t})+\alpha_{t}^{2}\|\vg_{t}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}
 	\end{align*}
 	Now instead of bounding $\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$
-	using the arguments in the general convex case, we use the fact that
+	using the arguments in the general convex case, we follow~\cite{ma2017power} and use the fact that
 	in the overparameterized setting, $\vw^{\ast}$ is a minimizer of each
 	$\ell(\vw,x_{k}^{j})$ and that each $\ell$ is $l$-smooth to obtain
 	$\|\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\leq2l(F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})-F_{k}(\vw^{\ast},\xi_{t-1}^{k}))$,
@@ -125,7 +125,7 @@
 	& \leq\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+\|\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}-\frac{1}{N}\nu_{\min}\|\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}\\
 	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\nabla F(\ov{w}_{t})\|^{2}
 	\end{align*}
-	and so if we let $\alpha_{t}=\min\{\frac{qN}{2l\nu_{\max}},\frac{1-q}{2L(1-\frac{1}{N}\nu_{\min})}\}$
+	and so following~\cite{ma2017power} if we let $\alpha_{t}=\min\{\frac{qN}{2l\nu_{\max}},\frac{1-q}{2L(1-\frac{1}{N}\nu_{\min})}\}$
 	for a $q\in[0,1]$ to be optimized later, we have 
 	
 	\begin{align*}
@@ -352,7 +352,7 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\vH^{k}\ov{w}_{t}-\vw^{\ast}\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
 	& +\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\vw_{t}^{k}-\ov{w}_{t})\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})
 	\end{align*}
-	we first prove that 
+	following~\cite{ma2017power} we first prove that 
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
 	\leq(1-\frac{N}{8(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}
@@ -385,8 +385,7 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	\begin{align*}
 	(I-\alpha_{t}\vH+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\vH+\frac{N-\nu_{\min}}{N}\vH^{2}))
 	\end{align*}
-	
-	If we choose $\alpha_{t}<\frac{N}{2(\nu_{\max}l+(N-\nu_{\min})L)}$,
+	and we bound this following~\cite{ma2017power}. If we choose $\alpha_{t}<\frac{N}{2(\nu_{\max}l+(N-\nu_{\min})L)}$,
 	then 
 	\begin{align*}
 	-\alpha_{t}\vH+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\vH+\frac{N-\nu_{\min}}{N}\vH^{2}) & \prec0
