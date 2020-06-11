@@ -335,21 +335,36 @@ convex functions~\cite{rockafellar1970convex}.
 	\end{align*}
 	\end{proof}
 	\end{comment}
-	
-	One may ask whether the dependence on $E$ in the term $\frac{\kappa E^{2}G^{2}/\mu}{KT}$
-	can be removed, or equivalently whether $\sum_{k}p_{k}\|\mathbf{w}_{t+1}^{k}-\overline{\mathbf{w}}_{t+1}\|^{2}$
-	can be independent of $E$. We provide a heuristic argument for why
-	this is not possible. Suppose that each $F_{k}(\mathbf{w})=\frac{1}{n}\sum(\mathbf{x}_{k}^{j}-\mathbf{w})^{2}$
-	contains data points $\mathbf{x}_{k}^{j}$ concentrated around the
-	optimizer $\mathbf{w}^{\ast,k}$, and that the $\mathbf{w}{}^{\ast,k}$'s
-	come in pairs around the origin. As a result, the global objective
-	$F$ is minimized at $\mathbf{w}^{\ast}=0$. Then with $t=O(T)$ large,
-	after a communication round $t$ each device will start with $\overline{\mathbf{w}}_{t}$
-	close to the origin, while after $E=T^{\beta}$ iterations with step
-	size $O(1/T)$, the local parameters are updated towards $\mathbf{w}^{\ast,k}$
-	with $\|\mathbf{w}_{t+E}^{k}\|^{2}\approx\frac{1}{T^{2-2\beta}}$,
-	while $\overline{\mathbf{w}}_{t+E}$ remains close to $\mathbf{w}^{\ast}$,
-	so that $\sum_{k}p_{k}\|\mathbf{w}_{t+E}^{k}-\overline{\mathbf{w}}_{t+E}\|^{2}=O(1/T^{2-2\beta})$,
-	which is at a slower rate than $1/T$ for any $\beta>0$. It follows
-	that $E=O(1)$. 
+\end{proof}
+
+One may ask whether the dependence on $E$ in the term $\frac{\kappa E^{2}G^{2}/\mu}{KT}$
+can be removed, or equivalently whether $\sum_{k}p_{k}\|\mathbf{w}_{t}^{k}-\overline{\mathbf{w}}_{t}\|^{2}=O(1/T^{2})$
+can be independent of $E$. We provide a simple counterexample that
+shows that this is not possible in general. 
+\begin{lemma}
+	There exists a dataset such that if $E=\mathcal{O}(T^{\beta})$ for
+	any $\beta>0$ then $\sum_{k}p_{k}\|\mathbf{w}_{t}^{k}-\overline{\mathbf{w}}_{t}\|^{2}=\Omega(\frac{1}{T^{2-2\beta}})$
+	.
+\end{lemma}
+\begin{proof}
+	Suppose that we have an even number of devices and each $F_{k}(\mathbf{w})=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{x}_{k}^{j}-\mathbf{w})^{2}$
+	contains data points $\mathbf{x}_{k}^{j}=\mathbf{w}^{\ast,k}$, with
+	$n_{k}\equiv n$. Moreover, the $\mathbf{w}{}^{\ast,k}$'s come in
+	pairs around the origin. As a result, the global objective $F$ is
+	minimized at $\mathbf{w}^{\ast}=0$. Moreover, if we start from $\overline{\mathbf{w}}_{0}=0$,
+	then by design of the dataset the updates in local steps exactly cancel
+	each other at each iteration, resulting in $\overline{\mathbf{w}}_{t}=0$
+	for all $t$. On the other hand, if $E=T^{\beta}$, then starting
+	from any $t=\mathcal{O}(T)$ with constant step size $\mathcal{O}(\frac{1}{T})$,
+	after $E$ iterations of local steps, the local parameters are updated
+	towards $\mathbf{w}^{\ast,k}$ with $\|\mathbf{w}_{t+E}^{k}\|^{2}=\Omega((T^{\beta}\cdot\frac{1}{T})^{2})=\Omega(\frac{1}{T^{2-2\beta}})$.
+	This implies that 
+	\begin{align*}
+	\sum_{k}p_{k}\|\mathbf{w}_{t+E}^{k}-\overline{\mathbf{w}}_{t+E}\|^{2} & =\sum_{k}p_{k}\|\mathbf{w}_{t+E}^{k}\|^{2}\\
+	& =\Omega(\frac{1}{T^{2-2\beta}})
+	\end{align*}
+	which is at a slower rate than $\frac{1}{T^{2}}$ for any $\beta>0$.
+	Thus the sampling variance $\mathbb{E}\|\overline{\mathbf{w}}_{t+1}-\overline{\mathbf{v}}_{t+1}\|^{2}=\Omega(\sum_{k}p_{k}\mathbb{E}\|\mathbf{w}_{t+1}^{k}-\overline{\mathbf{w}}_{t+1}\|^{2})$
+	decays at a slower rate than $\frac{1}{T^{2}}$, resulting in a convergence
+	rate slower than $O(\frac{1}{T})$ with partial participation. 
 \end{proof}
