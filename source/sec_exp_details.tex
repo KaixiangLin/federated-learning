@@ -17,7 +17,7 @@ The dataset has sparse binary features in $\{0, 1\}$. Each sample
 has 11.15 non-zero feature values out of $300$ features on average.
 We set the batch size equal to four across all experiments.
 In the next following subsections,
-we introduce parametering searching in each objective separately.
+we introduce parameter searching in each objective separately.
 
 
 \subsection{Strongly Convex Objectives}
@@ -42,10 +42,10 @@ We also evenly distributed all the samples on $1, 2, 4, 8, 16, 32$ devices. The 
 The learning rate is decayed as the $\eta_t = \min(\eta_0, \frac{nc}{1 + t})$, where we extensively search the best learning rate $c \in \{2^{-1}c_0, 2^{-2}c_0, c_0, 2c_0, 2^{2}c_0\}$. In this case, we search the initial learning rate $\eta_0\in \{0.1, 0.12\}$ and $c_0 = 1/256$.
 
 \subsection{Partial Participation}
-To examine the linear speedup of FedAvg in partial participation experiments,
+To examine the linear speedup of FedAvg in partial participation setting,
 we evenly distributed data on $4, 8, 16, 32, 64, 128$ devices and 
-uniformly sample $50\%$ devices without replacement. All other hyperparameters
-are the same as previous sections. 
+uniformly sample $50\%$ devices without replacement. 
+All other hyperparameters are the same as previous sections. 
 
 \subsection{Nesterov accelerated FedAvg}
 The experiments of Nesterov accelerated FedAvg (the update formula is given as follows) uses the same setting as
