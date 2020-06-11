@@ -304,7 +304,7 @@ of $\vH$.
 A useful observation is that we can use $\mathbf{w}^{\ast T}\mathbf{x}_{k}^{j}-\vz_{k}^{j}\equiv0$
 to rewrite the local objectives as $F_{k}(\mathbf{w})=\frac{1}{2}\langle\mathbf{w}-\mathbf{w}^{\ast},\vH^{k}(\mathbf{w}-\mathbf{w}^{\ast})\rangle\equiv\frac{1}{2}\|\mathbf{w}-\mathbf{w}^{\ast}\|_{\vH^{k}}^{2}$:
 \begin{align*}
-F_{k}(\vw) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\vw^{T}x_{k,j}-\vz_{k,j}-(\vw^{\ast T}\vx_{k,j}-\vz_{k,j}))^{2}=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((\vw-\vw^{\ast})^{T}\vx_{k,j})^{2}\\
+F_{k}(\vw) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\vw^{T}\vx_{k,j}-\vz_{k,j}-(\vw^{\ast T}\vx_{k,j}-\vz_{k,j}))^{2}=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((\vw-\vw^{\ast})^{T}\vx_{k,j})^{2}\\
 & =\frac{1}{2}\langle \vw-\vw^{\ast},\vH^{k}(\vw-\vw^{\ast})\rangle=\frac{1}{2}\|\vw-\vw^{\ast}\|_{\vH^{k}}^{2}
 \end{align*}
 
