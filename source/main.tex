@@ -5,17 +5,17 @@
 % before loading neurips_2020
 
 % ready for submission
-% \usepackage{neurips_2020}
+\usepackage{neurips_2020}
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
 % [preprint] option:
-%     \usepackage[preprint]{neurips_2020}
+    % \usepackage[preprint]{neurips_2020}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
 %     \usepackage[final]{neurips_2020}
 
 % to avoid loading the natbib package, add option nonatbib:
-     \usepackage[nonatbib]{neurips_2020}
+     % \usepackage[nonatbib]{neurips_2020}
 \usepackage{slashbox,multirow}
 % \usepackage{tikz}
 \usepackage[utf8]{inputenc} % allow utf-8 input
@@ -54,8 +54,31 @@
 
 \title{Federated Learning's Blessing:\\
 FedAvg has Linear Speedup}
-
-\author{}
+\author{%
+  Zhaonan Qu\thanks{Equal contribution} \\
+ Stanford University\\
+  \texttt{zhaonanq@stanford.edu} \\
+  \And
+  Kaixiang Lin$^*$ \\
+  Michigan State University \\
+  \texttt{linkaixi@msu.edu} \\
+  \AND
+  Jayant Kalagnanam \\
+  IBM Research \\
+  \texttt{jayant@us.ibm.com} \\
+  \And
+  Zhaojian Li \\
+  Michigan State University \\
+  \texttt{lizhaoj1@egr.msu.edu} \\
+  \And
+  Jiayu Zhou\\
+  Michigan State University \\
+  \texttt{jiayuz@msu.edu} \\
+  \And
+  Zhengyuan Zhou\\
+  New York University \\
+  \texttt{zzhou@stern.nyu.edu} \\
+}
 
 \begin{document}
 
@@ -77,7 +100,7 @@ Federated learning (FL) learns a model jointly from a set of participating devic
 % \input{sec_conclude}
 
 
-\newpage
+% \newpage
 \input{sec_impact}
 \bibliographystyle{unsrt}
 \bibliography{ref.bib}
