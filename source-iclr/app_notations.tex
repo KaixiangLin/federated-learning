@@ -1,0 +1,54 @@
+% !TEX ROOT=./main.tex
+
+\section{Additional Notations}
+\label{sec:app:notations}
+In this section, we introduce additional notations that are used throughout
+the proof. Following common practice~\cite{stich2018local,li2019convergence}, we define two virtual sequences $\overline{\mathbf{v}}_{t}$ and $\overline{\mathbf{w}}_{t}$. For full device participation and $t \notin \cI_E$,
+$\ov{v}_t = \ov{w}_t =\sum_{k=1}^{N} p_{k} \mathbf{v}_{t}^{k}$. For partial participation, $t \in \cI_E$, $\ov{w}_t \neq \ov{v}_t$ since $\ov{v}_t=\sum_{k=1}^{N} p_{k} \mathbf{v}_{t}^{k}$ while $\ov{w}_t=\sum_{k\in \cS_t}\mathbf{w}_{t}^{k}$. However, we can
+set unbiased sampling strategy such that $ \EE_{\cS_t} \ov{w}_t = \ov{v}_t$.
+$\overline{\mathbf{v}}_{t+1}$ is one-step SGD from $\overline{\mathbf{w}}_{t}$. 
+\begin{align}
+\overline{\mathbf{v}}_{t+1}=\overline{\mathbf{w}}_{t}-\eta_{t} \mathbf{g}_{t},	\label{eq:vbar}
+\end{align}
+% $t+1 \in \cI_E$, we can fetch $\overline{\vw}_{t+1}$, we can communicate $\overline{\vw}_{t+1}$ to all devices.
+where $\vg_{t} = \sum_{k=1}^{N} p_{k} \vg_{t,k} $ is one-step stochastic gradient, averaged over all devices. 
+\begin{align*}
+\vg_{t,k} = \nabla F_{k}\left(\mathbf{w}_{t}^{k},\mathbf{\xi}_{t}^{k} \right),   
+\end{align*}
+% \begin{align}
+% \vg_{t,k} \left\{\begin{array}{ll} 
+%  = \nabla F_{k}\left(\mathbf{w}_{t}^{k},\mathbf{\xi}_{t}^{k} \right)  &  \text{smooth}\\
+%  \in \partial F_{k}\left(\vw_{t}^{k}, \mathbf{\xi}_{t}^{k}\right)  & \text{non-smooth} \lkxcom{remove non-smooth}
+%  \end{array}\right.
+% \end{align}
+Similarly, we denote the expected one-step gradient $\ov{g}_{t}= \EE_{\xi_t}[\vg_t] = \sum_{k=1}^{N} p_{k} \EE_{\mathbf{\xi}_{t}^{k}} \vg_{t,k}$, where
+\begin{align}
+\EE_{\mathbf{\xi}_{t}^{k}} \vg_{t,k}  = \nabla F_{k}\left(\mathbf{w}_{t}^{k}\right), 
+\label{eq:gradient}
+\end{align}
+% \begin{align}
+% \EE_{\mathbf{\xi}_{t}^{k}} \vg_{t,k}  \left\{\begin{array}{ll} 
+%  = \nabla F_{k}\left(\mathbf{w}_{t}^{k}\right)  &  \text{smooth}\\
+%  \in \partial F_{k}\left(\vw_{t}^{k}\right)  & \text{non-smooth}
+%  \end{array}\right.
+% \end{align}
+and $\mathbf{\xi}_t = \{\mathbf{\xi}_t^k\}_{k=1}^N$ denotes random samples at all devices at time step $t$. 
+Since in this work, we also consider the case of partial participation. The sampling
+strategy to approximate the system heterogeneity can also affect the convergence. Here we
+follow the prior arts~\cite{haddadpour2019convergence} considering two types of sampling
+schemes. 
+The sampling scheme I establishes $\cS_{t+1}$ by i.i.d. sampling the devices with replacement,
+in this case the upper bound of expected square norm of $\ov{w}_{t+1} - \ov{v}_{t+1}$ is given by~\cite[Lemma 5]{li2019convergence}:
+\begin{align}
+\EE_{\cS_{t+1}}\left\|\ov{w}_{t+1} - \ov{v}_{t+1}\right\|^2	\leq \frac{4}{K} \eta_t^2 E^2G^2.
+\end{align}
+The sampling scheme II establishes $\cS_{t+1}$ by uniformly sampling all devices without
+replacement, in which we have the 
+\begin{align}
+\EE_{\cS_{t+1}}\left\|\ov{w}_{t+1} - \ov{v}_{t+1}\right\|^2	\leq \frac{4(N - K)}{K(N-1)} \eta_t^2 E^2G^2.
+\end{align}
+We denote this upper bound as follows for concise presentation. 
+\begin{align}
+	\EE_{\cS_{t+1}}\left\|\ov{w}_{t+1} - \ov{v}_{t+1}\right\|^2 \leq  \eta_t^2 C.
+	\label{eq:partialsample}
+\end{align}

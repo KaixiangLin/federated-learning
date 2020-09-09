@@ -1,0 +1,109 @@
+% !TEX ROOT=./main.tex
+
+Stochastic gradient of device $k$ at time step $t$, at point $\vw_t^k$: 
+	$\vg_{t,k} \coloneqq \vg_{t,k}(w_t^k)$,
+	$ \vg_{t, k} = \grad F_{k}\left(w_{t}^{k}, \xi_{t}^{k}\right) $,
+	$\EE \vg_{t, k} = \grad F_{k}\left(w_{t}^{k}\right)$.
+One-step stochastic gradient of all devices:
+$\vg_{t}=\sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) $, $\EE \vg_{t}= \EE \sum_{k=1}^{N} p_{k} \vg_{t, k}\left(w_{t}^{k}\right) \coloneqq \sum_{k=1}^{N} p_{k} \EE \vg_{t, k} = \ov{g}_t$.
+
+\begin{lemma}
+Under Assumption~\ref{ass:subgrad2}, we have the following bound
+\begin{equation}
+	\eta_t^2 \|\EE \vg_{t,k}\|^2 \leq  \eta_t^2 G_k^2
+	\label{eq:g3}
+\end{equation}
+\begin{equation}
+	\eta_t^2 \|\EE \vg_{t,k}(\overline{\vw}_t)\|^2 \leq  \eta_t^2 G_k^2
+	\label{eq:g2}
+\end{equation}
+\begin{align}
+	  \eta_{t}^{2} \EE\| \vg_{t} \|^{2} 
+	\leq   \eta_{t}^{2} \EE\| \sum_{k=1}^N p_k g_{t,k} \|^{2} 
+	\leq   \eta_{t}^{2} \sum_{k=1}^N p_k \EE\| g_{t,k} \|^{2} 
+	\leq   \eta_{t}^{2} \sum_{k=1}^N p_k G_k^2  \label{eq:g1}
+\end{align}
+\label{lma:gradient}
+\end{lemma}
+
+
+% Now the only term left in $C_1$ is $\eta_{t}^{2} \EE\| \vg_{t} \|^{2} $, follow the proof in Lemma 2~\cite{li2019convergence}:
+% where in the third inequality we use the convexity of the l2 norm.
+
+\begin{theorem}
+Let Assumption~\ref{ass:subgrad2} and Assumption~\ref{ass:lsmooth} hold, suppose we have a bound 
+on our starting distance, i.e., $\|\vw_{0} - \vw^*\|^2 \leq \Delta_0$, set learning rate $\eta_t =  \left(\frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C]}\right)^{1/2}$, we have,
+$$\EE[ F_t^*] - F^*  \leq \left(\frac{ \Delta_0 [G^2( 4L(E-1)^2 + 1) + C] }{T}\right)^{1/2}$$
+where we denote $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$.
+% \label{th:sgdcvxsmth}
+\end{theorem}
+
+\begin{proof}
+	
+
+\begin{align}
+\EE_{\cS_{t+1}, \xi_{t}} \|\overline{\vw}_{t+1} - \vw^*\|^2 &= \EE_{\cS_{t+1}, \xi_{t}} \|\overline{\vw}_{t+1} - \overline{\vv}_{t+1} + \overline{\vv}_{t+1} - \vw^*\|^2\\
+&= \EE_{\cS_{t+1}, \xi_{t}} \left[\|\overline{\vw}_{t+1} - \overline{\vv}_{t+1}\|^2 + \|\overline{\vv}_{t+1} - \vw^*\|^2\right] \\
+& \hspace{3em}+ 2\EE_{\xi_{t}} \left<\EE_{\cS_{t+1}} \overline{\vw}_{t+1} - \overline{\vv}_{t+1},   \overline{\vv}_{t+1} - \vw^*\right> \\
+& = \EE_{\cS_{t+1}, \xi_{t}} \|\overline{\vw}_{t+1} - \overline{\vv}_{t+1}\|^2 + \EE_{\xi_t} \|\overline{\vv}_{t+1} - \vw^*\|^2 \\
+& \leq  \eta_t^2 C + \EE_{\xi_t} \|\overline{\vv}_{t+1} - \vw^*\|^2 \label{eq:sgdcvxsmth1}
+\end{align}
+where in the second line we use $\EE_{\cS_{t+1}} \overline{\vw}_{t+1}  = \overline{\vv}_{t+1}$. 
+The first term can be bounded by consider different sampling scheme. 
+According to the definition of $\overline{\vv}_{t+1}$ in \eq{\ref{eq:vbar}}, we can expand the second term in \eq{\ref{eq:sgdcvxsmth1}} as follows:
+
+\begin{align*}
+\left\|\ov{v}_{t+1}-\vw^{*}\right\|^2 
+ &=\left\|\ov{w}_{t}-\eta_{t} \vg_{t}-\vw^{*}\right\|^2 \\
+ &=\left\|\ov{w}_{t}-\vw^{*}\right\|^{2}-2 \eta_{t} \left< \vg_{t}, \ov{w}_{t}-\vw^{*} \right>+\eta_{t}^{2}\left\|\vg_{t}\right\|^{2} 
+\end{align*}
+% \begin{align*}
+% \left\|\ov{v}_{t+1}-\vw^{*}\right\|^2 
+%  &=\left\|\ov{w}_{t}-\eta_{t} \vg_{t}-\vw^{*}\right\|^2 \\
+%  &=\left\|\ov{w}_{t}-\eta_{t} \vg_{t}-\vw^{*} - \eta_t \ov{g}_t + \eta_t \ov{g}_t\right\|^2 
+% \\
+% & = \left\|\ov{w}_{t}- \eta_t \ov{g}_t  -\vw^{*} + \eta_t \ov{g}_t - \eta_{t} \vg_{t}\right\|^2 \\
+% & = \left\|\ov{w}_{t}- \eta_t \ov{g}_t  -\vw^{*}\right\|^2  + 2\eta_t \left<\vw_t - \vw^* - \eta_t \ov{g}_t, \ov{g}_t - \vg_{t} \right> + \left\|\eta_t \ov{g}_t - \eta_{t} \vg_{t}\right\|^2 \\
+%  &=\left\|\ov{w}_{t}-\vw^{*}\right\|^{2}-2 \eta_{t} \left<\EE \vg_{t}, \ov{w}_{t}-\vw^{*} \right>+\eta_{t}^{2}\left\|\ov{g}_{t}\right\|^{2}  + \underbrace{2\eta_t \left<\vw_t - \vw^* - \eta_t \ov{g}_t, \ov{g}_t - \vg_{t} \right>}_{A_1} + \eta_{t}^2\left\| \ov{g}_t -  \vg_{t}\right\|^2
+% \end{align*}
+
+We take the expectation condition on $\vw_t$ over $\xi_t$, i.e., random samples at all devices:
+\begin{align}
+\EE\left[\left\|\ov{v}_{t+1}-\vw^{*}\right\|^2| \vw_{t}\right]=\|\ov{w}_{t}-\vw^{*}\|^{2}-2 \eta_{t} \left<\EE \vg_{t}, \ov{w}_{t}-\vw^{*} \right> +\eta_{t}^{2} \EE\| \vg_{t} \|^{2}
+\label{eq:expandsgd}
+\end{align}
+
+Now we focus on bounding $-2 \eta_{t} \left< \EE \vg_{t}, \ov{w}_{t}-\vw^{*}\right>$ in \eq{\ref{eq:expandsgd}}: 
+
+\begin{align*}
+	& -2 \eta_{t} \left<\EE \vg_{t}, \ov{w}_{t}-\vw^{*}\right> \\
+ =  & -2 \eta_{t} \left<\EE \vg_{t}, \ov{w}_{t}- \vw^{k}_t \right> -2 \eta_{t} \left<\EE \vg_{t}, \vw^{k}_t - \vw^{*}\right>\\
+ \leq & -2 \eta_{t} \left<\EE \vg_{t}, \ov{w}_{t}- \vw^{k}_t \right> + 2 \eta_{t} (F_k(w^*) - F_k(\vw^{k}_t))\\
+ \leq &\sum_{k=1}^N p_k \left[2 \eta_{t} (F_k(\vw^{k}_t) - F_k(\ov{w}_t) + \frac{L}{2} \|\ov{w}_t - \vw^{k}_t\|^2 ) + 2 \eta_{t} (F_k(w^*) - F_k(\vw^{k}_t))\right]\\
+ = & \sum_{k=1}^N p_k \eta_t L \|\ov{w}_t - \vw^{k}_t\|^2 + 2 \eta_{t} \sum_{k=1}^N p_k (F_k(w^*) - F_k(\ov{w}_t))\\
+ = &  \eta_t L \sum_{k=1}^N p_k \|\ov{w}_t - \vw^{k}_t\|^2 + 2 \eta_{t} (F^* - F(\ov{w}_t))
+\end{align*}
+Plug in this upper bound into \eq{\ref{eq:expandsgd}}, \eq{\ref{eq:sgdcvxsmth1}} and take totoal expectation over all samples at all iterations, we have
+\begin{align}
+\EE\left\|\ov{w}_{t+1}-\vw^{*}\right\|^2 &\leq \EE\|\ov{w}_{t}-\vw^{*}\|^{2}+\eta_{t}^{2} \EE\| \vg_{t} \|^{2} + \eta_t L \sum_{k=1}^N p_k \EE \|\ov{w}_t - \vw^{k}_t\|^2 + 2 \eta_{t} (F^* - \EE F(\ov{w}_t)) + \eta_t^2 C\\
+&\leq\EE \|\ov{w}_{t}-\vw^{*}\|^{2}+\eta_{t}^{2} \EE\| \vg_{t} \|^{2} +  4L\eta_t^3(E-1)^2 G^2 + 2 \eta_{t} (F^* - \EE F(\ov{w}_t)) + \eta_t^2 C\\
+&\leq \EE\|\ov{w}_{t}-\vw^{*}\|^{2}+\eta_{t}^{2} G^2 +  4L\eta_t^3(E-1)^2 G^2 + 2 \eta_{t} (F^* - \EE F(\ov{w}_t))+\eta_t^2 C \label{eq:cvxsgd1}
+\end{align}
+
+Sum two sides of \eq{\ref{eq:cvxsgd1}}, we require $\eta_t < 1$ and set $F^*_t = \min_{t \in [0, T-1]} F(\ov{w}_t)$, 
+\begin{align*}
+	\sum_{t=0}^{T-1} 2\eta_t (\EE[F(\ov{w}_t)] - F^* ) & \leq \EE \|\ov{w}_{0}-\vw^{*}\|^{2} - \EE\left\|\ov{w}_{T}-\vw^{*}\right\|^2 + \sum_{t=0}^{T-1} (\eta_t^3 4LG^2(E-1)^2 + \eta_t^2 G^2+ \eta_t^2 C)\\ 
+    & \leq \EE \|\ov{w}_{0}-\vw^{*}\|^{2} - \EE\left\|\ov{w}_{T}-\vw^{*}\right\|^2 + \sum_{t=0}^{T-1} (\eta_t^3 4LG^2(E-1)^2 + \eta_t^2 G^2+ \eta_t^2 C)\\ 
+    & \leq \EE \|\ov{w}_{0}-\vw^{*}\|^{2} + \sum_{t=0}^{T-1}\eta_t^2\left[ G^2 ( 4L(E-1)^2 + 1) + C\right]\\
+    \sum_{t=0}^{T-1} 2\eta_t (\EE[F^*_t] - F^* ) & \leq \EE \|\ov{w}_{0}-\vw^{*}\|^{2} + \sum_{t=0}^{T-1}\eta_t^2\left[ G^2 ( 4L(E-1)^2 + 1) + C\right]\\
+\EE[ F_t^*] - F^*  & \leq \frac{\|\ov{w}_{0}-\vw^{*}\|^{2}}{2 \sum_{t=0}^{T-1} \eta_t } + \frac{\left[G^2( 4L(E-1)^2 + 1) + C\right] \sum_{t=0}^{T-1} \eta_t^2}{2 \sum_{t=0}^{T-1} \eta_t }
+\end{align*}
+It will converge under the following conditions: $ \lim_{T \rightarrow \infty }\sum_{t=0}^{T-1} \eta_t = \infty$, 
+$ \lim_{T \rightarrow \infty }\sum_{t=0}^{T-1} \eta_t^2 < \infty$. 
+\begin{align*}
+	\EE[ F_t^*] - F^*  & \leq \frac{\|\ov{w}_{0}-\vw^{*}\|^{2}}{2 \sum_{t=0}^{T-1} \eta_t } + \frac{\left[G^2( 4L(E-1)^2 + 1) + C\right] \sum_{t=0}^{T-1} \eta_t^2}{2 \sum_{t=0}^{T-1} \eta_t } \\
+	\EE[ F_t^*] - F^*  & \leq \frac{\Delta_0 + \left[G^2( 4L(E-1)^2 + 1) + C\right] \sum_{t=0}^{T-1} \eta_t^2 }{2 \sum_{t=0}^{T-1} \eta_t }\\
+	& \leq \left(\frac{ \Delta_0 [G^2( 4L(E-1)^2 + 1) + C] }{T}\right)^{1/2}
+\end{align*}
+where in the last line we set the learning rate satisfying $\eta_t =  \left(\frac{\Delta_0}{ T [G^2( 4L(E-1)^2 + 1) + C]}\right)^{1/2}$.
+\end{proof}
