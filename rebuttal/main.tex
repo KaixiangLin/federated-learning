@@ -1,0 +1,108 @@
+\documentclass{article}
+
+\usepackage{neurips_2020_author_response}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{color}
+\usepackage{lipsum}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumitem}
+\setlist{leftmargin=2mm}
+\input{bmacros}
+\newcommand{\ov}[1]{{\overline{\mathbf{#1}}}}
+\begin{document}
+The authors would like to thank reviewers for their valuable feedback. 
+% Based on their comments, upon acceptance of this paper, we shall improve in 
+% the final version (a) Refine the presentation, fix typo, figures, and properly 
+% located assumptions etc. (b) More experiments in terms of 
+Our point-to-point response are provided below.
+
+% \input{r1}
+\vspace{-1.5mm}
+{\color{blue}\textbf{Reviewer 1:}} 
+\vspace{-0.4mm}
+\textbf{\textit{1. Improvement compared to [21].}} Compared to [21], the improvement 
+of convergence comes from the improved bound of {\small $2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]$} (discussed in L489, Appendix C.1). Because of this improvement, we are able to cancel square of gradient norm ($\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$) in the upper bound of A1 (defined in L483, also see explanations in L492) while in [21] this term remains as leading term ($6\eta_t^2L \Gamma$), hence a significant improvement. We agree with you this part of the appendix should be brought to the main text and carefully explained to highlight our contributions.  
+\vspace{-1.5mm}
+
+\textbf{\textit{2. Improvement compared to [20].}}
+Our work goes much beyond [20], which studies the highly special case where each local device’s minimizer is the same as the minimizer of the joint problem with all devices' data aggregated (this is referred to as bounded gradient diversity (BGD) in [20], see L44 and Appendix B), which never occurs in practice . 
+\vspace{-1.5mm}
+
+
+\textbf{\textit{3. The overparameterized case seem to be out of context here with no experimental results to back them up.}} The overparameterized 
+setting is an important setting [29, 30], especially in the era of deep learning
+where the neural network can achieve zero training loss. We provide the 
+geometric rate with linear speedup in this setting including a general overparameterized setting and overparameterized linear regression. 
+Experimentally, we verify the linear speedup results of overparameterized setting in 3rd column, Figure 1 and Figure 2. 
+\vspace{-1.5mm}
+
+\textbf{\textit{4. The novelty and main results.}}
+We would like to emphasize that the techniques used for different settings
+to achieve linear speedup are quite different (strongly convex see L489, L492, convex smooth see L553). The main contributions include
+the linear speedup results in strongly convex, convex smooth, and overparameterized
+setting, for both FedAvg and its accelerated variants (this is the first linear speedup results of Nesterov accelerated FedAvg for convex problems). We further propose FedMass,
+which is the first momentum-based acceleration algorithm that enjoys an improved convergence rate compared to
+FedAvg. We respectfully disagree that our main contribution is the improvement over [21] as the linear speedup results under other settings are not trivial extensions of the strongly convex case.
+\vspace{-1.5mm}
+
+\textbf{\textit{5. Writing.}} 
+We will improve the organization of the paper upon acceptance, including bringing back certain proofs in appendix to highlight contributions.
+% As you pointed out, the organization of the paper can be improved. Certain proofs currently in the appendix should be brought back and clearly exposed to highlight the contributions. We will do so in the camera-ready.
+\vspace{-1.5mm}
+
+
+
+% \input{r2}
+{\color{blue}\textbf{Reviewer 2:}} 
+\textbf{\textit{1.The valid range of the number of (participating) devices--(K) N for linear speedup.}} We agree that the valid range of $N$ and $K$ that allows linear speedup is an important issue, although it is straightforward to make it explicit: we just need to make sure all terms in the bound are of the same order (and have linear speedup). For example, in the case of general convex problems with partial participation (Theorem 2), with local step $E=\cO(1)$, as long as $K=O(T^{1/3})$ all three terms in the bound are $\cO(1/\sqrt{KT})$. Meanwhile, previous literature discussing linear speedup e.g. [15, 17] also did not provide explicit discussion of range of $N$ and $K$.
+% Similar to  the literature discussing linear speedup [15, 17], we didn't provide explicit result and we admit it worth further exploration. To give a more concrete answer, in general convex case with partial participation, we have local step $E=\cO(1)$, we can determine the optimal $K$ is {\small $\left( \sqrt{T}(\gamma_{\max}\delta^2 + G^2)/G^2L\right)^{2/3}$} as long as  $K \leq N$. This provides
+% an upper bound of $K$ that we have no benefit to further increase $K$, which might serve as a valid range of $K$. 
+
+% While we could have stated the dependence of $N$ on $T$ and $E$, in order to better illustrate the communication complexity, we decided to equivalently state the dependence of $E$ on $N$ and $T$ instead in discussions following our results.  We agree that for the optimal choice of $E$, we could be more explicit about the range of $N$. 
+%%e require $N\leq T$, and with larger $N$, we achieve faster convergence but communicate more as $E$ decreases. With partial participation, we have local step $E=\cO(1)$, and the optimal $K$ is $\left( \frac{\sqrt{T}(\gamma_{\max}\delta^2 + G^2)}{2G^2L}\right)^{2/3}$ as long as  $K \leq N$. 
+
+% \textbf{\textit{2.Explicit constant dependence.}}
+% We agree that including the constants makes the results more precise.
+% \input{r3}
+\vspace{-1.5mm}
+
+{\color{blue}\textbf{Reviewer 3:}} Thank you for the valuable feedback and pointing out the missing reference, we will cite the paper in the new version. Also, there are substantial differences between our work and SCAFFOLD, which we hope to clarify here.
+\\
+\textbf{\textit{1.Comparison with SCAFFOLD.}}
+% \vspace{-1.2em}
+% \begin{itemize}
+	\textbf{We prove linear speedup for any number of devices for FedAvg while SCAFFOLD didn't.} SCAFFOLD's results for FedAvg do not enjoy linear speedup for any number of devices while our results apply to any valid $K\leq N$. Under our notation, i.e. $N$: number of devices; $K$: number of participating devices; $T$: iteration number; $E$: number of local steps, Theorem V of the SCAFFOLD paper provides an optimality gap of {\small $\cO\left((1-\frac{K}{N})E/T\right)$} for the strongly convex case.
+% 	To achieve linear speedup, it requires $1-\frac{K}{N} = 1/K$. Therefore, the activated devices number needs to satisfy {\small $K =
+% \cO\left((1\pm\sqrt{1-4/N})N/2\right)$} for linear speedup, which is much more restricted than our results. The same conclusion applies for general convex case.
+With partial participation, and when $K=O(1)$, their convergence rate is $\cO(E/T)$ which does not have linear speedup, while our optimality gap bound has linear speedup for any valid number of participating devices. (See Theorems 1-4 in our paper.) 
+	\textbf{We achieve the same communication complexity.}
+	Under partial participation, the FedAvg analyses in SCAFFOLD do not imply $E=\cO(\sqrt{T})$, but requires $E=\cO(1)$. For example, the strongly convex result {\small $\cO((1-\frac{K}{N})E/T)$} in Theorem V is $\cO(E/T)$ when $K=O(1)$ and is $\cO(E/KT)$ when $K=O(N)$.
+	In either case, to achieve a $\cO(1/T)$ convergence rate, it requires $E=\cO(1)$ as well. Similarly for the general convex case. 
+% \textbf{We achieve the same communication complexity.} Under partial participation (sampling), the analyses in SCAFFOLD do not imply $E=\cO(\sqrt{T})$, but in fact also require $E=\cO(1)$. To see this, it is easier to examine Theorem V in their paper, which is stated in terms of optimality gaps (same as our paper), but otherwise equivalent to their Theorem I. Notice that when $S<N$, the second term in $M^2$ gives rise to a term $\cO((1-\frac{S}{N})/R)$ in the bound for the strongly convex case, and since $R=T/E$ in our notation, this term is $\cO(E/T)$ when $S=O(1)$ and is $\cO(E/NT)$ when $S=O(N)$. Therefore, in order to achieve a $\cO(1/T)$ convergence rate for the optimality gap, it must be the case that $E=\cO(1)$ as well. Similarly for the general convex case. Thus in terms of communication complexity, our results imply the same requirements for both full and partial participation as that in SCAFFOLD. In addition, their result does not have linear speedup when $S$ is small, while ours does. 
+% 	\vspace{-0.5em}
+	\textbf{We allow more flexible sampling schemes.} Furthermore, the sampling procedure analyzed in our paper is more general compared to SCAFFOLD, as we allow the sampling probability to scale with device specific weights and sample with replacement, whereas in SCAFFOLD the sampling is uniform without replacement. The sampling procedure is important and different schemes could imply different bounds with different proof techniques.
+% 	\vspace{-0.5em}
+	\textbf{Our bound is tight.} Under our sampling schemes, we explicitly analyze the contribution of sampling variance to the optimality gap. We provided a problem instance that lower bounds the sampling variance, showing that $E=\cO(1)$ cannot be improved in general when there is partial participation with our sampling procedure (see Lemma 10).
+% \end{itemize}
+% \vspace{-0.5em}
+\vspace{-1.5mm}
+
+\textbf{\textit{2. The first and unified linear speedup results of Nestrov Accelerated FedAvg.}}
+Nesterov Accelerated FedAvg has been studied by prior arts [16,22,35]. However, there has not been any linear speedup analysis of Nesterov accelerated FedAvg for convex problems. Our result is the first to complete the picture. Our paper is also the first to provide a unified analysis for FedAvg and Nesterov accelerated FedAvg for convex problems, highlighting the common elements and distinctions for the two algorithms, whereas previous analyses of the two algorithms only exist in the non-convex case (only with full participation) [17] and are scattered and use different notation and proof techniques [16, 17].  \\
+% \vspace{-0.5em}
+\textbf{\textit{3. The first geometrical rates of general overparametrized strongly convex problem for FedAvg.}}
+The geometric rates in Theorem 5 are for general overparameterized strongly convex objectives rather than just linear regression, and as SCAFFOLD is a variance reduction-based algorithm, our result, which is on the FedAvg algorithm, is not directly comparable to the geometric convergence result for SCAFFOLD. 
+
+
+    
+\end{document}
