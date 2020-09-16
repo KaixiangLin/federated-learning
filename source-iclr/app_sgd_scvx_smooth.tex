@@ -1,27 +1,4 @@
 % !TEX ROOT=./supp-main.tex
-To facilitate reading, theorems from the main paper are restated and numbered identically. We first summarize some properties of $L$-smooth and $\mu$-strongly
-convex functions~\cite{rockafellar1970convex}. 
-\begin{lemma}
-	Let $F$ be a convex $L$-smooth function. Then we have the following
-	inequalities:
-	
-	1. Quadratic upper bound: $0\leq F(\vw)-F(\vw')-\langle\nabla F(\vw'),\vw-\vw'\rangle\leq\frac{L}{2}\|\vw-\vw'\|^{2}$. 
-	
-	2. Coercivity: $\frac{1}{L}\|\nabla F(\vw)-\nabla F(\vw')\|^{2}\leq\langle\nabla F(\vw)-\nabla F(\vw'),\vw-\vw'\rangle$.
-	
-	3. Lower bound: $F(\vw)\geq F(\vw')+\langle\nabla F(\vw'),\vw-\vw'\rangle+\frac{1}{2L}\|\nabla F(\vw)-\nabla F(\vw')\|^{2}$.
-	In particular, $\|\nabla F(\vw)\|^{2}\leq2L(F(\vw)-F(\vw^{\ast}))$.
-	
-	4. Optimality gap: $F(\vw)-F(\vw^{\ast})\leq$$\langle\nabla F(\vw),\vw-\vw^{\ast}\rangle$.
-\end{lemma}
-%
-\begin{lemma}
-	Let $F$ be a $\mu$-strongly convex function. Then 
-	\begin{align*}
-	F(\vw) & \leq F(\vw')+\langle\nabla F(\vw'),\vw-\vw'\rangle+\frac{1}{2\mu}\|\nabla F(\vw)-\nabla F(\vw')\|^{2}\\
-	F(\vw)-F(\vw^{\ast}) & \leq\frac{1}{2\mu}\|\nabla F(\vw)\|^{2}
-	\end{align*}
-\end{lemma}
 
 \begin{thm}
 	Let $\overline{\mathbf{w}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{T}^{k}$,
