@@ -1,5 +1,34 @@
 % !TEX ROOT=./supp-main.tex
 
+To convey our proof clearly and highlight the significance of our results comparing to prior work, 
+we first state the follow lemmas and defer the proofs of these lemmas latter. 
+\begin{lemma}[\textbf{One round progress}] Let $\overline{\mathbf{w}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{T}^{k}$,
+suppose our functions satisfies Assumptions~\ref{ass:lsmooth},\ref{ass:stroncvx},\ref{ass:boundedvariance},\ref{ass:subgrad2}, and set step size $\alpha_{t}=\frac{1}{4\mu(\gamma+t)}$
+	with $\gamma=\max\{32\kappa,E\}$ and $\kappa=\frac{L}{\mu}$, the updates of FedAvg satisfy
+	\begin{align*}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+5E^{2}L\alpha_{t}^{3}G^{2}.
+	\end{align*}
+\label{lem:scvxoner}
+\end{lemma}
+
+\begin{lemma}[\textbf{Bounding gradient variance (Lemma 2 \cite{li2019convergence})} ]
+Given Assumption~\ref{ass:boundedvariance}, the upper bound of gradient variance is given as follows,
+\begin{align*}
+	\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} \leq \sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}.
+	\end{align*}
+\label{lem:bgv}
+\end{lemma}
+
+\begin{lemma}[\textbf{Bounding the divergence of $\vw_t^k$ (Lemma 3 \cite{li2019convergence})} ]
+Given Assumption~\ref{ass:subgrad2}, $\alpha_t$ is non-increasing and $\alpha_t \leq 2\alpha_{t+E}$ for all $t\geq 0$, we have
+	\begin{align*}
+	\mathbb{E}\left[\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \right]\leq 4E^{2}\alpha_{t}^{2}G^{2}.
+	\end{align*}
+\label{lem:bdw}
+\end{lemma}
+
+
+We first restate Theorem~\ref{th:scvx_sgd} to facilitate reading and then see its proof based on previous lemmas.
 \begin{thm}
 	Let $\overline{\mathbf{w}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{T}^{k}$,
 	$\nu_{\max}=\max_{k}Np_{k}$, and set decaying learning rates $\alpha_{t}=\frac{1}{4\mu(\gamma+t)}$
@@ -19,147 +48,17 @@
 	The proof builds on ideas from~\cite{li2019convergence}. The first step is to observe that the $L$-smoothness of $F$ provides
 	the upper bound
 	\begin{align*}
-	\mathbb{E}(F(\ov{w}_{t}))-F^{\ast} & =\mathbb{E}(F(\ov{w}_{t})-F(\vw^{\ast}))\\
-	& \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}
+	\mathbb{E}(F(\ov{w}_{t}))-F^{\ast} & \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}
 	\end{align*}
 	and bound $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}$. 
 	
-	Our main step is to prove the bound 
+	Use lemma~\ref{lem:scvxoner}, we have the follow upper bound for the one round progress: 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+5E^{2}L\alpha_{t}^{3}G^{2}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+5E^{2}L\alpha_{t}^{3}G^{2}.
 	\end{align*}
 	
-	We have 
-	\begin{align*}
-	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}\vg_{t})-\vw^{\ast}\|^{2}\\
-	& =\|(\ov{w}_{t}-\alpha_{t}\ov{g}_{t}-\vw^{\ast})-\alpha_{t}(\vg_{t}-\ov{g}_{t})\|^{2}\\
-	& =A_{1}+A_{2}+A_{3}
-	\end{align*}
-	where 
-	\begin{align*}
-	A_{1} & =\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2}\\
-	A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-\vg_{t}\rangle\\
-	A_{3} & =\alpha_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
-	\end{align*}
-	By definition of $\vg_{t}$ and $\ov{g}_{t}$ (see \eq{\ref{eq:gradient}}), we have $\mathbb{E}A_{2}=0$.
-	For $A_{3}$, we have the follow upper bound:
-	\begin{align*}
-	\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|\vg_{t,k}-\mathbb{E}\vg_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
-	\end{align*}
-	again by Jensen's inequality and using the independence of $\vg_{t,k},\vg_{t,k'}$ \cite[Lemma 2]{li2019convergence}. 
-	
-	Next we bound $A_{1}$: 
-	\begin{align*}
-	\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2} & =\|\ov{w}_{t}-\vw^{\ast}\|^{2}+2\langle\ov{w}_{t}-\vw^{\ast},-\alpha_{t}\ov{g}_{t}\rangle+\|\alpha_{t}\ov{g}_{t}\|^{2}
-	\end{align*}
-	and we will show that the third term $\|\alpha_{t}\ov{g}_{t}\|^{2}$
-	can be canceled by an upper bound of the second term. %
-	\begin{comment}
-	The last term is straightforward to bound by the convexity of $\|\cdot\|^{2}$
-	and $L$-smoothness of $F_{k}$,
-	\begin{align*}
-	\alpha_{t}^{2}\|\ov{g}_{t}\|^{2} & \leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}\leq2L\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}(F_{k}(\vw_{t}^{k})-F_{k}^{\ast})
-	\end{align*}
-	or 
-	\begin{align*}
-	\alpha_{t}^{2}\|\ov{g}_{t}\|^{2} & \leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k},\mathbf{\xi}_{t}^{k})\|^{2}\leq\alpha_{t}^{2}G^{2}
-	\end{align*}
-	\end{comment}
-	
-	Now 
-	\begin{align*}
-	& -2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
-	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
-	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
-	\end{align*}
-	For the second term, which is negative, we can ignore it, but this
-	yields a suboptimal bound that fails to provide the desired linear
-	speedup. Instead, we upper bound it using the following derivation:
-	\begin{align*}
-	& 2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
-	& \leq2\alpha_{t}\left[F(\ov{w}_{t+1})-F(\ov{w}_{t})\right]\\
-	& \leq2\alpha_{t}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\ov{w}_{t+1}-\ov{w}_{t}\rangle+\alpha_{t}L\mathbb{E}\|\ov{w}_{t+1}-\ov{w}_{t}\|^{2}\\
-	& =-2\alpha_{t}^{2}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\vg_{t}\rangle+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
-	& =-2\alpha_{t}^{2}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\ov{g}_{t}\rangle+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
-	& =-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\|\nabla F(\ov{w}_{t})-\ov{g}_{t}\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
-	& =-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\|\nabla F(\ov{w}_{t})-\sum_{k}p_{k}\nabla F(\vw_{t}^{k})\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
-	& \leq-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\sum_{k}p_{k}\|\nabla F(\ov{w}_{t})-\nabla F(\vw_{t}^{k})\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
-	& \leq-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
-	& \leq-\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
-	\end{align*}
-	where we have used the smoothness of $F$ twice. 
-	
-	Note that the term $-\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$ exactly
-	cancels the $\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$ in the bound
-	for $A_{1}$, so that plugging in the bound for $-2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle$,
-	we have so far proved 
-	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-	& +\alpha_{t}^{2}L^{2}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
-	\end{align*}
-	The term $\mathbb{E}\|\vg_{t}\|^{2}\leq G^{2}$ by assumption. 
-	
-	Now we bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$ following \cite{li2019convergence}.
-	Since communication is done every $E$ steps, for any $t\geq0$, we
-	can find a $t_{0}\leq t$ such that $t-t_{0}\leq E-1$ and $\vw_{t_{0}}^{k}=\ov{w}_{t_{0}}$for
-	all $k$. Moreover, using $\alpha_{t}$ is non-increasing and $\alpha_{t_{0}}\leq2\alpha{}_{t}$
-	for any $t-t_{0}\leq E-1$, we have 
-	\begin{align*}
-	& \mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
-	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}-(\ov{w}_{t}-\ov{w}_{t_{0}})\|^{2}\\
-	& \leq\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2}\\
-	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw_{t_{0}}^{k}\|^{2}\\
-	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|-\sum_{i=t_{0}}^{t-1}\alpha_{i}\vg_{i,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}E\alpha_{i}^{2}\|\vg_{i,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}E^{2}\alpha_{t_{0}}^{2}G^{2}\\
-	& \leq4E^{2}\alpha_{t}^{2}G^{2}
-	\end{align*}
-	\begin{comment}
-	Alternatively, we can also write
-	\begin{align*}
-	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}\left(\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\alpha_{t-1}\vg_{t-1}-\alpha_{t-1}\vg_{t-1,k}\|^{2}\right)
-	\end{align*}
-	and write 
-	\begin{align*}
-	\sum_{k}p_{k}\|\vg_{t-1,k}-\vg_{t-1}\|^{2}\leq\sum_{k}p_{k}\|\vg_{t-1,k}\|^{2} & =\sum_{k}p_{k}\|\vg_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})+\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
-	& \leq2\sum_{k}p_{k}\|\vg_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})\|^{2}+2\sum_{k}p_{k}\|\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
-	& \leq2\sum_{k}p_{k}\sigma_{k}^{2}+2\sum_{k}p_{k}\|\nabla F_{k}(\vw_{t-1}^{k})-\nabla F_{k}(\ov{w}_{t-1})+\nabla F_{k}(\ov{w}_{t-1})\|^{2}\\
-	& \leq2\sum_{k}p_{k}\sigma_{k}^{2}+4\sum_{k}p_{k}\left(\|\nabla F_{k}(\vw_{t-1}^{k})-\nabla F_{k}(\ov{w}_{t-1})\|^{2}+\|\nabla F_{k}(\ov{w}_{t-1})\|^{2}\right)\\
-	& \leq2\sigma^{2}+4\sum_{k}p_{k}\left(L^{2}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\nabla F_{k}(\ov{w}_{t-1})\|^{2}\right)
-	\end{align*}
-	so that 
-	\begin{align*}
-	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & \leq2(1+4L^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+4\sigma^{2}\alpha_{t-1}^{2}+8\alpha_{t-1}^{2}\sum_{k}p_{k}\|\nabla F_{k}(\ov{w}_{t-1})\|^{2}
-	\end{align*}
-	and taking expectation, we have 
-	\begin{align*}
-	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & \leq2(1+4L^{2}\alpha_{t-1}^{2})\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}(\sigma^{2}+2G^{2})
-	\end{align*}
-	Using this recusive relation at most $E$ times to arrive at a communication
-	round and that $\alpha_{t}L\leq1/8$ for all $t$, we have 
-	\begin{align*}
-	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\leq E\frac{1}{L^{2}}(\sigma^{2}+2G^{2})
-	\end{align*}
-	which gives 
-	\end{comment}
-	{} 
-	
-	Using the bound on $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$,
-	we can conclude that, with $\nu_{max}:=N\cdot\max_{k}p_{k}$ and $\nu_{min}:=N\cdot\min_{k}p_{k}$, 
-	
-	\begin{align*}
-	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\\
-	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
-	& =\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\sum_{k=1}^{N}(p_{k}N)^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
-	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\nu_{max}^{2}\sum_{k=1}^{N}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
-	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}
-	\end{align*}
-	where in the last inequality we use $\sigma^{2}=\max_{k}\sigma_{k}^{2}$, and assume $\alpha_{t}$
-	satisfies $L\alpha_{t}\leq\frac{1}{8}$. We show next that $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}=O(\frac{1}{tN}+\frac{E^{2}LG^{2}}{t^{2}})$. 
+
+	We show next that $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}=O(\frac{1}{tN}+\frac{E^{2}LG^{2}}{t^{2}})$. 
 	
 	Let $C\equiv6E^{2}LG^{2}$ and $D\equiv\frac{1}{N}\nu_{max}^{2}\sigma^{2}$.
 	Suppose that we have shown $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}\leq b\cdot(\alpha_{t}D+\alpha_{t}^{2}C)$
@@ -313,6 +212,157 @@
 	\end{proof}
 	\end{comment}
 \end{proof}
+
+\subsubsection{Deferred proofs of key lemmas}
+Here we first rewrite the proof of lemma \ref{lem:bgv} \ref{lem:bdw} from~\cite{li2019convergence} with slight modification for the consistence and completeness of this work. 
+\begin{proof}[Proof of lemma~\ref{lem:bgv}]
+	\begin{align*}
+	\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\sum_{k=1}^{N}p_{k}^{2}\|\vg_{t,k}-\mathbb{E}\vg_{t,k}\|^{2}\leq \sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	\end{align*}
+\end{proof}
+
+
+\begin{proof}[Proof of lemma~\ref{lem:bdw}]
+	Now we bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$ following \cite{li2019convergence}.
+	Since communication is done every $E$ steps, for any $t\geq0$, we
+	can find a $t_{0}\leq t$ such that $t-t_{0}\leq E-1$ and $\vw_{t_{0}}^{k}=\ov{w}_{t_{0}}$for
+	all $k$. Moreover, using $\alpha_{t}$ is non-increasing and $\alpha_{t_{0}}\leq2\alpha{}_{t}$
+	for any $t-t_{0}\leq E-1$, we have 
+		\begin{align*}
+	& \mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
+	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}-(\ov{w}_{t}-\ov{w}_{t_{0}})\|^{2}\\
+	& \leq\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2}\\
+	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw_{t_{0}}^{k}\|^{2}\\
+	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|-\sum_{i=t_{0}}^{t-1}\alpha_{i}\vg_{i,k}\|^{2}\\
+	& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}E\alpha_{i}^{2}\|\vg_{i,k}\|^{2}\\
+	& \leq2\sum_{k=1}^{N}p_{k}E^{2}\alpha_{t_{0}}^{2}G^{2}\\
+	& \leq4E^{2}\alpha_{t}^{2}G^{2}
+	\end{align*}
+\end{proof}
+
+\begin{proof}[Proof of lemma~\ref{lem:scvxoner}]
+	We have 
+	\begin{align*}
+	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}\vg_{t})-\vw^{\ast}\|^{2}\\
+	& =\|(\ov{w}_{t}-\alpha_{t}\ov{g}_{t}-\vw^{\ast})-\alpha_{t}(\vg_{t}-\ov{g}_{t})\|^{2}\\
+	& =A_{1}+A_{2}+A_{3}
+	\end{align*}
+	where 
+	\begin{align*}
+	A_{1} & =\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2}\\
+	A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-\vg_{t}\rangle\\
+	A_{3} & =\alpha_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
+	\end{align*}
+	By definition of $\vg_{t}$ and $\ov{g}_{t}$ (see \eq{\ref{eq:gradient}}), we have $\mathbb{E}A_{2}=0$.
+	For $A_{3}$, we have the follow upper bound:
+	\begin{align*}
+	\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|\vg_{t,k}-\mathbb{E}\vg_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	\end{align*}
+	again by Jensen's inequality and using the independence of $\vg_{t,k},\vg_{t,k'}$ \cite[Lemma 2]{li2019convergence}. 
+	
+	Next we bound $A_{1}$: 
+	\begin{align*}
+	\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2} & =\|\ov{w}_{t}-\vw^{\ast}\|^{2}+2\langle\ov{w}_{t}-\vw^{\ast},-\alpha_{t}\ov{g}_{t}\rangle+\|\alpha_{t}\ov{g}_{t}\|^{2}
+	\end{align*}
+	and we will show that the third term $\|\alpha_{t}\ov{g}_{t}\|^{2}$
+	can be canceled by an upper bound of the second term. %
+	\begin{comment}
+	The last term is straightforward to bound by the convexity of $\|\cdot\|^{2}$
+	and $L$-smoothness of $F_{k}$,
+	\begin{align*}
+	\alpha_{t}^{2}\|\ov{g}_{t}\|^{2} & \leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}\leq2L\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}(F_{k}(\vw_{t}^{k})-F_{k}^{\ast})
+	\end{align*}
+	or 
+	\begin{align*}
+	\alpha_{t}^{2}\|\ov{g}_{t}\|^{2} & \leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k},\mathbf{\xi}_{t}^{k})\|^{2}\leq\alpha_{t}^{2}G^{2}
+	\end{align*}
+	\end{comment}
+	
+	Now 
+	\begin{align*}
+	& -2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
+	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
+	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
+	\end{align*}
+	For the second term, which is negative, we can ignore it, but this
+	yields a suboptimal bound that fails to provide the desired linear
+	speedup. Instead, we upper bound it using the following derivation:
+	\begin{align*}
+	& 2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
+	& \leq2\alpha_{t}\left[F(\ov{w}_{t+1})-F(\ov{w}_{t})\right]\\
+	& \leq2\alpha_{t}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\ov{w}_{t+1}-\ov{w}_{t}\rangle+\alpha_{t}L\mathbb{E}\|\ov{w}_{t+1}-\ov{w}_{t}\|^{2}\\
+	& =-2\alpha_{t}^{2}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\vg_{t}\rangle+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& =-2\alpha_{t}^{2}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\ov{g}_{t}\rangle+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& =-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\|\nabla F(\ov{w}_{t})-\ov{g}_{t}\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& =-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\|\nabla F(\ov{w}_{t})-\sum_{k}p_{k}\nabla F(\vw_{t}^{k})\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& \leq-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\sum_{k}p_{k}\|\nabla F(\ov{w}_{t})-\nabla F(\vw_{t}^{k})\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& \leq-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
+	& \leq-\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
+	\end{align*}
+	where we have used the smoothness of $F$ twice. 
+	
+	Note that the term $-\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$ exactly
+	cancels the $\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$ in the bound
+	for $A_{1}$, so that plugging in the bound for $-2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle$,
+	we have so far proved 
+	\begin{align*}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	& +\alpha_{t}^{2}L^{2}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
+	\end{align*}
+	The term $\mathbb{E}\|\vg_{t}\|^{2}\leq G^{2}$ by assumption. 
+	Using lemma~\ref{lem:bdw}, we have
+	\begin{align*}
+     \mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \leq 4E^{2}\alpha_{t}^{2}G^{2}
+	\end{align*}
+	\begin{comment}
+	Alternatively, we can also write
+	\begin{align*}
+	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
+	& \leq2\sum_{k=1}^{N}p_{k}\left(\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\alpha_{t-1}\vg_{t-1}-\alpha_{t-1}\vg_{t-1,k}\|^{2}\right)
+	\end{align*}
+	and write 
+	\begin{align*}
+	\sum_{k}p_{k}\|\vg_{t-1,k}-\vg_{t-1}\|^{2}\leq\sum_{k}p_{k}\|\vg_{t-1,k}\|^{2} & =\sum_{k}p_{k}\|\vg_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})+\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
+	& \leq2\sum_{k}p_{k}\|\vg_{t-1,k}-\nabla F_{k}(\vw_{t-1}^{k})\|^{2}+2\sum_{k}p_{k}\|\nabla F_{k}(\vw_{t-1}^{k})\|^{2}\\
+	& \leq2\sum_{k}p_{k}\sigma_{k}^{2}+2\sum_{k}p_{k}\|\nabla F_{k}(\vw_{t-1}^{k})-\nabla F_{k}(\ov{w}_{t-1})+\nabla F_{k}(\ov{w}_{t-1})\|^{2}\\
+	& \leq2\sum_{k}p_{k}\sigma_{k}^{2}+4\sum_{k}p_{k}\left(\|\nabla F_{k}(\vw_{t-1}^{k})-\nabla F_{k}(\ov{w}_{t-1})\|^{2}+\|\nabla F_{k}(\ov{w}_{t-1})\|^{2}\right)\\
+	& \leq2\sigma^{2}+4\sum_{k}p_{k}\left(L^{2}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\nabla F_{k}(\ov{w}_{t-1})\|^{2}\right)
+	\end{align*}
+	so that 
+	\begin{align*}
+	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & \leq2(1+4L^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+4\sigma^{2}\alpha_{t-1}^{2}+8\alpha_{t-1}^{2}\sum_{k}p_{k}\|\nabla F_{k}(\ov{w}_{t-1})\|^{2}
+	\end{align*}
+	and taking expectation, we have 
+	\begin{align*}
+	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & \leq2(1+4L^{2}\alpha_{t-1}^{2})\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}(\sigma^{2}+2G^{2})
+	\end{align*}
+	Using this recusive relation at most $E$ times to arrive at a communication
+	round and that $\alpha_{t}L\leq1/8$ for all $t$, we have 
+	\begin{align*}
+	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\leq E\frac{1}{L^{2}}(\sigma^{2}+2G^{2})
+	\end{align*}
+	which gives 
+	\end{comment}
+	
+	
+	Using the bound on $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$,
+	we can conclude that, with $\nu_{max}:=N\cdot\max_{k}p_{k}$ and $\nu_{min}:=N\cdot\min_{k}p_{k}$, 
+	
+	\begin{align*}
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\\
+	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
+	& =\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\sum_{k=1}^{N}(p_{k}N)^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
+	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\nu_{max}^{2}\sum_{k=1}^{N}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
+	& \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}
+	\end{align*}
+	where in the last inequality we use $\sigma^{2}=\max_{k}\sigma_{k}^{2}$, and assume $\alpha_{t}$
+	satisfies $L\alpha_{t}\leq\frac{1}{8}$. 
+
+\end{proof}
+
 
 One may ask whether the dependence on $E$ in the term $\frac{\kappa E^{2}G^{2}/\mu}{KT}$
 can be removed, or equivalently whether $\sum_{k}p_{k}\|\mathbf{w}_{t}^{k}-\overline{\mathbf{w}}_{t}\|^{2}=O(1/T^{2})$
