@@ -217,16 +217,17 @@ Here we first rewrite the proof of lemma \ref{lem:bgv} \ref{lem:bdw} from~\cite{
 	for any $t-t_{0}\leq E-1$, we have 
 		\begin{align*}
 	& \mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
-	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}-(\ov{w}_{t}-\ov{w}_{t_{0}})\|^{2}\\
-	& \leq\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2}\\
-	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw_{t_{0}}^{k}\|^{2}\\
-	& =\mathbb{E}\sum_{k=1}^{N}p_{k}\|-\sum_{i=t_{0}}^{t-1}\alpha_{i}\vg_{i,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}E\alpha_{i}^{2}\|\vg_{i,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}E^{2}\alpha_{t_{0}}^{2}G^{2}\\
-	& \leq4E^{2}\alpha_{t}^{2}G^{2}
+= & \mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}-(\ov{w}_{t}-\ov{w}_{t_{0}})\|^{2}\\
+\leq &\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\ov{w}_{t_{0}}\|^{2}\\
+	= &\mathbb{E}\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw_{t_{0}}^{k}\|^{2}\\
+	= &\mathbb{E}\sum_{k=1}^{N}p_{k}\|-\sum_{i=t_{0}}^{t-1}\alpha_{i}\vg_{i,k}\|^{2}\\
+	\leq & 2\sum_{k=1}^{N}p_{k}\mathbb{E}\sum_{i=t_{0}}^{t-1}E\alpha_{i}^{2}\|\vg_{i,k}\|^{2}\\
+	\leq & 2\sum_{k=1}^{N}p_{k}E^{2}\alpha_{t_{0}}^{2}G^{2}\\
+	\leq & 4E^{2}\alpha_{t}^{2}G^{2}
 	\end{align*}
 \end{proof}
-
+Based on the results of Lemma~\ref{lem:bgv},~\ref{lem:bdw}, we now prove the upper bound of one step SGD progress. This 
+proof improve the prior art~\cite{li2019convergence} and firstly reveal the linear speedup of convergence of FedAvg. 
 \begin{proof}[Proof of lemma~\ref{lem:scvxoner}]
 	We have 
 	\begin{align*}
