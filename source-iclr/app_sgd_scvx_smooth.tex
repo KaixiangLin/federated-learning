@@ -52,7 +52,7 @@ We now restate Theorem~\ref{th:scvx_sgd} from the main text and then prove it us
 	% and bound $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}$. 
 	The road map of the proof for full device participation contains three steps. First, we establish a recursive relationship between $\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}$
 	and $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}$, upper bounding the progress of FedAvg from step $t$ to step $t+1$. 
-	Second, we show that $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}=、\mathcal{O}(\frac{\nu_{max}^{2}\sigma^{2}/\mu}{tN}+\frac{E^{2}LG^{2}/\mu^2}{t^{2}})$ by induction using the recursive relationship from the previous step. 
+	Second, we show that $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}=\mathcal{O}(\frac{\nu_{max}^{2}\sigma^{2}/\mu}{tN}+\frac{E^{2}LG^{2}/\mu^2}{t^{2}})$ by induction using the recursive relationship from the previous step. 
 	Third, we use the property of $L$-smoothness to bound the optimality gap by $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}$. 
 	
 	By Lemma~\ref{lem:scvxoner}, we have the following upper bound for the one step progress: 
@@ -273,8 +273,9 @@ proof improves on the previous work~\cite{li2019convergence} and is the first to
 	\end{align*}
 	We record the bound we have obtained so far, as it will also be used in the proof for convex case: 
 	\begin{align*}
-	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\\
-	\leq& \mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+\alpha_{t}^{2}\|\ov{g}_{t}\|^{2} \numberthis \label{eq:common one step}
+	 \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}
+	\leq & \mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
+	 & +2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+\alpha_{t}^{2}\|\ov{g}_{t}\|^{2} \numberthis \label{eq:common one step}
 	\end{align*}
 	For the term $2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]$, which is negative, we can ignore it, but this
 	yields a suboptimal bound that fails to provide the desired linear

@@ -10,7 +10,8 @@ Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in FedAvg.
 \begin{proof}
     The first part of the proof follows directly from \eq{\ref{eq:common one step}} in the proof of Lemma \ref{lem:scvxoner}. Setting $\mu=0$ in \eq{\ref{eq:common one step}} (since we are in the convex setting instead of strongly convex), we obtain 
     \begin{align*}
-	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]+\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \\ 
+	& +2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]+\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 	\end{align*}
 	The difference of this bound with that in the strongly convex case
 	is that we no longer have a contraction factor of $1-\mu\alpha_t$ in front of $\|\ov{w}_{t}-\vw^{\ast}\|^{2}$.
@@ -33,17 +34,18 @@ Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in FedAvg.
 	so that 
 	\begin{align*}
 	& \|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\\
-	& \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
+	\leq & \|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
 	& +2\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}+4\alpha_{t}^{2}L(F(\ov{w}_{t})-F(\vw^{\ast}))+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-	& =\|\ov{w}_{t}-\vw^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-	& +\alpha_{t}(1-4\alpha_{t}L)(F(\vw^{\ast})-F(\ov{w}_{t}))
+	= & \|\ov{w}_{t}-\vw^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right] \\ 
+	 & +\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	 +\alpha_{t}(1-4\alpha_{t}L)(F(\vw^{\ast})-F(\ov{w}_{t}))
 	\end{align*}
 	Since $F(\vw^{\ast})\leq F(\ov{w}_{t})$, as long as $4\alpha_{t}L\leq1$,
 	we can ignore the last term, and rearrange the inequality to obtain
 	\begin{align*}
 	& \|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast}))\\
-	& \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-	& \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\frac{3}{2}\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+ \leq & \|\ov{w}_{t}-\vw^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	\leq & \|\ov{w}_{t}-\vw^{\ast}\|^{2}+\frac{3}{2}\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
 	\end{align*}
 	
 	The same argument as before yields $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\leq4E^{2}\alpha_{t}^{2}G^{2}$
