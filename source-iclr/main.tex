@@ -41,6 +41,7 @@
 \newtheorem{thm}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{remark}{Remark}
+\newtheorem{proposition}{Proposition}
 \newcommand{\lkxcom}[1]{{\color{red}{#1}}}
 \usepackage{pifont}% http://ctan.org/pkg/pifont
 \newcommand{\cmark}{\ding{51}}%
@@ -50,7 +51,12 @@
 
 \newcommand{\ov}[1]{{\overline{\mathbf{#1}}}}
 \input{bmacros}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
 \newtheorem*{assumption*}{Assumption}
+\newtheorem*{claim*}{Claim}
 
 \title{Federated Learning's Blessing:\\
 FedAvg has Linear Speedup}

@@ -2,24 +2,24 @@
 
 
 \section{Introduction}
-Federated learning (FL) is a machine learning setting where many clients (e.g., mobile devices or organizations) collaboratively train a model under the orchestration of a central server (e.g., service provider), while keeping the training data decentralized~\cite{smith2017federated, kairouz2019advances}. In recent years, FL has swiftly emerged as an important learning paradigm~\cite{mcmahan2016communication,li2018federated}--one that enjoys widespread success in applications such as personalized recommendation~\cite{chen2018federated}, virtual assistant~\cite{lamautonomy}, and keyboard prediction~\cite{47586}, to name a few--for at least two reasons: First, the rapid proliferation of smart devices that are equipped with both computing power and data-capturing capabilities provided the infrastructure core for FL. Second, the rising awareness of privacy and the exponential growth of computational power (blessed by Moore's law) in mobile devices have made it increasingly attractive to push the computation to the edge.
+Federated learning (FL) is a machine learning setting where many clients (e.g., mobile devices or organizations) collaboratively train a model under the orchestration of a central server (e.g., service provider), while keeping the training data decentralized~\cite{smith2017federated, kairouz2019advances}. In recent years, FL has swiftly emerged as an important learning paradigm~\cite{mcmahan2016communication,li2018federated}--one that enjoys widespread success in applications such as personalized recommendation~\cite{chen2018federated}, virtual assistant~\cite{lamautonomy}, and keyboard prediction~\cite{47586}, to name a few--for at least two reasons: First, the rapid proliferation of smart devices that are equipped with both computing power and data-capturing capabilities provided the infrastructure core for FL. Second, the rising awareness of privacy and the exponential growth of computational power in mobile devices have made it increasingly attractive to push the computation to the edge.
 
 Despite its promise and broad applicability in our current era, the potential value FL delivers is coupled with the unique challenges it brings forth. In particular, when FL learns a single statistical model using data from across all the devices while keeping each individual device's data isolated~\cite{kairouz2019advances}, it faces two challenges that are absent in centralized optimization and distributed (stochastic) optimization~\cite{zhou2017convergence, stich2018local,khaled2019first,liang2019variance,wang2018cooperative,woodworth2018graph,wang2019adaptive,jiang2018linear,yu2019parallel,yu2019linear, khaled2020tighter,koloskova2020unified}:
 
-1) \textbf{Data heterogeneity:} data distributions in devices are different (and data can't be shared);
+1) \textbf{Data heterogeneity:} data distributions in devices are different (and data cannot be shared);
 
-2) \textbf{System heterogeneity:} only a subset of devices may access the central server at each time both because the communications bandwidth profiles vary across devices and because there is no central server that has control over when a device is active. 
-
+2) \textbf{System heterogeneity:} only a subset of devices may access the central server at each time both because the communications bandwidth profiles vary across devices and because there is no central server that has control over when a device is active (the presence of ``stragglers''). 
 % Gaps in the theoretical understanding. 
-To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success~\cite{47586}. This success has since motivated a growing line of research efforts into understanding its theoretical convergence guarantees in various settings. For instance, \cite{haddadpour2019convergence} analyzed FedAvg (for non-convex smooth problems satisfying PL conditions) under the assumption that each local device's minimizer is the same as the minimizer of the joint problem (if all devices' data is aggregated together), an overly restrictive assumption.
-Very recently, \cite{li2019convergence} furthered the progress and established an $\cO(\frac{1}{T})$ convergence rate for FedAvg for strongly convex smooth problems. 
+
+To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success~\cite{47586}. This success has since motivated a growing line of research efforts into understanding its theoretical convergence guarantees in various settings. For instance, \cite{haddadpour2019convergence} analyzed FedAvg (for non-convex smooth problems satisfying PL conditions) under the assumption that each local device's minimizer is the same as the minimizer of the joint problem (if all devices' data is aggregated together), an overly restrictive assumption that restricts the extent of data heterogeneity.
+Very recently, \cite{li2019convergence} furthered the progress and established an $\cO(\frac{1}{T})$ convergence rate for FedAvg for strongly convex smooth Federated learning problems with both data and system heterogeneity. A concurrent result in the same setting~\cite{karimireddy2019scaffold} established a similar $\cO(\frac{1}{T})$ result that allows for a linear speedup when the number of participating devices is large.
 At the same time, \cite{huo2020faster} studied the Nesterov accelerated FedAvg for non-convex smooth problems and established 
-an $\cO(\frac{1}{\sqrt{T}})$ convergence rate to stationary points.
+an $\cO(\frac{1}{\sqrt{T}})$ convergence rate to stationary points. 
 % (Prior to that, \cite{liu2019accelerating} studied Nesterov accelerated FedAvg using full gradient--rather than stochastic gradient as in both the above-mentioned works and our setting--for strongly convex smooth problems and established an $\cO(\frac{1}{T})$ convergence rate).
 
 
 However, despite these very recent fruitful pioneering efforts into understanding the theoretical convergence properties of FedAvg, it remains open as to how the number of devices--particularly the number of devices that participate in the computation--affects the convergence speed.
-In particular, do we get linear speedup of FedAvg? What about when FedAvg is accelerated? These aspects are currently unexplored in FL. We fill in the gaps here by providing affirmative answers.
+In particular, is linear speedup of FedAvg a universal phenomenon across different settings and algorithms? What about when FedAvg is accelerated with momentum updates? Does the presence of both data and system heterogeneity in Federated learning require major technical novelties over results from distributed and decentralized optimization? These aspects are currently unexplored in FL. We fill in the gaps here by providing affirmative answers.
 
 \begin{table}[t!]
 \hspace{-1em}
@@ -32,7 +32,7 @@ In particular, do we get linear speedup of FedAvg? What about when FedAvg is acc
 	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$ &  $\cO(\exp(-\frac{KT}{E\kappa_1}))$ & $\cO(\exp(-\frac{KT}{E\kappa }))^{\dagger}$     \\ \hline
 \end{tabular}
 }
-\caption{Our convergence results for FedAvg and accelerated FedAvg in this paper. Throughout the paper, $N$ is the total
+\caption{\small Our convergence results for FedAvg and accelerated FedAvg in this paper. Throughout the paper, $N$ is the total
 number of local devices, and $K \leq N$ is the maximal number of devices that are accessible to the central server. $T$ is the total number of stochastic updates performed by each local device, $E$ is the local steps between two consecutive server communications (and hence $T/E$ is the number of communications). $^{\dagger}$ In the linear regression setting, we have $\kappa=\kappa_1$ for FedAvg and $\kappa=\sqrt{\kappa_1\tilde{\kappa}}$ for accelerated FedAvg, where $\kappa_1$ and $\sqrt{\kappa_1\tilde{\kappa}}$ are condition numbers defined in Section \ref{sec:overparameterized}. Since
 $\kappa_{1}\geq\tilde{\kappa}$, this implies a speedup factor of
 $\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$ for accelerated FedAvg.}

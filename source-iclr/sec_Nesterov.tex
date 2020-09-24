@@ -26,16 +26,16 @@ convergence rate for $\mu$-strongly convex and $L$-smooth objectives.
 \end{comment}
 The Nesterov Accelerated FedAvg algorithm follows the updates:
 \begin{align*}
-\mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}\mathbf{g}_{t,k},\\
-\mathbf{w}_{t+1}^{k} & =\begin{cases}
+\mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}\mathbf{g}_{t,k}, \hspace{1em}
+\mathbf{w}_{t+1}^{k} =\begin{cases}
 \mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E},\\
-\sum_{k \in \cS_{t+1}}\left[\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E},
+\sum_{k \in \cS_{t+1}}q_k\left[\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E},
 \end{cases}
 \end{align*}
 where $\mathbf{g}_{t,k}:=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})$ is
-the stochastic gradient sampled on the $k$-th device at time $t$.  
+the stochastic gradient sampled on the $k$-th device at time $t$, and $q_k$ again depends on participation and sampling schemes.  
 \begin{theorem}
-	\label{thm:nesterov_scvx}Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$
+	\label{thm:nesterov_scvx}Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$ in Nesterov accelerated FedAvg,
 	and set learning rates $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$,  $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:stroncvx},\ref{ass:boundedvariance},\ref{ass:subgrad2} with full device participation, 
 	\begin{align*}
 	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right),

@@ -25,8 +25,8 @@ without degrading the linear speedup in the number of workers. On
 the other hand, with partial participation, $E$ must be $\mathcal{O}(1)$
 to guarantee $\mathcal{O}(1/NT)$ convergence.
 \begin{theorem}
-	\label{thm:SGD_scvx}Let $\overline{\mathbf{w}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{T}^{k}$,
-	$\nu_{\max}=\max_{k}Np_{k}$, and set decaying learning rates $\alpha_{t}=\frac{1}{4\mu(\gamma+t)}$
+	\label{thm:SGD_scvx}Let $\overline{\mathbf{w}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{T}^{k}$ in FedAvg,
+	$\nu_{\max}=\max_{k}Np_{k}$, and set decaying learning rates $\alpha_{t}=\frac{4}{\mu(\gamma+t)}$
 	with $\gamma=\max\{32\kappa,E\}$ and $\kappa=\frac{L}{\mu}$. Then
 	under Assumptions~\ref{ass:lsmooth} to \ref{ass:subgrad2} with full device participation, 
 	% under Assumptions~\ref{ass:lsmooth},\ref{ass:stroncvx},\ref{ass:boundedvariance},\ref{ass:subgrad2} with full device participation, 
@@ -69,7 +69,7 @@ still yields a linear speedup in $K$, which is also confirmed by
 experiments. The requirement $E=\mathcal{O}(1)$ in partial participation
 likely cannot be removed for our sampling schemes, as the sampling
 variance is $\Omega(E^{2}/T^{2})$ and the dependence on $E$ is tight.  \\
-\textbf{Comparison with related work.} To better understand the significance of the obtained bound, we compare our rates to the best-known results in related settings. \cite{haddadpour2019convergence} proves a linear speedup $\mathcal{O}(1/NT)$ result for strongly convex and smooth objectives, with $\mathcal{O}(N^{1/3}T^{2/3})$ communication complexity with \emph{i.i.d.} data and partial participation. However, their results build on the bounded gradient diversity assumption, which implies the existence of $\mathbf{w}^*$ that minimizes all local objectives (see discussions in Section~\ref{sec:assumptions}), effectively removing system heterogeneity. The bound in \cite{koloskova2020unified} matches our bound in the full participation case, but their framework excludes partial participation \cite[Proposition 1]{koloskova2020unified}.
+\textbf{Comparison with related work.} To better understand the significance of the obtained bound, we compare our rates to the best-known results in related settings. \cite{haddadpour2019convergence} proves a linear speedup $\mathcal{O}(1/NT)$ result for strongly convex and smooth objectives, with $\mathcal{O}(N^{1/3}T^{2/3})$ communication complexity with \emph{i.i.d.} data and partial participation. However, their results build on the bounded gradient diversity assumption, which implies the existence of $\mathbf{w}^*$ that minimizes all local objectives (see discussions in Section~\ref{sec:assumptions} and Appendix~\ref{sec:app:comparison}), effectively removing system heterogeneity. The bound in \cite{koloskova2020unified} matches our bound in the full participation case, but their framework excludes partial participation \cite[Proposition 1]{koloskova2020unified}.
 
 \begin{comment}
 	In this overparameterized setting, we prove a geometric convergence rate (see Section~\ref{sec:overparameterized}), 
@@ -85,8 +85,8 @@ smooth setting in \cite{jiang2018linear,yu2019parallel,haddadpour2019convergence
 where $\mathcal{O}(1/\sqrt{NT})$ results are given in terms of averaged
 gradient norm. 
 \begin{theorem}
-	\label{thm:SGD_cvx}Under assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} and constant learning
-	rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$, 
+	\label{thm:SGD_cvx}Under Assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} and constant learning
+	rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$, FedAvg satisfies
 	\begin{align*}
 	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right)
 	\end{align*}
