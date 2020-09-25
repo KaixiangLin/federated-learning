@@ -11,7 +11,10 @@ only convergence analyses of FedAvg with momentum-based stochastic
 updates focus on the non-convex smooth case \cite{huo2020faster,yu2019linear,li2018federated}.
 In this section, we complete the picture with $\mathcal{O}(1/NT)$
 and $\mathcal{O}(1/\sqrt{NT})$ convergence results for Nesterov-accelerated
-FedAvg for convex objectives that match the rates from the previous section.
+FedAvg for convex objectives that match the rates from the previous section. Our work the first to provide a unified analysis for FedAvg and Nesterov accelerated FedAvg for convex problems, highlighting the common elements
+and distinctions for the two algorithms, whereas previous analysis of momentum accelerated FedAvg algorithms only exist in the non-convex
+case (only with full participation)~\cite{yu2019linear} and are scattered and use different notation and proof techniques [16, 17].
+
 As we know from stochastic optimization, Nesterov and other momentum
 updates may fail to accelerate over SGD \cite{liu2018accelerating,kidambi2018insufficiency,liu2018toward,yuan2016influence}.
 Therefore in Section~\ref{sec:overparameterized} we will specialize to overparameterized

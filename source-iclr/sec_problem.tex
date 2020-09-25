@@ -51,7 +51,7 @@ averaged over all devices at each communication round, in which case $q_k=p_k$ f
 $\mathbf{w}_{t+1}^{k} = \sum_{k=1}^N p_k \mathbf{v}_{t+1}^{k}$ if $t+1 \in \mathcal{I}_{E}$, and
 the case of \textbf{partial participation} where $|\cS_{t+1}| < N$. 
 
-With partial participation, we follow~\cite{li2019convergence} and~\cite{li2018federated} and assume that $\cS_{t+1}$ is obtained by one of two types of
+With partial participation, we follow~\cite{li2018federated,karimireddy2019scaffold,li2019convergence} and assume that $\cS_{t+1}$ is obtained by one of two types of
 sampling schemes to simulate practical scenarios. One scheme establishes $\cS_{t+1}$ by \emph{i.i.d.} sampling the devices with probability $p_k$ with replacement, and uses $q_k=\frac{1}{K}$, where $K=|\mathcal{S}_{t+1}|$, while the other scheme samples $\cS_{t+1}$ uniformly \emph{i.i.d.} from all devices without replacement, and uses $q_k=p_k\frac{N}{K}$.
 Both schemes
 guarantee that gradient updates in FedAvg are unbiased stochastic versions of
@@ -118,7 +118,7 @@ and $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})-\nabla F_{k}(\mathb
 Therefore, there is no substantial difference between these assumptions
 and assuming the bounds at $\mathbf{w}^{\ast}$ only~\cite{koloskova2020unified}. Furthermore, compared to assuming \textit{bounded gradient diversity} as in related work~\cite{haddadpour2019convergence,li2018federated}, Assumption~\ref{ass:subgrad2} is much less restrictive. When the optimality gap converges to zero,
 bounded gradient diversity restricts local objectives to have the same minimizer as the global objective, contradicting the heterogeneous data setting. 
-For detailed discussions of our assumptions and additional comparisons with related works, please refer to Appendix Section~\ref{sec:app:comparison}.
+For detailed discussions of our assumptions, please refer to Appendix Section~\ref{sec:app:comparison}.
 
 % On the other hand, some works such as \cite{haddadpour2019convergence,li2018federated}
 % assume bounds on the ``gradient diversity'' or ``dissimilarity'',
