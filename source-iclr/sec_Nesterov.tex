@@ -40,11 +40,12 @@ the stochastic gradient sampled on the $k$-th device at time $t$, and $q_k$ agai
 	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right).
 	\end{align*}
 \end{theorem}
-The key step in the proof of this result is a one step contraction that involves three time steps, due to the update format of Nesterov SGD, but shares similar elements as that for FedAvg:
+Similar to FedAvg, the key step in the proof of this result is a recursive contraction bound, but different in that it involves three time steps, due to the update format of Nesterov SGD:
 \begin{align*}
 \mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
 & +\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|
 \end{align*}
+and from this one can again use induction and $L$-smoothness to obtain the desired bound.
 %
 To our knowledge, this is the first convergence result for Nesterov
 accelerated FedAvg in the strongly convex and smooth setting. The
@@ -56,7 +57,7 @@ communication rounds with full participation.
 
 \subsection{Convex Smooth Objectives}
 
-We now show that the optimality gap of Nesterov Accelerated FedAvg has $\mathcal{O}(1/\sqrt{KT})$ rate. This result complements the strongly convex case in the previous
+We now show that the optimality gap of Nesterov Accelerated FedAvg has $\mathcal{O}(1/\sqrt{KT})$ rate for convex and smooth objectives. This result complements the strongly convex case in the previous
 part, as well as the non-convex smooth setting in \cite{huo2020faster,yu2019linear,li2018federated},
 where a similar $\mathcal{O}(1/\sqrt{KT})$ rate is given in terms
 of averaged gradient norm. 

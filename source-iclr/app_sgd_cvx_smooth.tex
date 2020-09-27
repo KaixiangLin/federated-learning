@@ -19,7 +19,7 @@ Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in FedAvg.
 	with $2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]$
 	and obtain only lower order terms. In the convex case, we use a different
 	strategy and preserve $\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]$
-	in order to obtain a telescoping sum. 
+	in order to obtain the desired optimality gap. 
 	
 	We have
 	\begin{align*}
@@ -90,7 +90,7 @@ With the one step progress result, we can now prove the convergence result in th
 \min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sqrt{NT}}\cdot\|\vw_{0}-\vw^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}6E^{2}LG^{2}\\
 & \leq\frac{1}{\sqrt{NT}}\cdot\|\vw_{0}-\vw^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{N}{T}6E^{2}LG^{2}\\
 & =(\|\vw_{0}-\vw^{\ast}\|^{2}+\nu_{\max}^{2}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}6E^{2}LG^{2}\\
-& =O(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
+& =\mathcal{O}(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
 \end{align*}
 	
 	Similarly, for partial participation, we have 

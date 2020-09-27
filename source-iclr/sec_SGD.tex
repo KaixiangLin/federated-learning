@@ -37,12 +37,21 @@ to guarantee $\mathcal{O}(1/KT)$ convergence.
 	\end{align*}
 	\label{th:scvx_sgd}
 \end{theorem}
+\textbf{Proof sketch.} Because our unified analyses of results in the main text follow the same framework with variations in technical details, we first give an outline of proof  for Theorem~\ref{th:scvx_sgd} to illustrate the main ideas. For full participation, the main ingredient is a recursive contraction bound 
+	\begin{align*}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6\alpha_{t}^{3}LE^{2}G^{2}
+	\end{align*}
+ where the $\mathcal{O}(\alpha_{t}^{3}E^{2}G^{2})$ term is the key improvement over the bound in~\cite{li2019convergence}, which has $\mathcal{O}(\alpha_{t}^{2}E^2 G^2)$ instead. We then use induction to obtain a non-recursive bound on $\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}$, which is converted to a bound on $\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}$ using $L$-smoothness. For partial participation, an additional sampling variance term $\mathcal{O}(\frac{1}{K} \alpha_t^2 E^2G^2)$ of leading order is added to the contraction bound. 
+
+\begin{comment}
 A crucial ingredient in the proof of Theorem~\ref{th:scvx_sgd} is a one step contraction bound 
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6E^{2}L\alpha_{t}^{3}G^{2} 
 	\end{align*}
 that improves upon the analysis in~\cite{li2019convergence} to deliver the linear speedup. Moreover, analogues of this bound appear in the analyses of the convex setting as well as the Nesterov accelerated FedAvg.\\
-\textbf{Linear speedup. }We first compare our bound with that in \cite{li2019convergence},
+\end{comment}
+
+\textbf{Linear speedup. }We compare our bound with that in \cite{li2019convergence},
 which is $\mathcal{O}(\frac{1}{NT}+\frac{E^{2}}{KT}+\frac{E^{2}G^{2}}{T})$.
 Because the term $\frac{E^{2}G^{2}}{T}$ is also $\mathcal{O}(1/T)$
 without a dependence on $N$, for any choice of $E$ their bound cannot
@@ -96,10 +105,11 @@ gradient norm, and it also extends the result in~\cite{khaled2020tighter}, which
 	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right).
 	\end{align*}
 \end{theorem}
-The proof again relies on a one step bound, without contraction, which is then summed over time steps: 
+The analysis again relies on a recursive bound, but without contraction: 
 \begin{align*}
 	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6\alpha_{t}^{3}E^{2}LG^{2}
 	\end{align*}
+which is then summed over time steps to give the desired bound, with $\alpha_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$. \\
 %
 \textbf{Choice of $E$ and linear speedup. }With full participation,
 as long as $E=\mathcal{O}(T^{1/4}/N^{3/4})$, the convergence

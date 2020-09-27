@@ -279,7 +279,7 @@
 
 \subsection{Geometric Convergence of FedAvg for Overparameterized Linear Regression}
 
-We first provide details on quantities used in the proof of results on linear regression in Section~\ref{sec:overparameterized} in the main text. The local device objectives are now given by the sum of squares {\small$F_{k}(\mathbf{w})=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{w}^{T}\mathbf{x}_{k}^{j}-\vz_{k}^{j})^{2}$},
+We first provide details on quantities used in the proof of results on linear regression in Section~\ref{sec:app:overparameterized}. The local device objectives are now given by the sum of squares {\small$F_{k}(\mathbf{w})=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\mathbf{w}^{T}\mathbf{x}_{k}^{j}-\vz_{k}^{j})^{2}$},
 and there exists $\mathbf{w}^{\ast}$ such that $F(\mathbf{w}^{\ast})\equiv0$. 
 Define the local Hessian matrix as $\vH^{k}:=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}$, and the stochastic Hessian matrix as $\tilde{\vH}_{t}^{k}:=\xi_{t}^{k}(\xi_{t}^{k})^{T}$, where $\xi_{t}^{k}$ is the stochastic sample on the $k$th device at
 time $t$. Define $l$ to be the smallest positive number such that $\mathbb{E}\|\xi_{t}^{k}\|^{2}$$\mathbf{\xi}_{t}^{k}$($\mathbf{\xi}_{t}^{k})^{T}\preceq l\vH^{k}$ for all $k$. Note that $l\leq\max_{k,j}\|\mathbf{x}_{k}^{j}\|^{2}$.
