@@ -41,7 +41,7 @@ to guarantee $\mathcal{O}(1/KT)$ convergence.
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6\alpha_{t}^{3}LE^{2}G^{2}
 	\end{align*}
- where the $\mathcal{O}(\alpha_{t}^{3}E^{2}G^{2})$ term is the key improvement over the bound in~\cite{li2019convergence}, which has $\mathcal{O}(\alpha_{t}^{2}E^2 G^2)$ instead. We then use induction to obtain a non-recursive bound on $\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}$, which is converted to a bound on $\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}$ using $L$-smoothness. For partial participation, an additional sampling variance term $\mathcal{O}(\frac{1}{K} \alpha_t^2 E^2G^2)$ of leading order is added to the contraction bound. 
+ where the $\mathcal{O}(\alpha_{t}^{3}E^{2}G^{2})$ term is the key improvement over the bound in~\cite{li2019convergence}, which has $\mathcal{O}(\alpha_{t}^{2}E^2 G^2)$ instead. We then use induction to obtain a non-recursive bound on $\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}$, which is converted to a bound on $\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}$ using $L$-smoothness. For partial participation, an additional sampling variance term $\mathcal{O}(\frac{1}{K} \alpha_t^2 E^2G^2)$ of leading order is added to the contraction bound. To facilitate the understanding of our analysis, please refer to a high-level summary in Appendix~\ref{sec:app:sum}.
 
 \begin{comment}
 A crucial ingredient in the proof of Theorem~\ref{th:scvx_sgd} is a one step contraction bound 

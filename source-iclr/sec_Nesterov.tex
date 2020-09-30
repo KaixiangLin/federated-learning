@@ -31,21 +31,24 @@ the stochastic gradient sampled on the $k$-th device at time $t$, and $q_k$ agai
 \begin{theorem}
 	\label{thm:nesterov_scvx}Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$ in Nesterov accelerated FedAvg,
 	and set learning rates $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$,  $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:stroncvx},\ref{ass:boundedvariance},\ref{ass:subgrad2} with full device participation, 
-	\begin{align*}
+	% \vspace{-1em}
+	\small{\begin{align*}
 	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right),
-	\end{align*}
+	\end{align*}}
+	% \vspace{-1em}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
+	\small{
 	\begin{align*}
 	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right).
-	\end{align*}
+	\end{align*}}
 \end{theorem}
-Similar to FedAvg, the key step in the proof of this result is a recursive contraction bound, but different in that it involves three time steps, due to the update format of Nesterov SGD:
-\begin{align*}
-\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
-& +\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|
-\end{align*}
-and from this one can again use induction and $L$-smoothness to obtain the desired bound.
+Similar to FedAvg, the key step in the proof of this result is a recursive contraction bound, but different in that it involves three time steps, due to the update format of Nesterov SGD (see Lemma~\ref{lem:nest-scvxoner} in Appendix~\ref{sec:convexsmoothsgd}). 
+% \begin{align*}
+% \mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
+% & +\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|
+% \end{align*}
+Then we can again use induction and $L$-smoothness to obtain the desired bound.
 %
 To our knowledge, this is the first convergence result for Nesterov
 accelerated FedAvg in the strongly convex and smooth setting. The
@@ -64,14 +67,16 @@ of averaged gradient norm.
 \begin{theorem}
 	\label{thm:Nesterov_cvx}Set learning rates $\alpha_{t}=\beta_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} Nesterov accelerated FedAvg with
 	full device participation has rate
-	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right),
-	\end{align*}
+	% \vspace{-0em}
+	\small{\begin{align*}
+		\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right),
+		\end{align*}}
+		% \vspace{-1em}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
-	\begin{align*}
-	\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right).
-	\end{align*}
+	\small{\begin{align*}
+		\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right).
+		\end{align*}}
 \end{theorem}
 %
 	It is possible to extend the results in this section to accelerated
