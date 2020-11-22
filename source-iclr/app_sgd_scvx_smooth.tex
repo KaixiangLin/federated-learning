@@ -129,9 +129,9 @@ We now restate Theorem~\ref{th:scvx_sgd} from the main text and then prove it us
 	\end{align*}
 	
 	The bound for $\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}$ for the two sampling schemes we consider is provided in \eq{\ref{eq:partialsample}}, and applying it we can write the one step progress for partial participation as
-	\begin{align*}
+	\begin{align}\label{eqn:scvx-partial-oner}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+\frac{4}{K}\alpha_{t}^{2}E^{2}G^{2}+6E^{2}L\alpha_{t}^{3}G^{2},
-	\end{align*}
+	\end{align}
 	and the same arguments using induction and $L$-smoothness as the full participation case implies 
 	\begin{align*}
 	\mathbb{E}F(\ov{w}_{T})-F^{\ast}=\mathcal{O}(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})

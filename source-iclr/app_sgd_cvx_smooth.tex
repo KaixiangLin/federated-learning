@@ -3,7 +3,7 @@ In this section we provide the proof of the convergence result for FedAvg with c
 \begin{lemma} [\textbf{One step progress, convex case}]
 Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in FedAvg. Under assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2}, the following bound holds for all $t$:
 \begin{align*}
-	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6\alpha_{t}^{3}E^{2}LG^{2}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq \mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6\alpha_{t}^{3}E^{2}LG^{2}
 	\end{align*}
 	\label{lem:cvxoner}
 \end{lemma}
@@ -93,13 +93,30 @@ With the one step progress result, we can now prove the convergence result in th
 & =\mathcal{O}(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
 \end{align*}
 	
-	Similarly, for partial participation, we have 
+	{\color{red}For partial participation, the one step progress bound in Lemma \ref{lem:cvxoner} is updated in a similar manner as the strongly convex case in \eqref{eqn:scvx-partial-oner} to incorporate the sampling variance. More precisely, with partial participation,  
 	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}+\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
+	& =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2},
 	\end{align*}
-	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$ depending on the sampling scheme,
+	where $\mathbb{E}\ov{w}_{t+1}=\ov{v}_{t+1}$ for all $t$, by the unbiasedness of our sampling schemes. Since $\ov{v}_t =\sum_{k=1}^{N} p_{k} \mathbf{v}_{t}^{k}$ always averages over all devices, the full participation one step progress bound in Lemma~\ref{lem:cvxoner} applied to $\ov{v}_t$ implies
+	\begin{align*}
+	\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}+\alpha_{t}(F(\ov{v}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6\alpha_{t}^{3}E^{2}LG^{2}\\ &
+	   \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6\alpha_{t}^{3}E^{2}LG^{2}
+	\end{align*}
+	
+	The bound for $\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}$ for the two sampling schemes we consider is provided in \eq{\ref{eq:partialsample}}, and applying it to the above bound we can write the one step progress for partial participation as
+	\begin{align*}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} + \alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}(\frac{1}{N}\nu_{max}^{2}\sigma^{2}+C)+6E^{2}L\alpha_{t}^{3}G^{2},
+	\end{align*}
+	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$ depending on the sampling scheme.
+	}
+	
+	Summing up the one-step progress over $t$, 
+	\begin{align*}
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right),
+	\end{align*}
 	so that with $\alpha_{t}=\sqrt{\frac{K}{T}}$, we have 
 	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}).
 	\end{align*}
 \end{proof}

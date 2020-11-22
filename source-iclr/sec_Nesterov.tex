@@ -5,13 +5,13 @@
 \section{Linear Speedup Analysis of Nesterov Accelerated FedAvg}
 \label{sec:Nesterov}
 
-A natural extension of the FedAvg algorithm is to use momentum-based
-local updates instead of local SGD updates. To our knowledge, the
+{\color{red}A natural extension of the FedAvg algorithm is to use momentum-based 
+local updates instead of local SGD updates in order to accelerate FedAvg. As we know from stochastic optimization, Nesterov and other momentum
+updates fail to provably accelerate over SGD (\cite{liu2018accelerating,kidambi2018insufficiency,liu2018toward,yuan2020federated}). This is in contrast to the classical acceleration result of Nesterov-accelerated gradient descent over GD. Thus in the FL setting, the best provable convergence rate for FedAvg with Nesterov updates is the same as FedAvg with SGD updates. Nevertheless, Nesterov and other momentum updates are frequently used in practice, in both non-FL and FL settings, and are observed to perform better empirically. In fact, previous works such as \cite{stich2018local} on FedAvg with vanilla SGD uses FedAvg with Nesterov or other momentum updates in their experiments to achieve target accuracy. Because of the popularity of Nesterov and other momentum-based methods, understanding the linear speedup behavior of FedAvg with such local updates is important.} To our knowledge, the
 only convergence analyses of FedAvg with momentum-based stochastic
-updates focus on the non-convex smooth case \cite{huo2020faster,yu2019linear,li2018federated}.
-In this section, we complete the picture by providing the first $\mathcal{O}(1/KT)$
+updates focus on the non-convex smooth case \cite{huo2020faster,yu2019linear,li2018federated}, and no results existed in the convex smooth settings. In this section, we complete the picture by providing the first $\mathcal{O}(1/KT)$
 and $\mathcal{O}(1/\sqrt{KT})$ convergence results for Nesterov-accelerated
-FedAvg for convex objectives that match the rates from the previous section. Detailed proofs of convergence results in this section are deferred to Appendix Section~\ref{sec:app:Nesterovfedavg}.
+FedAvg for convex objectives that match the rates for FedAvg with SGD updates. Detailed proofs of convergence results in this section are deferred to Appendix Section~\ref{sec:app:Nesterovfedavg}.
 
 \subsection{Strongly Convex and Smooth Objectives}
 \begin{comment}
@@ -60,7 +60,7 @@ communication rounds with full participation.
 
 \subsection{Convex Smooth Objectives}
 
-We now show that the optimality gap of Nesterov Accelerated FedAvg has $\mathcal{O}(1/\sqrt{KT})$ rate for convex and smooth objectives. This result complements the strongly convex case in the previous
+We now show that the optimality gap of Nesterov-accelerated FedAvg has $\mathcal{O}(1/\sqrt{KT})$ rate for convex and smooth objectives. This result complements the strongly convex case in the previous
 part, as well as the non-convex smooth setting in \cite{huo2020faster,yu2019linear,li2018federated},
 where a similar $\mathcal{O}(1/\sqrt{KT})$ rate is given in terms
 of averaged gradient norm. 
@@ -78,10 +78,14 @@ of averaged gradient norm.
 		\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right).
 		\end{align*}}
 \end{theorem}
-%
+
+We emphasize again that in the stochastic optimization setting, the optimal convergence rate that FedAvg wtih Nesterov udpates can achieve is the same as FedAvg with SGD updates. However, due to the popularity and superior performance of momentum methods in practice, it is still important to understand the linear speedup behavior of such FedAvg variants. Our results in this section fill exactly this gap. 
+
+	\begin{comment}
 	It is possible to extend the results in this section to accelerated
     FedAvg algorithms with other momentum-based updates. However, as know from stochastic optimization, Nesterov and other momentum
 updates may fail to accelerate over SGD (\cite{liu2018accelerating,kidambi2018insufficiency,liu2018toward,yuan2016influence}).
     For this reason, we instead turn to the overparameterized setting
     \cite{ma2017power,liu2018accelerating,canziani2016analysis} in Section~\ref{sec:app:overparameterized} of the appendix where we show that FedAvg enjoys geometric convergence
     and it is possible to improve its convergence rate with a new momentum-based FedAvg variant, which we term ``FedMaSS''.
+	\end{comment}
