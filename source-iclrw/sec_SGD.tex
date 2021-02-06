@@ -6,10 +6,12 @@
 \label{sec:sgd}
 
 In this section, we provide convergence analyses of FedAvg for convex objectives in the general setting with both heterogeneous data (statistical heterogeneity) and partial
-participation (system heterogeneity). We show that for strongly convex and smooth objectives,
-the convergence of the optimality gap of averaged parameters across
-devices is $\mathcal{O}(1/KT)$, while for convex and smooth
-objectives, the rate is $\mathcal{O}(1/\sqrt{KT})$. Our results improve upon~\cite{li2019convergence,karimireddy2019scaffold} by showing linear speedup for any number of participating devices, and upon~\cite{khaled2020tighter,koloskova2020unified} by allowing system heterogeneity. The proofs also highlight similarities and distinctions between the strongly convex and convex settings. Detailed proofs are deferred to Appendix Section~\ref{sec:app:fedavg}.
+participation (system heterogeneity). 
+% We show that for strongly convex and smooth objectives,
+% the convergence of the optimality gap of averaged parameters across
+% devices is $\mathcal{O}(1/KT)$, while for convex and smooth
+% objectives, the rate is $\mathcal{O}(1/\sqrt{KT})$. Our results improve upon~\cite{li2019convergence,karimireddy2019scaffold} by showing linear speedup for any number of participating devices, and upon~\cite{khaled2020tighter,koloskova2020unified} by allowing system heterogeneity. The proofs also highlight similarities and distinctions between the strongly convex and convex settings. 
+Detailed proofs are deferred to Appendix Section~\ref{sec:app:fedavg}.
 
 \subsection{Strongly Convex and Smooth Objectives}
 
@@ -37,12 +39,13 @@ to guarantee $\mathcal{O}(1/KT)$ convergence.
 	\end{align*}
 	\label{th:scvx_sgd}
 \end{theorem}
+\begin{comment}
 \textbf{Proof sketch.} Because our unified analyses of results in the main text follow the same framework with variations in technical details, we first give an outline of proof  for Theorem~\ref{th:scvx_sgd} to illustrate the main ideas. For full participation, the main ingredient is a recursive contraction bound 
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} &  \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6\alpha_{t}^{3}LE^{2}G^{2}
 	\end{align*}
  where the $\mathcal{O}(\alpha_{t}^{3}E^{2}G^{2})$ term is the key improvement over the bound in~\cite{li2019convergence}, which has $\mathcal{O}(\alpha_{t}^{2}E^2 G^2)$ instead. We then use induction to obtain a non-recursive bound on $\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}$, which is converted to a bound on $\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}$ using $L$-smoothness. For partial participation, an additional term $\mathcal{O}(\frac{1}{K} \alpha_t^2 E^2G^2)$ of leading order resulting from sampling variance is added to the contraction bound. To facilitate the understanding of our analysis, please refer to a high-level summary in Appendix~\ref{sec:app:sum}.
-
+\end{comment}
 \begin{comment}
 A crucial ingredient in the proof of Theorem~\ref{th:scvx_sgd} is a one step contraction bound 
 	\begin{align*}
@@ -66,16 +69,16 @@ round. We also emphasize that the reason one cannot recover the full participati
 % both non i.i.d. data and partial participation. \\
 \textbf{Communication Complexity.} Our bound implies a distinction
 in the choice of $E$ between the full and partial participation settings.
-{\color{red}With full participation, the term involving $E$, $\mathcal{O}(E^{2}/T^{2})$, is not of leading order $\mathcal{O}(1/T)$, so we can increase $E$ and reduce the number of communication rounds without degrading the linear speedup in iteration complexity $\mathcal{O}(1/NT)$, as long as $E=\mathcal{O}(\sqrt{T/N})$, since then $\mathcal{O}(E^{2}/T^{2})=\mathcal{O}(1/NT)$
+With full participation, the term involving $E$, $\mathcal{O}(E^{2}/T^{2})$, is not of leading order $\mathcal{O}(1/T)$, so we can increase $E$ and reduce the number of communication rounds without degrading the linear speedup in iteration complexity $\mathcal{O}(1/NT)$, as long as $E=\mathcal{O}(\sqrt{T/N})$, since then $\mathcal{O}(E^{2}/T^{2})=\mathcal{O}(1/NT)$
 matches the leading term. This corresponds to a communication complexity
-of $T/E=\mathcal{O}(\sqrt{NT})$.} In contrast, the bound in \cite{li2019convergence}
+of $T/E=\mathcal{O}(\sqrt{NT})$. In contrast, the bound in \cite{li2019convergence}
 does not allow $E$ to scale with $\sqrt{T}$ to preserve $\mathcal{O}(1/T)$
 rate, even for full participation. On the other hand, with partial
 participation, $\frac{\kappa E^{2}G^{2}/\mu}{KT}$ is also a leading
 term, and so $E$ must be $\mathcal{O}(1)$. In this case, our bound
 still yields a linear speedup in $K$, which is also confirmed by
-experiments. {\color{red}The requirement that $E=\mathcal{O}(1)$ in order to achieve linear speedup in partial participation cannot be removed for our sampling schemes, as the term $\frac{\kappa E^{2}G^{2}/\mu}{KT}$ comes from variance in the sampling process, which is $\mathcal{O}(E^{2}/T^{2})$. In Proposition~\ref{prop:tight} in Section~\ref{sec:app:fedavg} of the appendix, we provide a problem instance where the dependence of the sampling variance on $E$ is tight.}  \\
-\textbf{Comparison with related works.} To better understand the significance of the obtained bound, we compare our rates to the best-known results in related settings. \cite{haddadpour2019convergence} proves a linear speedup $\mathcal{O}(1/KT)$ result for strongly convex and smooth objectives\footnote{Their result applies to a larger class of non-convex objectives that satisfy the Polyak-Lojasiewicz condition.}, with $\mathcal{O}(K^{1/3}T^{2/3})$ communication complexity with non-\emph{i.i.d.} data and partial participation. However, their results build on the bounded gradient diversity assumption, which implies the existence of $\mathbf{w}^*$ that minimizes all local objectives (see discussions in Section~\ref{sec:assumptions} and Appendix~\ref{sec:app:comparison}), effectively removing statistical heterogeneity. The bound in \cite{koloskova2020unified} matches our bound in the full participation case, but their framework excludes partial participation \cite[Proposition 1]{koloskova2020unified}. The result of~\cite{karimireddy2019scaffold} applies to the full FL setting, but only has linear speedup when $K=\mathcal{O}(N)$, i.e. close to full participation, whereas our result has linear speedup for any number of participating devices. {\color{red}When there is no data heterogeneity, i.e. in the classical distributed optimization paradigm, communication complexity can be further improved, e.g. \cite{woodworth2020local,woodworth2020minibatch}, but such results are not directly comparable to ours since we consider the setting where individual devices have access to different datasets.}
+experiments. The requirement that $E=\mathcal{O}(1)$ in order to achieve linear speedup in partial participation cannot be removed for our sampling schemes, as the term $\frac{\kappa E^{2}G^{2}/\mu}{KT}$ comes from variance in the sampling process, which is $\mathcal{O}(E^{2}/T^{2})$. In Proposition~\ref{prop:tight} in Section~\ref{sec:app:fedavg} of the appendix, we provide a problem instance where the dependence of the sampling variance on $E$ is tight.  \\
+\textbf{Comparison with related works.} To better understand the significance of the obtained bound, we compare our rates to the best-known results in related settings. \cite{haddadpour2019convergence} proves a linear speedup $\mathcal{O}(1/KT)$ result for strongly convex and smooth objectives\footnote{Their result applies to a larger class of non-convex objectives that satisfy the Polyak-Lojasiewicz condition.}, with $\mathcal{O}(K^{1/3}T^{2/3})$ communication complexity with non-\emph{i.i.d.} data and partial participation. However, their results build on the bounded gradient diversity assumption, which implies the existence of $\mathbf{w}^*$ that minimizes all local objectives (see discussions in Section~\ref{sec:assumptions} and Appendix~\ref{sec:app:comparison}), effectively removing statistical heterogeneity. The bound in \cite{koloskova2020unified} matches our bound in the full participation case, but their framework excludes partial participation \cite[Proposition 1]{koloskova2020unified}. The result of~\cite{karimireddy2019scaffold} applies to the full FL setting, but only has linear speedup when $K=\mathcal{O}(N)$, i.e. close to full participation, whereas our result has linear speedup for any number of participating devices. When there is no data heterogeneity, i.e. in the classical distributed optimization paradigm, communication complexity can be further improved, e.g. \cite{woodworth2020local,woodworth2020minibatch}, but such results are not directly comparable to ours since we consider the setting where individual devices have access to different datasets.
 
 \begin{comment}
 	In this overparameterized setting, we prove a geometric convergence rate (see Section~\ref{sec:overparameterized}), 

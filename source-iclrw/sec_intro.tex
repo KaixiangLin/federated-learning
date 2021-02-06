@@ -11,13 +11,12 @@ Despite its promise and broad applicability in our current era, the potential va
 2) \textbf{System heterogeneity:} only a subset of devices may access the central server at each time both because the communications bandwidth profiles vary across devices and because there is no central server that has control over when a device is active (the presence of ``stragglers''). 
 % Gaps in the theoretical understanding. 
 
-To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success. This success has since motivated a growing line of research efforts into understanding its theoretical convergence guarantees in various settings. For instance, \cite{haddadpour2019convergence} analyzed FedAvg (for non-convex smooth problems satisfying PL conditions) under the assumption that each local device's minimizer is the same as the minimizer of the joint problem (if all devices' data is aggregated together), an overly restrictive assumption that restricts the extent of data heterogeneity.
-Very recently, \cite{li2019convergence} furthered the progress and established an $\cO(\frac{1}{T})$ convergence rate for FedAvg for strongly convex smooth Federated learning problems with both data and system heterogeneity. A similar result in the same setting~\cite{karimireddy2019scaffold} also established an $\cO(\frac{1}{T})$ result that allows for a linear speedup when the number of participating devices is large.
-At the same time, \cite{huo2020faster} studied the Nesterov accelerated FedAvg for non-convex smooth problems and established 
-an $\cO(\frac{1}{\sqrt{T}})$ convergence rate to stationary points. 
+To address these challenges, Federated Averaging (FedAvg)~\cite{mcmahan2016communication} was proposed as a particularly effective heuristic, which has enjoyed great empirical success. This success has since motivated a growing line of research efforts \cite{haddadpour2019convergence,li2019convergence,karimireddy2019scaffold,huo2020faster} into understanding its theoretical convergence guarantees in various settings. 
+% For instance, \cite{haddadpour2019convergence} analyzed FedAvg (for non-convex smooth problems satisfying PL conditions) under the assumption that each local device's minimizer is the same as the minimizer of the joint problem (if all devices' data is aggregated together), an overly restrictive assumption that restricts the extent of data heterogeneity.
+% Very recently, \cite{li2019convergence} furthered the progress and established an $\cO(\frac{1}{T})$ convergence rate for FedAvg for strongly convex smooth Federated learning problems with both data and system heterogeneity. A similar result in the same setting~\cite{karimireddy2019scaffold} also established an $\cO(\frac{1}{T})$ result that allows for a linear speedup when the number of participating devices is large.
+% At the same time, \cite{huo2020faster} studied the Nesterov accelerated FedAvg for non-convex smooth problems and established 
+% an $\cO(\frac{1}{\sqrt{T}})$ convergence rate to stationary points. 
 % (Prior to that, \cite{liu2019accelerating} studied Nesterov accelerated FedAvg using full gradient--rather than stochastic gradient as in both the above-mentioned works and our setting--for strongly convex smooth problems and established an $\cO(\frac{1}{T})$ convergence rate).
-
-
 However, despite these very recent fruitful pioneering efforts into understanding the theoretical convergence properties of FedAvg, it remains open as to how the number of devices--particularly the number of devices that participate in the computation--affects the convergence speed.
 In particular, is linear speedup of FedAvg a universal phenomenon across different settings and for any number of devices? What about when FedAvg is accelerated with momentum updates? Does the presence of both data and system heterogeneity in FL imply different communication complexities and require technical novelties over results in distributed and decentralized optimization? These aspects are currently unexplored or underexplored in FL. We fill in the gaps here by providing affirmative answers.
 
@@ -46,19 +45,24 @@ $\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$ for accelerated FedAvg.}
 
 \textbf{Our Contributions}
 We provide a comprehensive and unified convergence analysis
-of FedAvg and its accelerated variants in the presence of both data and system heterogeneity. 
+of FedAvg and its accelerated variants considering both data and system heterogeneity. 
 Our contributions are threefold.
-
 First, we establish an {\small{$\cO(1/KT)$}} convergence rate  under FedAvg for strongly convex and smooth problems and  an
 {\small{$\cO(1/\sqrt{KT})$}} convergence rate for convex
-and smooth problems (where $K$ is the number of participating devices), thereby establishing that FedAvg enjoys the desirable linear speedup property in the FL setup. Prior to our work here, the best and the most related convergence analysis is given by \cite{li2019convergence} and~\cite{karimireddy2019scaffold}, which established an $\cO(\frac{1}{T})$ convergence rate for strongly convex smooth problems under FedAvg. Our rate matches the same (and optimal) dependence on $T$, but also completes the picture by establishing the linear dependence on $K$, for any $K\leq N$, where $N$ is the total number of devices, whereas~\cite{li2019convergence} does not have linear speedup analysis, and~\cite{karimireddy2019scaffold} only allows linear speedup close to full participation ($K=\mathcal{O}(N)$). As for convex and smooth problems, there was no prior work that established the {\small{$\cO(\frac{1}{\sqrt{T}})$}} rate under both system and data heterogeneity. Our unified analysis highlights the common elements and distinctions between the strongly and convex settings.
-
+and smooth problems (where $K$ is the number of participating devices), thereby establishing that FedAvg enjoys the desirable linear speedup convergence, which improves the best known results\cite{li2019convergence,karimireddy2019scaffold} .
+\begin{comment}
+Prior to our work here, the best and the most related convergence analysis is given by \cite{li2019convergence} and~\cite{karimireddy2019scaffold}, which established an $\cO(\frac{1}{T})$ convergence rate for strongly convex smooth problems under FedAvg. Our rate matches the same (and optimal) dependence on $T$, but also completes the picture by establishing the linear dependence on $K$, for any $K\leq N$, where $N$ is the total number of devices, whereas~\cite{li2019convergence} does not have linear speedup analysis, and~\cite{karimireddy2019scaffold} only allows linear speedup close to full participation ($K=\mathcal{O}(N)$). As for convex and smooth problems, there was no prior work that established the {\small{$\cO(\frac{1}{\sqrt{T}})$}} rate under both system and data heterogeneity. Our unified analysis highlights the common elements and distinctions between the strongly and convex settings.
+\end{comment}
 Second, we establish the same convergence rates--{\small{$\cO(1/KT)$}} for strongly convex and smooth problems and {\small{$\cO(1/\sqrt{KT})$}} for convex and smooth problems--for Nesterov accelerated FedAvg. 
+\begin{comment}
 We analyze the accelerated version of FedAvg here because empirically it tends to perform better; yet, its theoretical convergence guarantee is unknown. To the best of our knowledge, these are the first results that provide a linear speedup characterization of Nesterov accelerated FedAvg in those two problem classes (that FedAvg and Nesterov accelerated FedAvg share the same convergence rate is to be expected: this is the case even for centralized stochastic optimization). Prior to our results here, the most relevant results~\cite{yu2019linear,li2018federated,huo2020faster} only concern the non-convex setting, where convergence is measured with respect to stationary points (vanishing of gradient norms, rather than optimality gaps). Our unified analysis of Nesterov FedAvg also illustrates the technical similarities and distinctions compared to the original FedAvg algorithm, whereas prior works (in the non-convex setting) were scattered and used different notations.
-
+\end{comment}
 Third, we study a subclass of strongly convex smooth problems where the objective is over-parameterized and establish 
-a faster $\cO(\exp(-\frac{KT}{\kappa}))$ convergence rate for FedAvg, in contrast to the $\cO(\exp(-\frac{T}{\kappa}))$ rate for individual solvers~\cite{ma2017power}. Within this class, we further consider the linear regression problem and establish an even sharper rate under FedAvg. In addition, we propose a new variant of accelerated FedAvg based on a momentum update of~\cite{liu2018accelerating}--MaSS accelerated FedAvg--and establish a faster convergence rate (compared to if no acceleration is used). This stands in contrast to generic (strongly) convex stochastic problems where theoretically no rate improvement is obtained when one accelerates FedAvg.
+a faster $\cO(\exp(-\frac{KT}{\kappa}))$ convergence rate for FedAvg, in contrast to the $\cO(\exp(-\frac{T}{\kappa}))$ rate for individual solvers~\cite{ma2017power}. 
+\begin{comment}
+Within this class, we further consider the linear regression problem and establish an even sharper rate under FedAvg. In addition, we propose a new variant of accelerated FedAvg based on a momentum update of~\cite{liu2018accelerating}--MaSS accelerated FedAvg--and establish a faster convergence rate (compared to if no acceleration is used). This stands in contrast to generic (strongly) convex stochastic problems where theoretically no rate improvement is obtained when one accelerates FedAvg.
 The detailed convergence results are summarized in Table~\ref{tb:convergencerateintro}.
+\end{comment}
 
 \begin{comment}
 	
