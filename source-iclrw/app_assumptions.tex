@@ -1,0 +1,37 @@
+% !TEX ROOT=./main.tex
+
+\section{Assumptions}
+\label{sec:assumptions}
+We make the following standard assumptions on the objective function $F_1,\dots, F_N$. Assumptions~\ref{ass:lsmooth} and~\ref{ass:stroncvx} are commonly satisfied by a range of popular objective functions, such as $\ell^{2}$-regularized logistic regression and cross-entropy loss functions.
+
+ %Assumption~\ref{ass:lsmooth} is made to achieve linear speedup of convergence rate with respect to the number of workers, though it is not necessary for FedAvg and its variants to convergence.
+
+\begin{assumption}[$L$-smooth]
+	$F_{1}, \cdots, F_{N}$ are all $L$-smooth: for all  $\mathbf{v}$  and $\mathbf{w}$, $F_{k}(\mathbf{v}) \leq F_{k}(\mathbf{w})+(\mathbf{v}- \\ \mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{L}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$.
+	\label{ass:lsmooth}
+\end{assumption}
+\begin{assumption}[Strongly-convex]
+	$	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v and } \mathbf{w}, F_{k}(\mathbf{v}) \geq F_{k}(\mathbf{w})+(\mathbf{v}-\mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{\mu}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$
+	\label{ass:stroncvx}
+\end{assumption}
+\begin{assumption}[Bounded local variance]
+	Let $\xi_{t}^{k}$ be sampled from the $k$-th device's local data uniformly at random. The variance of stochastic gradients in each device is bounded: $\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)-\nabla F_{k}\left(\mathbf{w}_{t}^{k}\right)\right\|^{2} \leq \sigma_{k}^{2}$,
+	for $k=1, \cdots, N$ and any $\mathbf{w}_{t}^{k}$. Let $\sigma^2:=\sum_{k=1}^{N}p_k\sigma_{k}^{2}$.
+	\label{ass:boundedvariance}
+\end{assumption}
+\begin{assumption}[Bounded local gradient]
+	The expected squared norm of stochastic gradients is uniformly bounded. i.e.,
+	$\mathbb{E}\left\|\nabla F_{k}\left(\mathbf{w}_{t}^{k}, \xi_{t}^{k}\right)\right\|^{2} \leq G^{2}$, for all $k = 1,..., N$ and $t=0, \dots, T-1$.
+	\label{ass:subgrad2}
+\end{assumption}
+Assumptions~\ref{ass:boundedvariance} and~\ref{ass:subgrad2} have been made in many previous
+works in federated learning, e.g.~\cite{yu2019parallel,li2019convergence,stich2018local}. We provide further justification for their generality. As model average parameters become
+closer to $\mathbf{w}^{\ast}$, the $L$-smoothness property implies
+that $\mathbb{E}\|\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})\|^{2}$
+and $\mathbb{E}\|\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})-\nabla F_{k}(\mathbf{w}_{t}^{k})\|^{2}$
+approach $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})\|^{2}$
+and $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})-\nabla F_{k}(\mathbf{w}^{\ast})\|^{2}$.
+Therefore, there is no substantial difference between these assumptions
+and assuming the bounds at $\mathbf{w}^{\ast}$ only~\cite{koloskova2020unified}. Furthermore, compared to assuming \textit{bounded gradient diversity} as in related work~\cite{haddadpour2019convergence,li2018federated}, Assumption~\ref{ass:subgrad2} is much less restrictive. When the optimality gap converges to zero,
+bounded gradient diversity restricts local objectives to have the same minimizer as the global objective, contradicting the heterogeneous data setting. 
+For detailed discussions of our assumptions, please also refer to Appendix Section~\ref{sec:app:comparison}.

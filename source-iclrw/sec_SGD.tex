@@ -112,7 +112,7 @@ which is then summed over time steps to give the desired bound, with $\alpha_{t}
 as long as $E=\mathcal{O}(T^{1/4}/N^{3/4})$, the convergence
 rate is $\mathcal{O}(1/\sqrt{NT})$ with $\mathcal{O}(N^{3/4}T^{3/4})$
 communication rounds. In the partial participation setting, $E$ must
-be $O(1)$ in order to achieve linear speedup of $\mathcal{O}(1/\sqrt{KT})$. {\color{red}This is again due to the fact that the sampling variance $\mathbb{E}\|\ov{w}_t-\ov{v}_t\|^2=\mathcal{O}(\alpha_t^2 E^2G^2)$ cannot be made independent of $E$, as illustrated by Proposition \ref{prop:tight}. See also the proof in Section \ref{sec:app:fedavg} for how the sampling variance and the term $E^2G^2/\sqrt{KT}$ are related.}  Our result again demonstrates the difference in communication complexities
+be $O(1)$ in order to achieve linear speedup of $\mathcal{O}(1/\sqrt{KT})$. This is again due to the fact that the sampling variance $\mathbb{E}\|\ov{w}_t-\ov{v}_t\|^2=\mathcal{O}(\alpha_t^2 E^2G^2)$ cannot be made independent of $E$, as illustrated by Proposition \ref{prop:tight}. See also the proof in Section \ref{sec:app:fedavg} for how the sampling variance and the term $E^2G^2/\sqrt{KT}$ are related.  Our result again demonstrates the difference in communication complexities
 between full and partial participation, and is to our knowledge the
 first result on linear speedup in the general federated learning setting
 with both heterogeneous data and partial participation for convex objectives.

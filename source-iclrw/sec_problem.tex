@@ -83,8 +83,8 @@ more details on the notations and setup as well as properties of the two samplin
 % \end{align}
 
 % where $\mathcal{S}_{t+1}$ is obtained using some sampling scheme. We consider two types of common unbiased sampling strategies. The first one samples each device with probability $p_k$, with replacement, while the second one samples each device uniformly without replacement. Both of these sampling schemes guarantee that updates in FedAvg with partial participation are unbiased stochastic versions of updates in FedAvg with full participation, during the communication round.
-
-\subsection{Assumptions}
+\begin{comment}
+{\subsection{Assumptions}
 \label{sec:assumptions}
 We make the following standard assumptions on the objective function $F_1,\dots, F_N$. Assumptions~\ref{ass:lsmooth} and~\ref{ass:stroncvx} are commonly satisfied by a range of popular objective functions, such as $\ell^{2}$-regularized logistic regression and cross-entropy loss functions.
 
@@ -118,7 +118,8 @@ and $\mathbb{E}\|\nabla F_{k}(\mathbf{w}^{\ast},\xi_{t}^{k})-\nabla F_{k}(\mathb
 Therefore, there is no substantial difference between these assumptions
 and assuming the bounds at $\mathbf{w}^{\ast}$ only~\cite{koloskova2020unified}. Furthermore, compared to assuming \textit{bounded gradient diversity} as in related work~\cite{haddadpour2019convergence,li2018federated}, Assumption~\ref{ass:subgrad2} is much less restrictive. When the optimality gap converges to zero,
 bounded gradient diversity restricts local objectives to have the same minimizer as the global objective, contradicting the heterogeneous data setting. 
-For detailed discussions of our assumptions, please refer to Appendix Section~\ref{sec:app:comparison}.
+For detailed discussions of our assumptions, please refer to Appendix Section~\ref{sec:app:comparison}.}
+\end{comment}
 
 % On the other hand, some works such as \cite{haddadpour2019convergence,li2018federated}
 % assume bounds on the ``gradient diversity'' or ``dissimilarity'',
