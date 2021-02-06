@@ -1,0 +1,128 @@
+\documentclass{article}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{color}
+\usepackage{lipsum}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{comment}
+\setlist{leftmargin=2mm}
+\input{bmacros}
+\newcommand{\ov}[1]{{\overline{\mathbf{#1}}}}
+\begin{document}
+% Based on their comments, upon acceptance of this paper, we shall improve in 
+% the final version (a) Refine the presentation, fix typo, figures, and properly 
+% located assumptions etc. (b) More experiments in terms of 
+
+% \input{r1}
+{\color{blue}\textbf{Reviewer 1:}} 
+
+Thank you very much for your valuable and constructive feedback! Our point-to-point responses are provided below.
+
+\textbf{\textit{1. Dependence on $E$ and comparison to distributed SGD.}} 
+\begin{comment}
+To clarify, $E$ is the number of local updates between consecutive communication rounds, and $T/E$ is the total number of communication rounds. Convergence speed is faster when the latter increases, but decreases when $E$ increases.
+This is because due to the heterogeneity in data at local sources, when the number of local SGD updates $E$ increases, the parameter at each local client drifts further towards the optimizer of the local optimization problem rather than the global problem, and so the convergence of FedAvg is expected to degrade with increased $E$. However, this does not mean that we should always do model averaging at every iteration, as distributed SGD does, because communication can be costly, and this was one of the original motivations for Federated Learning. So increasing $E$ does not improve the convergence speed in terms of number of total updates, but decreases the number of communications required to achieve a rate (which can translate to faster wall clock time when communication is costly). For example, our results imply that the number of communication rounds $T/E$ can be as small as $\mathcal{O}(\sqrt{NT})$ in the full participation case without degrading the $\mathcal{O}(1/NT)$ linear speedup rate, whereas distributed SGD needs $T$ communications (since it averages at every iteration) to achieve the same $\mathcal{O}(1/NT)$ convergence rate. See the discussion under communication complexity on page 6. We apologize if this point was not made clear in the text, and can clarify it further in the main text if the reviewer thinks that it is necessary.
+\end{comment}
+
+In our notation, $E$ is the number of local updates between consecutive communication rounds, $T$ is the total number of iterations or equivalently the total number of SGD updates, and
+$T/E$ is the total number of communication rounds. 
+
+The fact that an increased $E$ can lead to worse \emph{iteration complexity} holds true universally in both distributed optimization and federated learning settings, as the decrease in communication frequency among local clients results in slower convergence to the global optimizer. The benefit of increasing $E$ is to reduce the communication cost, as it decreases the number of communication rounds $T/E$ required to achieve an iteration complexity, which can then translate to faster \emph{wall clock time} when communication is costly. For example, our results imply that the number of communication rounds $T/E$ can be as small as $\mathcal{O}(\sqrt{NT})$ in the full participation case without degrading the $\mathcal{O}(1/NT)$ linear speedup rate, whereas distributed SGD needs $T$ communications (since it averages at every iteration) to achieve the same $\mathcal{O}(1/NT)$ convergence rate. So it is in this sense that our algorithm is faster compared to distributed SGD.
+
+We apologize that this point was not made clear in the text, and have clarified it further in the main text of the updated version, e.g. in the discussions under communication complexity on page 6, as well as Table 2 in the appendix, where we provide the largest possible number of local updates $E$ that guarantees the linear speedup convergence.
+
+\begin{comment}
+Due to the heterogeneity in data at local sources, when the number of local SGD updates $E$ increases, the parameter at each local client drifts further towards the optimizer of the local optimization problem rather than the global problem, and so the convergence of FedAvg is expected to degrade with increased $E$.
+\end{comment}
+
+
+{\color{blue}\textbf{Reviewer 2:}} 
+
+Thank you very much for your valuable and constructive feedback! Our point-to-point responses are provided below.
+
+
+\textbf{\textit{1. Choice of $E$ in partial participation.}}
+The choice of $E$ in the partial participation case is tight due to the sampling variance of our sampling schemes. We have incorporated this observation on page 6 of the main text in the discussion under communication complexity, where we remark that the requirement $E=\mathcal{O}(1)$ cannot be removed for our particular sampling schemes, as the dependence on $E$ of the sampling variance $\mathcal{O}(E^2/T^2)$ is tight, and also refer to Proposition 1 in the Appendix, where we provide a problem instance that demonstrates the tightness. We can definitely place further emphasis on this point in the next round of updates if the reviewer thinks that is necessary. 
+
+\textbf{\textit{2. Significance of results in full FL setting.}} 
+We agree that there has been a line of works in distributed optimization that demonstrate the linear speedup phenomenon in simpler settings without heterogeneous data or partial participation, and we have discussed and compared with these works in the introduction and after our main theorems. However, what distinguishes the full FL setting from these distributed optimization settings is the presence of both types of heterogeneities, and prior works were not able to demonstrate the linear speedup phenomenon with arbitrary number of participating devices in the full FL setting, so our work is the first to do so. Moreover, we provide a unified analysis of the results for convex and strongly convex problems, for both SGD-based and momentum-based FedAvg, and highlight the common elements and differences in their analysis, which also contributes to the understanding of linear speedup behavior of these algorithms under both data heterogeneity and system heterogeneity.
+
+\textbf{\textit{3. Response to follow-up question.}}
+
+Thanks for your response! The $E^2 G^2/\sqrt{KT}$ term in the bound in Theorem 2 indeed also comes from the sampling variance, in a way that is similar to the term $\frac{\kappa E^2 G^2 \mu}{KT}$ in Theorem 1. We apologize that we did not directly address the concern about $E^2 G^2/\sqrt{KT}$, and have incorporated it in the discussion following Theorem 2, as well as the updated proof for Theorem 2, where we spell out how the sampling variance $\mathbb{E}\|\ov{w}_t-\ov{v}_t\|^2$ becomes $E^2 G^2/\sqrt{KT}$ in the final bound. Essentially, Proposition 1 demonstrates that the sampling variance $\mathbb{E}\|\ov{w}_t-\ov{v}_t\|^2=\mathcal{O}(\alpha_t^2 E^2)$ cannot be made independent of $E$, which is true independent of whether we are in the strongly convex or convex case, since the sampling scheme does not depend on the convexity in any way. Due to this dependence on $E$, the extra term $E^2 G^2/\sqrt{KT}$ in the bound in Theorem 2 in the partial participation case cannot be made independent of $E$. Since it is the leading term, this restricts $E=\mathcal{O}(1)$ for partial participation.
+
+{\color{blue}\textbf{Reviewer 3:}} 
+
+Thank you very much for your valuable and constructive feedback! Our point-to-point responses are provided below.
+
+\textbf{\textit{1. Difference between Lemma 3 and Lemma 6.}}
+While Lemma 3 and Lemma 6 have a similar form, the crucial difference between the two is that the bound in Lemma 3, under strong convexity, contains a contraction factor of $(1-\mu \alpha_t)$ in front of $\mathbb{E}\|\mathbf{\overline{\mathbf{w}}_{t}-\mathbf{w}^{*}}\|^2$, which is not present in the bound in Lemma 6 for convex problems. This contraction factor is what allows one to obtain an $\mathcal{O}(1/KT)$ rate for strongly convex problems, compared to the $\mathcal{O}(1/\sqrt{KT})$ rate for convex problems. The term $\alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast}))$ actually also appears in the bound in Lemma 3, but since we do not need it, thanks to the contraction factor, we simplified the bound by dropping this non-negative term. Thus even though they look similar, their proofs are different and we have highlighted the differences with more emphasis in the paper, e.g. on page 19. 
+
+\textbf{\textit{2. Comparison with [2] and [3].}}
+Thank you for pointing out our omission of these excellent references, and we have incorporated them in the updated version. We verified that even though the algorithm they study is also referred to as FedAvg, the setting in the two works do not allow either heterogeneous data or partial participation, in contrast to the FL setting considered in this paper. Thus even in the full participation case, our results are not directly comparable as we assume that the data that is available to each client is different, which departs from the classical distributed optimization setting. We have included comparison with these works in the updated version, but since Table 2 only includes papers that study data heterogeneous settings, we do not put these two works there, although can definitely change that if the reviewer thinks it is necessary.
+
+\textbf{\textit{3,4. Non-acceleration of stochastic Nesterov FedAvg.}}
+Indeed as the reviewer points out, full Nesterov-accelerated gradient descent with constant step size provably accelerates over vanilla GD. However, this breaks down with stochastic methods, and Nesterov SGD does not accelerate over SGD even in the non-FL setting. See e.g. \cite{kidambi2018insufficiency,liu2018accelerating,yuan2020federated}. Thus the best we can hope for in the FL setting for FedAvg with stochastic Nesterov updates is the same convergence rate with linear speedup as FedAvg with SGD, and \cite{yu2019linear} proves that this is the case for non-convex problems in terms of convergence to stationary points. No results existed in convex and strongly convex settings, so our results fill this gap.
+
+While optimal theoretical results for Nesterov FedAvg are limited to the same rates as FedAvg with vanilla SGD, in practice FedAvg with Nesterov is observed to perform better empirically. In fact, many previous works such as \cite{stich2018local} on FedAvg with vanilla SGD uses Nesterov or other momentum versions in their experiments to achieve target accuracy. We have incorporated this observation in the section on Nesterov FedAvg to better motivate Theorems 3 and 4.
+
+We agree that the algorithm in \cite{yuan2020federated} achieves the same linear speedup rates with a better communication complexity for general convex and strongly convex problems, but their setting does not allow either data heterogeneity or partial participation. Although their proposed accelerated algorithm is interesting from both theoretical and practical perspectives, Nesterov and other momentum-based algorithms are more commonly used in practice in both non-FL and FL settings. Therefore, we believe that our results on the convergence rates of Neseterov FedAvg provide theoretical understanding of the linear speedup behavior in the full FL setting and complement the result in \cite{yu2019linear} for non-convex problems to complete the picture.
+
+Given this discussion, we believe that our optimal linear speedup results on Nesterov FedAvg are relevant due to the popularity of momentum methods in practice and the lack of theoretical understanding in convex settings. The overparameterized results are to illustrate the geometric convergence and to provide a provable acceleration of the geometric rate. Because of the relevance of the Nesterov results and the fact that their analyses can be unified with those of Theorems 1 and 2 to provide insights on the linear speedup, we decided to emphasize these and delegated the overparameterized results to the appendix. 
+
+In the updated version, we have emphasized that the bounds are the same for Nesterov and vanilla SGD, but can simplify it further. In particular, by ``reciting'' the bound do you mean e.g. referring to Theorem 1 in Theorem 3 directly?
+
+\begin{comment}
+{If the reviewer believes that changes in emphasis are still necessary given our responses and Reviewer 4's comments on the overparameterized setting, we are definitely willing to make the necessary changes.}
+\end{comment}
+
+
+
+{\color{blue}\textbf{Reviewer 4:}} 
+
+Thank you very much for your valuable and constructive feedback! Our point-to-point responses are provided below.
+
+\textbf{\textit{1. Condition numbers in the bounds in the overparameterized setting.}}
+The condition numbers $\kappa_1$ and $\tilde{\kappa}$ are defined in Section H.2. These quantities are defined in terms of the Hessian and stochastic Hessian matrices at each device and the global Hessian matrix, and are fixed and finite quantities given a particular problem instance. We use the fact that $\tilde{\kappa}\leq \kappa_1$. As the number of participating devices goes to infinity, the condition numbers converge to $\kappa:=L/\mu$, where $L$ and $\mu$ are the Lipschitz and smoothness constants of the global optimization objective. This is observed in e.g. \cite{liu2018accelerating}.
+
+\textbf{\textit{2. Relevance of the overparameterized setting.}}
+Our results in the overparameterized setting indeed assume strong convexity. While it is true that many overparameterized deep learning systems are non-convex, here by overparameterization we only mean that a global optimizer exists that yields 0 global loss, which does not restrict the problem to be non-convex. This type of overparameterization setting with strong convexity was studied in the works \cite{jain2017accelerating,liu2018accelerating,ma2017power} in the non-FL setting in order to develop provable accelerations over SGD, which motivated us to study extensions to the FL setting. Our main results highlight the geometric convergence with linear speedup in the overparameterized setting, which improves on the general strongly convex and convex settings, and provide a provable acceleration of momentum-based stochastic FedAvg algorithm over the vanilla FedAvg. While overparameterization is an important setting in practice, we agree that the applicability of our results is limited by the strong convexity assumption, and that our presentation of this topic in the main text is limited by constraints on space. We can remove the results in this section and include them in an extended version or a separate work since they are not as closely connected to the non-overparameterized setting, and we believe that they warrant a more thorough treatment and discussion to highlight their importance, which is limited by the current draft.
+
+\begin{comment}
+since it serves as "bonus" results on top of non-overparameterized settings.
+\end{comment}
+
+
+\textbf{Summary of updates}
+We thank all reviewers for their positive feedback and appreciation of our work! 
+We provided point-to-point responses to address the concerns of all reviewers separately and
+incorporated the reviewers' suggestions in the updated version. We are glad to see R1 raise 
+the score after reading our response. In the meantime, we are looking forward to 
+responses from the other reviewers to clarify if there are further concerns.
+
+We are glad that the reviewers have found our theory fill a gap in the literature (R2), 
+appreciate its novelty (R3), and consider it qualified (R4) and new for the popular FedAvg algorithm under various settings (R1). We are also pleased that reviewers found our paper is well motivated (R4), well written (R3, R4) and appreciated our discussions of existing literature (R3, R4). We have further revised the paper to clarify all conceptual misunderstandings and provided individual responses as well. In particular, we have made the following updates and response in the revisions to address the reviewers' concerns:
+1. Dependence on $E$ and comparison to distributed SGD (2nd paragraph, page 6). (R1)
+2. Why $E$ has to be $\mathcal{O}(1)$ in theorem 2. (2nd paragraph, page 7, also see last sentence in 2nd paragraph, page 6 as Theorem 1 and Theorem 2 share the same reason that requires $E=\mathcal{O}(1)$) (R2)
+3. Missing related works Woodworth et al. (2020b;a) (third paragraph, page 6) (R3)
+4. The explanations on condition number and over-parameterized case. (see Appendix G2 first paragraph and our rebuttals) (R4).
+
+Overall, we thank the reviewers for their positive and constructive comments that help improving this work. We would like to emphasize that this work provides the first linear speedup results under the more realistic non-IID data and partial participation Federated Learning scenarios for FedAvg and its accelerated variants, under various convex settings. 
+
+If there's any remaining concerns, please feel free to let us know, and we would be happy to provide a followup discussion.
+
+\bibliographystyle{plain}
+\bibliography{ref.bib}
+    
+\end{document}
