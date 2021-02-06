@@ -93,7 +93,7 @@ With the one step progress result, we can now prove the convergence result in th
 & =\mathcal{O}(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
 \end{align*}
 	
-	{\color{red}For partial participation, the one step progress bound in Lemma \ref{lem:cvxoner} is updated in a similar manner as the strongly convex case in \eqref{eqn:scvx-partial-oner} to incorporate the sampling variance. More precisely, with partial participation,  
+	For partial participation, the one step progress bound in Lemma \ref{lem:cvxoner} is updated in a similar manner as the strongly convex case in \eqref{eqn:scvx-partial-oner} to incorporate the sampling variance. More precisely, with partial participation,  
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}+\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
 	& =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2},
@@ -109,7 +109,7 @@ With the one step progress result, we can now prove the convergence result in th
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} + \alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}(\frac{1}{N}\nu_{max}^{2}\sigma^{2}+C)+6E^{2}L\alpha_{t}^{3}G^{2},
 	\end{align*}
 	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$ depending on the sampling scheme.
-	}
+	
 	
 	Summing up the one-step progress over $t$, 
 	\begin{align*}

@@ -2,9 +2,6 @@
 
 
 \section{Setup}
-
-% \subsection{The Federated Learning Problem}
-
 In this paper, we study the following federated learning problem:
 \begin{align}
 	\min _{\mathbf{w}}\left\{F(\mathbf{w}) \triangleq \sum\nolimits_{k=1}^{N} p_{k} F_{k}(\mathbf{w})\right\},
@@ -22,8 +19,6 @@ where $\ell$ denotes a user-specified loss function. Each device only has access
 data distributions of each local device. The local minimum
 $F^{*}_k= \min_{\vw} F_k(\vw)$ can be far from
 the global minimum of \eq{\ref{eq:problem}} (data heterogeneity). 
-
-
 % A key difference with many problems in the distributed optimization setting is that data on local devices is heterogeneous, i.e. $F_k(w)$ may have different minimizers $w^{\ast}_k$. Moreover, each local device only has access to stochastic gradients based on data stored on the local device. In this paper, we investigate local objectives that are convex or strongly convex and smooth, although convergence results for non-smooth objectives are also given in the appendix. 
 
 
