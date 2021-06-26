@@ -1,3 +1,4 @@
+
 \documentclass{article}
 
 % if you need to pass options to natbib, use, e.g.:
@@ -58,6 +59,8 @@
 \newtheorem*{assumption*}{Assumption}
 \newtheorem*{claim*}{Claim}
 
+\iclrfinalcopy
+
 \title{Federated Learning's Blessing:\\
 FedAvg has Linear Speedup}
 \author{%
@@ -76,10 +79,10 @@ FedAvg has Linear Speedup}
   Jiayu Zhou\\
   Michigan State University \\
   \texttt{jiayuz@msu.edu} \\
-  \And
-  Zhengyuan Zhou\\
-  New York University \\
-  \texttt{zzhou@stern.nyu.edu} \\
+  %\And
+  %Zhengyuan Zhou\\
+  %New York University \\
+  %\texttt{zzhou@stern.nyu.edu} \\
 }
 
 
@@ -96,8 +99,12 @@ FedAvg has Linear Speedup}
 %\input{sec_relatedwork}
 \input{sec_problem}
 \input{sec_SGD}
+\input{sec_exp}
 
 \input{sec_conclude}
+
+\subsubsection*{Acknowledgements}
+This research is supported in part by Stanford Interdisciplinary Graduate Fellowship (ZQ),  NSF CMMI-2030411 (ZL), NSF IIS-1749940 (JZ), ONR N00014-20-1-2382 (JZ).
 
 
 
