@@ -1,4 +1,4 @@
-% !TEX ROOT=./supp-main.tex
+% !TEX ROOT=./main.tex
 
 To organize our proofs more effectively and highlight the significance of our results compared to prior works, 
 we first state the following key lemmas used in proofs of main results and defer their proofs to later. 
@@ -6,7 +6,8 @@ we first state the following key lemmas used in proofs of main results and defer
 suppose our functions satisfy Assumptions~\ref{ass:lsmooth},\ref{ass:stroncvx},\ref{ass:boundedvariance},\ref{ass:subgrad2}, and set step size $\alpha_{t}=\frac{4}{\mu(\gamma+t)}$
 	with $\gamma=\max\{32\kappa,E\}$ and $\kappa=\frac{L}{\mu}$, then the updates of FedAvg with full participation satisfy
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6E^{2}L\alpha_{t}^{3}G^{2}.
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
+	+& \alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6E^{2}L\alpha_{t}^{3}G^{2}.
 	\end{align*}
 \label{lem:scvxoner}
 \end{lemma}
@@ -57,14 +58,16 @@ We now restate Theorem~\ref{th:scvx_sgd} from the main text and then prove it us
 	
 	By Lemma~\ref{lem:scvxoner}, we have the following upper bound for the one step progress: 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6E^{2}L\alpha_{t}^{3}G^{2}.
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
+	& +\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6E^{2}L\alpha_{t}^{3}G^{2}.
 	\end{align*}
 	We show next that $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}=O(\frac{\nu_{max}^{2}\sigma^{2}/\mu}{tN}+\frac{E^{2}LG^{2}/\mu^2}{t^{2}})$ using induction. 
 	To simplify the presentation, we denote $C\equiv6E^{2}LG^{2}$ and $D\equiv\frac{1}{N}\nu_{max}^{2}\sigma^{2}$.
 	Suppose that we have the bound $\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}\leq b\cdot(\alpha_{t}D+\alpha_{t}^{2}C)$
 	for some constant $b$ and learning rates $\alpha_{t}$. Then the one step progress from Lemma~\ref{lem:scvxoner} becomes:
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq (b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}D+(b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}^{2}C
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq (b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}D\\
+	& +(b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}^{2}C
 	\end{align*}
 	To establish the result at step $t+1$, it remains to choose $\alpha_{t}$ and $b$ such that $(b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}\leq b\alpha_{t+1}$
 	and $(b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}^{2}\leq b\alpha_{t+1}^{2}$.
@@ -72,18 +75,18 @@ We now restate Theorem~\ref{th:scvx_sgd} from the main text and then prove it us
 	If we let $\alpha_{t}=\frac{4}{\mu(t+\gamma)}$
 	where $\gamma=\max\{E,32\kappa\}$ (choice of $\gamma$ required to guarantee the one step progress) and set $b=\frac{4}{\mu}$, we have:
 	\begin{align*}
-	& (b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}  =\left(b(1-\frac{4}{t+\gamma})+\frac{4}{\mu(t+\gamma)}\right)\frac{4}{\mu(t+\gamma)}
+	(b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}  &=\left(b(1-\frac{4}{t+\gamma})+\frac{4}{\mu(t+\gamma)}\right)\frac{4}{\mu(t+\gamma)}\\
 	% & =\left(b\frac{t+\gamma-4}{t+\gamma}+\frac{4}{\mu(t+\gamma)}\right)\frac{4}{\mu(t+\gamma)}\\
 	% & =b(\frac{t+\gamma-3}{t+\gamma})\frac{4}{\mu(t+\gamma)}\\
 	% & \leq b(\frac{t+\gamma-1}{t+\gamma})\frac{4}{\mu(t+\gamma)}\\
-	 \leq b\frac{4}{\mu(t+\gamma+1)}=b\alpha_{t+1}\\
-	& (b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}^{2} 
-	 =b(\frac{t+\gamma-2}{t+\gamma})\frac{16}{\mu^{2}(t+\gamma)^{2}} \leq b\frac{16}{\mu^{2}(t+\gamma+1)^{2}}=b\alpha_{t+1}^{2}
+	 &\leq b\frac{4}{\mu(t+\gamma+1)}=b\alpha_{t+1}\\
+	 (b(1-\mu\alpha_{t})+\alpha_{t})\alpha_{t}^{2} &=b(\frac{t+\gamma-2}{t+\gamma})\frac{16}{\mu^{2}(t+\gamma)^{2}} \\
+	 & \leq b\frac{16}{\mu^{2}(t+\gamma+1)^{2}}=b\alpha_{t+1}^{2}
 	\end{align*}
 	where we have used the following inequalities:
 	\begin{align*}
-	\frac{t+\gamma-1}{(t+\gamma)^{2}} \leq\frac{1}{(t+\gamma+1)}   \hspace{2em}
-	\frac{t+\gamma-2}{(t+\gamma)^{3}} \leq\frac{1}{(t+\gamma+1)^{2}}  \hspace{2em}  \forall\ \gamma\geq1
+	\frac{t+\gamma-1}{(t+\gamma)^{2}} \leq\frac{1}{(t+\gamma+1)},\hspace{0.2em} 
+	\frac{t+\gamma-2}{(t+\gamma)^{3}} \leq\frac{1}{(t+\gamma+1)^{2}}, \hspace{0.2em}  \forall\ \gamma\geq1
 	\end{align*}
 	Thus we have established the result at step $t+1$ assuming the result is correct at step $t$:
 	\begin{align*}
@@ -104,11 +107,11 @@ We now restate Theorem~\ref{th:scvx_sgd} from the main text and then prove it us
 	
 	Finally, the $L$-smoothness of $F$ implies 
 	\begin{align*}
-	\mathbb{E}(F(\ov{w}_{T}))-F^{\ast} & \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}\\ 
-	& \leq\frac{L}{2}c\|\vw_{0}-\vw^{\ast}\|^{2}\frac{4}{\mu}(D\alpha_{T}+C\alpha_{T}^{2})\\
-	& =2c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa(D\alpha_{T}+C\alpha_{T}^{2})\\
-	& \leq2c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{4}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6E^{2}LG^{2}\cdot(\frac{4}{\mu(T+\gamma)})^{2}\right]\\
-	& =\mathcal{O}(\frac{\kappa}{\mu}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\cdot\frac{1}{T}+\frac{\kappa^{2}}{\mu}E^{2}G^{2}\cdot\frac{1}{T^{2}})
+	& \mathbb{E}(F(\ov{w}_{T}))-F^{\ast} \leq \frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}\\ 
+	\leq &\frac{L}{2}c\|\vw_{0}-\vw^{\ast}\|^{2}\frac{4}{\mu}(D\alpha_{T}+C\alpha_{T}^{2})\\
+	=& 2c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa(D\alpha_{T}+C\alpha_{T}^{2})\\
+	\leq &2c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{4}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6E^{2}LG^{2}\cdot(\frac{4}{\mu(T+\gamma)})^{2}\right]\\
+	=& \mathcal{O}(\frac{\kappa}{\mu}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\cdot\frac{1}{T}+\frac{\kappa^{2}}{\mu}E^{2}G^{2}\cdot\frac{1}{T^{2}})
 	\end{align*}
 	where in the first line, we use the property of $L$-smooth function (see Lemma~\ref{lem:lsmooth}), and in the second line, we use the conclusion in \eq{\ref{eq:th1:1}}. 
 	
@@ -124,17 +127,21 @@ We now restate Theorem~\ref{th:scvx_sgd} from the main text and then prove it us
 	This in particular implies $\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2}\leq \mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}$ for all $t$.
 	Since $\ov{v}_t =\sum_{k=1}^{N} p_{k} \mathbf{v}_{t}^{k}$ always averages over all devices, the full participation one step progress result Lemma~\ref{lem:scvxoner} applied to $\ov{v}_t$  implies
 	\begin{align*}
-	   \mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{v}_{t}-\vw^{\ast}\|^{2}+6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\\ &
-	   \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}
+	   \mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{v}_{t}-\vw^{\ast}\|^{2}\\
+	   & +6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\\ &
+	   \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
+	   & +6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}
 	\end{align*}
 	
 	The bound for $\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}$ for the two sampling schemes we consider is provided in \eq{\ref{eq:partialsample}}, and applying it we can write the one step progress for partial participation as
 	\begin{align}\label{eqn:scvx-partial-oner}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+\frac{4}{K}\alpha_{t}^{2}E^{2}G^{2}+6E^{2}L\alpha_{t}^{3}G^{2},
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}\nonumber\\
+	&+\frac{4}{K}\alpha_{t}^{2}E^{2}G^{2}+6E^{2}L\alpha_{t}^{3}G^{2},
 	\end{align}
 	and the same arguments using induction and $L$-smoothness as the full participation case implies 
 	\begin{align*}
-	\mathbb{E}F(\ov{w}_{T})-F^{\ast}=\mathcal{O}(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+	\mathbb{E}F(\ov{w}_{T})-F^{\ast}=\mathcal{O}(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}
+	+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
 	\end{align*}
 	
 	\begin{comment}

@@ -20,8 +20,8 @@ convergence rate for $\mu$-strongly convex and $L$-smooth objectives.
 \end{comment}
 The Nesterov Accelerated FedAvg algorithm follows the updates:
 \begin{align*}
-\mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}\mathbf{g}_{t,k}, \hspace{1em}
-\mathbf{w}_{t+1}^{k} =\begin{cases}
+\mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}\mathbf{g}_{t,k}, \\
+\mathbf{w}_{t+1}^{k} &=\begin{cases}
 \mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E},\\
 \sum_{k \in \cS_{t+1}}q_k\left[\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E},
 \end{cases}
