@@ -1,0 +1,232 @@
+%% LyX 2.3.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\theoremstyle{plain}
+\newtheorem{thm}{\protect\theoremname}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{algorithm,algpseudocode}
+
+\renewcommand\[{\begin{equation}}
+\renewcommand\]{\end{equation}}
+
+\makeatother
+
+\usepackage{babel}
+\providecommand{\theoremname}{Theorem}
+
+\begin{document}
+
+\section{Exponential Convergence of FedAvg with MaSS for Linear Regression
+Problem with 0 Loss}
+
+The MaSS algorithm is a variant of the Nesterov acceleration, where
+in the update a non-negative multiple of the gradient is added to
+the Nesterov parameter update, to correct for the ``over-descent''
+of the Nesterov update. In {[}Liu\&Belkin{]}, the authors show that
+for stochastic gradient methods in the interpolation setting, Nesterov
+update is not able to achieve accleration over vanilla SGD, whereas
+the MaSS algorithm is able to achieve acceleration both theoretically
+and empirically. We adapt the MaSS algorithm to our federated learning
+setting, and prove that for certain class of convex objectives with
+0 global objective value, the FedAvg with MaSS update achieves exponential
+convergence and acceleration over SGD. 
+
+We first show that FedAvg with MaSS has exponential convergence for
+linear regression when the global objective has 0 as its global minimum.
+Since the global loss is given by 
+\begin{align*}
+F(w) & =\sum_{k=1}^{N}p_{k}F_{k}(w)\\
+F_{k}(w) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(w^{T}x_{k,j}-z_{k,j})^{2}
+\end{align*}
+ and there exists $w^{\ast}$ such that $F(w^{\ast})=0$, in particular
+this implies that $F_{k}^{\ast}=F_{k}(w^{\ast})=F^{\ast}=0$ for all
+$k$.
+
+\subsection{Notation and Definitions}
+
+Following Liu\&Belkin and Jain et al., we define some condition number
+related quantities. Let $H^{k}=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}x_{k,j}x_{k,j}$
+be the Hessian matrix of $F_{k}$. Let $L^{k}$ and $\mu^{k}$ be
+the largest and smallest non-zero eigenvalues of the Hessians $H^{k}$.
+For a mini-batch $\{\tilde{x}_{j}\}_{j=1}^{m}$ of $m$ samples from
+device $k$, let $\tilde{H}_{m}^{k}=\frac{1}{m}\sum_{j=1}^{m}\tilde{x}_{j}\tilde{x}_{j}^{T}$
+be the unbiased mini-batch estimate of $H^{k}$. Let $L_{1}^{k}$
+be the smallest positive number such that 
+\begin{align*}
+\mathbb{E}\left[\|\tilde{x}\|^{2}\tilde{x}\tilde{x}^{T}\right] & \preceq L_{1}^{k}H^{k}
+\end{align*}
+ and define 
+\begin{align*}
+L_{m}^{k} & =L_{1}^{k}/m+(m-1)L/m
+\end{align*}
+
+Define the $m$-stochastic condition number as $\kappa_{m}^{k}:=L_{m}^{k}/\mu$.
+Define the statistical condition number $\tilde{\kappa}^{k}$ as the
+smallest positive real number such that 
+\begin{align*}
+\mathbb{E}\left[\langle\tilde{x}(H^{k})^{-1},\tilde{x}\rangle\tilde{x}\tilde{x}^{T}\right] & \preceq\tilde{\kappa}^{k}H^{k}
+\end{align*}
+ Note that $L_{m}^{k}\geq L$, and $\kappa_{m}^{k}\geq\kappa^{k}$,
+while $\tilde{\kappa}^{k}\leq\kappa^{1}$. 
+
+\subsection{FedAvg with MaSS}
+
+The FedAvg algorithm with MaSS follows the updates
+\begin{align*}
+w_{t+1}^{k} & =\begin{cases}
+u_{t}^{k}-\eta_{1}^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
+\sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta_{1}^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
+\end{cases}\\
+u_{t+1}^{k} & =w_{t+1}^{k}+\gamma^{k}(w_{t+1}^{k}-w_{t}^{k})+\eta_{2}^{k}g_{t,k}
+\end{align*}
+ where we note that the natural parameter is $w_{t}$, while $u_{t}$
+is an auxiliary parameter, which we initialize to be $u_{0}^{k}\equiv u_{0}$,
+and 
+\begin{align*}
+g_{t,k} & :=\nabla F_{k}(w_{t}^{k},\xi_{t}^{k})
+\end{align*}
+ is the stochastic gradient and 
+\begin{align*}
+g_{t} & =\sum_{k=1}^{N}p_{k}g_{t,k}
+\end{align*}
+is the averaged stochastic gradient. When $\eta_{2}^{k}\equiv0$,
+this reduces to the FedAvg algorithm with Nesterov updates.
+
+We note that the update can equivalently be written as 
+\begin{align*}
+v_{t+1}^{k} & =(1-\alpha^{k})v_{t}^{k}+\alpha^{k}w_{t}^{k}-\delta^{k}g_{t,k}\\
+w_{t+1}^{k} & =\begin{cases}
+u_{t}^{k}-\eta^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
+\sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
+\end{cases}\\
+u_{t+1}^{k} & =\frac{\alpha^{k}}{1+\alpha^{k}}v_{t+1}^{k}+\frac{1}{1+\alpha^{k}}w_{t+1}^{k}
+\end{align*}
+ where there is a bijection between the parameters 
+\begin{align*}
+\frac{1-\alpha^{k}}{1+\alpha^{k}} & =\gamma^{k}\\
+\eta^{k} & =\eta_{1}^{k}\\
+\frac{\eta^{k}-\alpha^{k}\delta^{k}}{1+\alpha^{k}} & =\eta_{2}^{k}
+\end{align*}
+ and we further introduce an auxiliary parameter $v_{t}^{k}$, which
+is initialized at $v_{0}^{k}\equiv v_{0}$. We also note that when
+$\delta_{t}=\frac{\eta_{t}}{\alpha_{t}}$, the update reduces to the
+Nesterov accelerated SGD. This version of the FedAvg with MaSS algorithm
+is used for analyzing the exponential convergence. 
+
+As before, define the virtual sequences $\overline{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$,
+$\overline{v}_{t}=\sum_{k=1}^{N}p_{k}v_{t}^{k}$, $\overline{u}_{t}=\sum_{k=1}^{N}p_{k}u_{t}^{k}$,
+and $\overline{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}g_{t,k}$. We have
+$\mathbb{E}g_{t}=\overline{g}_{t}$ and $\overline{w}_{t+1}=\overline{u}_{t}-\eta_{t}g_{t}$,
+$\overline{v}_{t+1}=(1-\alpha^{k})\overline{v}_{t}+\alpha^{k}\overline{w}_{t}-\delta^{k}g_{t}$,
+and $\overline{w}_{t+1}=\frac{\alpha^{k}}{1+\alpha^{k}}\overline{v}_{t+1}+\frac{1}{1+\alpha^{k}}\overline{y}_{t+1}$. 
+
+For the linear regression problem in the interpolation setting, we
+can write 
+\begin{align*}
+F(w) & =\frac{1}{2}(w-w^{\ast})^{T}H(w-w^{\ast})\\
+ & =\frac{1}{2}\|w-w^{\ast}\|_{H}^{2}
+\end{align*}
+ and similarly $F^{k}(w)=\frac{1}{2}\|w-w^{\ast}\|_{H^{k}}^{2}$,
+so that 
+\begin{align*}
+g_{t,k} & =\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})\\
+g_{t} & =\sum_{k=1}^{N}p_{k}\tilde{H}_{t}^{k}(w_{t}^{k}-w^{\ast})
+\end{align*}
+
+
+\subsection{Exponential Convergence when Global Loss is 0}
+
+We now present the exponential convergence result using FedAvg with
+MaSS updates. On each device, local data is stored and mini-batch
+gradient descent with batch size $m^{k}$ is performed. We allow for
+varying batch sizes across devices. 
+\begin{thm}
+(FedAvg with MaSS, Full Participation) Let the hyperparameters satisfy
+the requirements of {[}Liu\&Belkin{]}. More precisely, let $\tilde{\kappa}_{m}:=\tilde{\kappa}/m^{k}+(m^{k}-1)/m^{k}$,
+and let the hyper parameters satisfy 
+\begin{align*}
+\eta^{k}(m)=\frac{1}{L_{m}}, & \alpha^{k}(m)=\frac{1}{\sqrt{\kappa_{m}^{k}\tilde{\kappa}_{m}^{k}}},\delta^{k}(m)=\frac{\eta^{k}}{\alpha^{k}\tilde{\kappa}_{m}^{k}}
+\end{align*}
+Let $\mathcal{I}_{E}=\ell E$ where $\ell\in\mathbb{N}$ be the set
+of communication rounds, then the updates 
+\begin{align*}
+v_{t+1}^{k} & =(1-\alpha^{k})v_{t}^{k}+\alpha^{k}w_{t}^{k}-\delta^{k}g_{t,k}\\
+w_{t+1}^{k} & =\begin{cases}
+u_{t}^{k}-\eta^{k}g_{t,k} & \text{if }t+1\notin\mathcal{I}_{E}\\
+\sum_{k=1}^{N}p_{k}\left[u_{t}^{k}-\eta^{k}g_{t,k}\right] & \text{if }t+1\in\mathcal{I}_{E}
+\end{cases}\\
+u_{t+1}^{k} & =\frac{\alpha^{k}}{1+\alpha^{k}}v_{t+1}^{k}+\frac{1}{1+\alpha^{k}}w_{t+1}^{k}
+\end{align*}
+ where $g_{t,k}$ are the mini-batch stochastic gradients achieves
+the convergence
+\begin{align*}
+\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq C\cdot(1-1/\sqrt{\kappa_{m}}\\
+\end{align*}
+\end{thm}
+\begin{proof}
+Note that at each communication round we update the $w_{t+1}^{k}$
+parameters to be the average across devices while fixing $v_{t+1}^{k}$.
+This automatically adjusts the $u_{t+1}^{k}$ parameter at each device
+by the relation 
+\begin{align*}
+u_{t+1}^{k} & =\frac{\alpha^{k}}{1+\alpha^{k}}v_{t+1}^{k}+\frac{1}{1+\alpha^{k}}w_{t+1}^{k}
+\end{align*}
+ valid for all $t\geq0$. 
+
+\textbf{For now assume $\delta^{k}=\delta$ and $\alpha^{k}=\alpha$
+is equal across devices. Need to relax later. }
+
+Theorems 2 and 3 of the Liu\&Belkin paper gives the bound 
+\begin{align*}
+\mathbb{E}\left[\|v_{E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|u_{E}^{k}-\eta^{k}g_{E,k}-w^{\ast}\|^{2}\right] & \leq(1-\alpha^{k})^{E}(\|v_{0}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|w_{0}^{k}-w^{\ast}\|^{2})
+\end{align*}
+for all $k$, where $E$ is the first communication round. Note that
+$w_{E}^{k}=\overline{w}_{E}^{k}\neq u_{E}^{k}-\eta^{k}g_{t,k}$.
+
+It follows from convexity that 
+\begin{align*}
+\mathbb{E}\left[\sum_{k=1}^{N}p_{k}\|v_{E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|\overline{w}_{E}-w^{\ast}\|^{2}\right] & \leq\sum_{k=1}^{N}p_{k}\mathbb{E}\left[\|v_{E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|u_{E}^{k}-\eta^{k}g_{E,k}-w^{\ast}\|^{2}\right]\\
+ & \leq\sum_{k=1}^{N}p_{k}(1-\alpha^{k})^{E}(\|v_{0}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|w_{0}^{k}-w^{\ast}\|^{2})
+\end{align*}
+Since $w_{E}^{k}=\overline{w}_{E}$ for all devices, applying the
+per-device result again starting at $t=E$ instead of $t=0$, for
+each device we have the bound
+\begin{align*}
+\mathbb{E}\left[\|v_{2E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|u_{2E}^{k}-\eta^{k}g_{2E,k}-w^{\ast}\|^{2}\right] & \leq(1-\alpha^{k})^{E}\mathbb{E}(\|v_{E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|w_{E}^{k}-w^{\ast}\|^{2})\\
+ & =(1-\alpha^{k})^{E}\mathbb{E}(\|v_{E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|\overline{w}_{E}-w^{\ast}\|^{2})
+\end{align*}
+
+Here we emphasize that $w_{E}^{k}$ results from broadcasting and
+so is the same across all devices, while $v_{E}^{k}$ remains distinct
+on each device (and is only auxiliary). Then by convexity and summing
+the above inequalities across devices we have 
+\begin{align*}
+\mathbb{E}\left[\sum_{k=1}^{N}p_{k}\|v_{2E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|\overline{w}_{2E}-w^{\ast}\|^{2}\right] & \leq\sum_{k=1}^{N}p_{k}\mathbb{E}\left[\|v_{2E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|u_{2E}^{k}-\eta^{k}g_{2E,k}-w^{\ast}\|^{2}\right]\\
+ & \leq\sum_{k=1}^{N}p_{k}(1-\alpha^{k})^{E}\mathbb{E}(\|v_{E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|\overline{w}_{E}-w^{\ast}\|^{2})\\
+ & \leq\sum_{k=1}^{N}p_{k}(1-\alpha^{k})^{2E}(\|v_{0}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|w_{0}^{k}-w^{\ast}\|^{2})
+\end{align*}
+ and by induction we can show that 
+\begin{align*}
+\mathbb{E}\left[\sum_{k=1}^{N}p_{k}\|v_{\ell E}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|\overline{w}_{\ell E}-w^{\ast}\|^{2}\right] & \leq\sum_{k=1}^{N}p_{k}(1-\alpha^{k})^{\ell E}(\|v_{0}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|w_{0}^{k}-w^{\ast}\|^{2})
+\end{align*}
+ and more generally
+\begin{align*}
+\mathbb{E}\left[\sum_{k=1}^{N}p_{k}\|v_{t}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|\overline{w}_{t}-w^{\ast}\|^{2}\right] & \leq\sum_{k=1}^{N}p_{k}(1-\alpha^{k})^{t}(\|v_{0}^{k}-w^{\ast}\|_{H_{k}^{-1}}^{2}+\frac{\delta^{k}}{\alpha^{k}}\|w_{0}^{k}-w^{\ast}\|^{2})
+\end{align*}
+ In particular, this implies 
+\begin{align*}
+\mathbb{E}\|\overline{w}_{t}-w^{\ast}\|^{2} & \leq C\cdot\sum_{k=1}^{N}p_{k}(1-\alpha^{k})^{t}
+\end{align*}
+ which is exponential convergence. 
+\end{proof}
+
+\end{document}
