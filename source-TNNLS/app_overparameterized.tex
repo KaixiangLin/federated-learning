@@ -1,3 +1,4 @@
+% !TEX ROOT=./main.tex
 
 \subsection{Geometric Convergence of FedAvg for general strongly convex and smooth objectives}
 
@@ -7,7 +8,8 @@
 	every $E$ iterations with constant step size $\overline{\alpha}=\frac{1}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
 	gives the exponential convergence guarantee 
 	\begin{align*}
-	\mathbb{E}F(\ov{w}_{t}) & \leq\frac{L}{2}(1-\mu\overline{\alpha})^{t}\|\vw_{0}-\vw^{\ast}\|^{2}=O(\exp(-\frac{\mu}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t)\cdot\|\vw_{0}-\vw^{\ast}\|^{2})
+	& \mathbb{E}F(\ov{w}_{t}) \leq\frac{L}{2}(1-\mu\overline{\alpha})^{t}\|\vw_{0}-\vw^{\ast}\|^{2}\\
+	\leq &O(\exp(-\frac{\mu}{2E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t)\cdot\|\vw_{0}-\vw^{\ast}\|^{2})
 	\end{align*}
 \end{thm}
 %
@@ -30,23 +32,28 @@
 	and $L$-smoothness of $F_{k}$:
 	\begin{align*}
 	&-2\alpha_{t}\mathbb{E}_{t}\langle\ov{w}_{t}-\vw^{\ast},\vg_{t}\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
-	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}(\vw_{t}^{k}-\vw^{\ast})\|^{2}\\
-	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
-	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t})-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
+	=&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	=&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle \\
+	& -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	\leq&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& +2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
+	\leq&2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]\\
+	&-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}(\vw_{t}^{k}-\vw^{\ast})\|^{2}\\
+	=&\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\ &+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
+	=&\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\ &-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t})-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
 	\end{align*}
 	and so 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)\|\ov{w}_{t}-\vw^{\ast}\|^{2}-2\alpha_{t}F(\ov{w}_{t})+\alpha_{t}^{2}\|\vg_{t}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}  \leq\mathbb{E}(1-\alpha_{t}\mu)\|\ov{w}_{t}\\
+	-& \vw^{\ast}\|^{2}-2\alpha_{t}F(\ov{w}_{t})+\alpha_{t}^{2}\|\vg_{t}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}
 	\end{align*}
 	
 	Applying this recursive relation to $\|\ov{w}_{t}-\vw^{\ast}\|^{2}$
 	and using $\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}\equiv0$, we further
 	obtain 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)\left((1-\alpha_{t-1}\mu)\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}-2\alpha_{t-1}F(\ov{w}_{t-1})+\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\right)\\
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\leq \mathbb{E}(1-\alpha_{t}\mu)\\
+	& \left((1-\alpha_{t-1}\mu)\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}-2\alpha_{t-1}F(\ov{w}_{t-1})+\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\right)\\
 	& -2\alpha_{t}F(\ov{w}_{t})+\alpha_{t}^{2}\|\vg_{t}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}
 	\end{align*}
 	Now instead of bounding $\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$
@@ -56,11 +63,12 @@
 	$\|\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\leq2l(F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})-F_{k}(\vw^{\ast},\xi_{t-1}^{k}))$,
 	where recall $F_{k}(\vw,\xi_{t-1}^{k})=\ell(\vw,\xi_{t-1}^{k})$, so that
 	\begin{align*}
-	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
-	& =\sum_{k=1}^{N}p_{k}\alpha_{t-1}^{2}\|\vg_{t-1}-\vg_{t-1,k}\|^{2}\\
-	& =\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}(\|\vg_{t-1,k}\|^{2}-\|\vg_{t-1}\|^{2})\\
-	& =\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}-\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\\
-	& \le\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}2l(F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})-F_{k}(\vw^{\ast},\xi_{t-1}^{k}))-\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
+	& \sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \\
+	 =&\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
+	=&\sum_{k=1}^{N}p_{k}\alpha_{t-1}^{2}\|\vg_{t-1}-\vg_{t-1,k}\|^{2}\\
+	=&\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}(\|\vg_{t-1,k}\|^{2}-\|\vg_{t-1}\|^{2})\\
+	=&\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}\|\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}-\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\\
+ \leq& \alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}2l(F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})-F_{k}(\vw^{\ast},\xi_{t-1}^{k}))-\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
 	\end{align*}
 	\begin{comment}
 	(In the Nesterov case)
@@ -82,7 +90,8 @@
 	with respect to $\xi_{t-1}^{k}$'s and using the fact that $F(\vw^{\ast})=0$,
 	we have 
 	\begin{align*}
-	\mathbb{E}_{t-1}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & \leq2l\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t-1})-\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\\
+	&\mathbb{E}_{t-1}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \\
+	& \leq2l\alpha_{t-1}^{2}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t-1})-\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\\
 	& =2l\alpha_{t-1}^{2}F(\ov{w}_{t-1})-\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
 	\end{align*}
 	
@@ -92,18 +101,23 @@
 	\end{align*}
 	while
 	\begin{align*}
-	\|\vg_{t}\|^{2}=\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\vw_{t}^{k},\xi_{t}^{k})\|^{2} & \leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+2\|\sum_{k=1}^{N}p_{k}(\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})-\nabla F_{k}(\vw_{t}^{k},\xi_{t}^{k}))\|^{2}\\
+	&\|\vg_{t}\|^{2}=\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\vw_{t}^{k},\xi_{t}^{k})\|^{2} \\
+	& \leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}\\
+	& +2\|\sum_{k=1}^{N}p_{k}(\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})-\nabla F_{k}(\vw_{t}^{k},\xi_{t}^{k}))\|^{2}\\
 	& \leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+2\sum_{k=1}^{N}p_{k}l^{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}
 	\end{align*}
 	Substituting these into the bound for $\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}$,
 	we have 
 	
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)((1-\alpha_{t-1}\mu)\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}-2\alpha_{t-1}F(\ov{w}_{t-1})+\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2})\\
-	& -2\alpha_{t}F(\ov{w}_{t})+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+\left(2l^{2}\alpha_{t-1}^{2}\alpha_{t}^{2}+\alpha_{t}\alpha_{t-1}^{2}L\right)\left(2lF(\ov{w}_{t-1})-\|\vg_{t-1}\|^{2}\right)\\
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}  \leq\mathbb{E}(1-\alpha_{t}\mu)((1-\alpha_{t-1}\mu)\|\ov{w}_{t-1}-\vw^{\ast}\|^{2} \\ 
+	& -2\alpha_{t-1}F(\ov{w}_{t-1})+\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2})\\
+	& -2\alpha_{t}F(\ov{w}_{t})+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}\\
+	&+\left(2l^{2}\alpha_{t-1}^{2}\alpha_{t}^{2}+\alpha_{t}\alpha_{t-1}^{2}L\right)\left(2lF(\ov{w}_{t-1})-\|\vg_{t-1}\|^{2}\right)\\
 	& =\mathbb{E}(1-\alpha_{t}\mu)(1-\alpha_{t-1}\mu)\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}\\
 	& -2\alpha_{t}(F(\ov{w}_{t})-\alpha_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2})\\
-	& -2\alpha_{t-1}(1-\alpha_{t}\mu)\left((1-\frac{l\alpha_{t-1}(2l^{2}\alpha_{t}^{2}+\alpha_{t}L)}{1-\alpha_{t}\mu})F(\ov{w}_{t-1})-\frac{\alpha_{t-1}}{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\right)
+	& -2\alpha_{t-1}(1-\alpha_{t}\mu)\left((1-\frac{l\alpha_{t-1}(2l^{2}\alpha_{t}^{2}+\alpha_{t}L)}{1-\alpha_{t}\mu})F(\ov{w}_{t-1})\right. \\ 
+	& \left.-\frac{\alpha_{t-1}}{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\right)
 	\end{align*}
 	from which we can conclude that 
 	\begin{align*}
@@ -111,18 +125,24 @@
 	\end{align*}
 	if we can choose $\alpha_{t},\alpha_{t-1}$ to guarantee
 	\begin{align*}
-	\mathbb{E}(F(\ov{w}_{t})-\alpha_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}) & \geq0\\
-	\mathbb{E}\left((1-\frac{l\alpha_{t-1}(2l^{2}\alpha_{t}^{2}+\alpha_{t}L)}{1-\alpha_{t}\mu})F(\ov{w}_{t-1})-\frac{\alpha_{t-1}}{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\right) & \geq0
+	&\mathbb{E}(F(\ov{w}_{t})-\alpha_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}) \geq0\\
+	&\mathbb{E}\left((1-\frac{l\alpha_{t-1}(2l^{2}\alpha_{t}^{2}+\alpha_{t}L)}{1-\alpha_{t}\mu})F(\ov{w}_{t-1}) \right. \\
+	& \left.-\frac{\alpha_{t-1}}{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\right) \geq0
 	\end{align*}
 	
 	Note that 
 	
 	\begin{align*}
-	\mathbb{E}_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2} & =\mathbb{E}_{t}\langle\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k}),\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\rangle\\
-	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k}),\nabla F_{j}(\ov{w}_{t},\xi_{t}^{j})\rangle\\
-	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\langle\nabla F_{k}(\ov{w}_{t}),\nabla F_{j}(\ov{w}_{t})\rangle\\
-	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+\sum_{k=1}^{N}\sum_{j=1}^{N}p_{j}p_{k}\langle\nabla F_{k}(\ov{w}_{t}),\nabla F_{j}(\ov{w}_{t})\rangle-\sum_{k=1}^{N}p_{k}^{2}\|\nabla F_{k}(\ov{w}_{t})\|^{2}\\
-	& \leq\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+\|\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}-\frac{1}{N}\nu_{\min}\|\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}\\
+	& \mathbb{E}_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2} \\
+	& =\mathbb{E}_{t}\langle\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k}),\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}\\
+	&+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k}),\nabla F_{j}(\ov{w}_{t},\xi_{t}^{j})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}\\
+	&+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\langle\nabla F_{k}(\ov{w}_{t}),\nabla F_{j}(\ov{w}_{t})\rangle\\
+	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}\\
+	&+\sum_{k=1}^{N}\sum_{j=1}^{N}p_{j}p_{k}\langle\nabla F_{k}(\ov{w}_{t}),\nabla F_{j}(\ov{w}_{t})\rangle-\sum_{k=1}^{N}p_{k}^{2}\|\nabla F_{k}(\ov{w}_{t})\|^{2}\\
+	& \leq\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}\\&
+	+\|\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}-\frac{1}{N}\nu_{\min}\|\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}\\
 	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\nabla F(\ov{w}_{t})\|^{2}
 	\end{align*}
 	and so following~\cite{ma2017power} if we let $\alpha_{t}=\min\{\frac{qN}{2l\nu_{\max}},\frac{1-q}{2L(1-\frac{1}{N}\nu_{\min})}\}$
@@ -130,10 +150,13 @@
 	
 	\begin{align*}
 	& \mathbb{E}_{t}(F(\ov{w}_{t})-\alpha_{t}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2})\\
-	& \geq\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t})-\alpha_{t}\left[\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\nabla F(\ov{w}_{t})\|^{2}\right]\\
-	& \geq\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}(qF_{k}(\ov{w}_{t},\xi_{t}^{k})-\alpha_{t}\frac{1}{N}\nu_{\max}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2})+((1-q)F(\ov{w}_{t})-\alpha_{t}(1-\frac{1}{N}\nu_{\min})\|\nabla F(\ov{w}_{t})\|^{2})\\
-	& \geq q\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\ov{w}_{t},\xi_{t}^{k})-\frac{1}{2l}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2})+(1-q)(F(\ov{w}_{t})-\frac{1}{2L}\|\nabla F(\ov{w}_{t})\|^{2})\\
-	& \geq0
+	\geq&\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t})\\
+	& -\alpha_{t}\left[\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\nabla F(\ov{w}_{t})\|^{2}\right]\\
+	\geq&\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}(qF_{k}(\ov{w}_{t},\xi_{t}^{k})-\alpha_{t}\frac{1}{N}\nu_{\max}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2})\\
+	& +((1-q)F(\ov{w}_{t})-\alpha_{t}(1-\frac{1}{N}\nu_{\min})\|\nabla F(\ov{w}_{t})\|^{2})\\
+ \geq &q\mathbb{E}_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\ov{w}_{t},\xi_{t}^{k})-\frac{1}{2l}\|\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2})\\
+ & +(1-q)(F(\ov{w}_{t})-\frac{1}{2L}\|\nabla F(\ov{w}_{t})\|^{2})\\
+ \geq &0
 	\end{align*}
 	again using $\vw^{\ast}$ optimizes $F_{k}(\vw,\xi_{t}^{k})$ with $F_{k}(\vw^{\ast},\xi_{t}^{k})=0$. 
 	
@@ -143,7 +166,8 @@
 	Next we claim that $\alpha_{t-1}=c\frac{1}{2}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
 	also guarantees
 	\begin{align*}
-	\mathbb{E}(1-\frac{l\alpha_{t-1}(2l^{2}\alpha_{t}^{2}+\alpha_{t}L)}{1-\alpha_{t}\mu})F(\ov{w}_{t-1})-\frac{\alpha_{t-1}}{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2} & \geq0
+	&\mathbb{E}(1-\frac{l\alpha_{t-1}(2l^{2}\alpha_{t}^{2}+\alpha_{t}L)}{1-\alpha_{t}\mu})F(\ov{w}_{t-1})\\
+	&-\frac{\alpha_{t-1}}{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2} & \geq0
 	\end{align*}
 	
 	Note that by scaling $\alpha_{t-1}$ by a constant $c\leq1$ if necessary,
@@ -156,27 +180,32 @@
 	
 	For the proof of general $E\ge2$, we use the following two identities:
 	\begin{align*}
-	\|\vg_{t}\|^{2} & \leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+2\sum_{k=1}^{N}p_{k}l^{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
-	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
+	&\|\vg_{t}\|^{2}  \leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+2\sum_{k=1}^{N}p_{k}l^{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
+	&\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}  \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}\\
+	&+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
 	\end{align*}
 	where the first inequality has been established before. To establish
 	the second inequality, note that 
 	\begin{align*}
-	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
+	&\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}  =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
 	& \leq2\sum_{k=1}^{N}p_{k}\left(\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\alpha_{t-1}\vg_{t-1}-\alpha_{t-1}\vg_{t-1,k}\|^{2}\right)
 	\end{align*}
 	and
 	\begin{align*}
 	& \sum_{k}p_{k}\|\vg_{t-1,k}-\vg_{t-1}\|^{2}=\sum_{k}p_{k}(\|\vg_{t-1,k}\|^{2}-\|\vg_{t-1}\|^{2})\\
-	& =\sum_{k}p_{k}\|\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})+\nabla F_{k}(\vw_{t-1}^{k},\xi_{t-1}^{k})-\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}-\|\vg_{t-1}\|^{2}\\
+	& =\sum_{k}p_{k}\|\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})+\nabla F_{k}(\vw_{t-1}^{k},\xi_{t-1}^{k})\\
+	& -\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}-\|\vg_{t-1}\|^{2}\\
 	& \leq2\sum_{k}p_{k}\left(\|\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}+l^{2}\|\vw_{t-1}^{k}-\ov{w}_{t-1}\|^{2}\right)-\|\vg_{t-1}\|^{2}
 	\end{align*}
 	so that using the $l$-smoothness of $\ell$, 
 	\begin{align*}
 	& \mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
-	& \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}\sum_{k}p_{k}\|\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\\
-	& \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}2l\sum_{k}p_{k}(F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})-F_{k}(\vw^{\ast},\xi_{t-1}^{k}))-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\\
-	& =\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
+	& \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}\\ 
+	&+4\alpha_{t-1}^{2}\sum_{k}p_{k}\|\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\\
+	& \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}\\
+	& +4\alpha_{t-1}^{2}2l\sum_{k}p_{k}(F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})-F_{k}(\vw^{\ast},\xi_{t-1}^{k}))-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}\\
+	& =\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}\\
+	&+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
 	\end{align*}
 	
 	
@@ -190,24 +219,26 @@
 	and $(2\alpha_{t}^{2}l^{2}+\alpha_{t}L)\leq(1-\alpha_{t}\mu)(2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)/3$.
 	This gives 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)[(1-\alpha_{t-1}\mu)\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}-2\alpha_{t-1}F(\ov{w}_{t-1})+2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\\
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} \leq\mathbb{E}(1-\alpha_{t}\mu)[(1-\alpha_{t-1}\mu)\|\ov{w}_{t-1}-\vw^{\ast}\|^{2} \\ 
+	& -2\alpha_{t-1}F(\ov{w}_{t-1}) +2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\\
 	& +(2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)(\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2})/3]
 	\end{align*}
 	
 	Using the second inequality
 	\begin{align*}
-	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
+	\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}\\ &+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
 	\end{align*}
 	and that $2(1+2l^{2}\alpha_{t-1}^{2})\leq3$, $2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L\le1$,
 	we have 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)[(1-\alpha_{t-1}\mu)\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}\\
-	& -2\alpha_{t-1}F(\ov{w}_{t-1})+2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})\\
+	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} \leq\mathbb{E}(1-\alpha_{t}\mu)[(1-\alpha_{t-1}\mu)\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}\\
+	& -2\alpha_{t-1}F(\ov{w}_{t-1})+2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\\
+	& +8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})\\
 	& +(2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)(2\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2})]
 	\end{align*}
 	and if $\alpha_{t-1}$ is chosen such that 
 	\begin{align*}
-	(F(\ov{w}_{t-1})-4\alpha_{t-1}lF(\ov{w}_{t-1}))-\alpha_{t-1}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}\geq0
+	(F(\ov{w}_{t-1})-4\alpha_{t-1}lF(\ov{w}_{t-1}))\geq \alpha_{t-1}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-1},\xi_{t-1}^{k})\|^{2}
 	\end{align*}
 	and
 	\begin{align*} (2\alpha_{t-1}^{2}l^{2}+\alpha_{t-1}L)(1-\alpha_{t-1}\mu)
@@ -215,22 +246,26 @@
 	\end{align*}
 	we again have 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)(1-\alpha_{t-1}\mu)[\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}+(2\alpha_{t-2}^{2}l^{2}+\alpha_{t-2}L)\cdot(2\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2})/3]
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} \leq\mathbb{E}(1-\alpha_{t}\mu)(1-\alpha_{t-1}\mu)[\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}\\
+	& +(2\alpha_{t-2}^{2}l^{2}+\alpha_{t-2}L)\cdot(2\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2})/3]
 	\end{align*}
 	
 	Applying the above derivation iteratively $\tau<E$ times, we have
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)\cdots(1-\alpha_{t-\tau+1}\mu)[(1-\alpha_{t-\tau}\mu)\|\ov{w}_{t-\tau}-\vw^{\ast}\|^{2}\\
-	& -2\alpha_{t-\tau}F(\ov{w}_{t-\tau})+2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-\tau},\xi_{t-\tau}^{k})\|^{2}+8\tau\alpha_{t-\tau}^{2}lF(\ov{w}_{t-\tau})\\
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\\
+	\leq &\mathbb{E}(1-\alpha_{t}\mu)\cdots(1-\alpha_{t-\tau+1}\mu)[(1-\alpha_{t-\tau}\mu)\|\ov{w}_{t-\tau}-\vw^{\ast}\|^{2}\\
+	& -2\alpha_{t-\tau}F(\ov{w}_{t-\tau})\\
+	&+2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-\tau},\xi_{t-\tau}^{k})\|^{2}+8\tau\alpha_{t-\tau}^{2}lF(\ov{w}_{t-\tau})\\
 	& +(2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L)((\tau+1)\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-\tau}-\vw_{t-\tau}^{k}\|^{2})]
 	\end{align*}
 	as long as the step sizes $\alpha_{t-\tau}$ are chosen such that
 	the following inequalities hold 
 	\begin{align*}
-	(2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L)(1-\alpha_{t-\tau}\mu) & \leq(2\alpha_{t-\tau-1}^{2}l^{2}+\alpha_{t-\tau-1}L)/3\\
-	2(1+2l^{2}\alpha_{t-\tau}^{2}) & \leq3\\
-	2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L & \leq1\\
-	(F(\ov{w}_{t-\tau})-4\tau\alpha_{t-\tau}lF(\ov{w}_{t-\tau}))-\alpha_{t-\tau}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-\tau},\xi_{t-\tau}^{k})\|^{2} & \geq0
+	&(2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L)(1-\alpha_{t-\tau}\mu)  \leq(2\alpha_{t-\tau-1}^{2}l^{2}+\alpha_{t-\tau-1}L)/3\\
+	&2(1+2l^{2}\alpha_{t-\tau}^{2})  \leq3\\
+	&2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L  \leq1\\
+	&(F(\ov{w}_{t-\tau})-4\tau\alpha_{t-\tau}lF(\ov{w}_{t-\tau}))\\
+	&-\alpha_{t-\tau}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-\tau},\xi_{t-\tau}^{k})\|^{2}  \geq0
 	\end{align*}
 	We can check that setting $\alpha_{t-\tau}=c\frac{1}{\tau+1}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
 	for some small constant $c$ satisfies the requirements. 
@@ -251,29 +286,34 @@
 	
 	With partial participation, we note that 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}+\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
+	 & \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}  \\
+	& =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}+\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
 	& =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
 	& =\frac{1}{K}\sum_{k}p_{k}\mathbb{E}\|\vw_{t+1}^{k}-\ov{w}_{t+1}\|^{2}+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}
 	\end{align*}
 	and so the recursive identity becomes 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\alpha_{t}\mu)\cdots(1-\alpha_{t-\tau+1}\mu)[(1-\alpha_{t-\tau}\mu)\|\ov{w}_{t-\tau}-\vw^{\ast}\|^{2}\\
-	& -2\alpha_{t-\tau}F(\ov{w}_{t-\tau})+2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-\tau},\xi_{t-\tau}^{k})\|^{2}+8\tau\alpha_{t-\tau}^{2}lF(\ov{w}_{t-\tau})\\
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} \\
+	\leq&\mathbb{E}(1-\alpha_{t}\mu)\cdots(1-\alpha_{t-\tau+1}\mu)[(1-\alpha_{t-\tau}\mu)\|\ov{w}_{t-\tau}-\vw^{\ast}\|^{2}\\
+	& -2\alpha_{t-\tau}F(\ov{w}_{t-\tau})+2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-\tau},\xi_{t-\tau}^{k})\|^{2}\\
+	& +8\tau\alpha_{t-\tau}^{2}lF(\ov{w}_{t-\tau})\\
 	& +(2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L+\frac{1}{K})((\tau+1)\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-\tau}-\vw_{t-\tau}^{k}\|^{2})]
 	\end{align*}
 	which requires 
 	\begin{align*}
-	(2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L+\frac{1}{K})(1-\alpha_{t-\tau}\mu) & \leq(2\alpha_{t-\tau-1}^{2}l^{2}+\alpha_{t-\tau-1}L+\frac{1}{K})/3\\
-	2(1+2l^{2}\alpha_{t-\tau}^{2}) & \leq3\\
-	2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L+\frac{1}{K} & \leq1\\
-	(F(\ov{w}_{t-\tau})-4\tau\alpha_{t-\tau}lF(\ov{w}_{t-\tau}))-\alpha_{t-\tau}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-\tau},\xi_{t-\tau}^{k})\|^{2} & \geq0
+	& (2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L+\frac{1}{K})(1-\alpha_{t-\tau}\mu) \\
+	& \leq(2\alpha_{t-\tau-1}^{2}l^{2}+\alpha_{t-\tau-1}L+\frac{1}{K})/3\\
+	& 2(1+2l^{2}\alpha_{t-\tau}^{2})  \leq3\\
+	& 2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L+\frac{1}{K} \leq1\\
+	& (F(\ov{w}_{t-\tau})-4\tau\alpha_{t-\tau}lF(\ov{w}_{t-\tau}))-\alpha_{t-\tau}\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t-\tau},\xi_{t-\tau}^{k})\|^{2}  \geq0
 	\end{align*}
 	to hold. Again setting $\alpha_{t-\tau}=c\frac{1}{\tau+1}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}$
 	for a possibly different constant from before satisfies the requirements.
 	
 	Finally, using the $L$-smoothness of $F$, 
 	\begin{align*}
-	F(\ov{w}_{T})-F(\vw^{\ast}) & \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}=O(L\exp(-\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}T))\|\vw_{0}-\vw^{\ast}\|^{2}
+	& F(\ov{w}_{T})-F(\vw^{\ast})  \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}\\
+	& =O(L\exp(-\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}T))\|\vw_{0}-\vw^{\ast}\|^{2}
 	\end{align*}
 \end{proof}
 
