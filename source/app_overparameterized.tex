@@ -37,8 +37,8 @@
 	& -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
 	\leq&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle\\
 	& +2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))-\alpha_{t}\mu\sum_{k=1}^{N}p_{k}\|\vw_{t}^{k}-\vw^{\ast}\|^{2}\\
-	\leq&2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]\\
-	&-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}(\vw_{t}^{k}-\vw^{\ast})\|^{2}\\
+	\leq&2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\right.\\
+	&\left.+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]-\alpha_{t}\mu\|\sum_{k=1}^{N}p_{k}(\vw_{t}^{k}-\vw^{\ast})\|^{2}\\
 	=&\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\ &+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
 	=&\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\ &-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t})-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
 	\end{align*}
@@ -180,8 +180,11 @@
 	
 	For the proof of general $E\ge2$, we use the following two identities:
 	\begin{align*}
-	&\|\vg_{t}\|^{2}  \leq2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+2\sum_{k=1}^{N}p_{k}l^{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
-	&\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}  \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}\\
+	\|\vg_{t}\|^{2} \leq&2\|\sum_{k=1}^{N}p_{k}\nabla F_{k}(\ov{w}_{t},\xi_{t}^{k})\|^{2}+2\sum_{k=1}^{N}p_{k}l^{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
+	\end{align*}
+	\begin{align*}
+	&\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}  \\
+	\leq&\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}\\
 	&+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})-2\alpha_{t-1}^{2}\|\vg_{t-1}\|^{2}
 	\end{align*}
 	where the first inequality has been established before. To establish

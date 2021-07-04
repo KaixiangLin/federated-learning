@@ -4,7 +4,9 @@ In this section we provide proof of the convergence result for Nesterov accelera
 \begin{lemma} [\textbf{One step progress, convex case, Nesterov}]
 Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in Nesterov accelerated FedAvg, and define $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}$. Under assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2}, the following bound holds for all $t$:
 \begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) \\
+	\leq & \mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}\\
+	& +2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
 	\end{align*}
 	\label{lem:nest-cvxoner}
 \end{lemma}
@@ -26,15 +28,22 @@ Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in Nestero
 	
     Applying the bound from Lemma~\ref{lem:nest-cvxoner}, with $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}$ we have
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) \\
+	 \leq&\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}\\
+	 &+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
 	\end{align*}
 	Summing the inequalities from $t=0$ to $t=T$, we obtain 
 	\begin{align*}
-	\sum_{t=0}^{T}\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	&\sum_{t=0}^{T}\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) \\
+	\leq &\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}\\
+	&+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
 	\end{align*}
 	so that
+
 	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\eta_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}\right)
+	&\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) \\
+	\leq &\frac{1}{\sum_{t=0}^{T}\eta_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}\right.\\
+	&\left.+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}\right)
 	\end{align*}
 	
 	By setting the constant learning rates $\alpha_{t}\equiv\sqrt{\frac{N}{T}}$
@@ -50,7 +59,9 @@ Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in Nestero
 	
 	Similarly, for partial participation, we have 
 	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+	&\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) \\
+	\leq & \frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)\right. \\
+	&\left.+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
 	\end{align*}
 	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$,
 	so that with $\alpha_{t}\equiv\sqrt{\frac{K}{T}}$ and $\beta_{t}\equiv c\sqrt{\frac{K}{T}}$,
@@ -87,36 +98,46 @@ Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in Nestero
 	\end{align*}
 	where again $\mathbb{E}A_{2}=0$ and $\mathbb{E}A_{3}\leq\eta_{t}^{2}\sum_{k}p_{k}^{2}\sigma_{k}^{2}$.
 	For $A_{1}$ we have 
+	{\footnotesize
 	\begin{align*}
-	\|\ov{z}_{t}-\vw^{\ast}-\eta_{t}\ov{g}_{t}\|^{2} & =\|\ov{z}_{t}-\vw^{\ast}\|^{2}+2\langle\ov{z}_{t}-\vw^{\ast},-\eta_{t}\ov{g}_{t}\rangle+\|\eta_{t}\ov{g}_{t}\|^{2}
+	&\|\ov{z}_{t}-\vw^{\ast}-\eta_{t}\ov{g}_{t}\|^{2} \\
+	=&\|\ov{z}_{t}-\vw^{\ast}\|^{2}+2\langle\ov{z}_{t}-\vw^{\ast},-\eta_{t}\ov{g}_{t}\rangle+\|\eta_{t}\ov{g}_{t}\|^{2}
 	\end{align*}
 	Using the convexity and $L$-smoothness of $F_{k}$, 
 	\begin{align*}
 	& -2\eta_{t}\langle\ov{z}_{t}-\vw^{\ast},\ov{g}_{t}\rangle\\
-	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& \leq-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle+2\eta_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))\\
-	& \leq2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]\\
+	=&-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	=&-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	=&-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	&-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	\leq&-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	&+2\eta_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))\\
+	\leq&2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]\\
 	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =\eta_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
+	=&\eta_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
+	&-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
 	\end{align*}
+	}%
 	which results in 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\eta_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
-	& +\eta_{t}^{2}\|\ov{g}_{t}\|^{2}+\eta_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
+	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\\
+	\leq&\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\eta_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
+	&+2\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right] +\eta_{t}^{2}\|\ov{g}_{t}\|^{2}+\eta_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	&-2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
 	\end{align*}
 	As before, $\|\ov{g}_{t}\|^{2}\leq2L^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}+4L(F(\ov{w}_{t})-F(\vw^{\ast}))$,
 	so that 
 	\begin{align*}
-	\eta_{t}^{2}\|\ov{g}_{t}\|^{2}+\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right] & \leq2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}+\eta_{t}(1-4\eta_{t}L)(F(\vw^{\ast})-F(\ov{w}_{t}))\\
-	& \leq2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}
+	&\eta_{t}^{2}\|\ov{g}_{t}\|^{2}+\eta_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right] \\
+	\leq & 2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}+\eta_{t}(1-4\eta_{t}L)(F(\vw^{\ast})-F(\ov{w}_{t}))\\
+	\leq &2L^{2}\eta_{t}^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}
 	\end{align*}
 	for $\eta_{t}\le1/4L$. Using $\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\leq16E^{2}\alpha_{t}^{2}G^{2}$
 	and $\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\leq\nu_{\max}\frac{1}{N}\sigma^{2}$,
 	it follows that 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+(\eta_{t}L+2L^{2}\eta_{t}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\eta_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) \\
+	& \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+(\eta_{t}L+2L^{2}\eta_{t}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\eta_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
 	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle\\
 	& \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}\\
 	& -2\eta_{t}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle
@@ -128,11 +149,13 @@ Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in Nestero
 	
 	Cauchy-Schwarz gives
 	\begin{align*}
-	\mathbb{E}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle & \leq\sum_{k=1}^{N}p_{k}\sqrt{\mathbb{E}\|\ov{z}_{t}-\ov{w}_{t}\|^{2}}\cdot\sqrt{\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}}\\
-	& \leq\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	&\mathbb{E}\sum_{k=1}^{N}p_{k}\langle\ov{z}_{t}-\ov{w}_{t},\nabla F_{k}(\vw_{t}^{k})\rangle \\
+	\leq&\sum_{k=1}^{N}p_{k}\sqrt{\mathbb{E}\|\ov{z}_{t}-\ov{w}_{t}\|^{2}}\cdot\sqrt{\mathbb{E}\|\nabla F_{k}(\vw_{t}^{k})\|^{2}}\\
+	\leq &\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
 	\end{align*}
 	Thus 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) \\
+	 \leq &\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
 	\end{align*}
 \end{proof}
