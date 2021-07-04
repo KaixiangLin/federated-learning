@@ -6,9 +6,12 @@
 For the overparamterized linear regression problem, FedMaSS with communication every $E$ iterations and constant
 step sizes $\overline{\eta}_1=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})}),\overline{\eta}_{2}=\frac{\overline{\eta}_{1}(1-\frac{1}{\tilde{\kappa}})}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}},\overline{\gamma}=\frac{1-\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}{1+\frac{1}{\sqrt{\kappa_{1}\tilde{\kappa}}}}$
 has geometric convergence:
+{\footnotesize
 \begin{align*}
 \mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\mathcal{O}\left(L\exp(-\frac{NT}{E(\nu_{\max}\sqrt{\kappa_{1}\tilde{\kappa}}+(N-\nu_{\min}))})\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 \end{align*}
+}
+
 \end{thm}
 \begin{proof}
 	

@@ -190,8 +190,9 @@
 	where the first inequality has been established before. To establish
 	the second inequality, note that 
 	\begin{align*}
-	&\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}  =\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
-	& \leq2\sum_{k=1}^{N}p_{k}\left(\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\alpha_{t-1}\vg_{t-1}-\alpha_{t-1}\vg_{t-1,k}\|^{2}\right)
+	&\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \\
+	=&\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\alpha_{t-1}\vg_{t-1}-\vw_{t-1}^{k}+\alpha_{t-1}\vg_{t-1,k}\|^{2}\\
+	\leq&2\sum_{k=1}^{N}p_{k}\left(\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+\|\alpha_{t-1}\vg_{t-1}-\alpha_{t-1}\vg_{t-1,k}\|^{2}\right)
 	\end{align*}
 	and
 	\begin{align*}
@@ -277,22 +278,24 @@
 	for some $t_{0}>t-E$ , from which we can conclude that 
 	
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2} & \leq(\prod_{\tau=1}^{t-t_{0}-1}(1-\mu\alpha_{t-\tau}))\|\vw_{t_{0}}-\vw^{\ast}\|^{2}\\
-	& \leq(1-c\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})})^{t-t_{0}}\|\vw_{t_{0}}-\vw^{\ast}\|^{2}
+	&\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2} \\
+	 \leq&(\prod_{\tau=1}^{t-t_{0}-1}(1-\mu\alpha_{t-\tau}))\|\vw_{t_{0}}-\vw^{\ast}\|^{2}\\
+	\leq &(1-c\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})})^{t-t_{0}}\|\vw_{t_{0}}-\vw^{\ast}\|^{2}
 	\end{align*}
 	and applying this inequality to iterations between each communication
 	round, 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2} & \leq(1-c\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})})^{t}\|\vw_{0}-\vw^{\ast}\|^{2}\\
+	&\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2} \\
+	\leq&(1-c\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})})^{t}\|\vw_{0}-\vw^{\ast}\|^{2}\\
 	& =O(\exp(\frac{\mu}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})}t))\|\vw_{0}-\vw^{\ast}\|^{2}
 	\end{align*}
 	
 	With partial participation, we note that 
 	\begin{align*}
 	 & \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}  \\
-	& =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}+\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
-	& =\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
-	& =\frac{1}{K}\sum_{k}p_{k}\mathbb{E}\|\vw_{t+1}^{k}-\ov{w}_{t+1}\|^{2}+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}
+	 =&\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}+\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
+	=&\mathbb{E}\|\ov{w}_{t+1}-\ov{v}_{t+1}\|^{2}+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}\\
+	=&\frac{1}{K}\sum_{k}p_{k}\mathbb{E}\|\vw_{t+1}^{k}-\ov{w}_{t+1}\|^{2}+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}
 	\end{align*}
 	and so the recursive identity becomes 
 	\begin{align*}
@@ -380,11 +383,13 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	\begin{align*}
 	& -2\alpha_{t}\mathbb{E}_{t}\langle\ov{w}_{t}-\vw^{\ast},\vg_{t}\rangle\\
 	=&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	=& -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle  -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	=& -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle  \\
+	&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
 	=&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle\\
 	& -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\vH^{k}(\vw_{t}^{k}-\vw^{\ast})\rangle\\
 	=&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle -4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
-	\leq & 2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}) -4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
+	\leq & 2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}) \\
+	&-4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
 	=&\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t})-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
 	=&\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle\\
 	& -2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})
@@ -440,7 +445,8 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	\begin{align*}
 	& \mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle\\
 	&+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2} \\
-	= &\langle\ov{w}_{t}-\vw^{\ast},(I-\alpha_{t}\vH+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\vH+\frac{N-\nu_{\min}}{N}\vH^{2}))(\ov{w}_{t}-\vw^{\ast})\rangle
+	= &\langle\ov{w}_{t}-\vw^{\ast},(\ov{w}_{t}-\vw^{\ast})\left(I-\alpha_{t}\vH\right.\\
+	&\left.+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\vH+\frac{N-\nu_{\min}}{N}\vH^{2})\right)\rangle
 	\end{align*}
 	and it remains to bound the maximum eigenvalue of 
 	\begin{align*}
