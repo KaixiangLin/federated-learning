@@ -1,28 +1,6 @@
 % !TEX ROOT=./main.tex
 
-\begin{figure*}[ht!]
-\centering
-{\small
-\begin{tabular}{ccc}
-\hspace{-2em}\includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupNodesT-min-w8a-epsilon0131-reg1e-05.pdf} &
-\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupNodesT-min-w8a-epsilon0134-reg0.pdf} &
-\includegraphics[width=0.33\textwidth]{fig/paper-linregressionspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
-\hspace{-2em}\includegraphics[width=0.33\textwidth]{fig/paper-partialstronglycvxsmthspeedupNodesT-min-w8a-epsilon0131-reg1e-05.pdf} &
-\includegraphics[width=0.33\textwidth]{fig/paper-partialcvxsmoothspeedupNodesT-min-w8a-epsilon0134-reg0.pdf} &
-\includegraphics[width=0.33\textwidth]{fig/paper-partiallinregressionspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
-\hspace{-2em}\includegraphics[width=0.33\textwidth]{fig/paper-nesterovspeedupNodesT-min-w8a-epsilon0131-reg1e-05.pdf} & 
-\includegraphics[width=0.33\textwidth]{fig/paper-nesterovspeedupNodesT-min-w8a-epsilon0134-reg0.pdf}
-& 
-\includegraphics[width=0.33\textwidth]{fig/paper-lrnesterovspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
-(a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
-	\end{tabular}}
-	\vspace{-1em}
-\caption{The linear speedup of FedAvg in full participation, partial participation, and the linear speedup of Nesterov accelerated FedAvg, respectively.
-% \textbf{Linear speedup } The first row reports the linear speedup convergence of FedAvg w.r.t the number of workers. The second row reports the linear speedup convergence of FedAvg w.r.t the number of active workers in the partial parcipation setting. The third row reports the linear speedup convergence of Nesterov accelerated FedAvg in full participation setting. 
-}
-\vspace{-1em}
-\label{fig:speedup}
-\end{figure*}
+
 
 \section{Numerical Experiments}
 \label{sec:exp}
@@ -72,7 +50,29 @@ For additional experiments on the impact of $E$, detailed experimental setup, an
 % we need a proper choice of $E$ to trade-off the communication cost and
 % convergence speed. 
 
-
+\begin{figure}[h!]
+\centering
+{\small
+\begin{tabular}{ccc}
+\hspace{-2em}\includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupNodesT-min-w8a-epsilon0131-reg1e-05.pdf} &
+\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupNodesT-min-w8a-epsilon0134-reg0.pdf} &
+\includegraphics[width=0.33\textwidth]{fig/paper-linregressionspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
+\hspace{-2em}\includegraphics[width=0.33\textwidth]{fig/paper-partialstronglycvxsmthspeedupNodesT-min-w8a-epsilon0131-reg1e-05.pdf} &
+\includegraphics[width=0.33\textwidth]{fig/paper-partialcvxsmoothspeedupNodesT-min-w8a-epsilon0134-reg0.pdf} &
+\includegraphics[width=0.33\textwidth]{fig/paper-partiallinregressionspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
+\hspace{-2em}\includegraphics[width=0.33\textwidth]{fig/paper-nesterovspeedupNodesT-min-w8a-epsilon0131-reg1e-05.pdf} & 
+\includegraphics[width=0.33\textwidth]{fig/paper-nesterovspeedupNodesT-min-w8a-epsilon0134-reg0.pdf}
+& 
+\includegraphics[width=0.33\textwidth]{fig/paper-lrnesterovspeedupNodesT-min-linearregressionw8a-epsilon002-reg0.pdf}\\
+(a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
+	\end{tabular}}
+	\vspace{-1em}
+\caption{The linear speedup of FedAvg in full participation, partial participation, and the linear speedup of Nesterov accelerated FedAvg, respectively.
+% \textbf{Linear speedup } The first row reports the linear speedup convergence of FedAvg w.r.t the number of workers. The second row reports the linear speedup convergence of FedAvg w.r.t the number of active workers in the partial parcipation setting. The third row reports the linear speedup convergence of Nesterov accelerated FedAvg in full participation setting. 
+}
+\vspace{-1em}
+\label{fig:speedup}
+\end{figure}
 
 % \begin{figure}
 % \centering

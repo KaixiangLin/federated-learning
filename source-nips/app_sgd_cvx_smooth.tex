@@ -1,0 +1,121 @@
+% !TEX ROOT=./supp-main.tex
+\begin{thm}
+	Under assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} and constant learning
+	rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$, 
+	\begin{align*}
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right)
+	\end{align*}
+	with full participation, and with partial device participation with $K$ sampled devices at
+	each communication round and learning rate $\alpha_{t}=\mathcal{O}(\sqrt{\frac{K}{T}})$,
+	\begin{align*}
+	\min_{t\leq T}F(\overline{\mathbf{w}}_{t})-F(\mathbf{w}^{\ast}) & =\mathcal{O}\left(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right)
+	\end{align*}
+\end{thm}
+
+\begin{proof}
+	We again start by bounding the term
+	\begin{align*}
+	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}\vg_{t})-\vw^{\ast}\|^{2}\\
+	& =\|(\ov{w}_{t}-\alpha_{t}\ov{g}_{t}-\vw^{\ast})-\alpha_{t}(\vg_{t}-\ov{g}_{t})\|^{2}\\
+	& =A_{1}+A_{2}+A_{3}
+	\end{align*}
+	where 
+	\begin{align*}
+	A_{1} & =\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2}\\
+	A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-\vg_{t}\rangle\\
+	A_{3} & =\alpha_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
+	\end{align*}
+	By definition of $\vg_{t}$ and $\ov{g}_{t}$ (see \eq{\ref{eq:gradient}}), we have $\mathbb{E}A_{2}=0$.
+	For $A_{3}$, we have the follow upper bound:
+	\begin{align*}
+	\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|\vg_{t,k}-\mathbb{E}\vg_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	\end{align*}
+	again by Jensen's inequality and using the independence of $\vg_{t,k},\vg_{t,k'}$ \cite[Lemma 2]{li2019convergence}. 
+	
+	Next we bound $A_{1}$: 
+	\begin{align*}
+	\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2} & =\|\ov{w}_{t}-\vw^{\ast}\|^{2}+2\langle\ov{w}_{t}-\vw^{\ast},-\alpha_{t}\ov{g}_{t}\rangle+\|\alpha_{t}\ov{g}_{t}\|^{2}
+	\end{align*}
+	Using the convexity and $L$-smoothness of $F_{k}$, 
+	\begin{align*}
+	& -2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& \leq-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle+2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k}))\\
+	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+F_{k}(\vw^{\ast})-F_{k}(\vw_{t}^{k})\right]\\
+	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]
+	\end{align*}
+	which results in 
+	\begin{align*}
+	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]+\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	\end{align*}
+	
+	The difference of this bound with that in the strongly convex case
+	is that we no longer have a contraction factor in front of $\|\ov{w}_{t}-\vw^{\ast}\|^{2}$.
+	In the strongly convex case, we were able to cancel $\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$
+	with $2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]$
+	and obtain only lower order terms. In the convex case, we use a different
+	strategy and preserve $\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]$
+	in order to obtain a telescoping sum. 
+	
+	We have
+	\begin{align*}
+	\|\ov{g}_{t}\|^{2} & =\|\sum_{k}p_{k}\nabla F_{k}(\vw_{t}^{k})\|^{2}\\
+	& =\|\sum_{k}p_{k}\nabla F_{k}(\vw_{t}^{k})-\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})+\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}\\
+	& \leq2\|\sum_{k}p_{k}\nabla F_{k}(\vw_{t}^{k})-\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}+2\|\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}\\
+	& \leq2L^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}+2\|\sum_{k}p_{k}\nabla F_{k}(\ov{w}_{t})\|^{2}\\
+	& =2L^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}+2\|\nabla F(\ov{w}_{t})\|^{2}
+	\end{align*}
+	using $\nabla F(\vw^{\ast})=0$. Now using the $L$ smoothness of $F$,
+	we have $\|\nabla F(\ov{w}_{t})\|^{2}\leq2L(F(\ov{w}_{t})-F(\vw^{\ast}))$,
+	so that 
+	\begin{align*}
+	& \|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\\
+	& \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
+	& +2\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\vw_{t}^{k}-\ov{w}_{t}\|^{2}+4\alpha_{t}^{2}L(F(\ov{w}_{t})-F(\vw^{\ast}))+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	& =\|\ov{w}_{t}-\vw^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	& +\alpha_{t}(1-4\alpha_{t}L)(F(\vw^{\ast})-F(\ov{w}_{t}))
+	\end{align*}
+	Since $F(\vw^{\ast})\leq F(\ov{w}_{t})$, as long as $4\alpha_{t}L\leq1$,
+	we can ignore the last term, and rearrange the inequality to obtain
+	\begin{align*}
+	& \|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast}))\\
+	& \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+(2\alpha_{t}^{2}L^{2}+\alpha_{t}L)\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	& \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\frac{3}{2}\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	\end{align*}
+	
+	The same argument as before yields $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\leq4E^{2}\alpha_{t}^{2}G^{2}$
+	which gives 
+	\begin{align*}
+	\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+6\alpha_{t}^{3}E^{2}LG^{2}\\
+	& \leq\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6\alpha_{t}^{3}E^{2}LG^{2}
+	\end{align*}
+	Summing the inequalities from $t=0$ to $t=T$, we obtain 
+	\begin{align*}
+	\sum_{t=0}^{T}\alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}
+	\end{align*}
+	so that
+	\begin{align*}
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+	\end{align*}
+	
+	By setting the constant learning rate $\alpha_{t}\equiv\sqrt{\frac{N}{T}}$,
+	we have 
+	
+\begin{align*}
+\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sqrt{NT}}\cdot\|\vw_{0}-\vw^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}6E^{2}LG^{2}\\
+& \leq\frac{1}{\sqrt{NT}}\cdot\|\vw_{0}-\vw^{\ast}\|^{2}+\frac{1}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+\frac{N}{T}6E^{2}LG^{2}\\
+& =(\|\vw_{0}-\vw^{\ast}\|^{2}+\nu_{\max}^{2}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}6E^{2}LG^{2}\\
+& =O(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
+\end{align*}
+	
+	Similarly, for partial participation, we have 
+	\begin{align*}
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+	\end{align*}
+	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$,
+	so that with $\alpha_{t}=\sqrt{\frac{K}{T}}$, we have 
+	\begin{align*}
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
+	\end{align*}
+\end{proof}

@@ -1,13 +1,5 @@
 % !TEX ROOT=./main.tex
-In this section we provide proof of the convergence result for Nesterov accelerated FedAvg with convex and smooth objectives. Unlike with the FedAvg algorithm, where convex and strongly convex results share identical components, the proof for the convergence result in the convex setting for Nesterov FedAvg uses a change of variables, although the general ideas are in the same vein: we have a one step progress bound for $	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast}))$, which is then used to form a telescoping sum that gives an upper bound on $\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast})$.
 
-\begin{lemma} [\textbf{One step progress, convex case, Nesterov}]
-Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in Nesterov accelerated FedAvg, and define $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}$. Under assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2}, the following bound holds for all $t$:
-\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
-	\end{align*}
-	\label{lem:nest-cvxoner}
-\end{lemma}
 
 \begin{thm}
 	Set learning rates $\alpha_{t}=\beta_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} Nesterov accelerated FedAvg with
@@ -23,46 +15,7 @@ Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in Nestero
 \end{thm}
 
 \begin{proof}
-	
-    Applying the bound from Lemma~\ref{lem:nest-cvxoner}, with $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}$ we have
-	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
-	\end{align*}
-	Summing the inequalities from $t=0$ to $t=T$, we obtain 
-	\begin{align*}
-	\sum_{t=0}^{T}\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
-	\end{align*}
-	so that
-	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\eta_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}\right)
-	\end{align*}
-	
-	By setting the constant learning rates $\alpha_{t}\equiv\sqrt{\frac{N}{T}}$
-	and $\beta_{t}\equiv c\sqrt{\frac{N}{T}}$ so that $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}=\frac{\sqrt{\frac{N}{T}}}{1-c\sqrt{\frac{N}{T}}}\leq2\sqrt{\frac{N}{T}}$,
-	we have 
-	
-	\begin{align*}
-	&\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast})\\
-	 & \leq\frac{1}{2\sqrt{NT}}\cdot\|\vw_{0}-\vw^{\ast}\|^{2}+\frac{2}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}32LE^{2}G^{2}+\frac{2}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}G^{2}\\
-	& =(\frac{1}{2}\|\vw_{0}-\vw^{\ast}\|^{2}+2\nu_{\max}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}(32LE^{2}G^{2}+2G^{2})\\
-	& =O(\frac{\nu_{\max}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
-	\end{align*}
-	
-	Similarly, for partial participation, we have 
-	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
-	\end{align*}
-	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$,
-	so that with $\alpha_{t}\equiv\sqrt{\frac{K}{T}}$ and $\beta_{t}\equiv c\sqrt{\frac{K}{T}}$,
-	we have 
-	\begin{align*}
-	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
-	\end{align*}
-\end{proof}
-
-\subsubsection{Deferred proofs of key lemmas}
-\begin{proof}[Proof of lemma~\ref{lem:nest-cvxoner}]
-    Define $\ov{p}_{t}:=\frac{\beta_{t}}{1-\beta_{t}}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha_{t}\vg_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\ov{v}_{t}-\ov{v}_{t-1})$
+	Define $\ov{p}_{t}:=\frac{\beta_{t}}{1-\beta_{t}}\left[\ov{w}_{t}-\ov{w}_{t-1}+\alpha_{t}\vg_{t-1}\right]=\frac{\beta_{t}^{2}}{1-\beta_{t}}(\ov{v}_{t}-\ov{v}_{t-1})$
 	for $t\geq1$ and 0 for $t=0$. We can check that 
 	\begin{align*}
 	\ov{w}_{t+1}+\ov{p}_{t+1} & =\ov{w}_{t}+\ov{p}_{t}-\frac{\alpha_{t}}{1-\beta_{t}}\vg_{t}
@@ -134,5 +87,35 @@ Let $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in Nestero
 	Thus 
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+32LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2}+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	\end{align*}
+	Summing the inequalities from $t=0$ to $t=T$, we obtain 
+	\begin{align*}
+	\sum_{t=0}^{T}\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) & \leq\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}
+	\end{align*}
+	so that
+	\begin{align*}
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\eta_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\eta_{t}^{2}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\sum_{t=0}^{T}\eta_{t}\alpha_{t}^{2}\cdot32LE^{2}G^{2}+\sum_{t=0}^{T}2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}\right)
+	\end{align*}
+	
+	By setting the constant learning rates $\alpha_{t}\equiv\sqrt{\frac{N}{T}}$
+	and $\beta_{t}\equiv c\sqrt{\frac{N}{T}}$ so that $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}=\frac{\sqrt{\frac{N}{T}}}{1-c\sqrt{\frac{N}{T}}}\leq2\sqrt{\frac{N}{T}}$,
+	we have 
+	
+	\begin{align*}
+	&\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast})\\
+	 & \leq\frac{1}{2\sqrt{NT}}\cdot\|\vw_{0}-\vw^{\ast}\|^{2}+\frac{2}{\sqrt{NT}}T\cdot\frac{N}{T}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+\frac{1}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}32LE^{2}G^{2}+\frac{2}{\sqrt{NT}}T(\sqrt{\frac{N}{T}})^{3}G^{2}\\
+	& =(\frac{1}{2}\|\vw_{0}-\vw^{\ast}\|^{2}+2\nu_{\max}\sigma^{2})\frac{1}{\sqrt{NT}}+\frac{N}{T}(32LE^{2}G^{2}+2G^{2})\\
+	& =O(\frac{\nu_{\max}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T})
+	\end{align*}
+	
+	Similarly, for partial participation, we have 
+	\begin{align*}
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & \leq\frac{1}{\sum_{t=0}^{T}\alpha_{t}}\left(\|\vw_{0}-\vw^{\ast}\|^{2}+\sum_{t=0}^{T}\alpha_{t}^{2}\cdot(\frac{1}{N}\nu_{\max}\sigma^{2}+C)+\sum_{t=0}^{T}\alpha_{t}^{3}\cdot6E^{2}LG^{2}\right)
+	\end{align*}
+	where $C=\frac{4}{K}E^{2}G^{2}$ or $\frac{N-K}{N-1}\frac{4}{K}E^{2}G^{2}$,
+	so that with $\alpha_{t}\equiv\sqrt{\frac{K}{T}}$ and $\beta_{t}\equiv c\sqrt{\frac{K}{T}}$,
+	we have 
+	\begin{align*}
+	\min_{t\leq T}F(\ov{w}_{t})-F(\vw^{\ast}) & =\mathcal{O}(\frac{\nu_{\max}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T})
 	\end{align*}
 \end{proof}

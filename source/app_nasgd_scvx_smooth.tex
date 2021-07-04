@@ -1,7 +1,35 @@
+Recall that the Nesterov accelerated FedAvg follows the updates 
+\begin{align*}
+\mathbf{v}_{t+1}^{k} & =\mathbf{w}_{t}^{k}-\alpha_{t}\mathbf{g}_{t,k}, \hspace{1em}
+\mathbf{w}_{t+1}^{k} =\begin{cases}
+\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E},\\
+\sum_{k \in \cS_{t+1}}q_k\left[\mathbf{v}_{t+1}^{k}+\beta_{t}(\mathbf{v}_{t+1}^{k}-\mathbf{v}_{t}^{k})\right] & \text{if }t+1\in\mathcal{I}_{E}.
+\end{cases}
+\end{align*}
 
+The proofs of convergence results for Nesterov Accelerated FedAvg consists of components that are direct analogues of the FedAvg case. We first state these analogue results before proving the main theorem. Like before, the proofs of the lemmas are deferred to after the main proof. 
+
+\begin{lemma}[\textbf{One step progress, Nesterov}] Let $\overline{\mathbf{v}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{t}^{k}$ in Nesterov accelerated FedAvg,
+and suppose our functions satisfy Assumptions~\ref{ass:lsmooth},\ref{ass:stroncvx},\ref{ass:boundedvariance},\ref{ass:subgrad2}, and set step sizes $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$,  $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$
+	with $\gamma=\max\{32\kappa,E\}$ and $\kappa=\frac{L}{\mu}$, the updates of Nesterov accelerated FedAvg satisfy
+\begin{align*}
+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
+& +\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|
+\end{align*}
+\label{lem:nest-scvxoner}
+\end{lemma}
+
+The one step progress result makes use of the same bound on the gradient variance in~Lemma~\ref{lem:bgv}, as well as a divergence bound analogous to Lemma~\ref{lem:bdw}, which we state below.
+\begin{lemma}[\textbf{Bounding the divergence of $\vw_t^k$, Nesterov}]
+Given Assumption~\ref{ass:subgrad2}, and assume that $\alpha_t$ is non-increasing, $\alpha_t \leq 2\alpha_{t+E}$, and $2\beta_{t-1}^{2}+2\alpha_{t}^{2}\leq1/2$ for all $t\geq 0$, $\overline{\mathbf{w}}_{t}=\sum_{k=1}^{N}p_{k}\mathbf{w}_{t}^{k}$ in Nesterov accelerated FedAvg satisfies
+	\begin{align*}
+	\mathbb{E}\left[\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \right]\leq16(E-1)^{2}\alpha_{t}^{2}G^{2}.
+	\end{align*}
+\label{lem:nest-bdw}
+\end{lemma}
 
 \begin{thm}
-	Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$
+	Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$ in Nesterov accelerated FedAvg
 	and set learning rates $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$,  $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:stroncvx},\ref{ass:boundedvariance},\ref{ass:subgrad2} with full device participation, 
 	\begin{align*}
 	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa\nu_{\max}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right),
@@ -34,68 +62,96 @@ required for convergence may increase with \$N\$.
 \end{comment}
 
 \begin{proof}
-Define the virtual sequences $\ov{v}_{t}=\sum_{k=1}^{N}p_{k}\vv_{t}^{k}$,
-$\ov{w}_{t}=\sum_{k=1}^{N}p_{k}w_{t}^{k}$, and $\ov{g}_{t}=\sum_{k=1}^{N}p_{k}\mathbb{E}\vg_{t,k}$.
-We have $\mathbb{E}\vg_{t}=\ov{g}_{t}$ and $\ov{v}_{t+1}=\ov{w}_{t}-\alpha_{t}\vg_{t}$,
-and $\ov{w}_{t+1}=\ov{v}_{t+1}$ for all $t$. The proof
-again uses the $L$-smoothness of $F$ to bound 
+We first prove the result for full participation. Applying the one step progress bound in Lemma~\ref{lem:nest-scvxoner}, we have
 \begin{align*}
-\mathbb{E}(F(\ov{v}_{t}))-F^{\ast} & =\mathbb{E}(F(\ov{v}_{t})-F(\vw^{\ast}))\\
-& \leq\frac{L}{2}\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2}
+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
+& +\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|
 \end{align*}
-Our main step is to prove the bound
+Recall that we require $\alpha_{t_{0}}\leq2\alpha_{t}$ for any
+$t-t_{0}\leq E-1$, $L\alpha_{t}\leq\frac{1}{5}$, and $2\beta_{t-1}^{2}+2\alpha_{t}^{2}\leq1/2$ in order for Lemmas~\ref{lem:nest-bdw} and~\ref{lem:nest-scvxoner} to hold,
+which we can check by definition of $\alpha_{t}$ and
+$\beta_{t}$.\\
+ We show next that $\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2}=\mathcal{O}(\frac{\nu_{max}^{2}\sigma^{2}/\mu}{tN}+\frac{E^{2}LG^{2}/\mu^2}{t^{2}})$ 
+by induction. Assume that we have shown 
 \begin{align*}
-\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+20E^{2}L\alpha_{t}^{3}G^{2}
+\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2} & \leq b(C\alpha_{t}^{2}+D\alpha_{t})
 \end{align*}
- for appropriate step sizes $\alpha_{t},\beta_{t}$.
-
-We have 
+for all iterations until $t$, where $C=20E^{2}LG^{2}$, $D=\frac{1}{N}\nu_{max}^{2}\sigma^{2}$,
+and $b$ is some constant to be chosen later. For step sizes recall that we choose $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$
+and $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$
+where $\gamma=\max\{32\kappa,E\}$, so that $\beta_{t-1}\leq\alpha_{t}$
+and 
 \begin{align*}
-\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}\vg_{t})-\vw^{\ast}\|^{2}\\
-& =\|(\ov{w}_{t}-\alpha_{t}\ov{g}_{t}-\vw^{\ast})-\alpha_{t}(\vg_{t}-\ov{g}_{t})\|^{2}\\
-& =A_{1}+A_{2}+A_{3}
-\end{align*}
-where 
-\begin{align*}
-A_{1} & =\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2}\\
-A_{2} & =2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t},\ov{g}_{t}-\vg_{t}\rangle\\
-A_{3} & =\alpha_{t}^{2}\|\vg_{t}-\ov{g}_{t}\|^{2}
-\end{align*}
-By definition of $\vg_{t}$ and $\ov{g}_{t}$ (see \eq{\ref{eq:gradient}}), we have $\mathbb{E}A_{2}=0$.
-For $A_{3}$, we have the follow upper bound:
-\begin{align*}
-\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\ov{g}_{t}\|^{2} & =\alpha_{t}^{2}\mathbb{E}\|\vg_{t}-\mathbb{E}\vg_{t}\|^{2}=\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\|\vg_{t,k}-\mathbb{E}\vg_{t,k}\|^{2}\leq\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
-\end{align*}
-again by Jensen's inequality and using the independence of $\vg_{t,k},\vg_{t,k'}$ \cite[Lemma 2]{li2019convergence}. 
-
-Next we bound $A_{1}$: 
-\begin{align*}
-\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2} & =\|\ov{w}_{t}-\vw^{\ast}\|^{2}+2\langle\ov{w}_{t}-\vw^{\ast},-\alpha_{t}\ov{g}_{t}\rangle+\|\alpha_{t}\ov{g}_{t}\|^{2}
-\end{align*}
-Same as the SGD case, 
-\begin{align*}
--2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle+\|\alpha_{t}\ov{g}_{t}\|^{2} & \leq\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}\mu\|\ov{w}_{t}-\vw^{\ast}\|^{2}
-\end{align*}
-so that 
-\begin{align*}
-\|\ov{w}_{t}-\vw^{\ast}-\alpha_{t}\ov{g}_{t}\|^{2} & \leq(1-\alpha_{t}\mu)\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}
+(1-\mu\alpha_{t})(1+14\beta_{t-1}) & \leq(1-\frac{6}{t+\gamma})(1+\frac{3}{(t+\gamma)(1-\frac{6}{t+\gamma})})\\
+& =1-\frac{6}{t+\gamma}+\frac{3}{t+\gamma}=1-\frac{3}{t+\gamma}=1-\frac{\mu\alpha_{t}}{2}
 \end{align*}
 
-Different from the SGD case, we have 
+Moreover, $\mathbb{E}\|\ov{v}_{t-1}-\vw^{\ast}\|^{2}\leq b(C\alpha_{t-1}^{2}+D\alpha_{t-1})\leq 4b(C\alpha_{t}^{2}+D\alpha_{t})$
+with the chosen step sizes.
+Therefore the bound for $\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}$
+can be further simplified with 
 \begin{align*}
-\|\ov{w}_{t}-\vw^{\ast}\|^{2} & =\|\ov{v}_{t}+\beta_{t-1}(\ov{v}_{t}-\ov{v}_{t-1})-\vw^{\ast}\|^{2}\\
-& =\|(1+\beta_{t-1})(\ov{v}_{t}-\vw^{\ast})-\beta_{t-1}(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
-& =(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}-2\beta_{t-1}(1+\beta_{t-1})\langle\ov{v}_{t}-\vw^{\ast},\ov{v}_{t-1}-\vw^{\ast}\rangle+\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
-& \leq(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+2\beta_{t-1}(1+\beta_{t-1})\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|+\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}
+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\| & \leq4\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\cdot b(C\alpha_{t}^{2}+D\alpha_{t})
 \end{align*}
-which gives 
+and 
 \begin{align*}
-\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+2(1-\alpha_{t}\mu)\beta_{t-1}(1+\beta_{t-1})\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-& +\beta_{t-1}^{2}(1-\alpha_{t}\mu)\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}LG^{2}
+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\mathbb{E}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2} & \leq4(1-\alpha_{t}\mu)\beta_{t-1}^{2}\cdot b(C\alpha_{t}^{2}+D\alpha_{t})
 \end{align*}
-and we will using this recursive relation to obtain the desired bound. 
+so that
+\begin{align*}
+\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})((1+\beta_{t-1})^{2}+4\beta_{t-1}(1+\beta_{t-1})+4\beta_{t-1}^{2})\cdot b(C\alpha_{t}^{2}+D\alpha_{t})\\
+& +20E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}\\
+& \leq\mathbb{E}(1-\mu\alpha_{t})(1+14\beta_{t-1})\cdot b(C\alpha_{t}^{2}+D\alpha_{t})+20E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}\\
+& \leq b(1-\frac{\mu\alpha_{t}}{2})(C\alpha_{t}^{2}+D\alpha_{t})+C\alpha_{t}^{3}+D\alpha_{t}^{2}\\
+& =(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t}^{2}C+(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t}D
+\end{align*}
+and so it remains to choose $b$ such that 
+\begin{align*}
+(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t} & \leq b\alpha_{t+1}\\
+(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t}^{2} & \leq b\alpha_{t+1}^{2}
+\end{align*}
+from which we can conclude $\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}\leq\alpha_{t+1}^{2}C+\alpha_{t+1}D$.
 
-First we bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$.
+With $b=\frac{6}{\mu}$, we have
+\begin{align*}
+(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t} & =(b(1-(\frac{3}{t+\gamma})+\frac{6}{\mu(t+\gamma)})\frac{6}{\mu(t+\gamma)}\\
+& =(b\frac{t+\gamma-3}{t+\gamma}+\frac{6}{\mu(t+\gamma)})\frac{6}{\mu(t+\gamma)}\\
+& \leq b(\frac{t+\gamma-1}{t+\gamma})\frac{6}{\mu(t+\gamma)}\\
+& \leq b\frac{6}{\mu(t+\gamma+1)}=b\alpha_{t+1}
+\end{align*}
+where we have used $\frac{t+\gamma-1}{(t+\gamma)^{2}}\leq\frac{1}{t+\gamma+1}$.
+
+Similarly 
+\begin{align*}
+(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t}^{2} & =(b(1-(\frac{3}{t+\gamma})+\frac{6}{\mu(t+\gamma)})(\frac{6}{\mu(t+\gamma)})^{2}\\
+& =(b\frac{t+\gamma-3}{t+\gamma}+\frac{6}{\mu(t+\gamma)})(\frac{6}{\mu(t+\gamma)})^{2}\\
+& =b(\frac{t+\gamma-2}{t+\gamma})(\frac{6}{\mu(t+\gamma)})^{2}\\
+& \leq b\frac{36}{\mu^{2}(t+\gamma+1)^{2}}=b\alpha_{t+1}^{2}
+\end{align*}
+where we have used $\frac{t+\gamma-2}{(t+\gamma)^{3}}\leq\frac{1}{(t+\gamma+1)^{2}}$.
+
+Finally, to ensure $\|\vv_{0}-\vw^{\ast}\|^{2}\leq b(C\alpha_{0}^{2}+D\alpha_{0})$,
+we can rescale $b$ by $c\|\vv_{0}-\vw^{\ast}\|^{2}$ for some $c.$ It
+follows that $\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2}\leq b(C\alpha_{t}^{2}+D\alpha_{t})$
+for all $t\geq0$. Using the $L$-smooothness of $F$,
+\begin{align*}
+\mathbb{E}(F(\ov{v}_{T}))-F^{\ast} & =\mathbb{E}(F(\ov{v}_{T})-F(\vw^{\ast}))\\
+& \leq\frac{L}{2}\mathbb{E}\|\ov{v}_{T}-\vw^{\ast}\|^{2}\leq\frac{L}{2}c\|\vv_{0}-\vw^{\ast}\|^{2}\frac{6}{\mu}(D\alpha_{T}+C\alpha_{T}^{2})\\
+& =3c\|\vv_{0}-\vw^{\ast}\|^{2}\kappa(D\alpha_{T}+C\alpha_{T}^{2})\\
+& \leq3c\|\vv_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{6}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+20E^{2}LG^{2}\cdot(\frac{6}{\mu(T+\gamma)})^{2}\right]\\
+& =\mathcal{O}(\frac{\kappa}{\mu}\frac{1}{N}\nu_{\max}\sigma^{2}\cdot\frac{1}{T}+\frac{\kappa^{2}}{\mu}E^{2}G^{2}\cdot\frac{1}{T^{2}})
+\end{align*}
+
+With partial participation, the same argument with an added term for sampling error yields
+\begin{align*}
+\mathbb{E}F(\ov{w}_{T})-F^{\ast}=\mathcal{O}(\frac{\kappa\nu_{\max}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
+\end{align*}
+\end{proof}
+
+\subsubsection{Deferred proofs of key lemmas}
+
+\begin{proof}[Proof of lemma~\ref{lem:nest-bdw}]
+	The proof of bound for $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$ in the Nesterov accelerated FedAvg follows a similar logic as in Lemma~\ref{lem:bdw}, but requires extra reasoning.  
 Since communication is done every $E$ steps, for any $t\geq0$, we
 can find a $t_{0}\leq t$ such that $t-t_{0}\leq E-1$ and $w_{t_{0}}^{k}=\ov{w}_{t_{0}}$for
 all $k$. Moreover, using $\alpha_{t}$ is non-increasing, $\alpha_{t_{0}}\leq2\alpha{}_{t}$,
@@ -132,97 +188,41 @@ we can guarantee that $\mathbb{E}\|\vv_{t}^{k}-\vv_{t-1}^{k}\|^{2}\leq G^{2}$
 for all $k$ by induction. This together with Jensen's inequality
 also gives $\mathbb{E}\|\ov{v}_{t}-\ov{v}_{t-1}\|^{2}\leq G^{2}$
 for all $t$. 
+\end{proof}
 
-Using the bound on $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$,
-we can conclude that, with $\nu_{\max}:=N\cdot\max_{k}p_{k}$,
+Now we are ready to prove the one step progress result for Nesterov accelerated FedAvg. The first part of the proof is identical to that of the FedAvg case, while the main recursion takes a different form.
+\begin{proof}[Proof of lemma~\ref{lem:nest-scvxoner}]
+We again have 
+\begin{align*}
+\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & =\|(\ov{w}_{t}-\alpha_{t}\vg_{t})-\vw^{\ast}\|^{2}
+\end{align*}
+and using exactly the same derivation as the FedAvg case, we can obtain the following bound (same as \eq{\ref{eq:common recursion}} in the proof of Lemma~\ref{lem:scvxoner}):
+\begin{align*}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+	& +\alpha_{t}^{2}L^{2}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
+	\end{align*}
 
+Different from the FedAvg case, we no longer have $\ov{w}_{t}=\ov{v}_{t}$. Instead,
+\begin{align*}
+\|\ov{w}_{t}-\vw^{\ast}\|^{2} & =\|\ov{v}_{t}+\beta_{t-1}(\ov{v}_{t}-\ov{v}_{t-1})-\vw^{\ast}\|^{2}\\
+& =\|(1+\beta_{t-1})(\ov{v}_{t}-\vw^{\ast})-\beta_{t-1}(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
+& =(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}-2\beta_{t-1}(1+\beta_{t-1})\langle\ov{v}_{t}-\vw^{\ast},\ov{v}_{t-1}-\vw^{\ast}\rangle+\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
+& \leq(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+2\beta_{t-1}(1+\beta_{t-1})\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|+\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}
+\end{align*}
+which gives a recursion involving both $\ov{v}_{t}$ and $\ov{v}_{t-1}$:
+\begin{align*}
+\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\alpha_{t}\mu)(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+2(1-\alpha_{t}\mu)\beta_{t-1}(1+\beta_{t-1})\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
+& +\beta_{t-1}^{2}(1-\alpha_{t}\mu)\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}LG^{2}
+\end{align*}
+and we will using this recursive relation to obtain the desired bound. 
+
+We can check that our choice of $\alpha_t$ and $\beta_t$ satisfy $\alpha_t$ is non-increasing, $\alpha_t \leq 2\alpha_{t+E}$, and $2\beta_{t-1}^{2}+2\alpha_{t}^{2}\leq1/2$ for all $t\geq 0$, so that we can apply the bound from Lemma~\ref{lem:nest-bdw} on $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}$ to conclude that, with $\nu_{\max}:=N\cdot\max_{k}p_{k}$,
 \begin{align*}
 \mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+16E^{2}L\alpha_{t}^{3}G^{2}+16E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{3}LG^{2}\\
 & +(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2} +\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|\\
 & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
 & +\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|
 \end{align*}
-where $\sigma^{2}=\sum_{k}p_{k}\sigma_{k}^{2}$, and $\alpha_{t}$
-satisfies $L\alpha_{t}\leq\frac{1}{5}$. We show next that $\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2}=O(\frac{1}{tN}+\frac{E^{2}}{t^{2}})$
-by induction.
-
-Assume that we have shown 
-\begin{align*}
-\mathbb{E}\|\ov{y}_{t}-\vw^{\ast}\|^{2} & \leq b(C\alpha_{t}^{2}+D\alpha_{t})
-\end{align*}
-for all iterations until $t$, where $C=20E^{2}LG^{2}$, $D=\frac{1}{N}\nu_{max}^{2}\sigma^{2}$,
-and $b$ is to be chosen later. For step sizes we choose $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$
-and $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$
-where $\gamma=\max\{32\kappa,E\}$, so that $\beta_{t-1}\leq\alpha_{t}$
-and 
-\begin{align*}
-(1-\mu\alpha_{t})(1+14\beta_{t-1}) & \leq(1-\frac{6}{t+\gamma})(1+\frac{3}{(t+\gamma)(1-\frac{6}{t+\gamma})})\\
-& =1-\frac{6}{t+\gamma}+\frac{3}{t+\gamma}=1-\frac{3}{t+\gamma}=1-\frac{\mu\alpha_{t}}{2}
-\end{align*}
-Recall that we also require $\alpha_{t_{0}}\leq2\alpha_{t}$ for any
-$t-t_{0}\leq E-1$, $L\alpha_{t}\leq\frac{1}{5}$, and $2\beta_{t-1}^{2}+2\alpha_{t}^{2}\leq1/2$,
-which we can also check to hold by definition of $\alpha_{t}$ and
-$\beta_{t}$.
-
-Moreover, $\mathbb{E}\|\ov{y}_{t}-\vw^{\ast}\|^{2}\leq b(C\alpha_{t}^{2}+D\alpha_{t})$
-with the chosen step sizes also implies $\|\ov{v}_{t-1}-\vw^{\ast}\|\leq2\|\ov{v}_{t}-\vw^{\ast}\|$.
-Therefore the bound for $\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}$
-can be further simplified with 
-\begin{align*}
-2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\| & \leq4\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|^{2}
-\end{align*}
-and 
-\begin{align*}
-(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2} & \leq4(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t}-\vw^{\ast})\|^{2}
-\end{align*}
-so that
-\begin{align*}
-\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})((1+\beta_{t-1})^{2}+4\beta_{t-1}(1+\beta_{t-1})+4\beta_{t-1}^{2})\mathbb{E}\|(\ov{v}_{t}-\vw^{\ast})\|^{2}\\
-& +20E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}\\
-& \leq\mathbb{E}(1-\mu\alpha_{t})(1+14\beta_{t-1})\|(\ov{v}_{t}-\vw^{\ast})\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}\\
-& \leq b(1-\frac{\mu\alpha_{t}}{2})(C\alpha_{t}^{2}+D\alpha_{t})+C\alpha_{t}^{3}+D\alpha_{t}^{2}\\
-& =(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t}^{2}C+(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t}D
-\end{align*}
-and so it remains to choose $b$ such that 
-\begin{align*}
-(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t} & \leq b\alpha_{t+1}\\
-(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t}^{2} & \leq b\alpha_{t+1}^{2}
-\end{align*}
-from which we can conclude $\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2}\leq\alpha_{t+1}^{2}C+\alpha_{t+1}D$.
-
-With $b=\frac{6}{\mu}$, we have
-\begin{align*}
-(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t} & =(b(1-(\frac{3}{t+\gamma})+\frac{6}{\mu(t+\gamma)})\frac{6}{\mu(t+\gamma)}\\
-& =(b\frac{t+\gamma-3}{t+\gamma}+\frac{6}{\mu(t+\gamma)})\frac{6}{\mu(t+\gamma)}\\
-& \leq b(\frac{t+\gamma-1}{t+\gamma})\frac{6}{\mu(t+\gamma)}\\
-& \leq b\frac{6}{\mu(t+\gamma+1)}=b\alpha_{t+1}
-\end{align*}
-where we have used $\frac{t+\gamma-1}{(t+\gamma)^{2}}\leq\frac{1}{t+\gamma+1}$.
-
-Similarly 
-\begin{align*}
-(b(1-\frac{\mu\alpha_{t}}{2})+\alpha_{t})\alpha_{t}^{2} & =(b(1-(\frac{3}{t+\gamma})+\frac{6}{\mu(t+\gamma)})(\frac{6}{\mu(t+\gamma)})^{2}\\
-& =(b\frac{t+\gamma-3}{t+\gamma}+\frac{6}{\mu(t+\gamma)})(\frac{6}{\mu(t+\gamma)})^{2}\\
-& =b(\frac{t+\gamma-2}{t+\gamma})(\frac{6}{\mu(t+\gamma)})^{2}\\
-& \leq b\frac{36}{\mu^{2}(t+\gamma+1)^{2}}=b\alpha_{t+1}^{2}
-\end{align*}
-where we have used $\frac{t+\gamma-2}{(t+\gamma)^{3}}\leq\frac{1}{(t+\gamma+1)^{2}}$.
-
-Finally, to ensure $\|\vv_{0}-\vw^{\ast}\|^{2}\leq b(C\alpha_{0}^{2}+D\alpha_{0})$,
-we can rescale $b$ by $c\|\vv_{0}-\vw^{\ast}\|^{2}$ for some $c.$ It
-follows that $\mathbb{E}\|\ov{v}_{t}-\vw^{\ast}\|^{2}\leq b(C\alpha_{t}^{2}+D\alpha_{t})$
-for all $t$. Thus 
-
-\begin{align*}
-\mathbb{E}(F(\ov{w}_{T}))-F^{\ast} & =\mathbb{E}(F(\ov{w}_{T})-F(\vw^{\ast}))\\
-& \leq\frac{L}{2}\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}\leq\frac{L}{2}c\|\vw_{0}-\vw^{\ast}\|^{2}\frac{6}{\mu}(D\alpha_{T}+C\alpha_{T}^{2})\\
-& =3c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa(D\alpha_{T}+C\alpha_{T}^{2})\\
-& \leq3c\|\vw_{0}-\vw^{\ast}\|^{2}\kappa\left[\frac{6}{\mu(T+\gamma)}\cdot\frac{1}{N}\nu_{\max}\sigma^{2}+20E^{2}LG^{2}\cdot(\frac{6}{\mu(T+\gamma)})^{2}\right]\\
-& =O(\frac{\kappa}{\mu}\frac{1}{N}\nu_{\max}\sigma^{2}\cdot\frac{1}{T}+\frac{\kappa^{2}}{\mu}E^{2}G^{2}\cdot\frac{1}{T^{2}})
-\end{align*}
-
-With partial participation, the same argument in the SGD case yields
-\begin{align*}
-\mathbb{E}F(\ov{w}_{T})-F^{\ast}=O(\frac{\kappa\nu_{\max}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}})
-\end{align*}
+where we have used $\sigma^{2}=\sum_{k}p_{k}\sigma_{k}^{2}$, and by construction our $\alpha_{t}$
+satisfies $L\alpha_{t}\leq\frac{1}{5}$.
 \end{proof}

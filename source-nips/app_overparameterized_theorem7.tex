@@ -1,4 +1,4 @@
-% !TEX ROOT=./main.tex
+% !TEX ROOT=./supp-main.tex
 
 \subsection{Geometric Convergence of FedMaSS for Overparameterized Linear Regression}
 
@@ -38,18 +38,15 @@ has geometric convergence:
 	
 	We first prove the theorem with $E=2$ and $t-1$ being a communication
 	round. We have 
-	{\small
 	\begin{align*}
 	& \|\overline{\mathbf{v}}_{t+1}-\mathbf{w}^{\ast}\|_{\vH^{-1}}^{2}\\
-	=&\|(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\delta\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\vu_{t}^{k}-\vw^{\ast})-\vw^{\ast}\|_{\vH^{-1}}^{2}\\
-	=&\|(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\vu_{t}^{k}-\vw^{\ast})\|_{\vH^{-1}}^{2}\\
+	& =\|(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\delta\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\vu_{t}^{k}-\vw^{\ast})-\vw^{\ast}\|_{\vH^{-1}}^{2}\\
+	& =\|(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\vu_{t}^{k}-\vw^{\ast})\|_{\vH^{-1}}^{2}\\
 	& -2\delta\langle\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\vu_{t}^{k}-\vw^{\ast}),(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\rangle_{\vH^{-1}}\\
-	\leq&\underset{A}{\underbrace{\|(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}}}+\underset{B}{\underbrace{2\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vw^{\ast})\|_{\vH^{-1}}^{2}}}\\
-	&+2\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2}\\
+	& \leq\underset{A}{\underbrace{\|(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}}}+\underset{B}{\underbrace{2\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vw^{\ast})\|_{\vH^{-1}}^{2}}}+2\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2}\\
 	& \underset{C}{\underbrace{-2\delta\langle\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vw^{\ast}),(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\rangle_{\vH^{-1}}}}\\
 	& -2\delta\langle\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\vu_{t}^{k}-\ov{u}_{t}),(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\rangle_{\vH^{-1}}
 	\end{align*}
-	}%
 	Following the proof in~\cite{liu2018accelerating}, 
 	\begin{align*}
 	\mathbb{E}A & \leq\mathbb{E}(1-\alpha)\|\ov{v}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\alpha\|\ov{u}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}\\
@@ -64,17 +61,13 @@ has geometric convergence:
 	\end{align*}
 	using the folowing bound: 
 	\begin{align*}
-	&\mathbb{E}\left(\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\right)\vH^{-1}\left(\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\right) \\
- =&\mathbb{E}\sum_{k}p_{k}^{2}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\sum_{k\neq j}p_{k}p_{j}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{j}\\
-\preceq &\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\sum_{k\neq j}p_{k}p_{j}\vH^{k}\vH^{-1}\vH^{j}\\
-=&\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\sum_{k,j}p_{k}p_{j}\vH^{k}\vH^{-1}\vH^{j}\\
-&-\sum_{k}p_{k}^{2}\vH^{k}\vH^{-1}\vH^{k}\\
-	\preceq &\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}\\
-	&+\vH-\frac{1}{N}\nu_{\min}\sum_{k}p_{k}\vH^{k}\vH^{-1}\vH^{k}\\
-	\preceq &\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\vH\\
-	&-\frac{1}{N}\nu_{\min}(\sum_{k}p_{k}\vH^{k})\vH^{-1}(\sum_{k}p_{k}\vH^{k})\\
-	=&\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\frac{N-\nu_{\min}}{N}\vH\\
-	\preceq &\nu_{\max}\frac{1}{N}\tilde{\kappa}\vH+\frac{N-\nu_{\min}}{N}\vH
+	\mathbb{E}\left(\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\right)\vH^{-1}\left(\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\right) & =\mathbb{E}\sum_{k}p_{k}^{2}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\sum_{k\neq j}p_{k}p_{j}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{j}\\
+	& \preceq\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\sum_{k\neq j}p_{k}p_{j}\vH^{k}\vH^{-1}\vH^{j}\\
+	& =\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\sum_{k,j}p_{k}p_{j}\vH^{k}\vH^{-1}\vH^{j}-\sum_{k}p_{k}^{2}\vH^{k}\vH^{-1}\vH^{k}\\
+	& \preceq\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\vH-\frac{1}{N}\nu_{\min}\sum_{k}p_{k}\vH^{k}\vH^{-1}\vH^{k}\\
+	& \preceq\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\vH-\frac{1}{N}\nu_{\min}(\sum_{k}p_{k}\vH^{k})\vH^{-1}(\sum_{k}p_{k}\vH^{k})\\
+	& =\nu_{\max}\frac{1}{N}\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}+\frac{N-\nu_{\min}}{N}\vH\\
+	& \preceq\nu_{\max}\frac{1}{N}\tilde{\kappa}\vH+\frac{N-\nu_{\min}}{N}\vH
 	\end{align*}
 	where we have used $\mathbb{E}\sum_{k}p_{k}\tilde{\vH}_{t}^{k}\vH^{-1}\tilde{\vH}_{t}^{k}\leq\tilde{\kappa}\vH$
 	by definition of $\tilde{\kappa}$ and the operator convexity of the
@@ -86,8 +79,7 @@ has geometric convergence:
 	& =-2\delta\langle\sum_{k}p_{k}\vH^{k}(\ov{u}_{t}-\vw^{\ast}),(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\rangle_{\vH^{-1}}\\
 	& =-2\delta\langle(\ov{u}_{t}-\vw^{\ast}),(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\rangle\\
 	& =-2\delta\langle(\ov{u}_{t}-\vw^{\ast}),\ov{u}_{t}-\vw^{\ast}+\frac{1-\alpha}{\alpha}(\ov{u}_{t}-\ov{w}_{t})\rangle\\
-	& =-2\delta\|\ov{u}_{t}-\vw^{\ast}\|^{2}\\
-	&+\frac{1-\alpha}{\alpha}\delta(\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\|\ov{u}_{t}-\vw^{\ast}\|^{2}-\|\ov{w}_{t}-\ov{u}_{t}\|^{2})\\
+	& =-2\delta\|\ov{u}_{t}-\vw^{\ast}\|^{2}+\frac{1-\alpha}{\alpha}\delta(\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\|\ov{u}_{t}-\vw^{\ast}\|^{2}-\|\ov{w}_{t}-\ov{u}_{t}\|^{2})\\
 	& \leq\frac{1-\alpha}{\alpha}\delta\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\frac{1-\alpha}{\alpha}\delta\|\ov{u}_{t}-\vw^{\ast}\|^{2}
 	\end{align*}
 	where we have used 
@@ -101,20 +93,17 @@ has geometric convergence:
 	It follows that 
 	\begin{align*}
 	& \mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|_{\vH^{-1}}^{2}\\
-	\leq &(1-\alpha)\|\ov{v}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\frac{1-\alpha}{\alpha}\delta\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
-	& +(\frac{\alpha}{\mu}-\frac{1-\alpha}{\alpha}\delta)\|\ov{u}_{t}-\vw^{\ast}\|^{2}\\
-	&+2\delta^{2}(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})\|(\ov{u}_{t}-\vw^{\ast})\|_{H}^{2}\\
+	& \leq(1-\alpha)\|\ov{v}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\frac{1-\alpha}{\alpha}\delta\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
+	& +(\frac{\alpha}{\mu}-\frac{1-\alpha}{\alpha}\delta)\|\ov{u}_{t}-\vw^{\ast}\|^{2}+2\delta^{2}(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})\|(\ov{u}_{t}-\vw^{\ast})\|_{H}^{2}\\
 	& +2\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2}\\
 	& -2\delta\langle\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\vu_{t}^{k}-\ov{u}_{t}),(1-\alpha)\ov{v}_{t}+\alpha\ov{u}_{t}-\vw^{\ast}\rangle_{\vH^{-1}}
 	\end{align*}
 	
 	On the other hand, 
 	\begin{align*}
-	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} \\
-	=&\mathbb{E}\|\ov{u}_{t}-\vw^{\ast}-\eta\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vw^{\ast})\|^{2}\\
-	=&\mathbb{E}\|\ov{u}_{t}-\vw^{\ast}\|^{2}-2\eta\|\ov{u}_{t}-\vw^{\ast}\|_{H}^{2}+\eta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vw^{\ast})\|^{2}\\
-	\leq&	\mathbb{E}\|\ov{u}_{t}-\vw^{\ast}\|^{2}-2\eta\|\ov{u}_{t}-\vw^{\ast}\|_{H}^{2}\\
-	&+\eta^{2}(\nu_{\max}\frac{1}{N}\ell+L\frac{N-\nu_{\min}}{N})\|\ov{u}_{t}-\vw^{\ast}\|^{2}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & =\mathbb{E}\|\ov{u}_{t}-\vw^{\ast}-\eta\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vw^{\ast})\|^{2}\\
+	& =\mathbb{E}\|\ov{u}_{t}-\vw^{\ast}\|^{2}-2\eta\|\ov{u}_{t}-\vw^{\ast}\|_{H}^{2}+\eta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vw^{\ast})\|^{2}\\
+	& \leq\mathbb{E}\|\ov{u}_{t}-\vw^{\ast}\|^{2}-2\eta\|\ov{u}_{t}-\vw^{\ast}\|_{H}^{2}+\eta^{2}(\nu_{\max}\frac{1}{N}\ell+L\frac{N-\nu_{\min}}{N})\|\ov{u}_{t}-\vw^{\ast}\|^{2}
 	\end{align*}
 	where we use the following bound: 
 	\begin{align*}
@@ -135,35 +124,27 @@ has geometric convergence:
 	and $\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|_{\vH^{-1}}^{2}$, 
 	\begin{align*}
 	& \mathbb{E}\frac{\delta}{\alpha}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\|\ov{v}_{t+1}-\vw^{\ast}\|_{\vH^{-1}}^{2}\\
-	\leq&(1-\alpha)\|\ov{v}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\frac{1-\alpha}{\alpha}\delta\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
-	&+(\frac{\alpha}{\mu}-\delta)\|\ov{u}_{t}-\vw^{\ast}\|^{2} +\left(2\delta^{2}(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})\right.\\
-	&\left.-2\eta\delta/\alpha+\eta^{2}\delta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})/\alpha\right)\|\ov{u}_{t}-\vw^{\ast}\|^{2}\\
+	& \leq(1-\alpha)\|\ov{v}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\frac{1-\alpha}{\alpha}\delta\|\ov{w}_{t}-\vw^{\ast}\|^{2}+(\frac{\alpha}{\mu}-\delta)\|\ov{u}_{t}-\vw^{\ast}\|^{2}\\
+	& +(2\delta^{2}(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})-2\eta\delta/\alpha+\eta^{2}\delta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})/\alpha)\|\ov{u}_{t}-\vw^{\ast}\|^{2}\\
 	& +2\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2}\\
 	& +\delta L\sum_{k}p_{k}\|(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2}
 	\end{align*}
 	
 	Following~\cite{liu2018accelerating} if we choose step sizes so that 
-	{\small
 	\begin{align*}
-	&\frac{\alpha}{\mu}-\delta \leq0\\
-	&2\delta^{2}(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})-2\eta\delta/\alpha\\
-	&+\eta^{2}\delta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})/\alpha \leq0
+	\frac{\alpha}{\mu}-\delta & \leq0\\
+	2\delta^{2}(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})-2\eta\delta/\alpha+\eta^{2}\delta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})/\alpha & \leq0
 	\end{align*}
-	}%
 	or equivalently 
-	{\small
 	\begin{align*}
-	&\alpha/\delta \leq\mu\\
-	&2\alpha\delta(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})+\eta(\eta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})-2) \leq0
+	\alpha/\delta & \leq\mu\\
+	2\alpha\delta(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})+\eta(\eta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})-2) & \leq0
 	\end{align*}
-	}%
 	the second and third terms are negative. To optimize the step sizes,
 	note that the two inequalities imply 
-	{\small
 	\begin{align*}
 	\alpha^{2} & \leq\eta(2-\eta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N}))\mu/2(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})
 	\end{align*}
-	}%
 	and maximizing the right hand side with respect to $\eta$, which
 	is quadratic, we see that $\eta\equiv1/(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})$
 	maximizes the right hand side, with 
@@ -176,22 +157,19 @@ has geometric convergence:
 	when $N=O(\min\{\tilde{\kappa},\kappa_{1}/\kappa\})$. Finally, to
 	deal with the terms $2\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2}+\delta L\sum_{k}p_{k}\|(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2}$,
 	we can use Jensen
-	{\scriptsize
 	\begin{align*}
 	&2\delta^{2}\|\sum_{k}p_{k}\tilde{\vH}_{t}^{k}(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2}+\delta L\sum_{k}p_{k}\|(\ov{u}_{t}-\vu_{t}^{k})\|_{\vH^{-1}}^{2} \\
-   \leq & (2\delta^{2}l^{2}+\delta L)\sum_{k}p_{k}\|\ov{u}_{t}-\vu_{t}^{k}\|_{\vH^{-1}}^{2}\\
-	= &(2\delta^{2}l^{2}+\delta L)\sum_{k}p_{k}\|\frac{\alpha}{1+\alpha}\ov{v}_{t}+\frac{1}{1+\alpha}\ov{w}_{t}-(\frac{\alpha}{1+\alpha}v_{t}^{k}+\frac{1}{1+\alpha}w_{t}^{k})\|_{\vH^{-1}}^{2}\\
-	\leq &(2\delta^{2}l^{2}+\delta L)(2(\frac{\alpha}{1+\alpha})^{2}\delta^{2}+2(\frac{1}{1+\alpha})^{2}\eta^{2})\sum_{k}p_{k}\|\tilde{\vH}_{t-1}^{k}(\ov{u}_{t-1}-\vw^{\ast})\|^{2}\\
-	\leq &(2\delta^{2}l^{2}+\delta L)(2(\frac{\alpha}{1+\alpha})^{2}\delta^{2}+2(\frac{1}{1+\alpha})^{2}\eta^{2})l^{2}\|(\ov{u}_{t-1}-\vw^{\ast})\|^{2}
+	& \leq(2\delta^{2}l^{2}+\delta L)\sum_{k}p_{k}\|\ov{u}_{t}-\vu_{t}^{k}\|_{\vH^{-1}}^{2}\\
+	& =(2\delta^{2}l^{2}+\delta L)\sum_{k}p_{k}\|\frac{\alpha}{1+\alpha}\ov{v}_{t}+\frac{1}{1+\alpha}\ov{w}_{t}-(\frac{\alpha}{1+\alpha}v_{t}^{k}+\frac{1}{1+\alpha}w_{t}^{k})\|_{\vH^{-1}}^{2}\\
+	& \leq(2\delta^{2}l^{2}+\delta L)(2(\frac{\alpha}{1+\alpha})^{2}\delta^{2}+2(\frac{1}{1+\alpha})^{2}\eta^{2})\sum_{k}p_{k}\|\tilde{\vH}_{t-1}^{k}(\ov{u}_{t-1}-\vw^{\ast})\|^{2}\\
+	& \leq(2\delta^{2}l^{2}+\delta L)(2(\frac{\alpha}{1+\alpha})^{2}\delta^{2}+2(\frac{1}{1+\alpha})^{2}\eta^{2})l^{2}\|(\ov{u}_{t-1}-\vw^{\ast})\|^{2}
 	\end{align*}
-	}
 	which can be combined with the terms with $\|(\ov{u}_{t-1}-\vw^{\ast})\|^{2}$
 	in the recursive expansion of $\mathbb{E}\frac{\delta}{\alpha}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\|\ov{v}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}$:
 	\begin{align*}
 	& \mathbb{E}\frac{\delta}{\alpha}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\|\ov{v}_{t}-\vw^{\ast}\|_{\vH^{-1}}^{2}\\
-	\leq &(1-\alpha)\|\ov{v}_{t-1}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\frac{1-\alpha}{\alpha}\delta\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}\\
-	&+(\frac{\alpha}{\mu}-\delta)\|\ov{u}_{t-1}-\vw^{\ast}\|^{2}+(2\delta^{2}(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})\\
-	&-2\eta\delta/\alpha+\eta^{2}\delta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})/\alpha)\|\ov{u}_{t-1}-\vw^{\ast}\|^{2}
+	& \leq(1-\alpha)\|\ov{v}_{t-1}-\vw^{\ast}\|_{\vH^{-1}}^{2}+\frac{1-\alpha}{\alpha}\delta\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}+(\frac{\alpha}{\mu}-\delta)\|\ov{u}_{t-1}-\vw^{\ast}\|^{2}\\
+	& +(2\delta^{2}(\nu_{\max}\frac{1}{N}\tilde{\kappa}+\frac{N-\nu_{\min}}{N})-2\eta\delta/\alpha+\eta^{2}\delta(\nu_{\max}\frac{1}{N}l+L\frac{N-\nu_{\min}}{N})/\alpha)\|\ov{u}_{t-1}-\vw^{\ast}\|^{2}
 	\end{align*}
 	and the step sizes can be chosen so that the resulting coefficients
 	are negative. Therefore, we have shown that 

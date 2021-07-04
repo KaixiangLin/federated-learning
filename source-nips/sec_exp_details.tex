@@ -4,7 +4,7 @@
 % \subsection{Experiments}
 \label{sec:expsupp}
 
-We describe the precise procedure to reproduce the results in this paper.
+We described the precise procedure to reproduce the results in this paper.
 As we mentioned in Section~\ref{sec:exp}, we empirically verified the
 linear speed up on various convex settings for both FedAvg and its
 accelerated variants. For all the results, we set random seeds as $0, 1, 2$
@@ -68,7 +68,7 @@ terms of gradient computation. However, it can save communication costs as
 the number of rounds decreased when the $E$ increases. This showcase that
 we need a proper choice of $E$ to trade-off the communication cost and
 convergence speed. 
-\begin{figure*}
+\begin{figure}
 \centering
 	\begin{tabular}{ccc}
 	\hspace{-2em} \includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupEpochsT-min-w8a-epsilon0131-reg1e-05.pdf} &
@@ -81,5 +81,5 @@ convergence speed.
 	\end{tabular}
 \caption{The convergence of FedAvg w.r.t the number of local steps $E$. }
 \label{fig:e}
-\end{figure*}
+\end{figure}
 

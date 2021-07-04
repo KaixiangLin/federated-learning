@@ -1,0 +1,113 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+\usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+    % \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+     % \usepackage[nonatbib]{neurips_2020}
+\usepackage{slashbox,multirow}
+% \usepackage{tikz}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amsthm}     % for theorems
+\usepackage{algorithm,algorithmic}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\allowdisplaybreaks
+\usepackage{amssymb}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\usepackage{balance}
+\usepackage{comment}
+\newcommand{\eq}[1]{{Eq~(#1)}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{thm}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\lkxcom}[1]{{\color{red}{#1}}}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\def\lowcomma{_{\textstyle{,}}}
+\def\lowperiod{_{\textstyle.}}
+
+\newcommand{\ov}[1]{{\overline{\mathbf{#1}}}}
+\input{bmacros}
+\newtheorem*{assumption*}{Assumption}
+
+\title{Federated Learning's Blessing:\\
+FedAvg has Linear Speedup}
+\author{%
+  Zhaonan Qu\thanks{Equal contribution} \\
+ Stanford University\\
+  \texttt{zhaonanq@stanford.edu} \\
+  \And
+  Kaixiang Lin$^*$ \\
+  Michigan State University \\
+  \texttt{linkaixi@msu.edu} \\
+  \And
+  Zhaojian Li \\
+  Michigan State University \\
+  \texttt{lizhaoj1@egr.msu.edu} \\
+  \And
+  Jiayu Zhou\\
+  Michigan State University \\
+  \texttt{jiayuz@msu.edu} \\
+  \And
+  Zhengyuan Zhou\\
+  New York University \\
+  \texttt{zzhou@stern.nyu.edu} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Federated learning (FL) learns a model jointly from a set of participating devices without sharing each other's privately held data. The characteristics of non-\textit{iid} data across the network, low device participation, and the mandate that data remain private bring challenges in understanding the convergence of FL algorithms, particularly in regards to how convergence scales with the number of participating devices. In this paper, we focus on Federated Averaging (FedAvg)--the most widely used and effective FL algorithm in use today--and provide a comprehensive study of its convergence rate. Although FedAvg has recently been studied by an emerging line of literature, it remains open as to how FedAvg's convergence scales with the number of participating devices in the FL setting--a crucial question whose answer would shed light on the performance of FedAvg in large FL systems. We fill this gap by establishing convergence guarantees for FedAvg under three classes of problems: strongly convex smooth, convex smooth, and overparameterized strongly convex smooth problems. We show that FedAvg enjoys linear speedup in each case, although with different convergence rates. For each class, we also characterize the corresponding convergence rates for the Nesterov accelerated FedAvg algorithm in the FL setting: to the best of our knowledge, these are the first linear speedup guarantees for FedAvg when Nesterov acceleration is used. To accelerate FedAvg, we also design a new momentum-based FL algorithm that further improves the convergence rate in overparameterized linear regression problems. Empirical studies of the algorithms in various settings have supported our theoretical results.
+\end{abstract}
+
+% (and its related variant local SGD also analyzed in the simpler homogeneous distributed optimization setting)
+\input{sec_intro}
+%\input{sec_relatedwork}
+\input{sec_problem}
+\input{sec_SGD}
+\input{sec_Nesterov}
+\input{sec_overparameterized}
+\input{sec_exp}
+
+% \input{sec_conclude}
+
+
+% \newpage
+\input{sec_impact}
+\bibliographystyle{unsrt}
+\bibliography{ref.bib}
+
+\newpage
+\appendix
+\input{sec_appendix}
+\end{document}
+
+
+
+\iffalse
+
+\endif
