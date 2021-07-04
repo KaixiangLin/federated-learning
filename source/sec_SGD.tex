@@ -32,12 +32,53 @@ to guarantee $\mathcal{O}(1/KT)$ convergence.
 	\end{align*}
 	and with partial device participation with at most $K$ sampled devices
 	at each communication round, 
-	\begin{align*}{\small
-	\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right).}
-	\end{align*}
+	{\small \begin{align*}
+	\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right).
+	\end{align*}}
 	\label{th:scvx_sgd}
 \end{theorem}
-\textbf{Proof sketch.} Because our unified analyses of results in the main text follow the same framework with variations in technical details, we first give an outline of proof  for Theorem~\ref{th:scvx_sgd} to illustrate the main ideas. For full participation, the main ingredient is a recursive contraction bound 
+Because our unified analyses of results in the main text follow the same framework with variations in technical details, we first give an outline of proof  for Theorem~\ref{th:scvx_sgd} to illustrate the main ideas. 
+
+To facilitate the understanding of our analysis and highlight the improvement of our work comparing to prior arts, we summarize the general steps 
+used in the proofs across the various settings. In this section,
+we take the strongly convex case as an example to illustrate our analysis. The corresponding proof for general convex functions follows the 
+same framework.  
+
+\textbf{One step progress bound} \\ 
+This step establishes the progress of distance ($\|\ov{w}_{t}-\vw^{\ast}\|^{2}$) to optimal solution after one step of the FedAvg algorithm, as the following equation shows:
+\begin{align*}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq \cO(\eta_t\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2} + \alpha_t^2 \sigma^2/N + \alpha_t^3E^2G^2).
+\end{align*}
+% \lkxcom{explain variance here and the improvement?}
+The above bound consists of three main ingredients, the distance to optima
+in previous step (with $\eta_t \in (0, 1)$ to obtained a contraction bound), 
+the variance of stochastic gradients in local clients (second term), the variance
+across different clients (third term). 
+Notice that the third term in this bound is the primary source of improvement in the rate.  Comparing to the bound in~\cite{li2019convergence}, we improve 
+the third term from $\cO(\alpha_t^2E^2G^2)$ to $\cO(\alpha_t^2E^2G^2)$, which enables the linear speedup in the convergence rate.
+
+
+\textbf{Iterative deduction}\\
+This step uses the \textit{one step progress bound} iteratively to 
+connect the the current distance to optimal solution with the initial distance ($\|\ov{w}_{0}-\vw^{\ast}\|^{2}$), as follows:
+\begin{align*}
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq \cO(\mathbb{E}\|\ov{w}_{0}-\vw^{\ast}\|^{2} \frac{1}{T}).
+\end{align*}
+% \lkxcom{distinguish the difference between strongly convex and general convex?}
+Then we can use the distance to optima to upper bound the optimality gap ($F(\vw_t) - F^* \leq \cO(1/T)$), as follows:
+\begin{align*}
+	\mathbb{E}(F(\ov{w}_{t}))-F^{\ast} & \leq\cO(\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}). 
+\end{align*}
+The convergence rate of the optimality gap is equally obtained as the convergence rate of the distance to optima.
+
+\textbf{From full participation to partial participation}\\
+There are three sources of variances that affect the convergence rate.
+The first two sources come from the variances of within local clients and
+across clients (second and third term in one step progress bound). 
+The partial participation, which involves a sampling procedure, is the third
+source of variance. Therefore, comparing to the rate in full participation, this will add another term of variance into the convergence rate, where we follow a similar derivation as in~\cite{li2019convergence}.
+
+For full participation, the main ingredient is a recursive contraction bound 
 	\begin{align*}
 	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} &  \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
 	& +\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6\alpha_{t}^{3}LE^{2}G^{2}
