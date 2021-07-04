@@ -288,18 +288,17 @@ proof improves on the previous work~\cite{li2019convergence} and is the first to
 	For the term $2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]$, which is negative, we can ignore it, but this
 	yields a suboptimal bound that fails to provide the desired linear
 	speedup. Instead, we upper bound it using the following derivation:
-	{\small
+	{
 	\begin{align*}
 	& 2\alpha_{t}\sum_{k=1}^{N}p_{k}\left[F_{k}(\vw^{\ast})-F_{k}(\ov{w}_{t})\right]\\
 	\leq& 2\alpha_{t}\left[F(\ov{w}_{t+1})-F(\ov{w}_{t})\right]\\
 	\leq& 2\alpha_{t}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\ov{w}_{t+1}-\ov{w}_{t}\rangle+\alpha_{t}L\mathbb{E}\|\ov{w}_{t+1}-\ov{w}_{t}\|^{2}\\
 	=&-2\alpha_{t}^{2}\mathbb{E}\langle\nabla F(\ov{w}_{t}),\ov{g}_{t}\rangle+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
 	=&-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\|\nabla F(\ov{w}_{t})-\ov{g}_t\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
-	\leq&-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-\sum_{k}p_{k}\|\nabla F(\ov{w}_{t})-\nabla F(\vw_{t}^{k})\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
 	\leq&-\alpha_{t}^{2}\left[\|\nabla F(\ov{w}_{t})\|^{2}+\|\ov{g}_{t}\|^{2}-L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\right]+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}\\
 	\leq&-\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}+\alpha_{t}^{2}L^{2}\sum_{k}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2}
 	\end{align*}}
-	where we have used the smoothness of $F$ twice. 
+	where we have used that $\ov{g}_t = \sum_k p_k \nabla F(\vw_{t}^{k})$ and the smoothness of $F$ twice.
 	
 	Note that the term $-\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$ exactly
 	cancels the $\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$ in the bound in \eq{\ref{eq:common one step}}, so that plugging in the bound for $-2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle$,
