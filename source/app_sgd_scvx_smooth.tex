@@ -303,10 +303,12 @@ proof improves on the previous work~\cite{li2019convergence} and is the first to
 	Note that the term $-\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$ exactly
 	cancels the $\alpha_{t}^{2}\|\ov{g}_{t}\|^{2}$ in the bound in \eq{\ref{eq:common one step}}, so that plugging in the bound for $-2\alpha_{t}\langle\ov{w}_{t}-\vw^{\ast},\ov{g}_{t}\rangle$,
 	we have so far proved 
+	{\small
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}\\
-	& +\alpha_{t}^{2}L^{2}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2} \numberthis \label{eq:common recursion}
-	\end{align*}
+	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}  \leq\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}\\
+	&+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}
+	+\alpha_{t}^{2}L^{2}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+\alpha_{t}^{3}L\mathbb{E}\|\vg_{t}\|^{2}-\alpha_{t}^{2}\|\nabla F(\ov{w}_{t})\|^{2} \numberthis \label{eq:common recursion}
+	\end{align*}}
 	Under Assumption~\ref{ass:subgrad2}, we have $\mathbb{E}\|\vg_{t}\|^{2}\leq G^{2}$. Furthermore, we can check that our choice of $\alpha_t$ satisfies $\alpha_t$ is non-increasing and $\alpha_t \leq 2\alpha_{t+E}$, so we may plug in the bound $\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \leq 4E^{2}\alpha_{t}^{2}G^{2}$ to the above inequality (see Lemma~\ref{lem:bdw}).
 	
 	\begin{comment}
@@ -340,10 +342,12 @@ proof improves on the previous work~\cite{li2019convergence} and is the first to
 	\end{comment}
 	Therefore, we can conclude that, with $\nu_{max}:=N\cdot\max_{k}p_{k}$ and $\nu_{min}:=N\cdot\min_{k}p_{k}$, 
 	\begin{align*}
-	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\\
-	\leq& \mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
-	= &\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\sum_{k=1}^{N}(p_{k}N)^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
-	\leq &\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\nu_{max}^{2}\sum_{k=1}^{N}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}
+	\leq \mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
+	+&4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}+\alpha_{t}^{2}\sum_{k=1}^{N}p_{k}^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
+	 =& \mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+4E^{2}L\alpha_{t}^{3}G^{2}+4E^{2}L^{2}\alpha_{t}^{4}G^{2}\\
+	+& \alpha_{t}^{2}\frac{1}{N^{2}}\sum_{k=1}^{N}(p_{k}N)^{2}\sigma_{k}^{2}+\alpha_{t}^{3}LG^{2}\\
+	\leq &\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N^{2}}\nu_{max}^{2}\sum_{k=1}^{N}\sigma_{k}^{2}\\
 	\leq &\mathbb{E}(1-\mu\alpha_{t})\|\ov{w}_{t}-\vw^{\ast}\|^{2}+6E^{2}L\alpha_{t}^{3}G^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}
 	\end{align*}
 	where in the last inequality we use $\sigma^2=\sum_{k=1}^{N}p_k\sigma_{k}^{2}$, and that by construction $\alpha_{t}$
