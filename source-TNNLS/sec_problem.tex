@@ -90,12 +90,18 @@ We make the following standard assumptions on the objective function $F_1,\dots,
 
  %Assumption~\ref{ass:lsmooth} is made to achieve linear speedup of convergence rate with respect to the number of workers, though it is not necessary for FedAvg and its variants to convergence.
 
-\begin{assumption}[$L$-smooth]
-	$F_{1}, \cdots, F_{N}$ are all $L$-smooth: for all  $\mathbf{v}$  and $\mathbf{w}$, $F_{k}(\mathbf{v}) \leq F_{k}(\mathbf{w})+(\mathbf{v}- \\ \mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{L}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$.
+\begin{assumption}[$L$-smoothness]
+	$F_{1}, \cdots, F_{N}$ are all $L$-smooth: for all  $\mathbf{v}$  and $\mathbf{w}$, 
+	\begin{equation}
+	  F_{k}(\mathbf{v}) \leq F_{k}(\mathbf{w})+(\mathbf{v}-  \mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{L}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}.
+	\end{equation}
 	\label{ass:lsmooth}
 \end{assumption}
-\begin{assumption}[Strongly-convex]
-	$	F_{1}, \cdots, F_{N} \text { are all } \mu \text { -strongly convex: for all v and } \mathbf{w}, F_{k}(\mathbf{v}) \geq F_{k}(\mathbf{w})+(\mathbf{v}-\mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{\mu}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}$
+\begin{assumption}[Strong convexity]
+	$F_{1}, \cdots, F_{N}$ are all $\mu$-strongly convex: for all $v$ and  $\mathbf{w}$,
+	\begin{equation}
+	   F_{k}(\mathbf{v}) \geq F_{k}(\mathbf{w})+(\mathbf{v}-\mathbf{w})^{T} \nabla F_{k}(\mathbf{w})+\frac{\mu}{2}\|\mathbf{v}-\mathbf{w}\|_{2}^{2}.
+	\end{equation}
 	\label{ass:stroncvx}
 \end{assumption}
 \begin{assumption}[Bounded local variance]
