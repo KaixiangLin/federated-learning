@@ -344,23 +344,26 @@ of $\vH$.
 A useful observation is that we can use $\mathbf{w}^{\ast T}\mathbf{x}_{k}^{j}-\vz_{k}^{j}\equiv0$
 to rewrite the local objectives as $F_{k}(\mathbf{w})=\frac{1}{2}\langle\mathbf{w}-\mathbf{w}^{\ast},\vH^{k}(\mathbf{w}-\mathbf{w}^{\ast})\rangle\equiv\frac{1}{2}\|\mathbf{w}-\mathbf{w}^{\ast}\|_{\vH^{k}}^{2}$:
 \begin{align*}
-F_{k}(\vw) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\vw^{T}\vx_{k,j}-\vz_{k,j}-(\vw^{\ast T}\vx_{k,j}-\vz_{k,j}))^{2}=\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((\vw-\vw^{\ast})^{T}\vx_{k,j})^{2}\\
+F_{k}(\vw) & =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}(\vw^{T}\vx_{k,j}-\vz_{k,j}-(\vw^{\ast T}\vx_{k,j}-\vz_{k,j}))^{2}\\
+& =\frac{1}{2n_{k}}\sum_{j=1}^{n_{k}}((\vw-\vw^{\ast})^{T}\vx_{k,j})^{2}\\
 & =\frac{1}{2}\langle \vw-\vw^{\ast},\vH^{k}(\vw-\vw^{\ast})\rangle=\frac{1}{2}\|\vw-\vw^{\ast}\|_{\vH^{k}}^{2}
 \end{align*}
 
 so that $F(\mathbf{w})=\frac{1}{2}\|\mathbf{w}-\mathbf{w}^{\ast}\|_{H}^{2}$.
 
 Finally, note that $\mathbb{E}\tilde{\vH}_{t}^{k}=\frac{1}{n_{k}}\sum_{j=1}^{n_{k}}\mathbf{x}_{k}^{j}(\mathbf{x}_{k}^{j})^{T}=\vH^{k}$
-and $\mathbf{g}_{t,k}=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\tilde{\vH}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$
-while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$ and $\overline{\mathbf{g}}_{t}=\sum_{k=1}^{N}p_{k}\vH^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$ 
+and $\mathbf{g}_{t,k}=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\tilde{\vH}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$,
+while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})=\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$ and $\overline{\mathbf{g}}_{t}=\sum_{k=1}^{N}p_{k}\vH^{k}(\mathbf{w}_{t}^{k}-\mathbf{w}^{\ast})$.
 \\
 	\begin{thm}
 		For the overparamterized linear regression problem, FedAvg with communication every $E$
 		iterations with constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})})$
 		has geometric convergence:
+		{\small  
 		\begin{align*}
 		\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\mathcal{O}\left(L\exp(-\frac{NT}{E(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 		\end{align*}
+		}%
 	\end{thm}
 	% 
 \begin{proof}
@@ -373,13 +376,15 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	and 
 	\begin{align*}
 	& -2\alpha_{t}\mathbb{E}_{t}\langle\ov{w}_{t}-\vw^{\ast},\vg_{t}\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\vH^{k}(\vw_{t}^{k}-\vw^{\ast})\rangle\\
-	& =-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle-4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
-	& \leq2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2})-4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
-	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t})-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
-	& =\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})
+	=&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	=& -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle  -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	=&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle\\
+	& -2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle \vw_{t}^{k}-\vw^{\ast},\vH^{k}(\vw_{t}^{k}-\vw^{\ast})\rangle\\
+	=&-2\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw_{t}^{k},\nabla F_{k}(\vw_{t}^{k})\rangle -4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
+	\leq & 2\alpha_{t}\sum_{k=1}^{N}p_{k}(F_{k}(\vw_{t}^{k})-F_{k}(\ov{w}_{t})+\frac{L}{2}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}) -4\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
+	=&\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\ov{w}_{t})-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})\\
+	=&\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle\\
+	& -2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})
 	\end{align*}
 	and 
 	\begin{align*}
@@ -389,13 +394,17 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	\end{align*}
 	which gives 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\vH^{k}\ov{w}_{t}-\vw^{\ast}\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
-	& +\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\vw_{t}^{k}-\ov{w}_{t})\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} \\
+	\leq &\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle\ov{w}_{t}-\vw^{\ast},\vH^{k}\ov{w}_{t}-\vw^{\ast}\rangle \\ 
+	& +2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \\
+	& +2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\vw_{t}^{k}-\ov{w}_{t})\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})
 	\end{align*}
 	following~\cite{ma2017power} we first prove that 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
-	\leq(1-\frac{N}{8(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}
+	& \mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle
+	\\
+	&+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
+	\leq&(1-\frac{N}{8(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}
 	\end{align*}
 	with appropriately chosen $\alpha_{t}$. Compared to the rate $O(\frac{\mu N}{l\nu_{\max}+L(N-\nu_{\min})})=O(\frac{N}{\nu_{\max}\kappa_{1}+(N-\nu_{\min})\kappa})$
 	for general strongly convex and smooth objectives, this is an improvement
@@ -404,22 +413,31 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	We have 
 	\begin{align*}
 	& \mathbb{E}_{t}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
-	& =\mathbb{E}_{t}\langle\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast}),\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\rangle\\
-	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast}),\tilde{\vH}_{t}^{j}(\ov{w}_{t}-\vw^{\ast})\rangle\\
-	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle \vH^{k}(\ov{w}_{t}-\vw^{\ast}),\vH^{j}(\ov{w}_{t}-\vw^{\ast})\rangle\\
-	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}+\sum_{k=1}^{N}\sum_{j=1}^{N}p_{j}p_{k}\mathbb{E}_{t}\langle \vH^{k}(\ov{w}_{t}-\vw^{\ast}),\vH^{j}(\ov{w}_{t}-\vw^{\ast})\rangle-\sum_{k=1}^{N}p_{k}^{2}\|\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
-	& =\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}+\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}-\sum_{k=1}^{N}p_{k}^{2}\|\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
-	& \leq\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}+\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}-\frac{1}{N}\nu_{\min}\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
-	& \leq\frac{1}{N}\nu_{\max}\sum_{k=1}^{N}p_{k}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}+(1-\frac{1}{N}\nu_{\min})\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
-	& \leq\frac{1}{N}\nu_{\max}l\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle+(1-\frac{1}{N}\nu_{\min})\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
-	& =\frac{1}{N}\nu_{\max}l\langle(\ov{w}_{t}-\vw^{\ast}),\vH(\ov{w}_{t}-\vw^{\ast})\rangle+(1-\frac{1}{N}\nu_{\min})\langle\ov{w}_{t}-\vw^{\ast},\vH^{2}(\ov{w}_{t}-\vw^{\ast})\rangle
+	=&\mathbb{E}_{t}\langle\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast}),\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\rangle\\
+	=&\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\ 
+	&+\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast}),\tilde{\vH}_{t}^{j}(\ov{w}_{t}-\vw^{\ast})\rangle\\
+	=&\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2} \\
+	& +\sum_{k=1}^{N}\sum_{j\neq k}p_{j}p_{k}\mathbb{E}_{t}\langle \vH^{k}(\ov{w}_{t}-\vw^{\ast}),\vH^{j}(\ov{w}_{t}-\vw^{\ast})\rangle\\
+	=&\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}-\sum_{k=1}^{N}p_{k}^{2}\|\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2} \\
+	& +\sum_{k=1}^{N}\sum_{j=1}^{N}p_{j}p_{k}\mathbb{E}_{t}\langle \vH^{k}(\ov{w}_{t}-\vw^{\ast}),\vH^{j}(\ov{w}_{t}-\vw^{\ast})\rangle\\
+	=&\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}+\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
+	&-\sum_{k=1}^{N}p_{k}^{2}\|\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
+	\leq&\sum_{k=1}^{N}p_{k}^{2}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}+\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
+	&-\frac{1}{N}\nu_{\min}\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
+	\leq&\frac{1}{N}\nu_{\max}\sum_{k=1}^{N}p_{k}\mathbb{E}_{t}\|\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
+	& +(1-\frac{1}{N}\nu_{\min})\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
+	\leq&\frac{1}{N}\nu_{\max}l\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle\\
+	& +(1-\frac{1}{N}\nu_{\min})\|\sum_{k}p_{k}\vH^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
+	=&\frac{1}{N}\nu_{\max}l\langle(\ov{w}_{t}-\vw^{\ast}),\vH(\ov{w}_{t}-\vw^{\ast})\rangle\\
+	&+(1-\frac{1}{N}\nu_{\min})\langle\ov{w}_{t}-\vw^{\ast},\vH^{2}(\ov{w}_{t}-\vw^{\ast})\rangle
 	\end{align*}
 	using $\|\tilde{\vH}_{t}^{k}\|\leq l$. 
 	
 	Now we have 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2} & =\\
-	\langle\ov{w}_{t}-\vw^{\ast},(I-\alpha_{t}\vH+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\vH+\frac{N-\nu_{\min}}{N}\vH^{2}))(\ov{w}_{t}-\vw^{\ast})\rangle
+	& \mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}-\alpha_{t}\sum_{k=1}^{N}p_{k}\langle(\ov{w}_{t}-\vw^{\ast}),\vH^{k}(\ov{w}_{t}-\vw^{\ast})\rangle\\
+	&+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2} \\
+	= &\langle\ov{w}_{t}-\vw^{\ast},(I-\alpha_{t}\vH+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\vH+\frac{N-\nu_{\min}}{N}\vH^{2}))(\ov{w}_{t}-\vw^{\ast})\rangle
 	\end{align*}
 	and it remains to bound the maximum eigenvalue of 
 	\begin{align*}
@@ -434,9 +452,10 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	maximized over the non-zero eigenvalues $\lambda$ of $\vH$. To select
 	the step size $\alpha_{t}$ that gives the smallest upper bound, we
 	then minimize over $\alpha_{t}$, resulting in 
+	{\tiny
 	\begin{align*}
 	\min_{\alpha_{t}<\frac{N}{2(\nu_{\max}l+(N-\nu_{\min})L)}}\max_{\lambda>0:\exists v,\vH v=\lambda v}\left\{ 1-\alpha_{t}\lambda+2\alpha_{t}^{2}(\frac{\nu_{\max}l}{N}\lambda+\frac{N-\nu_{\min}}{N}\lambda^{2})\right\} 
-	\end{align*}
+	\end{align*}}%
 	Since the objective is quadratic in $\lambda$, the maximum is achieved
 	at either the largest eigenvalue $\lambda_{\max}$ of $\vH$ or the
 	smallest non-zero eigenvalue $\lambda_{\min}$ of $\vH$. 
@@ -454,8 +473,10 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	
 	Now we have proved 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
-	& +\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\vw_{t}^{k}-\ov{w}_{t})\|^{2}-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})
+	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}  \\
+	\leq &(1-\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}\\
+	&+\alpha_{t}L\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2}+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\vw_{t}^{k} -\ov{w}_{t})\|^{2}\\
+	&-2\alpha_{t}\sum_{k=1}^{N}p_{k}F_{k}(\vw_{t}^{k})
 	\end{align*}
 	Next we bound terms in the second line using a similar argument as
 	the general case. We have 
@@ -464,7 +485,8 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	\end{align*}
 	and 
 	\begin{align*}
-	\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} & \leq\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})\\
+	 &\mathbb{E}\sum_{k=1}^{N}p_{k}\|\ov{w}_{t}-\vw_{t}^{k}\|^{2} \\
+	\leq&\mathbb{E}2(1+2l^{2}\alpha_{t-1}^{2})\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+8\alpha_{t-1}^{2}lF(\ov{w}_{t-1})\\
 	& =4\alpha_{t-1}^{2}l\langle\ov{w}_{t-1}-\vw^{\ast},\vH(\ov{w}_{t-1}-\vw^{\ast})\rangle
 	\end{align*}
 	and if $\alpha_{t},\alpha_{t-1}$ satisfy 
@@ -476,21 +498,28 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	we have 
 	\begin{align*}
 	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}\\
-	& \leq(1-\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})[\mathbb{E}\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}-\alpha_{t}\langle\ov{w}_{t-1}-\vw^{\ast},\vH\ov{w}_{t-1}-\vw^{\ast}\rangle+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
-	& +(\alpha_{t-1}L+2\alpha_{t-1}^{2})\cdot2\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}+4\alpha_{t-1}^{2}l\langle\ov{w}_{t-1}-\vw^{\ast},\vH(\ov{w}_{t-1}-\vw^{\ast})\rangle]
+	\leq&(1-\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\left[\mathbb{E}\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}\right.\\
+	&-\alpha_{t}\langle\ov{w}_{t-1}-\vw^{\ast},\vH\ov{w}_{t-1}-\vw^{\ast}\rangle\\
+	&+2\alpha_{t}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t}^{k}(\ov{w}_{t}-\vw^{\ast})\|^{2}\\
+	& +(\alpha_{t-1}L+2\alpha_{t-1}^{2})\cdot2\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-1}-\vw_{t-1}^{k}\|^{2}\\
+	& \left.+4\alpha_{t-1}^{2}l\langle\ov{w}_{t-1}-\vw^{\ast},\vH(\ov{w}_{t-1}-\vw^{\ast})\rangle\right]
 	\end{align*}
 	and again by choosing $\alpha_{t-1}=c\frac{N}{8(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})}$
 	for a small constant $c$, we can guarantee that 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}-\alpha_{t-1}\langle\ov{w}_{t-1}-\vw^{\ast},\vH\ov{w}_{t-1}-\vw^{\ast}\rangle\\
-	+2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t-1}^{k}(\ov{w}_{t-1}-\vw^{\ast})\|^{2}+4\alpha_{t-1}^{2}l\langle\ov{w}_{t-1}-\vw^{\ast},\vH(\ov{w}_{t-1}-\vw^{\ast})\rangle\\
-	\leq(1-c\frac{N}{16(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})})\mathbb{E}\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}
+	&\mathbb{E}\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}-\alpha_{t-1}\langle\ov{w}_{t-1}-\vw^{\ast},\vH\ov{w}_{t-1}-\vw^{\ast}\rangle\\
+	&+2\alpha_{t-1}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t-1}^{k}(\ov{w}_{t-1}-\vw^{\ast})\|^{2}\\
+	&+4\alpha_{t-1}^{2}l\langle\ov{w}_{t-1}-\vw^{\ast},\vH(\ov{w}_{t-1}-\vw^{\ast})\rangle\\
+	\leq&(1-c\frac{N}{16(\nu_{\max}l+(N-\nu_{\min})\lambda_{\min})})\mathbb{E}\|\ov{w}_{t-1}-\vw^{\ast}\|^{2}
 	\end{align*}
 	
 	For general $E$, we have the recursive relation
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-c\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\cdots(1-c\frac{1}{8\tau}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})[\|\ov{w}_{t-\tau}-\vw^{\ast}\|^{2}\\
-	& -\alpha_{t-\tau}\langle\ov{w}_{t-\tau}-\vw^{\ast},\vH\ov{w}_{t-\tau}-\vw^{\ast}\rangle+2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t-\tau}^{k}(\ov{w}_{t-\tau}-\vw^{\ast})\|^{2}\\
+	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} \\
+	\leq& \mathbb{E}(1-c\frac{1}{8}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\cdots \\
+	&(1-c\frac{1}{8\tau}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})[\|\ov{w}_{t-\tau}-\vw^{\ast}\|^{2}\\
+	& -\alpha_{t-\tau}\langle\ov{w}_{t-\tau}-\vw^{\ast},\vH\ov{w}_{t-\tau}-\vw^{\ast}\rangle\\
+	& +2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t-\tau}^{k}(\ov{w}_{t-\tau}-\vw^{\ast})\|^{2}\\
 	& +4\tau\alpha_{t-1}^{2}l\langle\ov{w}_{t-1}-\vw^{\ast},\vH(\ov{w}_{t-1}-\vw^{\ast})\rangle\\
 	& +(2\alpha_{t-\tau}^{2}l^{2}+\alpha_{t-\tau}L)((\tau+1)\sum_{k=1}^{N}p_{k}\|\ov{w}_{t-\tau}-\vw_{t-\tau}^{k}\|^{2})]
 	\end{align*}
@@ -504,13 +533,15 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	and 
 	\begin{align*}
 	& \|\ov{w}_{t-\tau}-\vw^{\ast}\|^{2}-\alpha_{t-\tau}\langle\ov{w}_{t-\tau}-\vw^{\ast},\vH\ov{w}_{t-\tau}-\vw^{\ast}\rangle\\
-	& +2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t-\tau}^{k}(\ov{w}_{t-\tau}-\vw^{\ast})\|^{2}+4\tau\alpha_{t-1}^{2}l\langle\ov{w}_{t-1}-\vw^{\ast},\vH(\ov{w}_{t-1}-\vw^{\ast})\rangle\\
+	& +2\alpha_{t-\tau}^{2}\|\sum_{k=1}^{N}p_{k}\tilde{\vH}_{t-\tau}^{k}(\ov{w}_{t-\tau}-\vw^{\ast})\|^{2}\\
+	&+4\tau\alpha_{t-1}^{2}l\langle\ov{w}_{t-1}-\vw^{\ast},\vH(\ov{w}_{t-1}-\vw^{\ast})\rangle\\
 	& \leq(1-c\frac{N}{8(\tau+1)(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\mathbb{E}\|\ov{w}_{t-\tau}-\vw^{\ast}\|^{2}
 	\end{align*}
 	which gives 
 	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2} & \leq(1-c\frac{1}{8E}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})^{t}\|\vw_{0}-\vw^{\ast}\|^{2}\\
-	& =O(\exp(-\frac{1}{E}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))}t))\|\vw_{0}-\vw^{\ast}\|^{2}
+	& \mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2} \\
+	\leq&(1-c\frac{1}{8E}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})^{t}\|\vw_{0}-\vw^{\ast}\|^{2}\\
+	=&O(\exp(-\frac{1}{E}\frac{N}{(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))}t))\|\vw_{0}-\vw^{\ast}\|^{2}
 	\end{align*}
 	and with partial participation, the same bound holds with a possibly
 	different choice of $c$. 
