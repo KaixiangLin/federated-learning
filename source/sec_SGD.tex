@@ -48,7 +48,7 @@ in the previous step,
 the variance of stochastic gradients in local clients, and the variance
 across different clients. This last term $\mathcal{O}(\alpha_{t}^{3}E^{2}G^{2})$ is the key improvement over ~\cite{li2019convergence}, which has $\mathcal{O}(\alpha_{t}^{2}E^2 G^2)$ instead.\\
 \textit{Iterative deduction.} This step applies induction to the recursive one-step progress bounds to obtain a non-recursive bound on $\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}$ in terms of the initial distance ($\|\ov{w}_{0}-\vw^{\ast}\|^{2}$), which is then converted to a bound on $\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}$ using $L$-smoothness.\\
-\textit{From full to partial participation.} In addition to the variances arising from stochastic updates at local clients and averaging across clients, partial participation, which involves a sampling procedure, gives rise to a third variance term. adds a an additional term $\mathcal{O}(\frac{1}{K} \alpha_t^2 E^2G^2)$ of leading order resulting from the sampling variance is added to the recursive contraction bound.
+\textit{From full to partial participation.} In addition to the variances arising from stochastic updates at local clients and averaging across clients, partial participation, which involves a sampling procedure, gives rise to a third variance term. An additional term $\mathcal{O}(\frac{1}{K} \alpha_t^2 E^2G^2)$ of leading order resulting from the sampling variance is added to the recursive contraction bound.
 
 \begin{comment}
 A crucial ingredient in the proof of Theorem~\ref{th:scvx_sgd} is a one step contraction bound 
