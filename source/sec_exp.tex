@@ -31,29 +31,100 @@ In this section, we empirically examine the linear speedup convergence of FedAvg
 
 \textbf{Setup.} Following the experimental setting in~\cite{stich2018local}, we
 conduct experiments on both synthetic datasets and real-world dataset
-w8a~\cite{platt1998fast} $(d=300, n=49749)$. We consider the distributed
-objectives $F(\vw) = \sum_{k=1}^N p_kF_k(\vw)$, and the objective function on the
-$k$-th local device includes three cases: 1) \textbf{Strongly convex
-objective}: the regularized binary logistic regression problem, $F_k(\vw) =
-\frac{1}{N_k} \sum_{i=1}^{N_k} \log( 1+ \exp(-y_i^k \vw^T\vx_i^k) + \frac{\lambda}{2}
-\|\vw\|^2$. The regularization parameter is set to $\lambda = 1/n \approx
-2e-5$. 2) \textbf{Convex smooth objective}: the binary logistic regression
-problem without regularization. 3) \textbf{Overparameterized setting}:
-the linear regression problem without adding noise to the label, $F_k(\vw) =
-\frac{1}{N_k} \sum_{i=1}^{N_k} (\vw^T\vx_i^k + b  - y_i^k)^2$.  
-% In the first
-% two cases, we use the w8a dataset to conduct empirical evaluation. 
-% In the overparameterized setting, we use features from w8a dataset and 
-% generate a ground truth $w$ to label each instance, which satisfies the
-% overparameterized setting. 
+w8a~\cite{platt1998fast}, which consists of $n = 49749 $ samples with
+feature dimension $d = 300$. The label is either positive one or negative one.
+The dataset has sparse binary features in $\{0, 1\}$. Each sample
+has 11.15 non-zero feature values out of $300$ features on average.
+We set the batch size equal to four across all experiments.
+For all the results, we set random seeds as $0, 1, 2$
+and report the best convergence rate across the three folds. 
 
-% ~\ref{th:strongcvxsmth}~\ref{th:cvxsmoth}~\ref{th:fedmasslr}
-\textbf{Linear speedup of FedAvg and Nesterov accelerated FedAvg.} To verify the linear speedup convergence as shown in Theorems~\ref{thm:SGD_scvx}~\ref{thm:SGD_cvx}~\ref{thm:nesterov_scvx}~\ref{thm:Nesterov_cvx}, we evaluate the number of iterations needed to reach
+
+In general, we consider the distributed
+objectives $F(\vw) = \sum_{k=1}^N p_kF_k(\vw)$, and the objective function on the
+$k$-th local device includes three cases: 1) Strongly convex
+objective, 2) Convex smooth objective, and 3) Overparameterized setting.
+To verify the linear speedup convergence as shown in Theorems~\ref{thm:SGD_scvx}~\ref{thm:SGD_cvx}~\ref{thm:nesterov_scvx}~\ref{thm:Nesterov_cvx}, we evaluate the number of iterations needed to reach
 $\epsilon$-accuracy in three objectives. We initialize all runs with $\vw_0 = \textbf{0}_d$ and measure the number of iterations to reach the target accuracy $\epsilon$. For each configuration $(E, K)$, we extensively search the learning rate from $\min(\eta_0, \frac{nc}{1 + t})$, where
 $\eta_0 \in \{0.1, 0.12, 1, 32 \}$ according to different problems and $c$ can
 take the values $c = 2^i \ \forall i \in \ZZ$. As the results shown in Figure~\ref{fig:speedup},
-the number of iterations decreases as the number of (active) workers increasing, which is consistent for FedAvg and Nesterov accelerated FedAvg across all scenarios.
-For additional experiments on the impact of $E$, detailed experimental setup, and hyperparameter setting, please refer to the Appendix Section~\ref{sec:expsupp}.
+the number of iterations decreases as the number of (active) workers increasing, which is consistent for FedAvg across all three objectives under the setting of full participation (first row, Figure~\ref{fig:speedup}) and partial participation (second row, Figure~\ref{fig:speedup}). For Nesterov accelerated FedAvg, we also empirically verified the linear speedup is achieved for all three objectives under full participation.
+In the next following subsections,we introduce parameter searching in for different types of objectives separately.
+
+\subsection{Strongly Convex Objectives}
+We first consider the strongly convex objective function, where we use
+a regularized binary logistic regression ($F_k(\vw) =
+\frac{1}{N_k} \sum_{i=1}^{N_k} \log( 1+ \exp(-y_i^k \vw^T\vx_i^k) + \frac{\lambda}{2}
+\|\vw\|^2$) with regularization $\lambda=1/n\approx 2e-5$. We evenly distributed on $1, 2, 4, 8, 16, 32$ devices and  report the number of iterations/rounds needed to converge to $\epsilon-$accuracy, where $\epsilon=0.005$. The optimal objective function value $f^*$
+is set as $f^* = 0.126433176216545$. This is determined numerically and we follow the setting in~\cite{stich2018local}. The learning rate is decayed as the $\eta_t = \min(\eta_0, \frac{nc}{1 + t})$, where we extensively search the best learning rate $c \in \{2^{-1}c_0, 2^{-2}c_0, c_0, 2c_0, 2^{2}c_0\}$. In this case, we search the initial learning rate $\eta_0\in \{1, 32\}$ and $c_0 = 1/8$.
+
+
+\subsection{Convex Smooth Objectives}
+We also use binary logistic regression without regularization.
+The setting is almost same as its regularized counter part. We also evenly distributed all the samples on $1, 2, 4, 8, 16, 32$ devices. The figure shows the number of iterations needed to converge to $\epsilon-$accuracy, where $\epsilon=0.02$. The optiaml objective function value is set as $f^*=0.11379089057514849$, determined numerically. 
+The learning rate is decayed as the $\eta_t = \min(\eta_0, \frac{nc}{1 + t})$, where we extensively search the best learning rate $c \in \{2^{-1}c_0, 2^{-2}c_0, c_0, 2c_0, 2^{2}c_0\}$. In this case, we search the initial learning rate $\eta_0\in \{1, 32\}$ and $c_0 = 1/8$.
+
+
+\subsection{Linear regression}
+We use the linear regression problem ($F_k(\vw) =
+\frac{1}{N_k} \sum_{i=1}^{N_k} (\vw^T\vx_i^k + b  - y_i^k)^2$)) without adding noise to the label
+for the experiments under overparameterized setting.
+For linear regression, we use the same feature vectors from w8a dataset 
+and generate ground truth $[\vw^*, b^*]$ from a multivariate normal distribution
+with zero mean and standard deviation one. Then we generate label 
+based on $y_i = \vx_i^t\vw^* + b^*$. This procedure will ensure we satisfy
+the over-parameterized setting as required in our theorems. 
+We also evenly distributed all the samples on $1, 2, 4, 8, 16, 32$ devices. The figure shows the number of iterations needed to converge to $\epsilon-$accuracy, where $\epsilon=0.02$. The optiaml objective function value is $f^*=0$. 
+The learning rate is decayed as the $\eta_t = \min(\eta_0, \frac{nc}{1 + t})$, where we extensively search the best learning rate $c \in \{2^{-1}c_0, 2^{-2}c_0, c_0, 2c_0, 2^{2}c_0\}$. In this case, we search the initial learning rate $\eta_0\in \{0.1, 0.12\}$ and $c_0 = 1/256$.
+
+\subsection{Partial Participation}
+To examine the linear speedup of FedAvg in partial participation setting,
+we evenly distributed data on $4, 8, 16, 32, 64, 128$ devices and 
+uniformly sample $50\%$ devices without replacement. 
+All other hyperparameters are the same as previous sections. 
+
+\subsection{Nesterov accelerated FedAvg}
+The experiments of Nesterov accelerated FedAvg (the update formula is given as follows) uses the same setting as
+previous three sections for vanilla FedAvg.
+\begin{align*}
+\vy_{t+1}^{k} & =\vw_{t}^{k}-\alpha_{t}\vg_{t,k}\\
+\vw_{t+1}^{k} & =\begin{cases}
+\vy_{t+1}^{k}+\beta_{t}(\vy_{t+1}^{k}-\vy_{t}^{k}) & \text{if }t+1\notin\mathcal{I}_{E}\\
+\sum_{k\in\mathcal{S}_{t+1}}\left(\vy_{t+1}^{k}+\beta_{t}(\vy_{t+1}^{k}-\vy_{t}^{k})\right) & \text{if }t+1\in\mathcal{I}_{E}
+\end{cases}
+\end{align*}
+We set $\beta_t = 0.1$ and search $\alpha_t$ in the same way as $\eta_t$
+in FedAvg.
+
+
+\subsection{The impact of $E$.}
+In this subsection, we further examine how does the number of local steps ($E$) 
+affect convergence. As shown in Figure~\ref{fig:e}, the number of iterations increases as $E$ increase, which slow down the convergence in
+terms of gradient computation. However, it can save communication costs as
+the number of rounds decreased when the $E$ increases. This showcase that
+we need a proper choice of $E$ to trade-off the communication cost and
+convergence speed. 
+\begin{figure*}
+\centering
+	\begin{tabular}{ccc}
+	\hspace{-2em} \includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupEpochsT-min-w8a-epsilon0131-reg1e-05.pdf} &
+	\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupEpochsT-min-w8a-epsilon0134-reg0.pdf} & 
+	\includegraphics[width=0.33\textwidth]{fig/paper-linregression-newspeedupEpochsT-min-linearregressionw8a-epsilon002-reg0.pdf} \\
+	\hspace{-2em} \includegraphics[width=0.33\textwidth]{fig/paper-stronglycvxsmthspeedupEpochsRounds-min-w8a-epsilon0131-reg1e-05.pdf} &
+	\includegraphics[width=0.33\textwidth]{fig/paper-cvxsmoothspeedupEpochsRounds-min-w8a-epsilon0134-reg0.pdf} & 
+	\includegraphics[width=0.33\textwidth]{fig/paper-linregression-newspeedupEpochsRounds-min-linearregressionw8a-epsilon002-reg0.pdf} \\
+(a) Strongly convex objective & (b) Convex smooth objective & (c) Linear regression
+	\end{tabular}
+\caption{The convergence of FedAvg w.r.t the number of local steps $E$. }
+\label{fig:e}
+\end{figure*}
+
+
+
+
+% ~\ref{th:strongcvxsmth}~\ref{th:cvxsmoth}~\ref{th:fedmasslr}
+% \textbf{Linear speedup of FedAvg and Nesterov accelerated FedAvg.} 
+
 
 % \textbf{Partial participations.} We verify the linear speedup in the
 % partial participation settings, where we set $50\%$ of devices
