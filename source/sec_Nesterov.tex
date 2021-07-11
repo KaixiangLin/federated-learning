@@ -6,10 +6,9 @@
 \label{sec:Nesterov}
 
 A natural extension of the FedAvg algorithm is to use momentum-based 
-local updates instead of local SGD updates in order to accelerate FedAvg. As we know from stochastic optimization, Nesterov and other momentum
-updates fail to provably accelerate over SGD (\cite{liu2018accelerating,kidambi2018insufficiency,liu2018toward,yuan2020federated}). This is in contrast to the classical acceleration result of Nesterov-accelerated gradient descent over GD. Thus in the FL setting, the best provable convergence rate for FedAvg with Nesterov updates is the same as FedAvg with SGD updates. Nevertheless, Nesterov and other momentum updates are frequently used in practice, in both non-FL and FL settings, and are observed to perform better empirically. In fact, previous works such as \cite{stich2018local} on FedAvg with vanilla SGD uses FedAvg with Nesterov or other momentum updates in their experiments to achieve target accuracy. Because of the popularity of Nesterov and other momentum-based methods, understanding the linear speedup behavior of FedAvg with such local updates is important. To our knowledge, the
-only convergence analyses of FedAvg with momentum-based stochastic
-updates focus on the non-convex smooth case \cite{huo2020faster,yu2019linear,li2018federated}, and no results existed in the convex smooth settings. In this section, we complete the picture by providing the first $\mathcal{O}(1/KT)$
+local updates instead of local SGD updates. As we know from stochastic optimization, Nesterov and other momentum
+updates may fail to provably accelerate over SGD (\cite{liu2018accelerating,kidambi2018insufficiency,liu2018toward,yuan2020federated}). This is in contrast to the classical acceleration result of Nesterov-accelerated gradient descent over GD, as well as recent acceleration results on FedAvg with momentum-based \emph{gradient} updates \cite{liu2019accelerating,yang2020federated}. Thus in the FL setting, the best provable convergence rate for FedAvg with Nesterov updates is the same as FedAvg with SGD updates. Nevertheless, Nesterov and other momentum updates are frequently used in practice, in both non-FL and FL settings, and are observed to perform better empirically. In fact, previous works such as \cite{stich2018local} on FedAvg with vanilla SGD uses FedAvg with Nesterov or other momentum updates in their experiments to achieve target accuracy. Because of the popularity of Nesterov and other momentum-based methods, understanding the linear speedup behavior of FedAvg with such local updates is important. To our knowledge, the
+only convergence analyses of FedAvg with momentum-based \emph{stochastic} updates focus on the non-convex smooth case \cite{huo2020faster,yu2019linear,li2018federated}, and no results exist in the convex smooth settings. In this section, we complete the picture by providing the first $\mathcal{O}(1/KT)$
 and $\mathcal{O}(1/\sqrt{KT})$ convergence results for Nesterov-accelerated
 FedAvg for convex objectives that match the rates for FedAvg with SGD updates. Detailed proofs of convergence results in this section are deferred to Appendix Section~\ref{sec:app:Nesterovfedavg}.
 
@@ -27,7 +26,7 @@ The Nesterov Accelerated FedAvg algorithm follows the updates:
 \end{cases}
 \end{align*}
 where $\mathbf{g}_{t,k}:=\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}^{k})$ is
-the stochastic gradient sampled on the $k$-th device at time $t$, and $q_k$ again depends on participation and sampling schemes.  
+the stochastic gradient sampled on the $k$-th device at time $t$, $\beta_t$ is the momentum parameter for local Nesterov updates, and $q_k$ again depends on participation and sampling schemes.  
 \begin{theorem}
 	\label{thm:nesterov_scvx}Let $\overline{\mathbf{v}}_{T}=\sum_{k=1}^{N}p_{k}\mathbf{v}_{T}^{k}$ in Nesterov accelerated FedAvg,
 	and set learning rates $\alpha_{t}=\frac{6}{\mu}\frac{1}{t+\gamma}$,  $\beta_{t-1}=\frac{3}{14(t+\gamma)(1-\frac{6}{t+\gamma})\max\{\mu,1\}}$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:stroncvx},\ref{ass:boundedvariance},\ref{ass:subgrad2} with full device participation, 
@@ -43,16 +42,22 @@ the stochastic gradient sampled on the $k$-th device at time $t$, and $q_k$ agai
 	\mathbb{E}F(\overline{\mathbf{v}}_{T})-F^{\ast}=\mathcal{O}\left(\frac{\kappa\nu_{\max}^{2}\sigma^{2}/\mu}{NT}+\frac{\kappa E^{2}G^{2}/\mu}{KT}+\frac{\kappa^{2}E^{2}G^{2}/\mu}{T^{2}}\right).
 	\end{align*}}
 \end{theorem}
-Similar to FedAvg, the key step in the proof of this result is a recursive contraction bound, but different in that it involves three time steps, due to the update format of Nesterov SGD (see Lemma~\ref{lem:nest-scvxoner} in Appendix~\ref{sec:convexsmoothsgd}). 
+Similar to FedAvg, the key step in the proof of this result is a recursive contraction bound, but different in that it involves three time steps, due to the update format of Nesterov SGD:
+\begin{align*}
+&\mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} \\
+\leq & \mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+\mathcal{O}(E^{2}L\alpha_{t}^{3}G^{2})\\
+&+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2} +\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}\\
+&+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|.
+\end{align*} 
 % \begin{align*}
 % \mathbb{E}\|\ov{v}_{t+1}-\vw^{\ast}\|^{2} & \leq\mathbb{E}(1-\mu\alpha_{t})(1+\beta_{t-1})^{2}\|\ov{v}_{t}-\vw^{\ast}\|^{2}+20E^{2}L\alpha_{t}^{3}G^{2}+(1-\alpha_{t}\mu)\beta_{t-1}^{2}\|(\ov{v}_{t-1}-\vw^{\ast})\|^{2}\\
 % & +\alpha_{t}^{2}\frac{1}{N}\nu_{\max}\sigma^{2}+2\beta_{t-1}(1+\beta_{t-1})(1-\alpha_{t}\mu)\|\ov{v}_{t}-\vw^{\ast}\|\cdot\|\ov{v}_{t-1}-\vw^{\ast}\|
 % \end{align*}
-Then we can again use induction and $L$-smoothness to obtain the desired bound.
+Then we can again use induction and $L$-smoothness to obtain the desired bound in Theorem \ref{thm:nesterov_scvx}.
 %
-To our knowledge, this is the first convergence result for Nesterov
+To the best of our knowledge, this is the first convergence result for Nesterov
 accelerated FedAvg in the strongly convex and smooth setting. The
-same discussion about linear speedup of FedAvg applies to the Nesterov
+same discussion about linear speedup of FedAvg applies to its Nesterov
 accelerated variant. In particular, to achieve $\mathcal{O}(1/NT)$
 linear speedup, $T$ iterations of the algorithm require only $\mathcal{O}(\sqrt{NT})$
 communication rounds with full participation. 
@@ -68,16 +73,24 @@ of averaged gradient norm.
 	\label{thm:Nesterov_cvx}Set learning rates $\alpha_{t}=\beta_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$. Then under Assumptions~\ref{ass:lsmooth},\ref{ass:boundedvariance},\ref{ass:subgrad2} Nesterov accelerated FedAvg with
 	full device participation has rate
 	% \vspace{-0em}
-	\small{\begin{align*}
+	{\begin{align*}
 		\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{NT}}+\frac{NE^{2}LG^{2}}{T}\right),
 		\end{align*}}
 		% \vspace{-1em}
 	and with partial device participation with $K$ sampled devices at
 	each communication round, 
-	\small{\begin{align*}
+	{\begin{align*}
 		\min_{t\leq T}F(\overline{\mathbf{v}}_{t})-F^{\ast} & =\mathcal{O}\left(\frac{\nu_{\max}^{2}\sigma^{2}}{\sqrt{KT}}+\frac{E^{2}G^{2}}{\sqrt{KT}}+\frac{KE^{2}LG^{2}}{T}\right).
 		\end{align*}}
 \end{theorem}
+
+The analogous one-step recursive bound in the convex smooth setting for Nesterov accelerated FedAvg takes the following form: 
+\begin{align*}
+	&\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\eta_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) \\
+	\leq & \mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+2\eta_{t}\frac{\beta_{t}^{2}}{1-\beta_{t}}G^{2}\\
+	& +\mathcal{O}(LE^{2}\alpha_{t}^{2}\eta_{t}G^{2}+\eta_{t}^{2}\nu_{\max}\frac{1}{N}\sigma^{2})
+	\end{align*}
+where $\eta_{t}=\frac{\alpha_{t}}{1-\beta_{t}}$. This is then summed over time steps to derive the final bound in \ref{thm:Nesterov_cvx}.
 
 We emphasize again that in the stochastic optimization setting, the optimal convergence rate that FedAvg wtih Nesterov udpates can achieve is the same as FedAvg with SGD updates. However, due to the popularity and superior performance of momentum methods in practice, it is still important to understand the linear speedup behavior of such FedAvg variants. Our results in this section fill exactly this gap. 
 

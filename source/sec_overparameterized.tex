@@ -29,7 +29,7 @@ line of recent works proved that SGD and accelerated methods achieve geometric
 convergence~\cite{ma2017power,moulines2011non,needell2014stochastic,schmidt2013fast,strohmer2009randomized}.
 A natural question is whether such a result still holds in the federated
 learning setting. 
-In this section, we provide the first geometric convergence rate
+In this section, we provide geometric convergence rate analysis
 of FedAvg for the overparameterized strongly convex and smooth problems,
 and show that it preserves linear speedup at the same time.  
 We then sharpen this result in the special case of
@@ -79,7 +79,8 @@ with linear speedup in the number of workers.
 	and constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+L(N-\nu_{\min})})$
 	has geometric convergence:
 	\begin{align*}
-	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\frac{L}{2}(1-\overline{\alpha})^{T}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}=\mathcal{O}\left(L\exp\left(-\frac{\mu}{E}\frac{NT}{l\nu_{\max}+L(N-\nu_{\min})}\right)\cdot\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
+	&\mathbb{E}F(\overline{\mathbf{w}}_{T}) \leq\frac{L}{2}(1-\overline{\alpha})^{T}\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\\
+	=&\mathcal{O}\left(L\exp\left(-\frac{\mu}{E}\frac{NT}{l\nu_{\max}+L(N-\nu_{\min})}\right)\cdot\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
 	\end{align*}
 \end{theorem}
 %

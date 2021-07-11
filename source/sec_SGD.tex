@@ -40,7 +40,7 @@ to guarantee $\mathcal{O}(1/KT)$ convergence.
 \textbf{Outline of proof.} Because our unified analyses of results in the main text follow the same framework with variations in technical details, we first give an outline of proof for Theorem~\ref{th:scvx_sgd} to illustrate the main ideas and highlight the improvement of our analyses over prior works.\\
 \textit{One-step progress bound.} The analysis starts with the full participation setting, and establishes a recursive contraction bound for the distance to the optimal solution after one step of the FedAvg algorithm:
 \begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq (1-\alpha_t)\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+ \cO(\alpha_t^2 \sigma^2/N + \alpha_t^3E^2G^2).
+	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq (1-\alpha_t)\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+ \cO(\alpha_t^2 \sigma^2/N + \alpha_t^3E^2LG^2).
 \end{align*}
 % \lkxcom{explain variance here and the improvement?}
 The above bound consists of three components: the distance to the optimal solution 
@@ -48,16 +48,7 @@ in the previous step,
 the variance of stochastic gradients in local clients, and the variance
 across different clients. This last term $\mathcal{O}(\alpha_{t}^{3}E^{2}G^{2})$ is the key improvement over ~\cite{li2019convergence}, which has $\mathcal{O}(\alpha_{t}^{2}E^2 G^2)$ instead.\\
 \textit{Iterative deduction.} This step applies induction to the recursive one-step progress bounds to obtain a non-recursive bound on $\mathbb{E}\|\ov{w}_{T}-\vw^{\ast}\|^{2}$ in terms of the initial distance ($\|\ov{w}_{0}-\vw^{\ast}\|^{2}$), which is then converted to a bound on $\mathbb{E}F(\overline{\mathbf{w}}_{T})-F^{\ast}$ using $L$-smoothness.\\
-\textit{From full to partial participation.} In addition to the variances arising from stochastic updates at local clients and averaging across clients, partial participation, which involves a sampling procedure, gives rise to a third variance term. An additional term $\mathcal{O}(\frac{1}{K} \alpha_t^2 E^2G^2)$ of leading order resulting from the sampling variance is added to the recursive contraction bound.
-
-\begin{comment}
-A crucial ingredient in the proof of Theorem~\ref{th:scvx_sgd} is a one step contraction bound 
-	\begin{align*}
-	\mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2} & \leq(1-\mu\alpha_{t})\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{max}^{2}\sigma^{2}+6E^{2}L\alpha_{t}^{3}G^{2} 
-	\end{align*}
-that improves upon the analysis in~\cite{li2019convergence} to deliver the linear speedup. Moreover, analogues of this bound appear in the analyses of the convex setting as well as the Nesterov accelerated FedAvg.\\
-\end{comment}
-
+\textit{From full to partial participation.} In addition to the variances arising from stochastic updates at local clients and averaging across clients, partial participation, which involves a sampling procedure, gives rise to a third type of variance: an additional term $\mathcal{O}(\frac{1}{K} \alpha_t^2 E^2G^2)$ of leading order resulting from the sampling variance is added to the recursive contraction bound.
 \textbf{Linear speedup. }We compare our bound with that in \cite{li2019convergence},
 which is $\mathcal{O}(\frac{1}{NT}+\frac{E^{2}}{KT}+\frac{E^{2}G^{2}}{T})$.
 Because the term $\frac{E^{2}G^{2}}{T}$ is also $\mathcal{O}(1/T)$
@@ -91,7 +82,7 @@ experiments. The requirement that $E=\mathcal{O}(1)$ in order to achieve linear 
 \end{comment}
 
 \subsection{Convex Smooth Objectives}
-Next we provide linear speedup analysis of FedAvg with convex and
+Next, we provide linear speedup analysis of FedAvg with convex and
 smooth objectives and show that the optimality gap is $\mathcal{O}(1/\sqrt{KT})$. 
 This result complements the strongly convex case in the previous part, as well as the non-convex
 smooth setting in \cite{jiang2018linear,yu2019parallel,haddadpour2019convergence},
@@ -112,7 +103,7 @@ gradient norm, and it also extends the result in~\cite{khaled2020tighter}, which
 The analysis again relies on a recursive bound, but without contraction: 
 \begin{align*}
 	& \mathbb{E}\|\ov{w}_{t+1}-\vw^{\ast}\|^{2}+\alpha_{t}(F(\ov{w}_{t})-F(\vw^{\ast})) \\
- \leq &\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\alpha_{t}^{2}\frac{1}{N}\nu_{\max}^{2}\sigma^{2}+6\alpha_{t}^{3}E^{2}LG^{2}
+ \leq &\mathbb{E}\|\ov{w}_{t}-\vw^{\ast}\|^{2}+\cO(\alpha_t^2 \nu_{\max}^{2} \sigma^2/N + \alpha_t^3E^2LG^2).
 	\end{align*}
 which is then summed over time steps to give the desired bound, with $\alpha_{t}=\mathcal{O}(\sqrt{\frac{N}{T}})$. \\
 %
