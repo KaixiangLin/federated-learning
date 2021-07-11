@@ -144,9 +144,10 @@ while $\mathbf{g}_{t}=\sum_{k=1}^{N}p_{k}\nabla F_{k}(\mathbf{w}_{t}^{k},\xi_{t}
 	\label{thm:overparameterized_quadratic}For the overparamterized linear regression problem, FedAvg with communication every $E$
 	iterations with constant step size $\overline{\alpha}=\mathcal{O}(\frac{1}{E}\frac{N}{l\nu_{\max}+\mu(N-\nu_{\min})})$
 	has geometric convergence:
+	{\small 
 	\begin{align*}
 	\mathbb{E}F(\overline{\mathbf{w}}_{T}) & \leq\mathcal{O}\left(L\exp(-\frac{NT}{E(\nu_{\max}\kappa_{1}+(N-\nu_{\min}))})\|\mathbf{w}_{0}-\mathbf{w}^{\ast}\|^{2}\right).
-	\end{align*}
+	\end{align*}}
 \end{theorem}
 
 When $N=\mathcal{O}(\kappa_{1})$, the convergence rate is $\mathcal{O}((1-\frac{N}{E\kappa_{1}})^{T})=\mathcal{O}(\exp(-\frac{NT}{E\kappa_{1}}))$,
