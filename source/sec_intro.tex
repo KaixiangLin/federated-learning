@@ -23,16 +23,17 @@ In particular, is linear speedup of FedAvg a universal phenomenon across differe
 
 \begin{table*}[th!]
 \centering
+\caption{The summary of our convergence results for FedAvg and accelerated FedAvg.}
 \begin{tabular}{|c|c|c|c|c|}\hline 
 	\multirow{2}{*}{\backslashbox{{\tiny Participation} }{{\tiny Objective function}}} & \multirow{2}{*}{Strongly Convex}     &\multirow{2}{*}{Convex}    & Overparameterized & Overparameterized \\ 
 	                                &                        &         &     general case                 & linear regression   \\ \hline 
 	Full                         & $\cO(\frac{1}{NT}+\frac{E^{2}}{T^{2}})$    &  $\mathcal{O}\left(\frac{1}{\sqrt{NT}}+\frac{NE^{2}}{T}\right)$   & $\cO(\exp(-\frac{NT}{E\kappa_1}))$ & $\cO(\exp(-\frac{NT}{E\kappa }))^{\dagger}$    \\ \hline
 	Partial                      &  $\cO\left(\frac{E^{2}}{KT}+\frac{E^{2}}{T^{2}}\right)$   &  $\cO\left(\frac{E^2}{\sqrt{KT}}+\frac{KE^2}{T} \right)$ &  $\cO(\exp(-\frac{KT}{E\kappa_1}))$ & $\cO(\exp(-\frac{KT}{E\kappa }))^{\dagger}$     \\ \hline
 \end{tabular}
-\caption{Our convergence results for FedAvg and accelerated FedAvg in this paper. Throughout the paper, $N$ is the total
-number of local devices, and $K \leq N$ is the maximal number of devices that are accessible to the central server. $T$ is the total number of stochastic updates performed by each local device, $E$ is the local steps between two consecutive server communications (and hence $T/E$ is the number of communications). $^{\dagger}$ In the linear regression setting, we have $\kappa=\kappa_1$ for FedAvg and $\kappa=\sqrt{\kappa_1\tilde{\kappa}}$ for momentum accelerated FedAvg (FedMaSS), where $\kappa_1$ and $\sqrt{\kappa_1\tilde{\kappa}}$ are condition numbers defined in Section \ref{sec:overparameterized}. Since
-$\kappa_{1}\geq\tilde{\kappa}$, this implies a speedup factor of
-$\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$ for accelerated FedAvg.}
+% \caption{Our convergence results for FedAvg and accelerated FedAvg in this paper. Throughout the paper, $N$ is the total
+% number of local devices, and $K \leq N$ is the maximal number of devices that are accessible to the central server. $T$ is the total number of stochastic updates performed by each local device, $E$ is the local steps between two consecutive server communications (and hence $T/E$ is the number of communications). $^{\dagger}$ In the linear regression setting, we have $\kappa=\kappa_1$ for FedAvg and $\kappa=\sqrt{\kappa_1\tilde{\kappa}}$ for momentum accelerated FedAvg (FedMaSS), where $\kappa_1$ and $\sqrt{\kappa_1\tilde{\kappa}}$ are condition numbers defined in Section \ref{sec:overparameterized}. Since
+% $\kappa_{1}\geq\tilde{\kappa}$, this implies a speedup factor of
+% $\sqrt{\frac{\kappa_{1}}{\tilde{\kappa}}}$ for accelerated FedAvg.}
 % {\raggedright 
 % $^{*}$ The fourth column presents the results for the general overparaterized setting. The fifth column presents the results for overparaterized linear regression.
         %   \par}
